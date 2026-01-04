@@ -1,0 +1,1092 @@
+{
+  "type": "resource",
+  "title": "Exemples d'API GraphQL utilisées par des sites réels",
+  "position": 0,
+  "published": true,
+  "content": {
+    "body": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "GraphQL est utilisé par de nombreuses entreprises et services populaires ! Ce chapitre présente des exemples concrets d'API GraphQL utilisées par des sites et services que vous connaissez probablement. Vous découvrirez comment GitHub, Shopify, Facebook et d'autres services exposent leurs API GraphQL."
+            }
+          ]
+        }
+      ]
+    },
+    "description": "Découvrez des exemples concrets d'API GraphQL utilisées par des sites populaires comme GitHub, Shopify, Facebook, Apollo et bien d'autres."
+  },
+  "chapters": [
+    {
+      "title": "Exemples d'API GraphQL utilisées par des sites réels",
+      "position": 0,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "GraphQL est utilisé par de nombreuses entreprises et services populaires ! Voici des exemples concrets d'API GraphQL utilisées par des sites et services que vous connaissez probablement."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "1. GitHub GraphQL API"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "GitHub expose une API GraphQL complète en plus de son API REST. GraphQL permet de récupérer exactement les données nécessaires en une seule requête."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "graphql"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "# Récupérer les informations d'un utilisateur et ses dépôts\nquery {\n  user(login: \"octocat\") {\n    name\n    email\n    bio\n    repositories(first: 5) {\n      nodes {\n        name\n        description\n        stargazerCount\n        createdAt\n      }\n    }\n  }\n}\n\n# Récupérer un dépôt avec ses issues\nquery {\n  repository(owner: \"octocat\", name: \"Hello-World\") {\n    name\n    description\n    issues(first: 10, states: [OPEN]) {\n      nodes {\n        title\n        body\n        author {\n          login\n        }\n      }\n    }\n  }\n}\n\n# Mutation : Créer une issue\nmutation {\n  createIssue(input: {\n    repositoryId: \"R_kgDOGexample\",\n    title: \"Nouvelle issue\",\n    body: \"Description de l'issue\"\n  }) {\n    issue {\n      id\n      number\n      url\n    }\n  }\n}"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ],
+                "text": "Points à retenir :"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Un seul endpoint : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "https://api.github.com/graphql"
+                      },
+                      {
+                        "type": "text",
+                        "text": " pour toutes les opérations"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Requêtes flexibles : vous choisissez exactement les champs dont vous avez besoin"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Relations imbriquées : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "user → repositories → issues"
+                      },
+                      {
+                        "type": "text",
+                        "text": " en une seule requête"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "2. Shopify GraphQL API"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Shopify utilise GraphQL pour sa Storefront API et Admin API, permettant aux développeurs de créer des expériences e-commerce personnalisées."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "graphql"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "# Récupérer des produits avec leurs variantes\nquery {\n  products(first: 10) {\n    edges {\n      node {\n        id\n        title\n        description\n        priceRange {\n          minVariantPrice {\n            amount\n            currencyCode\n          }\n        }\n        variants(first: 5) {\n          edges {\n            node {\n              id\n              title\n              price\n              availableForSale\n            }\n          }\n        }\n      }\n    }\n  }\n}\n\n# Récupérer un produit spécifique\nquery {\n  product(handle: \"mon-produit\") {\n    id\n    title\n    description\n    images(first: 5) {\n      edges {\n        node {\n          url\n          altText\n        }\n      }\n    }\n  }\n}\n\n# Mutation : Créer un panier\nmutation {\n  cartCreate(input: {\n    lines: [{\n      merchandiseId: \"gid://shopify/ProductVariant/123\",\n      quantity: 2\n    }]\n  }) {\n    cart {\n      id\n      checkoutUrl\n      totalQuantity\n    }\n  }\n}"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ],
+                "text": "Points à retenir :"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pagination avec "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "first"
+                      },
+                      {
+                        "type": "text",
+                        "text": " et "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "edges/nodes"
+                      },
+                      {
+                        "type": "text",
+                        "text": " (pattern de connexion)"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Types imbriqués : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "priceRange"
+                      },
+                      {
+                        "type": "text",
+                        "text": " pour les prix complexes"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "3. Facebook / Meta GraphQL API"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Facebook (Meta) a été l'un des créateurs de GraphQL et utilise cette technologie pour ses API internes et publiques."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "graphql"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "# Récupérer les informations d'une page\nquery {\n  page(id: \"page_id\") {\n    name\n    about\n    fanCount\n    posts(first: 10) {\n      data {\n        id\n        message\n        createdTime\n        likes {\n          summary {\n            totalCount\n          }\n        }\n      }\n    }\n  }\n}\n\n# Récupérer les événements d'une page\nquery {\n  page(id: \"page_id\") {\n    events(first: 5) {\n      data {\n        id\n        name\n        description\n        startTime\n        endTime\n        place {\n          name\n          location {\n            city\n            country\n          }\n        }\n      }\n    }\n  }\n}"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "4. Apollo GraphQL (Exemples d'utilisation)"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Apollo est une plateforme populaire pour construire des API GraphQL. Voici des exemples de requêtes typiques."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "graphql"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "# Requête avec variables\nquery GetUser($userId: ID!) {\n  user(id: $userId) {\n    id\n    name\n    email\n    posts {\n      id\n      title\n      content\n      comments {\n        id\n        text\n        author {\n          name\n        }\n      }\n    }\n  }\n}\n\n# Variables JSON\n{\n  \"userId\": \"123\"\n}\n\n# Requête avec fragments\nfragment UserInfo on User {\n  id\n  name\n  email\n}\n\nfragment PostInfo on Post {\n  id\n  title\n  content\n}\n\nquery {\n  user(id: \"123\") {\n    ...UserInfo\n    posts {\n      ...PostInfo\n    }\n  }\n}\n\n# Subscription (temps réel)\nsubscription {\n  postAdded {\n    id\n    title\n    author {\n      name\n    }\n  }\n}"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ],
+                "text": "Points à retenir :"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Variables : permet de paramétrer les requêtes de manière réutilisable"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Fragments : réutilisez des sélections de champs communes"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Subscriptions : pour les mises à jour en temps réel (WebSocket)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "5. Yelp GraphQL API"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Yelp utilise GraphQL pour permettre aux développeurs de rechercher des restaurants, des avis et des informations locales."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "graphql"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "# Rechercher des restaurants\nquery {\n  search(\n    location: \"San Francisco, CA\",\n    term: \"pizza\",\n    limit: 10\n  ) {\n    business {\n      id\n      name\n      rating\n      price\n      categories {\n        title\n      }\n      location {\n        address1\n        city\n        state\n        zipCode\n      }\n      reviews(first: 3) {\n        text\n        rating\n        user {\n          name\n        }\n      }\n    }\n  }\n}\n\n# Récupérer les détails d'un restaurant\nquery {\n  business(id: \"restaurant_id\") {\n    name\n    phone\n    photos\n    hours {\n      open {\n        day\n        start\n        end\n      }\n    }\n  }\n}"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "6. SpaceX GraphQL API"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "SpaceX expose une API GraphQL publique pour accéder aux données sur les lancements, les fusées et les missions."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "graphql"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "# Récupérer les lancements\nquery {\n  launchesPast(limit: 10) {\n    mission_name\n    launch_date_local\n    launch_success\n    rocket {\n      rocket_name\n      rocket_type\n    }\n    launch_site {\n      site_name_long\n    }\n    links {\n      video_link\n      article_link\n    }\n  }\n}\n\n# Récupérer les informations sur une fusée\nquery {\n  rocket(id: \"falcon9\") {\n    name\n    description\n    height {\n      meters\n      feet\n    }\n    mass {\n      kg\n      lb\n    }\n    first_flight\n    cost_per_launch\n  }\n}\n\n# Récupérer les missions à venir\nquery {\n  launchesUpcoming(limit: 5) {\n    mission_name\n    launch_date_local\n    rocket {\n      rocket_name\n    }\n    launch_site {\n      site_name\n    }\n  }\n}"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "📊 Analyse des patterns communs"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "En analysant ces exemples, on peut identifier des patterns communs à toutes les API GraphQL :"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "Un seul endpoint :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " Toutes les opérations (queries, mutations, subscriptions) passent par le même endpoint (généralement "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "/graphql"
+                      },
+                      {
+                        "type": "text",
+                        "text": ")"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "Requêtes flexibles :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " Vous choisissez exactement les champs dont vous avez besoin, évitant le sur-fetching et le sous-fetching"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "Relations imbriquées :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " Vous pouvez naviguer dans les relations en une seule requête ("
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "user → posts → comments"
+                      },
+                      {
+                        "type": "text",
+                        "text": ")"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "Type system fort :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " Le schéma GraphQL est typé, ce qui permet une validation automatique et une auto-complétion dans les outils"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "Introspection :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " Vous pouvez interroger le schéma lui-même pour découvrir les types et champs disponibles"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "Mutations et Subscriptions :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " En plus des queries, GraphQL supporte les mutations (modifications) et les subscriptions (temps réel)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "💡 Exercice pratique"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Essayez d'utiliser ces API GraphQL vous-même ! Vous pouvez utiliser :"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "GraphQL Playground ou GraphiQL : outils interactifs pour tester les requêtes GraphQL"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Postman : supporte les requêtes GraphQL avec auto-complétion"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "SpaceX API : parfaite pour commencer car elle est publique et ne nécessite pas d'authentification"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "GitHub GraphQL Explorer : outil interactif fourni par GitHub pour tester leur API"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "bash"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "# Exemple avec curl (SpaceX API)\ncurl -X POST https://api.spacex.land/graphql \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"query\": \"query { launchesPast(limit: 5) { mission_name launch_date_local } }\"\n  }'\n\n# Ou avec fetch en JavaScript\nfetch('https://api.spacex.land/graphql', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    query: `\n      query {\n        launchesPast(limit: 5) {\n          mission_name\n          launch_date_local\n        }\n      }\n    `\n  })\n})\n  .then(res => res.json())\n  .then(data => console.log(data));"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "🔄 GraphQL vs REST"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Quand utiliser GraphQL plutôt que REST ?"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "GraphQL est idéal quand :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Vous avez besoin de récupérer des données complexes avec plusieurs relations"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Vous voulez éviter le sur-fetching (trop de données) ou le sous-fetching (pas assez de données)"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Vous avez plusieurs clients (mobile, web, etc.) avec des besoins différents"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Vous avez besoin de mises à jour en temps réel (subscriptions)"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "REST reste préférable quand :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Vous avez besoin de mise en cache HTTP simple"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Votre API est simple et suit un modèle CRUD classique"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Vous avez besoin d'une compatibilité maximale avec les outils existants"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "🔗 Ressources supplémentaires"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "GitHub GraphQL API : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "link",
+                            "attrs": {
+                              "href": "https://docs.github.com/en/graphql",
+                              "target": "_blank"
+                            }
+                          }
+                        ],
+                        "text": "https://docs.github.com/en/graphql"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Shopify GraphQL API : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "link",
+                            "attrs": {
+                              "href": "https://shopify.dev/api/admin-graphql",
+                              "target": "_blank"
+                            }
+                          }
+                        ],
+                        "text": "https://shopify.dev/api/admin-graphql"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "SpaceX GraphQL API : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "link",
+                            "attrs": {
+                              "href": "https://api.spacex.land/graphql",
+                              "target": "_blank"
+                            }
+                          }
+                        ],
+                        "text": "https://api.spacex.land/graphql"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "GraphQL.org : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "link",
+                            "attrs": {
+                              "href": "https://graphql.org",
+                              "target": "_blank"
+                            }
+                          }
+                        ],
+                        "text": "https://graphql.org"
+                      },
+                      {
+                        "type": "text",
+                        "text": " - Documentation officielle"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Apollo GraphQL : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "link",
+                            "attrs": {
+                              "href": "https://www.apollographql.com",
+                              "target": "_blank"
+                            }
+                          }
+                        ],
+                        "text": "https://www.apollographql.com"
+                      },
+                      {
+                        "type": "text",
+                        "text": " - Plateforme et outils GraphQL"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+

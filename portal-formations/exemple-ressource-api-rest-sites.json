@@ -1,0 +1,806 @@
+{
+  "type": "resource",
+  "title": "Exemples d'API REST utilisées par des sites réels",
+  "position": 0,
+  "published": true,
+  "content": {
+    "body": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Les API REST sont partout sur le web ! Ce chapitre présente des exemples concrets d'API REST utilisées par des sites et services que vous connaissez probablement. Vous découvrirez comment GitHub, Twitter, Stripe, Spotify et d'autres services exposent leurs API REST."
+            }
+          ]
+        }
+      ]
+    },
+    "description": "Découvrez des exemples concrets d'API REST utilisées par des sites populaires comme GitHub, Twitter, Stripe, Spotify et bien d'autres."
+  },
+  "chapters": [
+    {
+      "title": "Exemples d'API REST utilisées par des sites réels",
+      "position": 0,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Les API REST sont partout sur le web ! Voici des exemples concrets d'API REST utilisées par des sites et services que vous connaissez probablement."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "1. GitHub API"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "GitHub expose une API REST complète pour gérer les dépôts, les issues, les pull requests, etc."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "bash"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "# Récupérer les informations d'un utilisateur\nGET https://api.github.com/users/octocat\n\n# Récupérer les dépôts d'un utilisateur\nGET https://api.github.com/users/octocat/repos\n\n# Récupérer un dépôt spécifique\nGET https://api.github.com/repos/octocat/Hello-World\n\n# Créer un nouveau dépôt\nPOST https://api.github.com/user/repos\nContent-Type: application/json\n\n{\n  \"name\": \"mon-nouveau-repo\",\n  \"description\": \"Description du dépôt\",\n  \"private\": false\n}\n\n# Mettre à jour un dépôt\nPATCH https://api.github.com/repos/octocat/Hello-World\n\n# Supprimer un dépôt\nDELETE https://api.github.com/repos/octocat/Hello-World"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ],
+                "text": "Points à retenir :"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Ressources au pluriel : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "/users"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "/repos"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "URLs hiérarchiques : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "/users/{username}/repos"
+                      },
+                      {
+                        "type": "text",
+                        "text": " pour les dépôts d'un utilisateur"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "PATCH pour les mises à jour partielles (au lieu de PUT)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "2. Twitter API (X API)"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "L'API Twitter permet de gérer les tweets, les utilisateurs, les listes, etc."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "bash"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "# Récupérer les tweets d'un utilisateur\nGET https://api.twitter.com/2/users/by/username/elonmusk/tweets\n\n# Récupérer les informations d'un utilisateur\nGET https://api.twitter.com/2/users/by/username/elonmusk\n\n# Créer un nouveau tweet\nPOST https://api.twitter.com/2/tweets\nContent-Type: application/json\n\n{\n  \"text\": \"Hello, World!\"\n}\n\n# Supprimer un tweet\nDELETE https://api.twitter.com/2/tweets/{tweet_id}\n\n# Rechercher des tweets\nGET https://api.twitter.com/2/tweets/search/recent?query=API%20REST"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "3. Stripe API"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Stripe utilise une API REST pour gérer les paiements, les clients, les produits, etc."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "bash"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "# Récupérer tous les clients\nGET https://api.stripe.com/v1/customers\n\n# Récupérer un client spécifique\nGET https://api.stripe.com/v1/customers/cus_1234567890\n\n# Créer un nouveau client\nPOST https://api.stripe.com/v1/customers\nContent-Type: application/x-www-form-urlencoded\n\nemail=client@example.com&name=John+Doe\n\n# Mettre à jour un client\nPOST https://api.stripe.com/v1/customers/cus_1234567890\n\n# Créer un paiement\nPOST https://api.stripe.com/v1/payment_intents\n\n# Récupérer les produits\nGET https://api.stripe.com/v1/products"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ],
+                "text": "Note :"
+              },
+              {
+                "type": "text",
+                "text": " Stripe utilise "
+              },
+              {
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "code"
+                  }
+                ],
+                "text": "application/x-www-form-urlencoded"
+              },
+              {
+                "type": "text",
+                "text": " pour les requêtes POST au lieu de JSON, ce qui est moins courant mais toujours valide."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "4. Spotify API"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "L'API Spotify permet d'accéder aux données musicales, playlists, artistes, etc."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "bash"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "# Rechercher des artistes\nGET https://api.spotify.com/v1/search?q=artist:Radiohead&type=artist\n\n# Récupérer un artiste spécifique\nGET https://api.spotify.com/v1/artists/4Z8W4fKeB5YxbusRsdQVPb\n\n# Récupérer les albums d'un artiste\nGET https://api.spotify.com/v1/artists/4Z8W4fKeB5Yx/albums\n\n# Récupérer les playlists d'un utilisateur\nGET https://api.spotify.com/v1/users/{user_id}/playlists\n\n# Créer une nouvelle playlist\nPOST https://api.spotify.com/v1/users/{user_id}/playlists\nContent-Type: application/json\n\n{\n  \"name\": \"Ma Playlist\",\n  \"description\": \"Description de la playlist\",\n  \"public\": false\n}\n\n# Ajouter des pistes à une playlist\nPOST https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "5. JSONPlaceholder (API de démonstration)"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "JSONPlaceholder est une API REST factice gratuite pour tester et prototyper. Elle est souvent utilisée pour apprendre les API REST."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "bash"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "# Récupérer tous les posts\nGET https://jsonplaceholder.typicode.com/posts\n\n# Récupérer un post spécifique\nGET https://jsonplaceholder.typicode.com/posts/1\n\n# Récupérer les commentaires d'un post\nGET https://jsonplaceholder.typicode.com/posts/1/comments\n\n# Créer un nouveau post\nPOST https://jsonplaceholder.typicode.com/posts\nContent-Type: application/json\n\n{\n  \"title\": \"Mon nouveau post\",\n  \"body\": \"Contenu du post\",\n  \"userId\": 1\n}\n\n# Mettre à jour un post\nPUT https://jsonplaceholder.typicode.com/posts/1\n\n# Supprimer un post\nDELETE https://jsonplaceholder.typicode.com/posts/1"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "6. REST Countries API"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Une API REST simple qui fournit des informations sur les pays du monde."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "bash"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "# Récupérer tous les pays\nGET https://restcountries.com/v3.1/all\n\n# Récupérer un pays par nom\nGET https://restcountries.com/v3.1/name/france\n\n# Récupérer un pays par code\nGET https://restcountries.com/v3.1/alpha/fr\n\n# Rechercher par capitale\nGET https://restcountries.com/v3.1/capital/paris"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "📊 Analyse des patterns communs"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "En analysant ces exemples, on peut identifier des patterns communs :"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "Ressources au pluriel :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " Toutes ces API utilisent des noms de ressources au pluriel ("
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "/users"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "/posts"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "/customers"
+                      },
+                      {
+                        "type": "text",
+                        "text": ")"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "URLs hiérarchiques :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " Les ressources imbriquées suivent une hiérarchie logique ("
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "/users/{id}/repos"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "/posts/{id}/comments"
+                      },
+                      {
+                        "type": "text",
+                        "text": ")"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "Méthodes HTTP standard :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " GET pour lire, POST pour créer, PUT/PATCH pour mettre à jour, DELETE pour supprimer"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "Codes de statut HTTP :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " 200 OK pour les succès, 201 Created pour les créations, 404 Not Found pour les ressources introuvables"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "Versioning :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " Beaucoup d'API utilisent le versioning dans l'URL ("
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "/v1/"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "/v2/"
+                      },
+                      {
+                        "type": "text",
+                        "text": ") pour maintenir la compatibilité"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "💡 Exercice pratique"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Essayez d'appeler ces API vous-même ! Vous pouvez utiliser :"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Un navigateur web pour les requêtes GET (ouvrez simplement l'URL)"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "curl ou Postman pour tester toutes les méthodes HTTP"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "JSONPlaceholder est parfait pour commencer car elle ne nécessite pas d'authentification"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "bash"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "# Exemple avec curl\ncurl https://jsonplaceholder.typicode.com/posts/1\n\n# Ou avec fetch en JavaScript\nfetch('https://jsonplaceholder.typicode.com/posts/1')\n  .then(response => response.json())\n  .then(data => console.log(data));"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "🔗 Ressources supplémentaires"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "GitHub API Documentation : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "link",
+                            "attrs": {
+                              "href": "https://docs.github.com/en/rest",
+                              "target": "_blank"
+                            }
+                          }
+                        ],
+                        "text": "https://docs.github.com/en/rest"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Stripe API Documentation : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "link",
+                            "attrs": {
+                              "href": "https://stripe.com/docs/api",
+                              "target": "_blank"
+                            }
+                          }
+                        ],
+                        "text": "https://stripe.com/docs/api"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "JSONPlaceholder : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "link",
+                            "attrs": {
+                              "href": "https://jsonplaceholder.typicode.com",
+                              "target": "_blank"
+                            }
+                          }
+                        ],
+                        "text": "https://jsonplaceholder.typicode.com"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "REST Countries : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "link",
+                            "attrs": {
+                              "href": "https://restcountries.com",
+                              "target": "_blank"
+                            }
+                          }
+                        ],
+                        "text": "https://restcountries.com"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+

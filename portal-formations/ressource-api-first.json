@@ -1,0 +1,2297 @@
+{
+  "type": "resource",
+  "title": "Approche API-first : concevoir avant de coder",
+  "position": 0,
+  "published": true,
+  "content": {
+    "title": "Approche API-first : concevoir avant de coder",
+    "description": "Découvrez l'approche API-first qui consiste à concevoir et documenter l'API avant d'écrire le code d'implémentation. Apprenez les avantages, le workflow et les outils pour mettre en place cette méthodologie.",
+    "body": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 1
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Approche API-first : concevoir avant de coder"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "L'approche API-first consiste à concevoir et documenter l'API avant d'écrire le code d'implémentation. Cette méthode offre de nombreux avantages en termes de collaboration, de qualité et de maintenabilité."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "🎯 Principe fondamental"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Au lieu de coder d'abord et documenter ensuite (approche traditionnelle), l'approche API-first inverse le processus :"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "1. Concevoir"
+                    },
+                    {
+                      "type": "text",
+                      "text": " : Définir le contrat API (endpoints, formats, schémas)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "2. Documenter"
+                    },
+                    {
+                      "type": "text",
+                      "text": " : Créer la spécification (OpenAPI/Swagger)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "3. Valider"
+                    },
+                    {
+                      "type": "text",
+                      "text": " : Faire approuver le contrat par toutes les parties prenantes"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "4. Implémenter"
+                    },
+                    {
+                      "type": "text",
+                      "text": " : Développer le code qui respecte le contrat défini"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "yaml"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "# Étape 1 : Définir le contrat (OpenAPI)\nopenapi: 3.0.0\ninfo:\n  title: User Management API\n  version: 1.0.0\npaths:\n  /users:\n    post:\n      summary: Créer un utilisateur\n      requestBody:\n        required: true\n        content:\n          application/json:\n            schema:\n              type: object\n              required:\n                - name\n                - email\n              properties:\n                name:\n                  type: string\n                email:\n                  type: string\n                  format: email\n      responses:\n        '201':\n          description: Utilisateur créé\n          content:\n            application/json:\n              schema:\n                $ref: '#/components/schemas/User'\n\n# Étape 2 : Le code implémente ce contrat"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "✅ Avantages de l'approche API-first"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "1. Clarté et compréhension partagée"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "L'API est clairement définie et compréhensible par tous (développeurs, product owners, QA)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Réduction des ambiguïtés et des malentendus entre équipes"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Documentation toujours à jour (la spécification est la source de vérité)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Facilite l'onboarding de nouveaux développeurs"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "2. Testabilité et validation automatique"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Génération automatique de tests contractuels à partir de la spécification"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Validation automatique que l'implémentation respecte le contrat"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Mock servers pour tester le client sans serveur réel"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Détection précoce des incohérences"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "# Génération de mocks à partir d'OpenAPI\nnpx @stoplight/prism mock openapi.yaml\n\n# Validation du contrat\nnpx swagger-cli validate openapi.yaml\n\n# Tests contractuels automatiques\nnpx dredd openapi.yaml http://localhost:3000"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "3. Collaboration front/back parallèle"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "L'un des plus grands avantages : les équipes peuvent travailler en parallèle sans dépendances :"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "L'équipe front-end peut commencer à développer avec un mock server"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "L'équipe back-end implémente selon le contrat défini"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Réduction des dépendances et des blocages entre équipes"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Intégration plus fluide à la fin du développement"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "javascript"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "// Front-end développe avec un mock server\n// Le contrat OpenAPI génère automatiquement des réponses\n\n// Avant que le back-end soit prêt :\nconst mockApi = 'http://localhost:4010'; // Prism mock server\n\nfetch(`${mockApi}/users`, {\n  method: 'POST',\n  body: JSON.stringify({ name: 'John', email: 'john@example.com' })\n})\n  .then(res => res.json())\n  .then(user => {\n    // Utilise les données mockées selon le contrat\n    console.log(user); // { id: 1, name: 'John', email: 'john@example.com' }\n  });\n\n// Plus tard, on change juste l'URL vers le vrai serveur\nconst realApi = 'https://api.example.com';\n// Le code front-end reste identique !"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "4. Génération de code et outils"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Génération automatique de clients SDK (TypeScript, Python, Java, etc.)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Génération de stubs serveur (squelettes de code)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Documentation interactive générée automatiquement (Swagger UI, Redoc)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Réduction du code boilerplate et des erreurs de typage"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "# Génération de client TypeScript\nnpx @openapitools/openapi-generator-cli generate \\\n  -i openapi.yaml \\\n  -g typescript-axios \\\n  -o ./src/api-client\n\n# Génération de stubs serveur Node.js\nnpx @openapitools/openapi-generator-cli generate \\\n  -i openapi.yaml \\\n  -g nodejs-express-server \\\n  -o ./server\n\n# Documentation interactive\nnpx swagger-ui-express openapi.yaml"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "5. Qualité et maintenabilité"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Réflexion en amont sur la conception (meilleure architecture)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Réduction des refactorings coûteux en fin de projet"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Facilite les changements et l'évolution (versioning)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Meilleure cohérence entre les différentes implémentations"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "🔄 Workflow API-first complet"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Étape 1 : Définir le contrat API (OpenAPI)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Créez la spécification OpenAPI qui définit tous les aspects de votre API :"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Endpoints et méthodes HTTP"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Schémas de données (modèles)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Paramètres et validations"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Codes de réponse et erreurs"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Authentification et autorisation"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "yaml"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "openapi: 3.0.0\ninfo:\n  title: E-commerce API\n  version: 1.0.0\n  description: API pour gérer les produits et commandes\n\nservers:\n  - url: https://api.example.com/v1\n    description: Production\n  - url: https://staging-api.example.com/v1\n    description: Staging\n\npaths:\n  /products:\n    get:\n      summary: Lister les produits\n      parameters:\n        - name: page\n          in: query\n          schema:\n            type: integer\n            default: 1\n        - name: limit\n          in: query\n          schema:\n            type: integer\n            default: 20\n            maximum: 100\n      responses:\n        '200':\n          description: Liste des produits\n          content:\n            application/json:\n              schema:\n                type: object\n                properties:\n                  data:\n                    type: array\n                    items:\n                      $ref: '#/components/schemas/Product'\n                  pagination:\n                    $ref: '#/components/schemas/Pagination'\n    post:\n      summary: Créer un produit\n      security:\n        - bearerAuth: []\n      requestBody:\n        required: true\n        content:\n          application/json:\n            schema:\n              $ref: '#/components/schemas/ProductInput'\n      responses:\n        '201':\n          description: Produit créé\n          content:\n            application/json:\n              schema:\n                $ref: '#/components/schemas/Product'\n        '400':\n          $ref: '#/components/responses/BadRequest'\n        '401':\n          $ref: '#/components/responses/Unauthorized'\n\ncomponents:\n  schemas:\n    Product:\n      type: object\n      required:\n        - id\n        - name\n        - price\n      properties:\n        id:\n          type: integer\n        name:\n          type: string\n          minLength: 1\n          maxLength: 255\n        description:\n          type: string\n        price:\n          type: number\n          minimum: 0\n        stock:\n          type: integer\n          minimum: 0\n        createdAt:\n          type: string\n          format: date-time\n    ProductInput:\n      type: object\n      required:\n        - name\n        - price\n      properties:\n        name:\n          type: string\n          minLength: 1\n          maxLength: 255\n        description:\n          type: string\n        price:\n          type: number\n          minimum: 0\n        stock:\n          type: integer\n          minimum: 0\n          default: 0\n    Pagination:\n      type: object\n      properties:\n        page:\n          type: integer\n        limit:\n          type: integer\n        total:\n          type: integer\n        totalPages:\n          type: integer\n  securitySchemes:\n    bearerAuth:\n      type: http\n      scheme: bearer\n      bearerFormat: JWT\n  responses:\n    BadRequest:\n      description: Requête invalide\n      content:\n        application/json:\n          schema:\n            type: object\n            properties:\n              error:\n                type: string\n              details:\n                type: array\n                items:\n                  type: string\n    Unauthorized:\n      description: Non authentifié\n      content:\n        application/json:\n          schema:\n            type: object\n            properties:\n              error:\n                type: string"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Étape 2 : Valider le contrat avec les parties prenantes"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Avant de commencer le développement, faites valider le contrat par :"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les équipes front-end et back-end"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les product owners et designers"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les équipes QA et sécurité"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les consommateurs externes de l'API (si API publique)"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Utilisez des outils de review collaboratifs comme :"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Stoplight Studio : Éditeur visuel OpenAPI avec review"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Swagger Editor : Éditeur en ligne avec validation en temps réel"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "GitHub/GitLab : Pull requests pour review de code de la spécification"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Étape 3 : Générer les mocks et la documentation"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "À partir de la spécification OpenAPI, générez automatiquement :"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Mock server : Serveur qui simule l'API selon le contrat"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Documentation interactive : Interface web pour explorer l'API"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Clients SDK : Bibliothèques pour consommer l'API"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "# 1. Lancer un mock server avec Prism\nnpx @stoplight/prism mock openapi.yaml\n# → Serveur mock sur http://localhost:4010\n\n# 2. Générer la documentation avec Redoc\nnpx redoc-cli serve openapi.yaml\n# → Documentation sur http://localhost:8080\n\n# 3. Générer un client TypeScript\nnpx @openapitools/openapi-generator-cli generate \\\n  -i openapi.yaml \\\n  -g typescript-axios \\\n  -o ./src/api-client\n\n# 4. Utiliser le client généré\nimport { ProductsApi } from './api-client';\nconst api = new ProductsApi();\nconst products = await api.getProducts();"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Étape 4 : Développer le client et le serveur en parallèle"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Les équipes peuvent maintenant travailler indépendamment :"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Équipe Front-end"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Utilise le mock server pour développer les interfaces"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Utilise le client SDK généré (type-safe)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Teste les cas d'erreur avec le mock server"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Valide les formulaires selon les schémas OpenAPI"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "typescript"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "// Front-end : Utilisation du client généré\nimport { ProductsApi, ProductInput } from './api-client';\n\n// Le client est type-safe grâce à OpenAPI\nconst api = new ProductsApi({\n  basePath: 'http://localhost:4010' // Mock server\n});\n\n// Créer un produit (types vérifiés à la compilation)\nconst newProduct: ProductInput = {\n  name: 'Laptop',\n  price: 999.99,\n  stock: 10\n};\n\ntry {\n  const product = await api.createProduct(newProduct);\n  console.log('Produit créé:', product.data);\n} catch (error) {\n  // Gestion des erreurs selon le contrat\n  if (error.response?.status === 400) {\n    console.error('Données invalides:', error.response.data);\n  }\n}"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Équipe Back-end"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Implémente les endpoints selon le contrat OpenAPI"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Utilise la validation automatique des schémas"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Génère les stubs de code à partir d'OpenAPI (optionnel)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Valide que l'implémentation respecte le contrat"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "javascript"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "// Back-end : Express avec validation OpenAPI\nconst express = require('express');\nconst swaggerUi = require('swagger-ui-express');\nconst { OpenApiValidator } = require('express-openapi-validator');\nconst openapiSpec = require('./openapi.yaml');\n\nconst app = express();\n\n// Validation automatique selon OpenAPI\napp.use(\n  OpenApiValidator.middleware({\n    apiSpec: openapiSpec,\n    validateRequests: true,  // Valide les requêtes entrantes\n    validateResponses: true,  // Valide les réponses sortantes\n  })\n);\n\n// Route qui respecte le contrat\napp.post('/products', async (req, res) => {\n  // req.body est déjà validé selon le schéma ProductInput\n  const product = await createProduct(req.body);\n  \n  // La réponse est validée automatiquement\n  res.status(201).json(product);\n});\n\n// Documentation interactive\napp.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiSpec));"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Étape 5 : Valider que l'implémentation respecte le contrat"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Utilisez des outils de contract testing pour vérifier automatiquement que votre implémentation respecte le contrat :"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dredd : Teste l'API réelle contre la spécification OpenAPI"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Schemathesis : Tests de propriétés basés sur la spécification"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Postman : Collections générées depuis OpenAPI"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "# Dredd : Test contractuel automatique\ndredd openapi.yaml http://localhost:3000 \\\n  --hookfiles=./hooks.js \\\n  --language=nodejs\n\n# Exemple de sortie :\n# ✓ GET /products -> 200\n# ✓ POST /products -> 201\n# ✗ GET /products/{id} -> 404 (le contrat dit 200)\n# → Erreur détectée : l'implémentation ne respecte pas le contrat !"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "🛠️ Outils pour l'approche API-first"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Éditeurs et créateurs de spécifications"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Stoplight Studio : "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://stoplight.io/studio",
+                            "target": "_blank"
+                          }
+                        }
+                      ],
+                      "text": "stoplight.io/studio"
+                    },
+                    {
+                      "type": "text",
+                      "text": " - Éditeur visuel OpenAPI avec validation"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Swagger Editor : "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://editor.swagger.io",
+                            "target": "_blank"
+                          }
+                        }
+                      ],
+                      "text": "editor.swagger.io"
+                    },
+                    {
+                      "type": "text",
+                      "text": " - Éditeur en ligne gratuit"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Insomnia : "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://insomnia.rest",
+                            "target": "_blank"
+                          }
+                        }
+                      ],
+                      "text": "insomnia.rest"
+                    },
+                    {
+                      "type": "text",
+                      "text": " - Client API avec génération OpenAPI"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Mock servers"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Prism : "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://stoplight.io/open-source/prism",
+                            "target": "_blank"
+                          }
+                        }
+                      ],
+                      "text": "stoplight.io/open-source/prism"
+                    },
+                    {
+                      "type": "text",
+                      "text": " - Mock server intelligent depuis OpenAPI"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Mockoon : "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://mockoon.com",
+                            "target": "_blank"
+                          }
+                        }
+                      ],
+                      "text": "mockoon.com"
+                    },
+                    {
+                      "type": "text",
+                      "text": " - Mock server avec interface graphique"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "WireMock : "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://wiremock.org",
+                            "target": "_blank"
+                          }
+                        }
+                      ],
+                      "text": "wiremock.org"
+                    },
+                    {
+                      "type": "text",
+                      "text": " - Mock server avancé pour tests"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Générateurs de code"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "OpenAPI Generator : "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://openapi-generator.tech",
+                            "target": "_blank"
+                          }
+                        }
+                      ],
+                      "text": "openapi-generator.tech"
+                    },
+                    {
+                      "type": "text",
+                      "text": " - Génère clients, serveurs, docs (50+ langages)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Swagger Codegen : Ancêtre d'OpenAPI Generator"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "orval : "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://github.com/anymaniax/orval",
+                            "target": "_blank"
+                          }
+                        }
+                      ],
+                      "text": "github.com/anymaniax/orval"
+                    },
+                    {
+                      "type": "text",
+                      "text": " - Générateur TypeScript avec React Query"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Validation et tests contractuels"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dredd : "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://dredd.org",
+                            "target": "_blank"
+                          }
+                        }
+                      ],
+                      "text": "dredd.org"
+                    },
+                    {
+                      "type": "text",
+                      "text": " - Test contractuel API vs OpenAPI"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Schemathesis : "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://schemathesis.readthedocs.io",
+                            "target": "_blank"
+                          }
+                        }
+                      ],
+                      "text": "schemathesis.readthedocs.io"
+                    },
+                    {
+                      "type": "text",
+                      "text": " - Tests de propriétés basés sur OpenAPI"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "express-openapi-validator : Validation automatique pour Express"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "📊 Comparaison : API-first vs Code-first"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Critère"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableHeader",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "API-first"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableHeader",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Code-first"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Ordre de travail"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Contrat → Code"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Code → Documentation"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Collaboration"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Front/Back en parallèle"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Front attend le Back"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Documentation"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Toujours à jour (source de vérité)"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Risque de désynchronisation"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Tests"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Génération automatique"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Écriture manuelle"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Refactoring"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Impact visible en amont"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Découvert tardivement"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Qualité"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Meilleure conception (réflexion en amont)"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Risque de design sous-optimal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "💼 Cas d'usage réels"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Exemple : Développement d'une API e-commerce"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Scénario : Vous devez créer une API pour un site e-commerce avec une équipe front-end React et une équipe back-end Node.js."
+            }
+          ]
+        },
+        {
+          "type": "orderedList",
+          "attrs": {
+            "start": 1
+          },
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Jour 1 : L'équipe définit ensemble le contrat OpenAPI (endpoints produits, panier, commandes)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Jour 2 : Génération du mock server et de la documentation"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Semaine 1-2 : Front-end développe avec le mock, Back-end implémente selon le contrat"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Semaine 3 : Intégration - le front-end change juste l'URL du mock vers le vrai serveur"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Résultat : Intégration fluide, moins de bugs, délai réduit"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "🎓 Bonnes pratiques"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Commencez simple : Définissez d'abord les endpoints essentiels, puis itérez"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Versionnez votre spécification : Utilisez Git pour tracker les changements du contrat"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Validez régulièrement : Intégrez les tests contractuels dans votre CI/CD"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Communiquez les changements : Utilisez des pull requests pour review du contrat"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Documentez les exemples : Ajoutez des exemples de requêtes/réponses dans OpenAPI"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "yaml"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "# Exemple dans OpenAPI\npaths:\n  /products:\n    post:\n      requestBody:\n        content:\n          application/json:\n            schema:\n              $ref: '#/components/schemas/ProductInput'\n            examples:\n              laptop:\n                summary: Exemple de création de laptop\n                value:\n                  name: \"MacBook Pro\"\n                  price: 2499.99\n                  stock: 5\n                  description: \"Laptop professionnel\"\n      responses:\n        '201':\n          content:\n            application/json:\n              examples:\n                success:\n                  summary: Produit créé avec succès\n                  value:\n                    id: 1\n                    name: \"MacBook Pro\"\n                    price: 2499.99\n                    stock: 5\n                    createdAt: \"2024-01-15T10:30:00Z\""
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "📚 Ressources supplémentaires"
+            }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "OpenAPI Specification : "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://swagger.io/specification",
+                            "target": "_blank"
+                          }
+                        }
+                      ],
+                      "text": "swagger.io/specification"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Stoplight API Design Guide : "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://stoplight.io/api-design-guide",
+                            "target": "_blank"
+                          }
+                        }
+                      ],
+                      "text": "stoplight.io/api-design-guide"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "API Design Guidelines (Microsoft) : "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://github.com/microsoft/api-guidelines",
+                            "target": "_blank"
+                          }
+                        }
+                      ],
+                      "text": "github.com/microsoft/api-guidelines"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "REST API Tutorial : "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://restfulapi.net",
+                            "target": "_blank"
+                          }
+                        }
+                      ],
+                      "text": "restfulapi.net"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+

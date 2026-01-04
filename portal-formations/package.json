@@ -35,6 +35,8 @@
     "eslint": "^8.55.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "lottie-react": "^2.4.1",
+    "lottie-web": "^5.13.0",
     "lucide-react": "^0.294.0",
     "pdfjs-dist": "^4.0.269",
     "postcss": "^8.4.32",

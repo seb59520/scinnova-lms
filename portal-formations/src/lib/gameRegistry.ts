@@ -11,6 +11,8 @@ import { ScenarioGame } from '../components/ScenarioGame'
 import { QuizGame } from '../components/QuizGame'
 import { ApiBuilderGame } from '../components/ApiBuilderGame'
 import { GraphQLQueryBuilder } from '../components/GraphQLQueryBuilder'
+import { ApiParadigmsGame } from '../components/ApiParadigmsGame'
+import { WebSocketQuizGame } from '../components/WebSocketQuizGame'
 
 /**
  * Interface pour les props communes à tous les jeux
@@ -263,6 +265,36 @@ gameRegistry.register({
   validateConfig: (config) => {
     // La configuration est optionnelle, on peut utiliser les valeurs par défaut
     return true
+  }
+})
+
+gameRegistry.register({
+  gameType: 'api-paradigms',
+  name: 'Mini-jeu : Comparer les paradigmes d\'API',
+  description: 'Mini-jeu interactif React pour comparer les performances et usages des paradigmes d\'API. Inclut Quiz, Drag & Drop, Classement et Support de révision.',
+  component: ApiParadigmsGame,
+  validateConfig: (config) => {
+    // La configuration est optionnelle, on peut utiliser les valeurs par défaut
+    // Mais si elle est fournie, on vérifie que les structures sont correctes
+    if (config.paradigms && !Array.isArray(config.paradigms)) return false
+    if (config.useCases && !Array.isArray(config.useCases)) return false
+    if (config.rankings && typeof config.rankings !== 'object') return false
+    return true
+  }
+})
+
+gameRegistry.register({
+  gameType: 'websocket-quiz',
+  name: 'WebSocket — Auto-test',
+  description: 'Mini-jeu WebSocket — Auto-évaluation (intermédiaire) avec QCM, Vrai-Faux et Debug',
+  component: WebSocketQuizGame,
+  validateConfig: (config) => {
+    // Vérifier que modes existe et contient au moins un mode
+    if (!config.modes || typeof config.modes !== 'object') return false
+    const hasQcm = config.modes.qcm && Array.isArray(config.modes.qcm.questions) && config.modes.qcm.questions.length > 0
+    const hasTf = config.modes.vrai_faux && Array.isArray(config.modes.vrai_faux.questions) && config.modes.vrai_faux.questions.length > 0
+    const hasDebug = config.modes.debug && Array.isArray(config.modes.debug.questions) && config.modes.debug.questions.length > 0
+    return hasQcm || hasTf || hasDebug
   }
 })
 

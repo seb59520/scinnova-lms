@@ -1,0 +1,164 @@
+{
+  "type": "game",
+  "title": "4.3 - Mini-jeu : Comparer les paradigmes d'API",
+  "position": 3,
+  "published": true,
+  "content": {
+    "gameType": "api-paradigms",
+    "description": "Mini-jeu interactif React pour comparer les performances et usages des paradigmes d'API. Inclut Quiz, Drag & Drop, Classement et Support de révision.",
+    "instructions": "Explorez les 4 modes : Quiz (QCM), Drag & Drop (associer cas d'usage → paradigme), Classement (ordre de performance), et Support (tableau de révision).",
+    "paradigms": [
+      {
+        "key": "REST",
+        "label": "REST",
+        "latency": "moyenne",
+        "bandwidth": "moyenne",
+        "scalability": "bonne",
+        "complexity": "faible",
+        "bestFor": [
+          "CRUD simple",
+          "API web classiques",
+          "back-office"
+        ]
+      },
+      {
+        "key": "GraphQL",
+        "label": "GraphQL",
+        "latency": "faible",
+        "bandwidth": "optimisée",
+        "scalability": "moyenne",
+        "complexity": "élevée",
+        "bestFor": [
+          "Frontend riche",
+          "Mobile",
+          "données ciblées"
+        ]
+      },
+      {
+        "key": "SOAP",
+        "label": "SOAP",
+        "latency": "élevée",
+        "bandwidth": "lourde",
+        "scalability": "moyenne",
+        "complexity": "élevée",
+        "bestFor": [
+          "Legacy",
+          "Banque/assurance",
+          "contrats stricts"
+        ]
+      },
+      {
+        "key": "gRPC",
+        "label": "gRPC",
+        "latency": "faible",
+        "bandwidth": "optimisée",
+        "scalability": "excellente",
+        "complexity": "élevée",
+        "bestFor": [
+          "Microservices",
+          "inter-services",
+          "binaire performant"
+        ]
+      },
+      {
+        "key": "WebSocket",
+        "label": "WebSocket",
+        "latency": "faible",
+        "bandwidth": "continue",
+        "scalability": "moyenne",
+        "complexity": "moyenne",
+        "bestFor": [
+          "Temps réel",
+          "chat",
+          "jeux",
+          "IoT"
+        ]
+      },
+      {
+        "key": "Event-Driven",
+        "label": "Event-Driven (Kafka/MQ)",
+        "latency": "asynchrone",
+        "bandwidth": "massive",
+        "scalability": "excellente",
+        "complexity": "élevée",
+        "bestFor": [
+          "Big Data",
+          "streaming",
+          "SI distribué"
+        ]
+      }
+    ],
+    "useCases": [
+      {
+        "id": "uc1",
+        "label": "Créer / modifier / supprimer des ressources (CRUD) dans une API web",
+        "answer": "REST",
+        "hint": "Simple, standard, HTTP, ressources"
+      },
+      {
+        "id": "uc2",
+        "label": "App mobile qui doit éviter de sur-récupérer des données (overfetching)",
+        "answer": "GraphQL",
+        "hint": "Le client choisit les champs"
+      },
+      {
+        "id": "uc3",
+        "label": "Système bancaire legacy avec contrats stricts et XML",
+        "answer": "SOAP",
+        "hint": "WSDL, XML, historique enterprise"
+      },
+      {
+        "id": "uc4",
+        "label": "Microservices internes très performants (latence basse, binaire)",
+        "answer": "gRPC",
+        "hint": "Protobuf + streaming"
+      },
+      {
+        "id": "uc5",
+        "label": "Chat temps réel / notifications live",
+        "answer": "WebSocket",
+        "hint": "Connexion persistante"
+      },
+      {
+        "id": "uc6",
+        "label": "Pipeline SI distribué, événements, streaming de données à grande échelle",
+        "answer": "Event-Driven",
+        "hint": "Asynchrone + brokers"
+      }
+    ],
+    "rankings": {
+      "latence": {
+        "title": "Classement ⚡ Latence",
+        "instruction": "Mets les paradigmes du plus rapide au plus lent (≈ support de cours).",
+        "correctOrder": [
+          "gRPC",
+          "WebSocket",
+          "GraphQL",
+          "REST",
+          "SOAP"
+        ]
+      },
+      "reseau": {
+        "title": "Classement 📦 Consommation réseau",
+        "instruction": "Du plus optimisé (le plus \"léger\") au plus verbeux/lourd.",
+        "correctOrder": [
+          "gRPC",
+          "GraphQL",
+          "REST",
+          "SOAP"
+        ]
+      },
+      "scalabilite": {
+        "title": "Classement 📈 Scalabilité",
+        "instruction": "Du plus scalable au moins scalable (≈ support de cours).",
+        "correctOrder": [
+          "Event-Driven",
+          "gRPC",
+          "REST",
+          "GraphQL",
+          "SOAP"
+        ]
+      }
+    }
+  }
+}

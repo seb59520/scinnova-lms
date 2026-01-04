@@ -1,0 +1,191 @@
+{
+  "type": "game",
+  "title": "WebSocket — Auto-test",
+  "position": 0,
+  "published": true,
+  "content": {
+    "gameType": "websocket-quiz",
+    "description": "Mini-jeu WebSocket — Auto-évaluation (intermédiaire) avec QCM, Vrai-Faux et Debug",
+    "instructions": "Testez vos connaissances sur WebSocket : handshakes, temps réel, scalabilité, debug. Choisissez un mode (QCM, Vrai/Faux, ou Debug) et répondez aux questions. Astuce : jouez en binômes → un répond, l'autre justifie.",
+    "modes": {
+      "qcm": {
+        "name": "QCM",
+        "questions": [
+          {
+            "id": "q1",
+            "prompt": "Quel est le mécanisme utilisé pour 'upgrader' une connexion HTTP en WebSocket ?",
+            "choices": [
+              "Un header HTTP 'Upgrade: websocket' + 'Connection: Upgrade'",
+              "Un POST /upgrade avec un JSON {protocol:'ws'}",
+              "Un cookie spécial 'WS_SESSION'",
+              "Un DNS SRV dédié"
+            ],
+            "answerIndex": 0,
+            "explanation": "Le handshake WebSocket démarre en HTTP puis utilise les headers Upgrade/Connection. Le serveur répond 101 Switching Protocols."
+          },
+          {
+            "id": "q2",
+            "prompt": "Quel code de réponse HTTP valide le passage en WebSocket côté serveur ?",
+            "choices": [
+              "200 OK",
+              "204 No Content",
+              "101 Switching Protocols",
+              "302 Found"
+            ],
+            "answerIndex": 2,
+            "explanation": "Le serveur répond 101 Switching Protocols pour confirmer l'upgrade WebSocket."
+          },
+          {
+            "id": "q3",
+            "prompt": "Pourquoi WebSocket est souvent plus adapté que REST pour du temps réel (chat, live updates) ?",
+            "choices": [
+              "Parce que WebSocket chiffre automatiquement tout le trafic",
+              "Parce que la connexion est persistante et évite des allers-retours HTTP répétés",
+              "Parce qu'il ne passe pas par HTTP du tout",
+              "Parce qu'il compresse toujours les messages"
+            ],
+            "answerIndex": 1,
+            "explanation": "Une connexion persistante réduit la latence et l'overhead : tu n'ouvres pas une nouvelle requête HTTP à chaque message."
+          },
+          {
+            "id": "q4",
+            "prompt": "Sur un navigateur, quel schéma est généralement utilisé pour une connexion WebSocket sécurisée ?",
+            "choices": [
+              "wss://",
+              "ws+tls://",
+              "https+ws://",
+              "tcp://"
+            ],
+            "answerIndex": 0,
+            "explanation": "wss:// = WebSocket sur TLS (équivalent sécurisé de ws://)."
+          },
+          {
+            "id": "q5",
+            "prompt": "Pour la scalabilité, quel est le principal défi des WebSockets ?",
+            "choices": [
+              "Le manque de support HTTPS",
+              "La gestion d'états de connexions persistantes et le routage des messages entre instances",
+              "L'impossibilité de sérialiser du JSON",
+              "Le fait que WebSocket ne peut pas traverser un reverse proxy"
+            ],
+            "answerIndex": 1,
+            "explanation": "Chaque client garde une connexion. En multi-instances, il faut gérer la distribution (sticky sessions) et/ou un broker (Redis pub/sub…)."
+          },
+          {
+            "id": "q6",
+            "prompt": "Le modèle le plus courant pour envoyer un message à tous les clients connectés (broadcast) ?",
+            "choices": [
+              "Boucler sur la liste des connexions côté serveur et envoyer à chacune",
+              "Faire un GET /broadcast côté client",
+              "Changer le code HTTP de la socket",
+              "Mettre le message dans le DNS"
+            ],
+            "answerIndex": 0,
+            "explanation": "Côté serveur, tu maintiens une liste (ou un registre) de connexions et tu diffuses."
+          },
+          {
+            "id": "q7",
+            "prompt": "À quoi servent ping/pong en WebSocket ?",
+            "choices": [
+              "À chiffrer les messages",
+              "À vérifier que la connexion est toujours vivante (keep-alive) et mesurer la latence",
+              "À remplacer le handshake HTTP",
+              "À compresser les frames"
+            ],
+            "answerIndex": 1,
+            "explanation": "Ping/Pong sont des frames de contrôle pour vérifier la santé de la connexion et détecter les clients morts."
+          }
+        ]
+      },
+      "vrai_faux": {
+        "name": "Vrai/Faux",
+        "questions": [
+          {
+            "id": "t1",
+            "prompt": "WebSocket est full-duplex : client et serveur peuvent envoyer des messages à tout moment.",
+            "answer": true,
+            "explanation": "Oui, contrairement au schéma requête/réponse de REST, WebSocket est bidirectionnel."
+          },
+          {
+            "id": "t2",
+            "prompt": "Le handshake WebSocket démarre par une requête HTTP.",
+            "answer": true,
+            "explanation": "Oui : le client envoie une requête HTTP avec headers Upgrade."
+          },
+          {
+            "id": "t3",
+            "prompt": "WebSocket garantit la livraison des messages dans tous les cas (comme une queue).",
+            "answer": false,
+            "explanation": "Non. WebSocket s'appuie sur TCP (fiable) mais si la connexion tombe, il faut gérer la reconnexion et éventuellement la reprise côté applicatif."
+          },
+          {
+            "id": "t4",
+            "prompt": "En production, il est courant d'ajouter un heartbeat (ping/pong ou message 'keepalive').",
+            "answer": true,
+            "explanation": "Oui, ça aide à détecter les connexions mortes et stabiliser les sessions."
+          },
+          {
+            "id": "t5",
+            "prompt": "Un reverse proxy (Nginx) ne peut pas supporter WebSocket.",
+            "answer": false,
+            "explanation": "Faux. Nginx supporte WebSocket si correctement configuré (Upgrade headers, HTTP/1.1…)."
+          }
+        ]
+      },
+      "debug": {
+        "name": "Debug",
+        "questions": [
+          {
+            "id": "d1",
+            "prompt": "Bug : la connexion WS ne s'établit pas derrière Nginx (erreur 400/upgrade). Qu'est-ce qui manque le plus souvent ?",
+            "code": "# Nginx (extrait)\nlocation /ws/ {\n  proxy_pass http://localhost:3001;\n  # ...\n}",
+            "choices": [
+              "Ajouter proxy_set_header Upgrade $http_upgrade; et Connection 'upgrade' + proxy_http_version 1.1",
+              "Ajouter un rewrite vers /socket.io",
+              "Passer en HTTP/2 uniquement",
+              "Ajouter Content-Type: application/websocket"
+            ],
+            "answerIndex": 0,
+            "explanation": "Derrière Nginx, il faut forward les headers d'upgrade et rester en HTTP/1.1 pour l'upgrade WebSocket."
+          },
+          {
+            "id": "d2",
+            "prompt": "Bug : en prod, les messages arrivent uniquement sur certains clients (multi-instances). La cause probable ?",
+            "code": "// Architecture\n// LB -> 2 instances Node WS\n// Clients connectés un peu partout...",
+            "choices": [
+              "CORS mal configuré",
+              "Manque de sticky sessions et/ou absence de broker pub/sub pour partager les events",
+              "Le JSON est invalide",
+              "Le serveur ne supporte pas TLS"
+            ],
+            "answerIndex": 1,
+            "explanation": "En multi-instances, un client est connecté à une instance spécifique. Sans sticky + broker, le broadcast global est incohérent."
+          },
+          {
+            "id": "d3",
+            "prompt": "Bug : après mise en veille, l'app croit être connectée mais ne reçoit plus rien. Meilleure solution ?",
+            "code": "ws.onopen = () => setConnected(true);\n// pas de heartbeat...",
+            "choices": [
+              "Augmenter la taille des buffers",
+              "Ajouter heartbeat + détection de timeout + reconnexion",
+              "Passer en SOAP",
+              "Mettre un setInterval qui recharge la page"
+            ],
+            "answerIndex": 1,
+            "explanation": "Un heartbeat permet de détecter la connexion morte (mobile, wifi, veille) et de relancer une reconnexion propre."
+          }
+        ]
+      }
+    },
+    "scoring": {
+      "excellent": 0.8,
+      "good": 0.6,
+      "messages": {
+        "excellent": "Excellent : tu maîtrises bien WebSocket.",
+        "good": "Bien : encore quelques points à consolider.",
+        "poor": "À renforcer : refais un tour sur handshake, scalabilité, heartbeat."
+      }
+    }
+  }
+}
+

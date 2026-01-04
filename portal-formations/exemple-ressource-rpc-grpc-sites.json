@@ -1,0 +1,1105 @@
+{
+  "type": "resource",
+  "title": "Exemples d'API RPC et gRPC utilisées par des sites réels",
+  "position": 0,
+  "published": true,
+  "content": {
+    "body": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "RPC (Remote Procedure Call) et gRPC sont utilisés par de nombreuses entreprises pour la communication inter-services, notamment dans les architectures microservices. Ce chapitre présente des exemples concrets d'API RPC et gRPC utilisées par des sites et services que vous connaissez probablement."
+            }
+          ]
+        }
+      ]
+    },
+    "description": "Découvrez des exemples concrets d'API RPC et gRPC utilisées par des entreprises comme Google, Netflix, Uber, et bien d'autres dans leurs architectures microservices."
+  },
+  "chapters": [
+    {
+      "title": "Exemples d'API RPC et gRPC utilisées par des sites réels",
+      "position": 0,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "RPC (Remote Procedure Call) et gRPC sont utilisés par de nombreuses entreprises pour la communication inter-services, notamment dans les architectures microservices. Voici des exemples concrets d'API RPC et gRPC utilisées par des sites et services que vous connaissez probablement."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "1. Google (gRPC)"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Google a créé gRPC et l'utilise massivement en interne pour la communication entre ses services. gRPC est également utilisé dans de nombreux produits Google publics."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "protobuf"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "// Définition du service (fichier .proto)\nsyntax = \"proto3\";\n\npackage google.example;\n\n// Service pour gérer les utilisateurs\nservice UserService {\n  // Récupérer un utilisateur par ID\n  rpc GetUser(GetUserRequest) returns (User);\n  \n  // Créer un utilisateur\n  rpc CreateUser(CreateUserRequest) returns (User);\n  \n  // Lister les utilisateurs (streaming)\n  rpc ListUsers(ListUsersRequest) returns (stream User);\n  \n  // Mettre à jour un utilisateur (bidirectionnel)\n  rpc UpdateUser(stream UpdateUserRequest) returns (stream User);\n}\n\n// Messages (types de données)\nmessage GetUserRequest {\n  string user_id = 1;\n}\n\nmessage CreateUserRequest {\n  string name = 1;\n  string email = 2;\n  int32 age = 3;\n}\n\nmessage User {\n  string id = 1;\n  string name = 2;\n  string email = 3;\n  int32 age = 4;\n  int64 created_at = 5;\n}\n\nmessage ListUsersRequest {\n  int32 page_size = 1;\n  string page_token = 2;\n}"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ],
+                "text": "Points à retenir :"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Protocol Buffers (protobuf) : format binaire efficace pour la sérialisation"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "HTTP/2 : gRPC utilise HTTP/2 pour le transport, permettant le multiplexing et les streams"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "4 types de streaming : Unary (classique), Server streaming, Client streaming, Bidirectional streaming"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Performance : gRPC est beaucoup plus rapide que REST/JSON pour la communication inter-services"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "2. Netflix (gRPC pour microservices)"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Netflix utilise gRPC pour la communication entre ses microservices, notamment pour les services de recommandation, de streaming et de gestion de contenu."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "protobuf"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "// Service de recommandation\nservice RecommendationService {\n  // Obtenir des recommandations pour un utilisateur\n  rpc GetRecommendations(RecommendationRequest) returns (RecommendationResponse);\n  \n  // Streaming de recommandations en temps réel\n  rpc StreamRecommendations(RecommendationRequest) returns (stream Recommendation);\n}\n\nmessage RecommendationRequest {\n  string user_id = 1;\n  string content_type = 2; // \"movie\", \"series\", etc.\n  int32 limit = 3;\n}\n\nmessage RecommendationResponse {\n  repeated Recommendation recommendations = 1;\n  string next_page_token = 2;\n}\n\nmessage Recommendation {\n  string content_id = 1;\n  string title = 2;\n  string description = 3;\n  float score = 4; // Score de pertinence\n  string thumbnail_url = 5;\n}\n\n// Service de streaming\nservice StreamingService {\n  // Obtenir les métadonnées d'un contenu\n  rpc GetContentMetadata(ContentRequest) returns (ContentMetadata);\n  \n  // Streaming de segments vidéo\n  rpc StreamVideoSegments(StreamRequest) returns (stream VideoSegment);\n}\n\nmessage ContentRequest {\n  string content_id = 1;\n}\n\nmessage ContentMetadata {\n  string id = 1;\n  string title = 2;\n  int32 duration_seconds = 3;\n  repeated string genres = 4;\n  string rating = 5;\n}\n\nmessage StreamRequest {\n  string content_id = 1;\n  int32 quality = 2; // 480, 720, 1080, 4K\n  int64 start_position = 3; // Position de départ en secondes\n}\n\nmessage VideoSegment {\n  int32 segment_number = 1;\n  bytes data = 2;\n  int64 timestamp = 3;\n}"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "3. Uber (gRPC pour services backend)"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Uber utilise gRPC pour la communication entre ses services backend, notamment pour la géolocalisation, la tarification, et la gestion des courses."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "protobuf"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "// Service de géolocalisation\nservice LocationService {\n  // Mettre à jour la position d'un conducteur\n  rpc UpdateDriverLocation(UpdateLocationRequest) returns (UpdateLocationResponse);\n  \n  // Trouver des conducteurs à proximité\n  rpc FindNearbyDrivers(FindDriversRequest) returns (FindDriversResponse);\n  \n  // Calculer l'itinéraire\n  rpc CalculateRoute(RouteRequest) returns (RouteResponse);\n}\n\nmessage UpdateLocationRequest {\n  string driver_id = 1;\n  double latitude = 2;\n  double longitude = 3;\n  int64 timestamp = 4;\n}\n\nmessage UpdateLocationResponse {\n  bool success = 1;\n  string message = 2;\n}\n\nmessage FindDriversRequest {\n  double latitude = 1;\n  double longitude = 2;\n  double radius_km = 3; // Rayon de recherche en km\n  int32 max_results = 4;\n}\n\nmessage FindDriversResponse {\n  repeated Driver drivers = 1;\n}\n\nmessage Driver {\n  string id = 1;\n  string name = 2;\n  double latitude = 3;\n  double longitude = 4;\n  double distance_km = 5;\n  int32 estimated_arrival_minutes = 6;\n}\n\nmessage RouteRequest {\n  double start_latitude = 1;\n  double start_longitude = 2;\n  double end_latitude = 3;\n  double end_longitude = 4;\n}\n\nmessage RouteResponse {\n  double distance_km = 1;\n  int32 estimated_duration_minutes = 2;\n  repeated RoutePoint waypoints = 3;\n}\n\nmessage RoutePoint {\n  double latitude = 1;\n  double longitude = 2;\n}\n\n// Service de tarification\nservice PricingService {\n  // Calculer le prix d'une course\n  rpc CalculateFare(FareRequest) returns (FareResponse);\n  \n  // Obtenir les tarifs dynamiques\n  rpc GetDynamicPricing(PricingRequest) returns (PricingResponse);\n}\n\nmessage FareRequest {\n  double start_latitude = 1;\n  double start_longitude = 2;\n  double end_latitude = 3;\n  double end_longitude = 4;\n  string vehicle_type = 5; // \"economy\", \"premium\", etc.\n}\n\nmessage FareResponse {\n  double base_fare = 1;\n  double distance_fare = 2;\n  double time_fare = 3;\n  double surge_multiplier = 4;\n  double total_fare = 5;\n  string currency = 6;\n}"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "4. Square (gRPC pour API de paiement)"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Square utilise gRPC pour ses API de paiement et de point de vente, permettant des transactions rapides et fiables."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "protobuf"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "// Service de paiement\nservice PaymentService {\n  // Traiter un paiement\n  rpc ProcessPayment(PaymentRequest) returns (PaymentResponse);\n  \n  // Rembourser un paiement\n  rpc RefundPayment(RefundRequest) returns (RefundResponse);\n  \n  // Obtenir l'historique des paiements\n  rpc GetPaymentHistory(PaymentHistoryRequest) returns (stream Payment);\n}\n\nmessage PaymentRequest {\n  string amount = 1; // Montant en centimes\n  string currency = 2; // \"USD\", \"EUR\", etc.\n  PaymentMethod payment_method = 3;\n  string order_id = 4;\n}\n\nmessage PaymentMethod {\n  oneof method {\n    CreditCard credit_card = 1;\n    DigitalWallet digital_wallet = 2;\n    Cash cash = 3;\n  }\n}\n\nmessage CreditCard {\n  string card_number = 1;\n  string expiry_month = 2;\n  string expiry_year = 3;\n  string cvv = 4;\n}\n\nmessage DigitalWallet {\n  string wallet_type = 1; // \"apple_pay\", \"google_pay\", etc.\n  string token = 2;\n}\n\nmessage Cash {\n  bool cash_received = 1;\n}\n\nmessage PaymentResponse {\n  string payment_id = 1;\n  string status = 2; // \"SUCCESS\", \"FAILED\", \"PENDING\"\n  string transaction_id = 3;\n  int64 timestamp = 4;\n  string error_message = 5;\n}\n\nmessage RefundRequest {\n  string payment_id = 1;\n  string amount = 2; // Montant partiel ou total\n  string reason = 3;\n}\n\nmessage RefundResponse {\n  string refund_id = 1;\n  string status = 2;\n  int64 timestamp = 3;\n}\n\nmessage PaymentHistoryRequest {\n  string merchant_id = 1;\n  int64 start_date = 2;\n  int64 end_date = 3;\n  int32 page_size = 4;\n}\n\nmessage Payment {\n  string id = 1;\n  string amount = 2;\n  string currency = 3;\n  string status = 4;\n  int64 created_at = 5;\n}"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "5. CoreOS / etcd (gRPC pour coordination)"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "etcd, un système de stockage de clés-valeurs distribué utilisé par Kubernetes, expose une API gRPC pour la coordination et la configuration distribuée."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "protobuf"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "// Service KV (Key-Value)\nservice KV {\n  // Lire une valeur\n  rpc Range(RangeRequest) returns (RangeResponse);\n  \n  // Écrire une valeur\n  rpc Put(PutRequest) returns (PutResponse);\n  \n  // Supprimer une valeur\n  rpc DeleteRange(DeleteRangeRequest) returns (DeleteRangeResponse);\n  \n  // Watch (surveillance en temps réel)\n  rpc Watch(WatchRequest) returns (stream WatchResponse);\n}\n\nmessage RangeRequest {\n  bytes key = 1;\n  bytes range_end = 2;\n  int64 limit = 3;\n  bool keys_only = 4;\n}\n\nmessage RangeResponse {\n  repeated KeyValue kvs = 1;\n  bool more = 2; // Plus de résultats disponibles\n  int64 count = 3;\n}\n\nmessage KeyValue {\n  bytes key = 1;\n  bytes value = 2;\n  int64 create_revision = 3;\n  int64 mod_revision = 4;\n  int64 version = 5;\n}\n\nmessage PutRequest {\n  bytes key = 1;\n  bytes value = 2;\n  int64 lease = 3; // ID de lease (TTL)\n  bool prev_kv = 4; // Retourner la valeur précédente\n}\n\nmessage PutResponse {\n  KeyValue prev_kv = 1;\n}\n\nmessage DeleteRangeRequest {\n  bytes key = 1;\n  bytes range_end = 2;\n  bool prev_kv = 3;\n}\n\nmessage DeleteRangeResponse {\n  int64 deleted = 1;\n  repeated KeyValue prev_kvs = 2;\n}\n\nmessage WatchRequest {\n  bytes key = 1;\n  bytes range_end = 2;\n  int64 start_revision = 3;\n}\n\nmessage WatchResponse {\n  Event event = 1;\n}\n\nmessage Event {\n  enum EventType {\n    PUT = 0;\n    DELETE = 1;\n  }\n  EventType type = 1;\n  KeyValue kv = 2;\n  KeyValue prev_kv = 3;\n}"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "6. JSON-RPC (Exemple avec Ethereum)"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "JSON-RPC est un protocole RPC plus simple que gRPC, utilisant JSON pour la sérialisation. Il est utilisé par Ethereum et de nombreuses autres blockchains."
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "json"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "// Requête JSON-RPC\n{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_getBalance\",\n  \"params\": [\n    \"0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb\",\n    \"latest\"\n  ],\n  \"id\": 1\n}\n\n// Réponse JSON-RPC\n{\n  \"jsonrpc\": \"2.0\",\n  \"result\": \"0x1bc16d674ec80000\",\n  \"id\": 1\n}\n\n// Autres méthodes Ethereum JSON-RPC\n{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_sendTransaction\",\n  \"params\": [{\n    \"from\": \"0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb\",\n    \"to\": \"0x8ba1f109551bD432803012645Hac136c22C9b8C5\",\n    \"value\": \"0x2386f26fc10000\"\n  }],\n  \"id\": 2\n}\n\n{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_getTransactionReceipt\",\n  \"params\": [\"0x...\"],\n  \"id\": 3\n}\n\n{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_blockNumber\",\n  \"params\": [],\n  \"id\": 4\n}"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ],
+                "text": "Points à retenir sur JSON-RPC :"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Plus simple que gRPC : utilise JSON au lieu de protobuf"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Transport-agnostic : peut fonctionner sur HTTP, WebSocket, TCP, etc."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Idempotent : chaque requête a un ID unique pour la corrélation"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "📊 Analyse des patterns communs"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "En analysant ces exemples, on peut identifier des patterns communs à toutes les API RPC et gRPC :"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "Appels de procédures distantes :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " Les méthodes sont appelées comme des fonctions locales, mais s'exécutent sur un serveur distant"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "Sérialisation binaire (gRPC) :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " Protocol Buffers est beaucoup plus compact et rapide que JSON"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "HTTP/2 (gRPC) :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " Multiplexing, compression d'en-têtes, et streams bidirectionnels"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "Streaming :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " Support natif pour les streams (unidirectionnels ou bidirectionnels)"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "Code generation :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " Génération automatique de code client et serveur à partir des fichiers .proto"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "Type safety :"
+                      },
+                      {
+                        "type": "text",
+                        "text": " Les types sont définis dans le schéma, garantissant la cohérence entre client et serveur"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "🔄 gRPC vs REST vs GraphQL"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Quand utiliser gRPC plutôt que REST ou GraphQL ?"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "gRPC est idéal quand :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Communication inter-services (microservices)"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Performance est critique (latence faible, débit élevé)"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Streaming de données en temps réel"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Environnement contrôlé (services internes)"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Support multi-langages (gRPC supporte de nombreux langages)"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "REST reste préférable quand :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "API publique pour clients web/mobile"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Simplicité et compatibilité avec les outils existants"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Mise en cache HTTP simple"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "GraphQL est préférable quand :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Clients avec des besoins de données variés"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Éviter le sur-fetching et le sous-fetching"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "API publique avec introspection"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "💡 Exercice pratique"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Essayez d'utiliser ces API RPC/gRPC vous-même ! Vous pouvez :"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Tester JSON-RPC avec Ethereum : utilisez un client comme "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "web3.js"
+                      },
+                      {
+                        "type": "text",
+                        "text": " ou "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "ethers.js"
+                      },
+                      {
+                        "type": "text",
+                        "text": " pour interagir avec un nœud Ethereum"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Créer un service gRPC simple : utilisez les outils gRPC pour générer le code à partir d'un fichier .proto"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Utiliser grpcurl : outil en ligne de commande pour tester les API gRPC (similaire à curl pour REST)"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Explorer etcd : etcd expose une API gRPC que vous pouvez explorer avec grpcurl"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "bash"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "# Exemple avec grpcurl (outil pour tester gRPC)\n# Lister les services disponibles\ngrpcurl -plaintext localhost:2379 list\n\n# Appeler une méthode\ngrpcurl -plaintext localhost:2379 \\\n  etcdserverpb.KV/Put \\\n  -d '{\"key\": \"Zm9v\", \"value\": \"YmFy\"}'\n\n# Exemple avec JSON-RPC (Ethereum)\ncurl -X POST https://mainnet.infura.io/v3/YOUR_PROJECT_ID \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"jsonrpc\": \"2.0\",\n    \"method\": \"eth_blockNumber\",\n    \"params\": [],\n    \"id\": 1\n  }'\n\n# Exemple avec web3.js (JavaScript)\nconst Web3 = require('web3');\nconst web3 = new Web3('https://mainnet.infura.io/v3/YOUR_PROJECT_ID');\n\n// Appel RPC\naasync function getBalance() {\n  const balance = await web3.eth.getBalance('0x...');\n  console.log(balance);\n}"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "🔗 Ressources supplémentaires"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "gRPC Documentation : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "link",
+                            "attrs": {
+                              "href": "https://grpc.io/docs",
+                              "target": "_blank"
+                            }
+                          }
+                        ],
+                        "text": "https://grpc.io/docs"
+                      },
+                      {
+                        "type": "text",
+                        "text": " - Documentation officielle"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Protocol Buffers : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "link",
+                            "attrs": {
+                              "href": "https://developers.google.com/protocol-buffers",
+                              "target": "_blank"
+                            }
+                          }
+                        ],
+                        "text": "https://developers.google.com/protocol-buffers"
+                      },
+                      {
+                        "type": "text",
+                        "text": " - Guide officiel"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "JSON-RPC Specification : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "link",
+                            "attrs": {
+                              "href": "https://www.jsonrpc.org/specification",
+                              "target": "_blank"
+                            }
+                          }
+                        ],
+                        "text": "https://www.jsonrpc.org/specification"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "etcd Documentation : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "link",
+                            "attrs": {
+                              "href": "https://etcd.io/docs",
+                              "target": "_blank"
+                            }
+                          }
+                        ],
+                        "text": "https://etcd.io/docs"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Ethereum JSON-RPC API : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "link",
+                            "attrs": {
+                              "href": "https://ethereum.org/en/developers/docs/apis/json-rpc",
+                              "target": "_blank"
+                            }
+                          }
+                        ],
+                        "text": "https://ethereum.org/en/developers/docs/apis/json-rpc"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "grpcurl : "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "link",
+                            "attrs": {
+                              "href": "https://github.com/fullstorydev/grpcurl",
+                              "target": "_blank"
+                            }
+                          }
+                        ],
+                        "text": "https://github.com/fullstorydev/grpcurl"
+                      },
+                      {
+                        "type": "text",
+                        "text": " - Outil CLI pour tester gRPC"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+

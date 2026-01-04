@@ -13,15 +13,17 @@ import { TableRow } from '@tiptap/extension-table-row'
 import { TableCell } from '@tiptap/extension-table-cell'
 import { TableHeader } from '@tiptap/extension-table-header'
 import { YouTube } from '../extensions/YouTube'
+import { Lottie } from '../extensions/Lottie'
 import { LineHeight } from '../extensions/LineHeight'
 import { InteractiveBlock } from '../extensions/InteractiveBlock'
 import { Carousel } from '../extensions/Carousel'
 import { HtmlBlock } from '../extensions/HtmlBlock'
-import { Bold, Italic, List, ListOrdered, Link as LinkIcon, Undo, Redo, AlignLeft, AlignCenter, AlignRight, AlignJustify, Palette, Youtube, Underline as UnderlineIcon, Table as TableIcon, Minus, Plus, Trash2, Gamepad2, FileText, ChevronLeft, ChevronRight, Search, X, Copy, Code, Image as ImageIcon } from 'lucide-react'
+import { Bold, Italic, List, ListOrdered, Link as LinkIcon, Undo, Redo, AlignLeft, AlignCenter, AlignRight, AlignJustify, Palette, Youtube, Underline as UnderlineIcon, Table as TableIcon, Minus, Plus, Trash2, Gamepad2, FileText, ChevronLeft, ChevronRight, Search, X, Copy, Code, Image as ImageIcon, Film } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCarouselInit } from '../hooks/useCarouselInit'
 import { useHtmlBlockInit } from '../hooks/useHtmlBlockInit'
+import { useLottieInit } from '../hooks/useLottieInit'
 import { CarouselEditor } from './CarouselEditor'
 import { supabase } from '../lib/supabaseClient'
 import { Item } from '../types/database'
@@ -63,7 +65,7 @@ export function RichTextEditor({
   const [availableItems, setAvailableItems] = useState<Item[]>([])
   const [itemSearchTerm, setItemSearchTerm] = useState('')
   const [loadingItems, setLoadingItems] = useState(false)
-  const [selectedWidget, setSelectedWidget] = useState<{ type: 'youtube' | 'image' | 'carousel'; pos: number; size: number } | null>(null)
+  const [selectedWidget, setSelectedWidget] = useState<{ type: 'youtube' | 'image' | 'carousel' | 'lottie'; pos: number; size: number } | null>(null)
   const [showWidgetSizeMenu, setShowWidgetSizeMenu] = useState(false)
   const [showHtmlEditor, setShowHtmlEditor] = useState(false)
   const [htmlContent, setHtmlContent] = useState('')
@@ -71,6 +73,11 @@ export function RichTextEditor({
   const [showYouTubeModal, setShowYouTubeModal] = useState(false)
   const [youtubeUrl, setYoutubeUrl] = useState('')
   const [youtubeSize, setYoutubeSize] = useState(2)
+  const [showLottieModal, setShowLottieModal] = useState(false)
+  const [lottieSrc, setLottieSrc] = useState('')
+  const [lottieSize, setLottieSize] = useState(2)
+  const [lottieAutoplay, setLottieAutoplay] = useState(true)
+  const [lottieLoop, setLottieLoop] = useState(true)
   const [showImageModal, setShowImageModal] = useState(false)
   const [imageUrl, setImageUrl] = useState('')
   const [imageAlt, setImageAlt] = useState('')
@@ -120,6 +127,32 @@ export function RichTextEditor({
     } catch (error) {
       console.error('Error inserting YouTube video:', error)
       alert('Erreur lors de l\'insertion de la vidéo: ' + (error instanceof Error ? error.message : 'Erreur inconnue'))
+    }
+  }
+
+  const handleInsertLottie = () => {
+    if (!editor || !lottieSrc.trim()) return
+    
+    try {
+      const result = editor.chain().focus().setLottie({ 
+        src: lottieSrc.trim(), 
+        size: lottieSize,
+        autoplay: lottieAutoplay,
+        loop: lottieLoop
+      }).run()
+      
+      if (result) {
+        setShowLottieModal(false)
+        setLottieSrc('')
+        setLottieSize(2)
+        setLottieAutoplay(true)
+        setLottieLoop(true)
+      } else {
+        alert('Impossible d\'insérer l\'animation. Vérifiez que le chemin est valide.')
+      }
+    } catch (error) {
+      console.error('Error inserting Lottie animation:', error)
+      alert('Erreur lors de l\'insertion de l\'animation: ' + (error instanceof Error ? error.message : 'Erreur inconnue'))
     }
   }
 
@@ -280,6 +313,12 @@ export function RichTextEditor({
           class: 'youtube-video',
         },
         width: 640,
+      }),
+      Lottie.configure({
+        HTMLAttributes: {
+          class: 'lottie-animation',
+        },
+        width: 640,
         height: 360,
       }),
       HtmlBlock.configure({
@@ -328,6 +367,9 @@ export function RichTextEditor({
   
   // Initialiser les blocs HTML après le rendu
   useHtmlBlockInit([content])
+  
+  // Initialiser les animations Lottie
+  useLottieInit([content])
 
   // Écouter les événements d'édition de blocs HTML
   useEffect(() => {
@@ -431,6 +473,7 @@ export function RichTextEditor({
     const handleWidgetClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement
       const youtubeWidget = target.closest('[data-youtube-video="true"]')
+      const lottieWidget = target.closest('[data-lottie-animation="true"]')
       const imageWidget = target.closest('img[src]')
       
       if (youtubeWidget) {
@@ -451,6 +494,25 @@ export function RichTextEditor({
           }
         } catch (error) {
           console.error('Error detecting YouTube widget click:', error)
+        }
+      } else if (lottieWidget) {
+        event.preventDefault()
+        event.stopPropagation()
+        
+        try {
+          if (!editor.view) return
+          const view = editor.view
+          const pos = view.posAtDOM(lottieWidget, 0)
+          if (pos !== null && pos >= 0) {
+            const node = view.state.doc.nodeAt(pos)
+            if (node && node.type.name === 'lottie') {
+              const currentSize = node.attrs.size || 2
+              setSelectedWidget({ type: 'lottie', pos, size: currentSize })
+              setShowWidgetSizeMenu(true)
+            }
+          }
+        } catch (error) {
+          console.error('Error detecting Lottie widget click:', error)
         }
       } else if (imageWidget) {
         // Vérifier que l'image n'est pas dans un carrousel
@@ -972,6 +1034,26 @@ export function RichTextEditor({
                 return
               }
               
+              setLottieSrc('')
+              setLottieSize(2)
+              setLottieAutoplay(true)
+              setLottieLoop(true)
+              setShowLottieModal(true)
+            }}
+            disabled={!editor}
+            className="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Ajouter une animation Lottie"
+          >
+            <Film className="w-4 h-4 text-purple-600" />
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (!editor) {
+                console.error('Editor not initialized')
+                return
+              }
+              
               setImageUrl('')
               setImageAlt('')
               setImageSize(2)
@@ -1098,6 +1180,7 @@ export function RichTextEditor({
               Taille du widget ({
                 selectedWidget.type === 'youtube' ? 'Vidéo' : 
                 selectedWidget.type === 'image' ? 'Image' : 
+                selectedWidget.type === 'lottie' ? 'Animation' :
                 'Carrousel'
               })
             </h3>
@@ -1127,6 +1210,21 @@ export function RichTextEditor({
                         .command(({ tr, state }) => {
                           const node = state.doc.nodeAt(selectedWidget.pos)
                           if (node && node.type.name === 'image') {
+                            tr.setNodeMarkup(selectedWidget.pos, undefined, {
+                              ...node.attrs,
+                              size: size,
+                            })
+                            return true
+                          }
+                          return false
+                        })
+                        .run()
+                    } else if (selectedWidget.type === 'lottie') {
+                      editor.chain()
+                        .focus()
+                        .command(({ tr, state }) => {
+                          const node = state.doc.nodeAt(selectedWidget.pos)
+                          if (node && node.type.name === 'lottie') {
                             tr.setNodeMarkup(selectedWidget.pos, undefined, {
                               ...node.attrs,
                               size: size,
@@ -1512,6 +1610,103 @@ export function RichTextEditor({
               <button
                 onClick={handleInsertYouTube}
                 disabled={!youtubeUrl.trim() || !editor}
+                className="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Insérer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modale Lottie */}
+      {showLottieModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div className="p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Ajouter une animation Lottie
+              </h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Chemin du fichier Lottie *
+                  </label>
+                  <input
+                    type="text"
+                    value={lottieSrc}
+                    onChange={(e) => setLottieSrc(e.target.value)}
+                    placeholder="/api_paradigms_cards_gauges_focus_NO_TEXT.json"
+                    className="input-field w-full"
+                    autoFocus
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && lottieSrc.trim()) {
+                        e.preventDefault()
+                        handleInsertLottie()
+                      }
+                    }}
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Chemin relatif au dossier /public (ex: /api_paradigms_cards_gauges_focus_NO_TEXT.json)
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Taille
+                  </label>
+                  <select
+                    value={lottieSize}
+                    onChange={(e) => setLottieSize(parseInt(e.target.value))}
+                    className="input-field w-full"
+                  >
+                    <option value={1}>Très petite</option>
+                    <option value={2}>Petite</option>
+                    <option value={3}>Moyenne</option>
+                    <option value={4}>Grande</option>
+                  </select>
+                </div>
+
+                <div className="flex items-center space-x-4">
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={lottieAutoplay}
+                      onChange={(e) => setLottieAutoplay(e.target.checked)}
+                      className="mr-2"
+                    />
+                    <span className="text-sm text-gray-700">Lecture automatique</span>
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={lottieLoop}
+                      onChange={(e) => setLottieLoop(e.target.checked)}
+                      className="mr-2"
+                    />
+                    <span className="text-sm text-gray-700">Boucle</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 border-t bg-gray-50 flex gap-3">
+              <button
+                onClick={() => {
+                  setShowLottieModal(false)
+                  setLottieSrc('')
+                  setLottieSize(2)
+                  setLottieAutoplay(true)
+                  setLottieLoop(true)
+                }}
+                className="btn-secondary flex-1"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={handleInsertLottie}
+                disabled={!lottieSrc.trim() || !editor}
                 className="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Insérer

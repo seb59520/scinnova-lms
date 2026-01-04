@@ -201,6 +201,24 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate }: ItemRende
       )
     }
 
+    // Si l'item a du contenu body (TipTap)
+    if (item.content?.body) {
+      return (
+        <div className="space-y-4">
+          {item.content?.description && (
+            <p className="text-gray-600">{item.content.description}</p>
+          )}
+          <div className="prose max-w-none">
+            <RichTextEditor
+              content={item.content.body}
+              onChange={() => {}}
+              editable={false}
+            />
+          </div>
+        </div>
+      )
+    }
+
     return <p className="text-gray-600">Contenu non disponible.</p>
   }
 

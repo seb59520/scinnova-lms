@@ -67,27 +67,53 @@ html, body, #root {
   border-radius: 8px;
 }
 
+/* Styles pour les animations Lottie */
+.lottie-animation-container {
+  @apply my-6 mx-auto;
+  position: relative;
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.lottie-animation-container svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.lottie-animation-error {
+  @apply p-4 bg-red-50 border border-red-200 rounded text-red-700 text-sm;
+}
+
 /* Tailles de widgets en mode normal */
 .prose .widget-size-1,
 .prose .youtube-video-container.widget-size-1,
+.prose .lottie-animation-container.widget-size-1,
 .prose .tiptap-carousel.widget-size-1 {
   max-width: 40% !important;
 }
 
 .prose .widget-size-2,
 .prose .youtube-video-container.widget-size-2,
+.prose .lottie-animation-container.widget-size-2,
 .prose .tiptap-carousel.widget-size-2 {
   max-width: 70% !important;
 }
 
 .prose .widget-size-3,
 .prose .youtube-video-container.widget-size-3,
+.prose .lottie-animation-container.widget-size-3,
 .prose .tiptap-carousel.widget-size-3 {
   max-width: 85% !important;
 }
 
 .prose .widget-size-4,
 .prose .youtube-video-container.widget-size-4,
+.prose .lottie-animation-container.widget-size-4,
 .prose .tiptap-carousel.widget-size-4 {
   max-width: 95% !important;
 }
@@ -157,6 +183,13 @@ html, body, #root {
 
 /* Responsive pour les vidéos YouTube dans l'éditeur */
 .prose .youtube-video-container {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+/* Responsive pour les animations Lottie dans l'éditeur */
+.prose .lottie-animation-container {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
   width: 100%;
@@ -638,6 +671,7 @@ html, body, #root {
 /* Taille 1 - Petite */
 .chapter-presentation-content .widget-size-1,
 .chapter-presentation-content .youtube-video-container.widget-size-1,
+.chapter-presentation-content .lottie-animation-container.widget-size-1,
 .chapter-presentation-content .ProseMirror img.widget-size-1 {
   max-width: min(50%, 45vw) !important;
   max-height: min(calc(100vh - 22rem), 30vh) !important;
@@ -646,6 +680,7 @@ html, body, #root {
 /* Taille 2 - Moyenne (par défaut) */
 .chapter-presentation-content .widget-size-2,
 .chapter-presentation-content .youtube-video-container.widget-size-2,
+.chapter-presentation-content .lottie-animation-container.widget-size-2,
 .chapter-presentation-content .ProseMirror img.widget-size-2 {
   max-width: min(70%, 65vw) !important;
   max-height: min(calc(100vh - 20rem), 45vh) !important;
@@ -654,6 +689,7 @@ html, body, #root {
 /* Taille 3 - Grande */
 .chapter-presentation-content .widget-size-3,
 .chapter-presentation-content .youtube-video-container.widget-size-3,
+.chapter-presentation-content .lottie-animation-container.widget-size-3,
 .chapter-presentation-content .ProseMirror img.widget-size-3 {
   max-width: min(85%, 80vw) !important;
   max-height: min(calc(100vh - 18rem), 60vh) !important;
@@ -662,6 +698,7 @@ html, body, #root {
 /* Taille 4 - Très grande */
 .chapter-presentation-content .widget-size-4,
 .chapter-presentation-content .youtube-video-container.widget-size-4,
+.chapter-presentation-content .lottie-animation-container.widget-size-4,
 .chapter-presentation-content .ProseMirror img.widget-size-4 {
   max-width: min(95%, 90vw) !important;
   max-height: min(calc(100vh - 16rem), 75vh) !important;
