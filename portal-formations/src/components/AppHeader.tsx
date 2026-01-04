@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useUserRole } from '../hooks/useUserRole';
 import { getUserOrg } from '../lib/queries/userQueries';
 import type { Org } from '../types/database';
-import { Building2, LogOut, User, ChevronDown, Settings, GraduationCap, Home } from 'lucide-react';
+import { Building2, LogOut, User, ChevronDown, Settings, GraduationCap, Home, Sparkles } from 'lucide-react';
 
 interface AppHeaderProps {
   title?: string;
@@ -153,6 +153,14 @@ export function AppHeader({
                       >
                         <Home className="h-4 w-4" />
                         Tableau de bord
+                      </Link>
+                      <Link
+                        to="/landing"
+                        onClick={() => setShowMenu(false)}
+                        className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                      >
+                        <Sparkles className="h-4 w-4" />
+                        Page d'accueil
                       </Link>
 
                       {isAdmin && (

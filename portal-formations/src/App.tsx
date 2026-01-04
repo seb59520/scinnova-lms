@@ -37,6 +37,7 @@ import { Profile } from './pages/Profile'
 import { DebugProfile } from './pages/DebugProfile'
 import { DiagnosticRole } from './pages/DiagnosticRole'
 import { PresentationView } from './pages/PresentationView'
+import { LandingPage } from './pages/LandingPage'
 
 function App() {
   return (
@@ -100,6 +101,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ItemView />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/landing"
+            element={
+              <ProtectedRoute requireAuth={false}>
+                <LandingPage />
               </ProtectedRoute>
             }
           />
