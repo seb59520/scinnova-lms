@@ -37,6 +37,8 @@ export function ProtectedRoute({
   // Éviter les boucles : ne pas rediriger si on est déjà sur la bonne page
   const isOnLoginPage = location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/reset-password'
   const isOnAppPage = location.pathname === '/app'
+  const isOnLandingPage = location.pathname === '/landing'
+  const isOnPublicPage = isOnLoginPage || isOnLandingPage
 
   // Afficher un message si hors ligne
   if (!isOnline) {
@@ -67,15 +69,16 @@ export function ProtectedRoute({
   // Si authentification requise mais utilisateur non connecté
   if (requireAuth && !user) {
     // Ne pas rediriger si on est déjà sur une page publique
-    if (!isOnLoginPage) {
+    if (!isOnPublicPage) {
       return <Navigate to="/login" state={{ from: location }} replace />
     }
-    // Si on est déjà sur login, laisser passer (pour éviter les boucles)
+    // Si on est déjà sur une page publique, laisser passer (pour éviter les boucles)
     return <>{children}</>
   }
 
   // Si pas d'authentification requise mais utilisateur connecté, rediriger vers app
-  if (!requireAuth && user) {
+  // SAUF pour la landing page qui doit être accessible même si connecté
+  if (!requireAuth && user && !isOnLandingPage) {
     // Ne pas rediriger si on est déjà sur /app ou sur une page admin
     if (!isOnAppPage && !location.pathname.startsWith('/admin')) {
       return <Navigate to="/app" replace />
