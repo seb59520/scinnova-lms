@@ -1,0 +1,184 @@
+{
+  "type": "game",
+  "title": "2.3 - Quiz : Associer les méthodes HTTP",
+  "position": 3,
+  "published": true,
+  "content": {
+    "gameType": "quiz",
+    "description": "Testez vos connaissances sur les méthodes HTTP et leurs actions",
+    "instructions": "Répondez aux questions pour valider votre compréhension des méthodes HTTP. Vous obtiendrez une note à la fin du quiz.",
+    "objectives": [
+      "Comprendre les différentes méthodes HTTP",
+      "Associer chaque méthode à son action",
+      "Maîtriser les opérations CRUD en HTTP"
+    ],
+    "scoring": {
+      "totalQuestions": 10,
+      "pointsPerQuestion": 1,
+      "passingScore": 7,
+      "levels": {
+        "0-4": "Bases à renforcer",
+        "5-7": "Bon niveau",
+        "8-10": "Très bonne maîtrise"
+      }
+    },
+    "levels": [
+      {
+        "level": 1,
+        "name": "Méthodes HTTP fondamentales",
+        "description": "Questions sur les méthodes HTTP de base",
+        "questions": [
+          {
+            "id": "q1-1",
+            "type": "mcq",
+            "prompt": "Quelle est l'action de la méthode HTTP GET ?",
+            "options": [
+              "Créer une nouvelle ressource",
+              "Récupérer une ressource",
+              "Mettre à jour complètement une ressource",
+              "Supprimer une ressource"
+            ],
+            "answer": "Récupérer une ressource",
+            "explanation": "GET est utilisée pour récupérer (lire) une ressource existante. C'est une méthode sûre et idempotente qui ne modifie pas les données.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-2",
+            "type": "mcq",
+            "prompt": "Quelle méthode HTTP permet de créer une nouvelle ressource ?",
+            "options": [
+              "GET",
+              "POST",
+              "PUT",
+              "DELETE"
+            ],
+            "answer": "POST",
+            "explanation": "POST est utilisée pour créer une nouvelle ressource. Le serveur génère généralement l'identifiant de la nouvelle ressource.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-3",
+            "type": "mcq",
+            "prompt": "Quelle est l'action de la méthode HTTP PUT ?",
+            "options": [
+              "Récupérer une ressource",
+              "Créer une nouvelle ressource",
+              "Mettre à jour complètement une ressource",
+              "Mettre à jour partiellement une ressource"
+            ],
+            "answer": "Mettre à jour complètement une ressource",
+            "explanation": "PUT est utilisée pour mettre à jour complètement une ressource existante. Tous les champs de la ressource sont remplacés par les nouvelles valeurs.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-4",
+            "type": "mcq",
+            "prompt": "Quelle méthode HTTP permet de supprimer une ressource ?",
+            "options": [
+              "GET",
+              "POST",
+              "PUT",
+              "DELETE"
+            ],
+            "answer": "DELETE",
+            "explanation": "DELETE est utilisée pour supprimer une ressource existante. L'opération est généralement irréversible.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-5",
+            "type": "mcq",
+            "prompt": "Quelle est l'action de la méthode HTTP PATCH ?",
+            "options": [
+              "Mettre à jour complètement une ressource",
+              "Mettre à jour partiellement une ressource",
+              "Créer une nouvelle ressource",
+              "Récupérer une ressource"
+            ],
+            "answer": "Mettre à jour partiellement une ressource",
+            "explanation": "PATCH est utilisée pour mettre à jour partiellement une ressource. Seuls les champs spécifiés dans la requête sont modifiés, les autres restent inchangés.",
+            "difficulty": 1
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "name": "Compréhension approfondie",
+        "description": "Questions pour valider la compréhension des différences entre les méthodes",
+        "questions": [
+          {
+            "id": "q2-1",
+            "type": "mcq",
+            "prompt": "Quelle est la différence principale entre PUT et PATCH ?",
+            "options": [
+              "PUT modifie tous les champs, PATCH modifie seulement certains champs",
+              "PUT est pour créer, PATCH est pour modifier",
+              "PUT est pour supprimer, PATCH est pour modifier",
+              "Il n'y a pas de différence"
+            ],
+            "answer": "PUT modifie tous les champs, PATCH modifie seulement certains champs",
+            "explanation": "PUT remplace complètement la ressource avec les nouvelles données, tandis que PATCH ne modifie que les champs spécifiés dans la requête.",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-2",
+            "type": "mcq",
+            "prompt": "Quelle méthode HTTP est idempotente (peut être appelée plusieurs fois sans changer le résultat) ?",
+            "options": [
+              "POST uniquement",
+              "GET, PUT, DELETE, PATCH",
+              "GET, PUT, DELETE uniquement",
+              "Aucune méthode n'est idempotente"
+            ],
+            "answer": "GET, PUT, DELETE uniquement",
+            "explanation": "GET, PUT et DELETE sont idempotentes. POST et PATCH ne le sont généralement pas car elles peuvent créer ou modifier différemment à chaque appel.",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-3",
+            "type": "mcq",
+            "prompt": "Dans une API REST, quelle méthode utiliseriez-vous pour récupérer la liste de tous les utilisateurs ?",
+            "options": [
+              "POST /users",
+              "GET /users",
+              "PUT /users",
+              "DELETE /users"
+            ],
+            "answer": "GET /users",
+            "explanation": "GET /users est la méthode standard pour récupérer une collection de ressources. C'est une opération de lecture qui ne modifie pas les données.",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-4",
+            "type": "mcq",
+            "prompt": "Quelle méthode HTTP utiliseriez-vous pour modifier uniquement l'email d'un utilisateur ?",
+            "options": [
+              "PUT /users/{id}",
+              "PATCH /users/{id}",
+              "POST /users/{id}",
+              "GET /users/{id}"
+            ],
+            "answer": "PATCH /users/{id}",
+            "explanation": "PATCH est idéale pour modifier partiellement une ressource. On envoie seulement le champ email à modifier, pas toute la ressource.",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-5",
+            "type": "mcq",
+            "prompt": "Quelle méthode HTTP est la plus appropriée pour créer un nouvel utilisateur avec un identifiant généré par le serveur ?",
+            "options": [
+              "PUT /users",
+              "POST /users",
+              "GET /users",
+              "PATCH /users"
+            ],
+            "answer": "POST /users",
+            "explanation": "POST est utilisée pour créer une nouvelle ressource lorsque le serveur génère l'identifiant. PUT serait utilisé si le client fournissait l'identifiant.",
+            "difficulty": 2
+          }
+        ]
+      }
+    ]
+  },
+  "chapters": []
+}
+

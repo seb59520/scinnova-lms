@@ -1,0 +1,38 @@
+{
+  "type": "game",
+  "title": "Associez les endpoints API à leurs fonctions",
+  "description": "Connectez chaque endpoint HTTP à sa fonction correspondante pour maîtriser les opérations REST",
+  "content": {
+    "gameType": "connection",
+    "leftColumn": [
+      "GET /health",
+      "GET /tasks",
+      "GET /tasks/{id}",
+      "POST /tasks",
+      "PUT /tasks/{id}",
+      "PATCH /tasks/{id}",
+      "DELETE /tasks/{id}"
+    ],
+    "rightColumn": [
+      "Vérification de l'état de santé de l'API",
+      "Récupération d'une tâche par son identifiant unique",
+      "Création d'une nouvelle tâche",
+      "Mise à jour complète d'une tâche (tous les champs)",
+      "Mise à jour partielle d'une tâche (champs sélectionnés)",
+      "Suppression d'une tâche",
+      "Liste des tâches avec pagination et filtres"
+    ],
+    "correctMatches": [
+      { "left": 0, "right": 0 },
+      { "left": 1, "right": 6 },
+      { "left": 2, "right": 1 },
+      { "left": 3, "right": 2 },
+      { "left": 4, "right": 3 },
+      { "left": 5, "right": 4 },
+      { "left": 6, "right": 5 }
+    ],
+    "description": "Dans une API REST, chaque endpoint a une fonction spécifique. Associez chaque méthode HTTP et son chemin à sa fonction correspondante.",
+    "instructions": "Cliquez sur un endpoint de la colonne de gauche, puis sur sa fonction correspondante dans la colonne de droite. Les connexions correctes apparaîtront en vert avec une animation !"
+  }
+}
+

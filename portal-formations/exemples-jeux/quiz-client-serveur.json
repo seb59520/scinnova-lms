@@ -1,0 +1,235 @@
+{
+  "type": "game",
+  "title": "Quiz – Bases de l'architecture Client / Serveur",
+  "description": "Comprenez les rôles du client et du serveur, identifiez les flux de communication, reconnaissez les protocoles et composants clés",
+  "content": {
+    "gameType": "quiz",
+    "description": "Quiz complet sur les bases de l'architecture client/serveur avec 3 niveaux de difficulté",
+    "instructions": "Répondez aux questions pour chaque niveau. Vous obtiendrez une note à la fin du quiz.",
+    "objectives": [
+      "Comprendre les rôles du client et du serveur",
+      "Identifier les flux de communication",
+      "Reconnaître les protocoles et composants clés",
+      "Éviter les confusions courantes"
+    ],
+    "scoring": {
+      "totalQuestions": 15,
+      "pointsPerQuestion": 1,
+      "passingScore": 7,
+      "levels": {
+        "0-6": "Bases à renforcer",
+        "7-11": "Bon niveau",
+        "12-15": "Très bonne maîtrise des fondamentaux"
+      }
+    },
+    "levels": [
+      {
+        "level": 1,
+        "name": "Fondamentaux",
+        "description": "Questions à choix multiples sur les bases",
+        "questions": [
+          {
+            "id": "q1-1",
+            "type": "mcq",
+            "prompt": "Quel est le rôle principal du client ?",
+            "options": [
+              "Stocker les données",
+              "Traiter les requêtes de tous les utilisateurs",
+              "Envoyer des requêtes et afficher les réponses",
+              "Sécuriser le réseau"
+            ],
+            "answer": "Envoyer des requêtes et afficher les réponses",
+            "explanation": "Le client a pour rôle principal d'envoyer des requêtes au serveur et d'afficher les réponses reçues à l'utilisateur.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-2",
+            "type": "mcq",
+            "prompt": "Quel élément déclenche une communication client / serveur ?",
+            "options": [
+              "Une réponse du serveur",
+              "Une requête du client",
+              "Une base de données",
+              "Un pare-feu"
+            ],
+            "answer": "Une requête du client",
+            "explanation": "C'est toujours le client qui initie la communication en envoyant une requête au serveur.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-3",
+            "type": "mcq",
+            "prompt": "Quel protocole est le plus utilisé pour le web ?",
+            "options": [
+              "FTP",
+              "SMTP",
+              "HTTP / HTTPS",
+              "TCP"
+            ],
+            "answer": "HTTP / HTTPS",
+            "explanation": "HTTP (HyperText Transfer Protocol) et sa version sécurisée HTTPS sont les protocoles les plus utilisés pour le web.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-4",
+            "type": "mcq",
+            "prompt": "Le serveur est généralement :",
+            "options": [
+              "Un navigateur",
+              "Une application mobile",
+              "Une machine ou un service qui traite les requêtes",
+              "Un utilisateur"
+            ],
+            "answer": "Une machine ou un service qui traite les requêtes",
+            "explanation": "Le serveur est une machine ou un service qui reçoit, traite et répond aux requêtes des clients.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-5",
+            "type": "mcq",
+            "prompt": "Qui initie la communication dans un modèle client / serveur ?",
+            "options": [
+              "Le serveur",
+              "La base de données",
+              "Le client",
+              "Le routeur"
+            ],
+            "answer": "Le client",
+            "explanation": "Dans le modèle client/serveur, c'est toujours le client qui initie la communication en envoyant une requête.",
+            "difficulty": 1
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "name": "Compréhension",
+        "description": "Questions Vrai / Faux pour valider la compréhension",
+        "questions": [
+          {
+            "id": "q2-1",
+            "type": "true-false",
+            "prompt": "Le serveur peut répondre à plusieurs clients en même temps",
+            "answer": true,
+            "explanation": "Vrai. Un serveur peut gérer plusieurs requêtes simultanées de différents clients grâce au multithreading ou à des architectures asynchrones.",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-2",
+            "type": "true-false",
+            "prompt": "Le client accède directement à la base de données sans serveur",
+            "answer": false,
+            "explanation": "Faux. Le client ne doit jamais accéder directement à la base de données. C'est le serveur qui gère l'accès aux données pour des raisons de sécurité et de performance.",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-3",
+            "type": "true-false",
+            "prompt": "HTTP est un protocole sans état (stateless)",
+            "answer": true,
+            "explanation": "Vrai. HTTP est stateless : chaque requête est indépendante et le serveur ne conserve pas d'informations sur les requêtes précédentes (sauf avec des mécanismes comme les cookies ou sessions).",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-4",
+            "type": "true-false",
+            "prompt": "Une API est souvent située côté client",
+            "answer": false,
+            "explanation": "Faux. Une API (Application Programming Interface) est située côté serveur. Elle expose des endpoints que les clients peuvent appeler pour obtenir des données ou effectuer des actions.",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-5",
+            "type": "true-false",
+            "prompt": "HTTPS ajoute une couche de sécurité au protocole HTTP",
+            "answer": true,
+            "explanation": "Vrai. HTTPS (HTTP Secure) ajoute une couche de chiffrement SSL/TLS au protocole HTTP pour sécuriser les communications entre le client et le serveur.",
+            "difficulty": 2
+          }
+        ]
+      },
+      {
+        "level": 3,
+        "name": "Raisonnement & Cas pratiques",
+        "description": "Questions avancées sur des cas pratiques",
+        "questions": [
+          {
+            "id": "q3-1",
+            "type": "mcq",
+            "prompt": "Un utilisateur clique sur un bouton \"Envoyer\". Quelle est la première étape ?",
+            "options": [
+              "Le serveur traite les données",
+              "Le client envoie une requête",
+              "Le serveur renvoie une réponse",
+              "La base de données est mise à jour"
+            ],
+            "answer": "Le client envoie une requête",
+            "explanation": "La première étape est toujours l'envoi d'une requête par le client au serveur. Le serveur traitera ensuite cette requête.",
+            "difficulty": 3
+          },
+          {
+            "id": "q3-2",
+            "type": "mcq",
+            "prompt": "Où se fait généralement la logique métier ?",
+            "options": [
+              "Dans le navigateur",
+              "Dans le client mobile",
+              "Sur le serveur",
+              "Sur le routeur"
+            ],
+            "answer": "Sur le serveur",
+            "explanation": "La logique métier doit être implémentée côté serveur pour des raisons de sécurité, de cohérence et de maintenance. Le client se contente d'afficher et d'interagir.",
+            "difficulty": 3
+          },
+          {
+            "id": "q3-3",
+            "type": "mcq",
+            "prompt": "Quel risque existe si le serveur n'est pas sécurisé ?",
+            "options": [
+              "Mauvais affichage côté client",
+              "Fuite ou vol de données",
+              "Perte de connexion Wi-Fi",
+              "Bug graphique"
+            ],
+            "answer": "Fuite ou vol de données",
+            "explanation": "Un serveur non sécurisé expose les données à des risques de fuite, de vol ou de manipulation par des attaquants. La sécurité serveur est critique.",
+            "difficulty": 3
+          },
+          {
+            "id": "q3-4",
+            "type": "mcq",
+            "prompt": "Pourquoi séparer client et serveur ?",
+            "options": [
+              "Pour compliquer le système",
+              "Pour améliorer sécurité, maintenance et évolutivité",
+              "Pour supprimer la base de données",
+              "Pour éviter Internet"
+            ],
+            "answer": "Pour améliorer sécurité, maintenance et évolutivité",
+            "explanation": "La séparation client/serveur permet de centraliser la logique métier, améliorer la sécurité, faciliter la maintenance et permettre l'évolution indépendante des deux parties.",
+            "difficulty": 3
+          },
+          {
+            "id": "q3-5",
+            "type": "mcq",
+            "prompt": "Exemple correct d'architecture client / serveur :",
+            "options": [
+              "Excel seul sur un PC",
+              "Navigateur → API → Base de données",
+              "Fichier local ouvert sans réseau",
+              "Script Python hors ligne"
+            ],
+            "answer": "Navigateur → API → Base de données",
+            "explanation": "C'est l'exemple classique : le navigateur (client) envoie des requêtes à l'API (serveur) qui interroge la base de données et renvoie les résultats.",
+            "difficulty": 3
+          }
+        ]
+      }
+    ],
+    "bonus": {
+      "type": "open-question",
+      "prompt": "Explique avec tes mots le chemin d'une donnée du clic utilisateur jusqu'à l'affichage du résultat à l'écran.",
+      "description": "Question ouverte pour évaluer la compréhension globale (non notée, idéale pour discussion)"
+    }
+  }
+}
+

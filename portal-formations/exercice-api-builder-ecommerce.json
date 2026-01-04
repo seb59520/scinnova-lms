@@ -1,0 +1,111 @@
+{
+  "type": "game",
+  "title": "API BUILDER – API E-commerce complète",
+  "position": 0,
+  "published": true,
+  "content": {
+    "gameType": "api-builder",
+    "description": "Construisez une API REST complète pour un système e-commerce. Vous devez créer **12 routes** pour gérer les produits, les commandes et les clients.",
+    "instructions": "🎯 Objectif : Créer 12 routes REST pour un système e-commerce\n\n📋 Routes à créer :\n\n**PRODUITS (Products)** :\n1️⃣ GET /products (liste tous les produits)\n2️⃣ GET /products/{id} (détail d'un produit)\n3️⃣ POST /products (créer un produit)\n4️⃣ PUT /products/{id} (mettre à jour un produit)\n5️⃣ DELETE /products/{id} (supprimer un produit)\n\n**COMMANDES (Orders)** :\n6️⃣ GET /orders (liste toutes les commandes)\n7️⃣ GET /orders/{id} (détail d'une commande)\n8️⃣ POST /orders (créer une commande)\n9️⃣ PUT /orders/{id} (mettre à jour une commande)\n🔟 DELETE /orders/{id} (supprimer une commande)\n\n**CLIENTS (Customers)** :\n1️⃣1️⃣ GET /customers (liste tous les clients)\n1️⃣2️⃣ GET /customers/{id} (détail d'un client)\n\n💡 Utilisez le bouton 'Ajouter une route' pour créer toutes les routes nécessaires !",
+    "resources": [
+      { "id": "product", "label": "Product", "value": "products" },
+      { "id": "order", "label": "Order", "value": "orders" },
+      { "id": "customer", "label": "Customer", "value": "customers" }
+    ],
+    "verbs": [
+      { "id": "get", "label": "GET", "value": "GET" },
+      { "id": "post", "label": "POST", "value": "POST" },
+      { "id": "put", "label": "PUT", "value": "PUT" },
+      { "id": "delete", "label": "DELETE", "value": "DELETE" }
+    ],
+    "endpoints": [
+      { "id": "products-collection", "label": "/products", "value": "/products" },
+      { "id": "products-item", "label": "/products/{id}", "value": "/products/{id}" },
+      { "id": "orders-collection", "label": "/orders", "value": "/orders" },
+      { "id": "orders-item", "label": "/orders/{id}", "value": "/orders/{id}" },
+      { "id": "customers-collection", "label": "/customers", "value": "/customers" },
+      { "id": "customers-item", "label": "/customers/{id}", "value": "/customers/{id}" }
+    ],
+    "statusCodes": [
+      { "id": "200", "label": "200 OK", "value": "200" },
+      { "id": "201", "label": "201 Created", "value": "201" },
+      { "id": "204", "label": "204 No Content", "value": "204" },
+      { "id": "404", "label": "404 Not Found", "value": "404" }
+    ],
+    "correctRoutes": [
+      {
+        "resource": "products",
+        "verb": "GET",
+        "endpoint": "/products",
+        "status": "200"
+      },
+      {
+        "resource": "products",
+        "verb": "GET",
+        "endpoint": "/products/{id}",
+        "status": "200"
+      },
+      {
+        "resource": "products",
+        "verb": "POST",
+        "endpoint": "/products",
+        "status": "201"
+      },
+      {
+        "resource": "products",
+        "verb": "PUT",
+        "endpoint": "/products/{id}",
+        "status": "200"
+      },
+      {
+        "resource": "products",
+        "verb": "DELETE",
+        "endpoint": "/products/{id}",
+        "status": "204"
+      },
+      {
+        "resource": "orders",
+        "verb": "GET",
+        "endpoint": "/orders",
+        "status": "200"
+      },
+      {
+        "resource": "orders",
+        "verb": "GET",
+        "endpoint": "/orders/{id}",
+        "status": "200"
+      },
+      {
+        "resource": "orders",
+        "verb": "POST",
+        "endpoint": "/orders",
+        "status": "201"
+      },
+      {
+        "resource": "orders",
+        "verb": "PUT",
+        "endpoint": "/orders/{id}",
+        "status": "200"
+      },
+      {
+        "resource": "orders",
+        "verb": "DELETE",
+        "endpoint": "/orders/{id}",
+        "status": "204"
+      },
+      {
+        "resource": "customers",
+        "verb": "GET",
+        "endpoint": "/customers",
+        "status": "200"
+      },
+      {
+        "resource": "customers",
+        "verb": "GET",
+        "endpoint": "/customers/{id}",
+        "status": "200"
+      }
+    ]
+  }
+}
+

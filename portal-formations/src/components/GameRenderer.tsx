@@ -1,0 +1,216 @@
+import { extractGameContent, gameRegistry, type BaseGameProps } from '../lib/gameRegistry'
+import { GameErrorBoundary } from './GameErrorBoundary'
+
+interface GameRendererProps {
+  gameContent: any
+  onScore?: (score: number, metadata?: any) => void
+  chapters?: Array<{
+    title: string
+    position: number
+    content?: any
+  }>
+}
+
+/**
+ * Composant générique pour rendre n'importe quel jeu enregistré dans le registre
+ * 
+ * Ce composant :
+ * 1. Extrait et normalise le game_content
+ * 2. Trouve le jeu correspondant dans le registre
+ * 3. Valide la configuration si une fonction de validation existe
+ * 4. Rend le composant du jeu avec les props appropriées
+ */
+export function GameRenderer({ gameContent, onScore, chapters }: GameRendererProps) {
+  // Extraire le game_content réel (gère les cas imbriqués)
+  const actualGameContent = extractGameContent(gameContent)
+
+  if (!actualGameContent) {
+    return (
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <p className="text-yellow-800 font-medium mb-2">⚠️ Jeu non configuré</p>
+        <p className="text-yellow-700 text-sm mb-2">
+          Le champ game_content est vide ou invalide. Il doit contenir un objet avec un champ "gameType".
+        </p>
+        <details className="mt-3">
+          <summary className="text-sm text-yellow-700 cursor-pointer">Détails techniques</summary>
+          <pre className="text-xs bg-yellow-100 p-3 rounded overflow-auto mt-2">
+            {JSON.stringify({ 
+              gameContent, 
+              actualGameContent,
+              hasGameContent: !!gameContent 
+            }, null, 2)}
+          </pre>
+        </details>
+      </div>
+    )
+  }
+
+  const gameType = actualGameContent.gameType
+
+  // Vérifier si le jeu est enregistré
+  const registeredGame = gameRegistry.get(gameType)
+
+  if (!registeredGame) {
+    const availableGames = gameRegistry.getGameTypes().join(', ')
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <p className="text-red-800 font-medium mb-2">❌ Type de jeu non reconnu</p>
+        <p className="text-red-700 text-sm mb-2">
+          Le type de jeu "<strong>{gameType}</strong>" n'est pas pris en charge.
+        </p>
+        <p className="text-red-600 text-sm mb-2">
+          Types de jeux disponibles : <strong>{availableGames || 'aucun'}</strong>
+        </p>
+        <details className="mt-3">
+          <summary className="text-sm text-red-700 cursor-pointer">Détails techniques</summary>
+          <pre className="text-xs bg-red-100 p-3 rounded overflow-auto mt-2">
+            {JSON.stringify({ 
+              gameType,
+              actualGameContent,
+              availableGames: gameRegistry.getGameTypes()
+            }, null, 2)}
+          </pre>
+        </details>
+      </div>
+    )
+  }
+
+  // Valider la configuration si une fonction de validation existe
+  if (registeredGame.validateConfig && !registeredGame.validateConfig(actualGameContent)) {
+    // Analyser ce qui manque pour le type de jeu
+    let missingFields: string[] = []
+    if (gameType === 'connection' || gameType === 'column-matching') {
+      if (!Array.isArray(actualGameContent.leftColumn)) {
+        missingFields.push(`leftColumn (array) - actuel: ${typeof actualGameContent.leftColumn}`)
+      }
+      if (!Array.isArray(actualGameContent.rightColumn)) {
+        missingFields.push(`rightColumn (array) - actuel: ${typeof actualGameContent.rightColumn}`)
+      }
+      if (!Array.isArray(actualGameContent.correctMatches)) {
+        missingFields.push(`correctMatches (array) - actuel: ${typeof actualGameContent.correctMatches}`)
+      }
+      if (Array.isArray(actualGameContent.leftColumn) && actualGameContent.leftColumn.length === 0) missingFields.push('leftColumn (non vide)')
+      if (Array.isArray(actualGameContent.rightColumn) && actualGameContent.rightColumn.length === 0) missingFields.push('rightColumn (non vide)')
+    }
+    
+    // Log de débogage détaillé
+    if (process.env.NODE_ENV === 'development') {
+      console.error('[GameRenderer] Configuration invalide:', {
+        gameType,
+        leftColumn: {
+          exists: 'leftColumn' in actualGameContent,
+          type: typeof actualGameContent.leftColumn,
+          isArray: Array.isArray(actualGameContent.leftColumn),
+          value: actualGameContent.leftColumn
+        },
+        rightColumn: {
+          exists: 'rightColumn' in actualGameContent,
+          type: typeof actualGameContent.rightColumn,
+          isArray: Array.isArray(actualGameContent.rightColumn),
+          value: actualGameContent.rightColumn
+        },
+        correctMatches: {
+          exists: 'correctMatches' in actualGameContent,
+          type: typeof actualGameContent.correctMatches,
+          isArray: Array.isArray(actualGameContent.correctMatches),
+          value: actualGameContent.correctMatches
+        },
+        allKeys: Object.keys(actualGameContent)
+      })
+    }
+    
+    return (
+      <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+        <p className="text-orange-800 font-medium mb-2">⚠️ Configuration invalide</p>
+        <p className="text-orange-700 text-sm mb-2">
+          La configuration du jeu "<strong>{registeredGame.name}</strong>" est invalide.
+        </p>
+        {missingFields.length > 0 && (
+          <div className="text-orange-600 text-sm mb-2">
+            <p className="font-medium">Champs manquants ou invalides :</p>
+            <ul className="list-disc list-inside mt-1">
+              {missingFields.map((field, idx) => (
+                <li key={idx}>{field}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <p className="text-orange-600 text-sm mb-2">
+          Vérifiez que tous les champs requis sont présents et correctement formatés.
+        </p>
+        <details className="mt-3">
+          <summary className="text-sm text-orange-700 cursor-pointer">Configuration reçue (actualGameContent)</summary>
+          <pre className="text-xs bg-orange-100 p-3 rounded overflow-auto mt-2">
+            {JSON.stringify(actualGameContent, null, 2)}
+          </pre>
+        </details>
+        <details className="mt-2">
+          <summary className="text-sm text-orange-700 cursor-pointer">Configuration brute (gameContent)</summary>
+          <pre className="text-xs bg-orange-100 p-3 rounded overflow-auto mt-2">
+            {JSON.stringify(gameContent, null, 2)}
+          </pre>
+        </details>
+        <details className="mt-2">
+          <summary className="text-sm text-orange-700 cursor-pointer">Détails de débogage</summary>
+          <div className="text-xs bg-orange-100 p-3 rounded overflow-auto mt-2 space-y-1">
+            <div><strong>Type de gameContent:</strong> {typeof gameContent}</div>
+            <div><strong>Est un array:</strong> {Array.isArray(gameContent) ? 'Oui' : 'Non'}</div>
+            <div><strong>Clés dans gameContent:</strong> {typeof gameContent === 'object' && !Array.isArray(gameContent) ? Object.keys(gameContent).join(', ') : 'N/A'}</div>
+            <div><strong>leftColumn existe:</strong> {actualGameContent.leftColumn !== undefined ? 'Oui' : 'Non'}</div>
+            <div><strong>leftColumn type:</strong> {typeof actualGameContent.leftColumn}</div>
+            <div><strong>leftColumn est array:</strong> {Array.isArray(actualGameContent.leftColumn) ? 'Oui' : 'Non'}</div>
+            <div><strong>rightColumn existe:</strong> {actualGameContent.rightColumn !== undefined ? 'Oui' : 'Non'}</div>
+            <div><strong>rightColumn type:</strong> {typeof actualGameContent.rightColumn}</div>
+            <div><strong>rightColumn est array:</strong> {Array.isArray(actualGameContent.rightColumn) ? 'Oui' : 'Non'}</div>
+            <div><strong>correctMatches existe:</strong> {actualGameContent.correctMatches !== undefined ? 'Oui' : 'Non'}</div>
+            <div><strong>correctMatches type:</strong> {typeof actualGameContent.correctMatches}</div>
+            <div><strong>correctMatches est array:</strong> {Array.isArray(actualGameContent.correctMatches) ? 'Oui' : 'Non'}</div>
+          </div>
+        </details>
+      </div>
+    )
+  }
+
+  // Rendre le composant du jeu
+  const GameComponent = registeredGame.component
+
+  // Préparer les props communes
+  const commonProps: BaseGameProps = {
+    onScore,
+    description: actualGameContent.description,
+    instructions: actualGameContent.instructions
+  }
+
+  // Extraire les props spécifiques au jeu (tout sauf gameType, description, instructions)
+  const { gameType: _, description: __, instructions: ___, ...gameSpecificProps } = actualGameContent
+
+  // Fusionner les props communes avec les props spécifiques
+  const gameProps = {
+    ...commonProps,
+    ...gameSpecificProps,
+    // Passer les chapitres si disponibles (pour les jeux de type scenario)
+    ...(chapters && { chapters })
+  }
+
+  // Debug: log des props pour le débogage
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`[GameRenderer] Rendering game "${gameType}" with props:`, {
+      gameType,
+      hasDescription: !!gameProps.description,
+      hasInstructions: !!gameProps.instructions,
+      specificProps: Object.keys(gameSpecificProps),
+      allProps: Object.keys(gameProps),
+      actualGameContent: actualGameContent,
+      fileTypes: actualGameContent.fileTypes ? `Array(${actualGameContent.fileTypes.length})` : 'undefined',
+      examples: actualGameContent.examples ? `Array(${actualGameContent.examples.length})` : 'undefined'
+    })
+  }
+
+  // Rendre le composant avec Error Boundary pour capturer les erreurs React
+  return (
+    <GameErrorBoundary>
+      <GameComponent {...gameProps} />
+    </GameErrorBoundary>
+  )
+}
+

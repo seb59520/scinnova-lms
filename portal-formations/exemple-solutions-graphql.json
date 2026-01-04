@@ -1,0 +1,211 @@
+{
+  "title": "Solutions - GraphQL Query Builder (Référence JSON)",
+  "description": "Fichier JSON de référence contenant toutes les solutions structurées pour les scénarios GraphQL",
+  "note": "Ce fichier est un fichier de données JSON, pas un exercice. Pour importer les solutions comme ressource, utilisez 'solutions-graphql-query-builder-resource.json'",
+  "scenarios": [
+    {
+      "id": "scenario-1",
+      "title": "Scénario 1 : Informations utilisateur",
+      "solution": {
+        "query": "query {\n  user(id: \"42\") {\n    name\n    email\n  }\n}",
+        "explanation": "Commencez par le champ user de Query (avec l'argument id: \"42\"), puis ajoutez les champs scalaires name et email du type User.",
+        "fields": ["user", "name", "email"],
+        "expectedResult": {
+          "user": {
+            "name": "John Doe",
+            "email": "john@example.com"
+          }
+        }
+      }
+    },
+    {
+      "id": "scenario-2",
+      "title": "Scénario 2 : Commandes utilisateur",
+      "solution": {
+        "query": "query {\n  user(id: \"42\") {\n    name\n    orders {\n      id\n      total\n    }\n  }\n}",
+        "explanation": "Commencez par user(id: \"42\"), ajoutez name (champ scalaire), puis orders (relation vers Order), et dans orders ajoutez id et total.",
+        "fields": ["user", "name", "orders", "id", "total"],
+        "expectedResult": {
+          "user": {
+            "name": "John Doe",
+            "orders": [
+              {
+                "id": "1",
+                "total": 99.99
+              },
+              {
+                "id": "2",
+                "total": 149.50
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "scenario-3",
+      "title": "Scénario 3 : Dernières commandes",
+      "solution": {
+        "query": "query {\n  user(id: \"42\") {\n    name\n    orders(limit: 3) {\n      id\n      total\n      date\n    }\n  }\n}",
+        "explanation": "Commencez par user(id: \"42\"), ajoutez name, puis orders(limit: 3) avec l'argument limit: 3, et dans orders ajoutez id, total, et date.",
+        "fields": ["user", "name", "orders", "id", "total", "date"],
+        "arguments": {
+          "user": { "id": "42" },
+          "orders": { "limit": 3 }
+        },
+        "expectedResult": {
+          "user": {
+            "name": "John Doe",
+            "orders": [
+              {
+                "id": "1",
+                "total": 99.99,
+                "date": "2024-01-15"
+              },
+              {
+                "id": "2",
+                "total": 149.50,
+                "date": "2024-01-10"
+              },
+              {
+                "id": "3",
+                "total": 79.99,
+                "date": "2024-01-05"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "scenario-4",
+      "title": "Scénario 4 : Détails produits",
+      "solution": {
+        "query": "query {\n  user(id: \"42\") {\n    orders {\n      items {\n        product {\n          name\n          price\n        }\n      }\n    }\n  }\n}",
+        "explanation": "Commencez par user(id: \"42\"), ajoutez orders (relation), dans orders ajoutez items (relation vers OrderItem), dans items ajoutez product (relation vers Product), et dans product ajoutez name et price.",
+        "fields": ["user", "orders", "items", "product", "name", "price"],
+        "expectedResult": {
+          "user": {
+            "orders": [
+              {
+                "items": [
+                  {
+                    "product": {
+                      "name": "Laptop",
+                      "price": 999.99
+                    }
+                  },
+                  {
+                    "product": {
+                      "name": "Mouse",
+                      "price": 29.99
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "scenario-5",
+      "title": "Scénario 5 : Liste utilisateurs",
+      "solution": {
+        "query": "query {\n  users(limit: 10) {\n    name\n    email\n  }\n}",
+        "explanation": "Utilisez le champ users de Query (liste), ajoutez l'argument limit: 10 pour limiter à 10 utilisateurs, et ajoutez les champs name et email du type User.",
+        "fields": ["users", "name", "email"],
+        "arguments": {
+          "users": { "limit": 10 }
+        },
+        "expectedResult": {
+          "users": [
+            {
+              "name": "John Doe",
+              "email": "john@example.com"
+            },
+            {
+              "name": "Jane Smith",
+              "email": "jane@example.com"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "advanced-1",
+      "title": "Optimisation : Champs minimaux",
+      "solution": {
+        "query": "query {\n  user(id: \"42\") {\n    name\n    orders {\n      id\n    }\n  }\n}",
+        "explanation": "Ne sélectionnez que les champs strictement nécessaires. Évitez les champs inutiles comme email, total, date, etc. Optimisation : 4 champs au total.",
+        "fields": ["user", "name", "orders", "id"],
+        "maxCost": 4,
+        "expectedResult": {
+          "user": {
+            "name": "John Doe",
+            "orders": [
+              {
+                "id": "1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "advanced-2",
+      "title": "Requête complète : E-commerce",
+      "solution": {
+        "query": "query {\n  user(id: \"42\") {\n    name\n    orders {\n      id\n      total\n      date\n      items {\n        quantity\n        product {\n          name\n          price\n        }\n      }\n    }\n  }\n}",
+        "explanation": "Requête complète avec tous les niveaux de relations : User → Orders → Items → Product. Tous les champs pertinents sélectionnés.",
+        "fields": ["user", "name", "orders", "id", "total", "date", "items", "quantity", "product", "name", "price"],
+        "expectedResult": {
+          "user": {
+            "name": "John Doe",
+            "orders": [
+              {
+                "id": "1",
+                "total": 99.99,
+                "date": "2024-01-15",
+                "items": [
+                  {
+                    "quantity": 2,
+                    "product": {
+                      "name": "Laptop",
+                      "price": 999.99
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "advanced-3",
+      "title": "Liste avec filtres",
+      "solution": {
+        "query": "query {\n  users(limit: 5) {\n    name\n    email\n  }\n}",
+        "explanation": "Utilisez users avec l'argument limit: 5. Sélectionnez uniquement name et email.",
+        "fields": ["users", "name", "email"],
+        "arguments": {
+          "users": { "limit": 5 }
+        },
+        "expectedResult": {
+          "users": [
+            {
+              "name": "John Doe",
+              "email": "john@example.com"
+            },
+            {
+              "name": "Jane Smith",
+              "email": "jane@example.com"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
+

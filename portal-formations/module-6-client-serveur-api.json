@@ -1,0 +1,1006 @@
+{
+  "title": "Module 6 : Du client-serveur aux API",
+  "position": 6,
+  "theme": {
+    "primaryColor": "#6366F1",
+    "secondaryColor": "#4F46E5"
+  },
+  "items": [
+    {
+      "type": "resource",
+      "title": "6.1 - Introduction aux API : Le pont entre client et serveur",
+      "position": 1,
+      "published": true,
+      "content": {
+        "description": "Comprendre comment les API utilisent l'architecture client-serveur pour exposer des fonctionnalités",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "heading",
+              "attrs": { "level": 2 },
+              "content": [
+                { "type": "text", "text": "Qu'est-ce qu'une API ?" }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Une " },
+                { "type": "text", "marks": [{ "type": "bold" }], "text": "API (Application Programming Interface)" },
+                { "type": "text", "text": " est une interface qui permet à un client de communiquer avec un serveur de manière standardisée. Elle définit comment les applications peuvent demander des données ou effectuer des actions sur le serveur." }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "API dans l'architecture client-serveur" }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Dans l'architecture client-serveur que nous avons vue précédemment, l'API est la " },
+                { "type": "text", "marks": [{ "type": "bold" }], "text": "couche d'abstraction" },
+                { "type": "text", "text": " qui permet au client de communiquer avec le serveur sans connaître les détails d'implémentation internes." }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "text" },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "┌─────────────┐\n│   Client    │ (Navigateur, App mobile)\n│  (Frontend) │\n└──────┬──────┘\n       │\n       │ Requête HTTP (GET, POST, etc.)\n       │\n       ▼\n┌─────────────────┐\n│      API        │ ← Interface standardisée\n│  (Endpoints)    │\n└────────┬────────┘\n         │\n         │ Traitement\n         │\n         ▼\n┌─────────────────┐\n│    Serveur      │ (Logique métier)\n│   (Backend)     │\n└────────┬────────┘\n         │\n         │ Requête SQL\n         │\n         ▼\n┌─────────────────┐\n│ Base de données │\n└─────────────────┘"
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "Exemple concret : API REST" }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Une API REST utilise les méthodes HTTP que nous avons vues (GET, POST, PUT, DELETE) pour exposer des " },
+                { "type": "text", "marks": [{ "type": "bold" }], "text": "endpoints" },
+                { "type": "text", "text": " (points d'accès) que le client peut appeler." }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "javascript" },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "// Le client envoie une requête HTTP\nfetch('https://api.example.com/users')\n  .then(response => response.json())\n  .then(data => {\n    // Le serveur répond avec des données JSON\n    console.log(data); // [{ id: 1, name: 'John' }, ...]\n  });"
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "Avantages des API" }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Réutilisabilité :" },
+                        { "type": "text", "text": " Une même API peut être utilisée par plusieurs clients (web, mobile, desktop)" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Séparation des responsabilités :" },
+                        { "type": "text", "text": " Le client se concentre sur l'interface, le serveur sur la logique métier" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Évolutivité :" },
+                        { "type": "text", "text": " On peut modifier le serveur sans impacter les clients (tant que l'API reste compatible)" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Standardisation :" },
+                        { "type": "text", "text": " Utilisation de protocoles standards (HTTP, JSON) compris par tous" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "resource",
+      "title": "6.2 - Endpoints et ressources : Les points d'accès de l'API",
+      "position": 2,
+      "published": true,
+      "content": {
+        "description": "Comprendre les concepts d'endpoints et de ressources dans une API",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "heading",
+              "attrs": { "level": 2 },
+              "content": [
+                { "type": "text", "text": "Qu'est-ce qu'un endpoint ?" }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Un " },
+                { "type": "text", "marks": [{ "type": "bold" }], "text": "endpoint" },
+                { "type": "text", "text": " est une URL spécifique que le client peut appeler pour accéder à une ressource ou effectuer une action sur le serveur." }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "text" },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "https://api.example.com/users          → Endpoint pour la liste des utilisateurs\nhttps://api.example.com/users/123     → Endpoint pour un utilisateur spécifique\nhttps://api.example.com/products      → Endpoint pour les produits\nhttps://api.example.com/orders        → Endpoint pour les commandes"
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "Structure d'un endpoint" }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Un endpoint est composé de plusieurs parties :" }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "text" },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "https://api.example.com/users/123\n│     │              │      │\n│     │              │      └─ Identifiant de la ressource (ID)\n│     │              └──────── Ressource (users)\n│     └────────────────────── Domaine du serveur\n└──────────────────────────── Protocole (HTTPS)"
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "Ressources et méthodes HTTP" }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Dans une API REST, chaque ressource peut être manipulée avec différentes méthodes HTTP :" }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "text" },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "GET    /users        → Récupérer la liste des utilisateurs\nGET    /users/123     → Récupérer l'utilisateur avec l'ID 123\nPOST   /users         → Créer un nouvel utilisateur\nPUT    /users/123     → Mettre à jour complètement l'utilisateur 123\nPATCH  /users/123     → Mettre à jour partiellement l'utilisateur 123\nDELETE /users/123     → Supprimer l'utilisateur 123"
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "Exemple complet : Interaction avec une API" }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "javascript" },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "// 1. Récupérer tous les utilisateurs\nfetch('https://api.example.com/users')\n  .then(response => response.json())\n  .then(users => console.log(users));\n\n// 2. Créer un nouvel utilisateur\nfetch('https://api.example.com/users', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    name: 'Alice',\n    email: 'alice@example.com'\n  })\n})\n  .then(response => response.json())\n  .then(newUser => console.log('Utilisateur créé:', newUser));\n\n// 3. Mettre à jour un utilisateur\nfetch('https://api.example.com/users/123', {\n  method: 'PATCH',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({ name: 'Alice Updated' })\n});\n\n// 4. Supprimer un utilisateur\nfetch('https://api.example.com/users/123', {\n  method: 'DELETE'\n});"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "resource",
+      "title": "6.3 - JSON dans les API : Le format de données standard",
+      "position": 3,
+      "published": true,
+      "content": {
+        "description": "Comprendre comment JSON est utilisé comme format d'échange dans les API",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "heading",
+              "attrs": { "level": 2 },
+              "content": [
+                { "type": "text", "text": "Pourquoi JSON dans les API ?" }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "JSON (JavaScript Object Notation) est devenu le format standard pour échanger des données dans les API modernes car il est :" }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "Léger et lisible" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "Facilement parsable par JavaScript (et la plupart des langages)" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "Supporté nativement par les navigateurs" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "Plus compact que XML" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "Structure d'une réponse API en JSON" }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "json" },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"John Doe\",\n      \"email\": \"john@example.com\",\n      \"created_at\": \"2024-01-15T10:30:00Z\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Jane Smith\",\n      \"email\": \"jane@example.com\",\n      \"created_at\": \"2024-01-16T14:20:00Z\"\n    }\n  ],\n  \"pagination\": {\n    \"page\": 1,\n    \"per_page\": 10,\n    \"total\": 25\n  }\n}"
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "En-tête Content-Type" }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Lorsqu'une API renvoie du JSON, elle doit indiquer le type de contenu dans l'en-tête HTTP :" }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "http" },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "HTTP/1.1 200 OK\nContent-Type: application/json\nContent-Length: 245\n\n{\n  \"id\": 1,\n  \"name\": \"John Doe\"\n}"
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "Envoyer du JSON dans une requête" }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "javascript" },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "// Créer un utilisateur avec des données JSON\nfetch('https://api.example.com/users', {\n  method: 'POST',\n  headers: {\n    'Content-Type': 'application/json'  // Important !\n  },\n  body: JSON.stringify({  // Convertir l'objet JavaScript en JSON\n    name: 'Alice',\n    email: 'alice@example.com',\n    age: 30\n  })\n})\n  .then(response => response.json())  // Parser la réponse JSON\n  .then(data => console.log(data));"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "resource",
+      "title": "6.4 - Codes de statut HTTP dans les API",
+      "position": 4,
+      "published": true,
+      "content": {
+        "description": "Comprendre comment les codes de statut HTTP sont utilisés dans les API pour indiquer le résultat d'une requête",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "heading",
+              "attrs": { "level": 2 },
+              "content": [
+                { "type": "text", "text": "Codes de statut et API" }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Les codes de statut HTTP que nous avons vus précédemment prennent tout leur sens dans les API. Ils permettent au client de savoir immédiatement si sa requête a réussi ou échoué." }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "Codes de succès (2xx)" }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "200 OK :" },
+                        { "type": "text", "text": " Requête réussie (GET, PUT, PATCH)" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "201 Created :" },
+                        { "type": "text", "text": " Ressource créée avec succès (POST)" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "204 No Content :" },
+                        { "type": "text", "text": " Succès sans contenu à retourner (DELETE)" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "Codes d'erreur client (4xx)" }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "400 Bad Request :" },
+                        { "type": "text", "text": " Requête mal formée (données invalides)" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "401 Unauthorized :" },
+                        { "type": "text", "text": " Authentification requise" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "403 Forbidden :" },
+                        { "type": "text", "text": " Accès refusé (pas les permissions)" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "404 Not Found :" },
+                        { "type": "text", "text": " Ressource introuvable" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "Codes d'erreur serveur (5xx)" }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "500 Internal Server Error :" },
+                        { "type": "text", "text": " Erreur interne du serveur" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "503 Service Unavailable :" },
+                        { "type": "text", "text": " Service temporairement indisponible" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "Gestion des erreurs dans le code" }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "javascript" },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "fetch('https://api.example.com/users/123')\n  .then(response => {\n    // Vérifier le code de statut\n    if (!response.ok) {\n      if (response.status === 404) {\n        throw new Error('Utilisateur introuvable');\n      } else if (response.status === 401) {\n        throw new Error('Authentification requise');\n      } else {\n        throw new Error(`Erreur ${response.status}`);\n      }\n    }\n    return response.json();\n  })\n  .then(data => console.log('Succès:', data))\n  .catch(error => console.error('Erreur:', error));"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "game",
+      "title": "6.5 - Jeu : Associer les endpoints API à leurs fonctions",
+      "position": 5,
+      "published": true,
+      "content": {
+        "gameType": "column-matching",
+        "description": "Associez chaque endpoint HTTP à sa fonction correspondante pour maîtriser les opérations REST",
+        "instructions": "Faites glisser les éléments de la colonne de gauche vers ceux de la colonne de droite",
+        "leftColumn": [
+          "GET /health",
+          "GET /tasks",
+          "GET /tasks/{id}",
+          "POST /tasks",
+          "PUT /tasks/{id}",
+          "PATCH /tasks/{id}",
+          "DELETE /tasks/{id}"
+        ],
+        "rightColumn": [
+          "Vérification de l'état de santé de l'API",
+          "Récupération d'une tâche par son identifiant unique",
+          "Création d'une nouvelle tâche",
+          "Mise à jour complète d'une tâche (tous les champs)",
+          "Mise à jour partielle d'une tâche (champs sélectionnés)",
+          "Suppression d'une tâche",
+          "Liste des tâches avec pagination et filtres"
+        ],
+        "correctMatches": [
+          { "left": 0, "right": 0 },
+          { "left": 1, "right": 6 },
+          { "left": 2, "right": 1 },
+          { "left": 3, "right": 2 },
+          { "left": 4, "right": 3 },
+          { "left": 5, "right": 4 },
+          { "left": 6, "right": 5 }
+        ]
+      }
+    },
+    {
+      "type": "exercise",
+      "title": "6.6 - Exercice : Analyser une réponse API",
+      "position": 6,
+      "published": true,
+      "content": {
+        "question": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Analysez cette réponse API et identifiez :" }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "http" },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "HTTP/1.1 201 Created\nContent-Type: application/json\nLocation: https://api.example.com/users/42\n\n{\n  \"id\": 42,\n  \"name\": \"Alice\",\n  \"email\": \"alice@example.com\",\n  \"created_at\": \"2024-01-20T10:30:00Z\"\n}"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "Le code de statut HTTP et sa signification" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "Le type de contenu" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "L'en-tête Location et son rôle" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "Les données retournées" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "correction": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "Correction" }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Code de statut 201 Created :" },
+                        { "type": "text", "text": " Indique qu'une ressource a été créée avec succès. C'est typiquement la réponse à une requête POST." }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Content-Type: application/json :" },
+                        { "type": "text", "text": " Indique que le corps de la réponse est au format JSON." }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Location header :" },
+                        { "type": "text", "text": " Contient l'URL de la ressource nouvellement créée. Le client peut utiliser cette URL pour accéder à la ressource plus tard." }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Données JSON :" },
+                        { "type": "text", "text": " Contiennent les informations de l'utilisateur créé : id (42), name (Alice), email, et la date de création." }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "resource",
+      "title": "6.7 - Du client-serveur aux API REST : Synthèse",
+      "position": 7,
+      "published": true,
+      "content": {
+        "description": "Synthèse des concepts et préparation aux API REST",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "heading",
+              "attrs": { "level": 2 },
+              "content": [
+                { "type": "text", "text": "Récapitulatif : Les fondations des API" }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Maintenant que vous maîtrisez l'architecture client-serveur et les bases du Web, vous avez toutes les fondations pour comprendre les API REST :" }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "Concepts clés à retenir" }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Architecture client-serveur :" },
+                        { "type": "text", "text": " Le client envoie des requêtes, le serveur traite et répond" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Protocole HTTP :" },
+                        { "type": "text", "text": " Le langage de communication entre client et serveur" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Méthodes HTTP :" },
+                        { "type": "text", "text": " GET (lire), POST (créer), PUT/PATCH (modifier), DELETE (supprimer)" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Endpoints :" },
+                        { "type": "text", "text": " Les URLs que le client appelle pour accéder aux ressources" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Format JSON :" },
+                        { "type": "text", "text": " Le format standard pour échanger des données" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Codes de statut :" },
+                        { "type": "text", "text": " Indiquent le résultat de la requête (200 = succès, 404 = non trouvé, etc.)" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "Vers les API REST" }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Les API REST (Representational State Transfer) utilisent tous ces concepts de manière structurée :" }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "Organisation des ressources en URLs logiques" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "Utilisation cohérente des méthodes HTTP" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "Stateless : chaque requête est indépendante" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "Format de réponse standardisé (JSON)" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "Exemple complet : Flux client-serveur avec API" }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "text" },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "1. L'utilisateur clique sur \"Voir mes commandes\" dans l'application\n   ↓\n2. Le client (navigateur/app) envoie une requête HTTP :\n   GET https://api.example.com/users/123/orders\n   ↓\n3. L'API (serveur) reçoit la requête et traite la demande\n   ↓\n4. L'API interroge la base de données\n   ↓\n5. L'API renvoie une réponse HTTP :\n   Status: 200 OK\n   Content-Type: application/json\n   Body: [{ id: 1, product: 'Livre', ... }, ...]\n   ↓\n6. Le client reçoit la réponse et affiche les commandes à l'utilisateur"
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                { "type": "text", "text": "Prochaines étapes" }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Vous êtes maintenant prêt à approfondir :" }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "Les principes REST (ressources, stateless, etc.)" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "La conception d'API (URLs, versioning, pagination)" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "La documentation d'API (OpenAPI/Swagger)" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "La sécurité des API (authentification, autorisation)" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
+

@@ -1,0 +1,120 @@
+{
+  "type": "game",
+  "title": "2.3 - Jeu : Classifiez les méthodes HTTP",
+  "position": 3,
+  "published": true,
+  "content": {
+    "gameType": "category",
+    "description": "Classifiez les méthodes HTTP selon leurs caractéristiques : opération (lecture/écriture), idempotence, et présence de corps de requête. Découvrez les propriétés cachées des méthodes HTTP !",
+    "instructions": "Glissez-déposez chaque méthode HTTP dans les catégories appropriées. Une méthode peut appartenir à plusieurs catégories !",
+    "categories": [
+      {
+        "name": "📖 Lecture",
+        "color": "#3B82F6",
+        "icon": "📖",
+        "description": "Méthodes qui récupèrent des données sans les modifier"
+      },
+      {
+        "name": "✏️ Écriture",
+        "color": "#10B981",
+        "icon": "✏️",
+        "description": "Méthodes qui modifient, créent ou suppriment des données"
+      },
+      {
+        "name": "🔄 Idempotent",
+        "color": "#F59E0B",
+        "icon": "🔄",
+        "description": "Méthodes qui produisent le même résultat même si appelées plusieurs fois"
+      },
+      {
+        "name": "⚠️ Non-idempotent",
+        "color": "#EF4444",
+        "icon": "⚠️",
+        "description": "Méthodes qui peuvent produire des effets différents à chaque appel"
+      },
+      {
+        "name": "📦 Avec corps",
+        "color": "#8B5CF6",
+        "icon": "📦",
+        "description": "Méthodes qui peuvent/envoyent un corps de requête (body)"
+      },
+      {
+        "name": "🚫 Sans corps",
+        "color": "#6B7280",
+        "icon": "🚫",
+        "description": "Méthodes qui n'utilisent pas de corps de requête"
+      }
+    ],
+    "items": [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE",
+      "PATCH"
+    ],
+    "correctCategories": [
+      {
+        "item": "GET",
+        "category": "📖 Lecture"
+      },
+      {
+        "item": "GET",
+        "category": "🔄 Idempotent"
+      },
+      {
+        "item": "GET",
+        "category": "🚫 Sans corps"
+      },
+      {
+        "item": "POST",
+        "category": "✏️ Écriture"
+      },
+      {
+        "item": "POST",
+        "category": "⚠️ Non-idempotent"
+      },
+      {
+        "item": "POST",
+        "category": "📦 Avec corps"
+      },
+      {
+        "item": "PUT",
+        "category": "✏️ Écriture"
+      },
+      {
+        "item": "PUT",
+        "category": "🔄 Idempotent"
+      },
+      {
+        "item": "PUT",
+        "category": "📦 Avec corps"
+      },
+      {
+        "item": "DELETE",
+        "category": "✏️ Écriture"
+      },
+      {
+        "item": "DELETE",
+        "category": "🔄 Idempotent"
+      },
+      {
+        "item": "DELETE",
+        "category": "🚫 Sans corps"
+      },
+      {
+        "item": "PATCH",
+        "category": "✏️ Écriture"
+      },
+      {
+        "item": "PATCH",
+        "category": "⚠️ Non-idempotent"
+      },
+      {
+        "item": "PATCH",
+        "category": "📦 Avec corps"
+      }
+    ]
+  },
+  "chapters": []
+}
+

@@ -1,0 +1,78 @@
+{
+  "type": "game",
+  "title": "API BUILDER – Drag & Drop ⭐",
+  "position": 0,
+  "published": true,
+  "content": {
+    "gameType": "api-builder",
+    "description": "Construisez des routes REST en glissant-déposant des blocs. Le feedback visuel vous indique si votre route est valide (🟢), acceptable (🟠) ou contient un anti-pattern (🔴).",
+    "instructions": "1. Glissez-déposez les blocs de la palette vers les slots des routes\n2. Construisez au moins une route complète (Ressource + Verbe + Endpoint + Status)\n3. Cliquez sur 'Valider les routes' pour voir le feedback\n4. Ajoutez d'autres routes si nécessaire",
+    "resources": [
+      { "id": "user", "label": "User", "value": "users" },
+      { "id": "order", "label": "Order", "value": "orders" },
+      { "id": "product", "label": "Product", "value": "products" },
+      { "id": "book", "label": "Book", "value": "books" },
+      { "id": "author", "label": "Author", "value": "authors" }
+    ],
+    "verbs": [
+      { "id": "get", "label": "GET", "value": "GET" },
+      { "id": "post", "label": "POST", "value": "POST" },
+      { "id": "put", "label": "PUT", "value": "PUT" },
+      { "id": "patch", "label": "PATCH", "value": "PATCH" },
+      { "id": "delete", "label": "DELETE", "value": "DELETE" }
+    ],
+    "endpoints": [
+      { "id": "users-collection", "label": "/users", "value": "/users" },
+      { "id": "users-item", "label": "/users/{id}", "value": "/users/{id}" },
+      { "id": "orders-collection", "label": "/orders", "value": "/orders" },
+      { "id": "orders-item", "label": "/orders/{id}", "value": "/orders/{id}" },
+      { "id": "products-collection", "label": "/products", "value": "/products" },
+      { "id": "products-item", "label": "/products/{id}", "value": "/products/{id}" },
+      { "id": "books-collection", "label": "/books", "value": "/books" },
+      { "id": "books-item", "label": "/books/{id}", "value": "/books/{id}" },
+      { "id": "authors-collection", "label": "/authors", "value": "/authors" },
+      { "id": "authors-item", "label": "/authors/{id}", "value": "/authors/{id}" }
+    ],
+    "statusCodes": [
+      { "id": "200", "label": "200 OK", "value": "200" },
+      { "id": "201", "label": "201 Created", "value": "201" },
+      { "id": "204", "label": "204 No Content", "value": "204" },
+      { "id": "400", "label": "400 Bad Request", "value": "400" },
+      { "id": "404", "label": "404 Not Found", "value": "404" },
+      { "id": "500", "label": "500 Server Error", "value": "500" }
+    ],
+    "correctRoutes": [
+      {
+        "resource": "users",
+        "verb": "GET",
+        "endpoint": "/users",
+        "status": "200"
+      },
+      {
+        "resource": "users",
+        "verb": "GET",
+        "endpoint": "/users/{id}",
+        "status": "200"
+      },
+      {
+        "resource": "users",
+        "verb": "POST",
+        "endpoint": "/users",
+        "status": "201"
+      },
+      {
+        "resource": "users",
+        "verb": "PUT",
+        "endpoint": "/users/{id}",
+        "status": "200"
+      },
+      {
+        "resource": "users",
+        "verb": "DELETE",
+        "endpoint": "/users/{id}",
+        "status": "204"
+      }
+    ]
+  }
+}
+

@@ -1,0 +1,48 @@
+{
+  "type": "game",
+  "title": "Concepts OpenAPI et leurs définitions",
+  "position": 0,
+  "published": true,
+  "content": {
+    "gameType": "connection",
+    "leftColumn": [
+      "OpenAPI Specification",
+      "Swagger UI",
+      "operationId",
+      "schema",
+      "components",
+      "path parameters",
+      "query parameters",
+      "requestBody",
+      "responses",
+      "Zod"
+    ],
+    "rightColumn": [
+      "Spécification standardisée pour décrire les APIs REST",
+      "Interface interactive pour tester et documenter une API",
+      "Identifiant unique pour chaque opération dans OpenAPI",
+      "Définition de la structure des données (types, propriétés)",
+      "Section réutilisable pour définir schémas, paramètres, réponses",
+      "Paramètres dans l'URL (ex: /tasks/{id})",
+      "Paramètres après le ? dans l'URL (ex: ?limit=10&offset=0)",
+      "Corps de la requête (données envoyées au serveur)",
+      "Définitions des réponses possibles avec codes HTTP",
+      "Bibliothèque TypeScript pour la validation de schémas"
+    ],
+    "correctMatches": [
+      { "left": 0, "right": 0 },
+      { "left": 1, "right": 1 },
+      { "left": 2, "right": 2 },
+      { "left": 3, "right": 3 },
+      { "left": 4, "right": 4 },
+      { "left": 5, "right": 5 },
+      { "left": 6, "right": 6 },
+      { "left": 7, "right": 7 },
+      { "left": 8, "right": 8 },
+      { "left": 9, "right": 9 }
+    ],
+    "description": "Maîtrisez le vocabulaire et les concepts essentiels d'OpenAPI 3 pour créer des APIs bien documentées.",
+    "instructions": "Connectez chaque concept OpenAPI à sa définition correcte. Ces concepts sont fondamentaux pour comprendre la documentation d'API."
+  }
+}
+

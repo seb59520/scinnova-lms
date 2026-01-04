@@ -1,0 +1,2217 @@
+{
+  "title": "Paradigmes d'API : REST, GraphQL, RPC et WebSocket",
+  "description": "Ce cours explore les différents paradigmes d'API qui s'inscrivent dans le modèle client-serveur. Vous découvrirez REST, GraphQL, RPC/gRPC et WebSocket, leurs spécificités, leurs avantages et leurs cas d'usage.",
+  "status": "draft",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3B82F6",
+    "secondaryColor": "#8B5CF6",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Fondamentaux - Le modèle client-serveur",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#3B82F6",
+        "secondaryColor": "#8B5CF6"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 - Séparation des responsabilités",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Comprendre la base commune à tous les paradigmes d'API : le modèle client-serveur",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "Le modèle client-serveur : fondation des API" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Tous les paradigmes d'API s'inscrivent dans le " },
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "modèle fondamental du client-serveur" },
+                    { "type": "text", "text": ", où les responsabilités sont clairement séparées." }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Rôle du client" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Gère l'interface utilisateur" },
+                            { "type": "text", "text": " : Présentation visuelle, interactions, expérience utilisateur" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Gère les interactions utilisateur" },
+                            { "type": "text", "text": " : Clics, saisies, navigation, validation côté client" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Envoie des requêtes" },
+                            { "type": "text", "text": " au serveur pour obtenir ou modifier des données" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Rôle du serveur" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Centralise la logique métier" },
+                            { "type": "text", "text": " : Règles de traitement, validations, calculs complexes" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Gère l'accès aux données" },
+                            { "type": "text", "text": " : Base de données, fichiers, services externes" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Applique les règles de sécurité" },
+                            { "type": "text", "text": " : Authentification, autorisation, validation, protection des données" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Pourquoi cette séparation ?" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Cette séparation claire permet de :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Sécuriser les données sensibles (jamais exposées directement au client)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Centraliser la logique métier (une seule source de vérité)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Faciliter la maintenance et les mises à jour" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Permettre la scalabilité (plusieurs clients, un serveur)" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.2 - Les paradigmes d'API : une question d'architecture",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Introduction aux différents paradigmes et leur raison d'être",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "Pourquoi plusieurs paradigmes ?" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Sur cette base commune du client-serveur, il existe " },
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "plusieurs paradigmes d'API" },
+                    { "type": "text", "text": ", chacun proposant une manière spécifique de concevoir et d'organiser les échanges entre client et serveur." }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Il n'existe pas de paradigme universel" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Le choix d'une API est une " },
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "décision d'architecture" },
+                    { "type": "text", "text": " qui dépend de :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Le contexte fonctionnel" },
+                            { "type": "text", "text": " : Quels sont les besoins métier ?" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Les contraintes techniques" },
+                            { "type": "text", "text": " : Infrastructure, technologies existantes" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Les besoins de performance" },
+                            { "type": "text", "text": " : Latence, débit, temps réel" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Les exigences de sécurité" },
+                            { "type": "text", "text": " : Niveau de protection requis" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Les paradigmes que nous allons explorer" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "REST" },
+                            { "type": "text", "text": " : Orienté ressources, basé sur HTTP" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "GraphQL" },
+                            { "type": "text", "text": " : Orienté données, schéma typé" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "RPC / gRPC" },
+                            { "type": "text", "text": " : Orienté actions, haute performance" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "WebSocket" },
+                            { "type": "text", "text": " : Communication temps réel, bidirectionnelle" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "slide",
+          "title": "1.3 - Schéma du modèle client-serveur",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Support visuel illustrant la séparation des responsabilités"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : REST - Orienté ressources",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#059669"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 - Principes fondamentaux de REST",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Comprendre l'approche REST et ses principes",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "REST : Representational State Transfer" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Le paradigme REST repose sur une " },
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "approche orientée ressources" },
+                    { "type": "text", "text": " et s'appuie sur les standards du Web, notamment le protocole HTTP et ses verbes." }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Caractéristiques principales" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Orienté ressources :" },
+                            { "type": "text", "text": " Chaque ressource est identifiée par une URL unique" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Utilise les verbes HTTP :" },
+                            { "type": "text", "text": " GET, POST, PUT, DELETE, PATCH" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Stateless :" },
+                            { "type": "text", "text": " Chaque requête contient toutes les informations nécessaires" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Largement compatible :" },
+                            { "type": "text", "text": " Utilise les standards du Web (HTTP, JSON, URLs)" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Exemple de requête REST" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "http" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "GET /api/users/123 HTTP/1.1\nHost: api.example.com\nAccept: application/json"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "http" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "HTTP/1.1 200 OK\nContent-Type: application/json\n\n{\n  \"id\": 123,\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\"\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Avantages de REST" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Échanges simples et intuitifs" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Compatible avec les infrastructures existantes (caches, proxies)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Facile à comprendre et à documenter" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Choix de référence pour les API publiques" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Cas d'usage" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "REST est particulièrement adapté pour :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Les API publiques et ouvertes" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Les architectures classiques et monolithiques" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Les applications web traditionnelles" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "2.2 - Exercice : Identifier les ressources REST",
+          "position": 2,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Pour un système de gestion de bibliothèque, identifiez les ressources REST et proposez les URLs correspondantes pour :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Récupérer tous les livres" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Récupérer un livre spécifique (ID: 42)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Créer un nouveau livre" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Mettre à jour un livre" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Réponses :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "GET /api/books" },
+                            { "type": "text", "text": " - Récupérer tous les livres" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "GET /api/books/42" },
+                            { "type": "text", "text": " - Récupérer le livre avec l'ID 42" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "POST /api/books" },
+                            { "type": "text", "text": " - Créer un nouveau livre (avec les données dans le body)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "PUT /api/books/42" },
+                            { "type": "text", "text": " ou " },
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "PATCH /api/books/42" },
+                            { "type": "text", "text": " - Mettre à jour le livre 42" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : GraphQL - Orienté données",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#F59E0B",
+        "secondaryColor": "#D97706"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 - L'approche GraphQL",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Comprendre GraphQL et son approche orientée données",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "GraphQL : une approche orientée données" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Le paradigme GraphQL adopte une " },
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "approche orientée données" },
+                    { "type": "text", "text": ". Il permet au client de spécifier précisément les informations dont il a besoin à travers un " },
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "schéma fortement typé" },
+                    { "type": "text", "text": "." }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Caractéristiques principales" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Requête précise :" },
+                            { "type": "text", "text": " Le client demande exactement les champs dont il a besoin" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Schéma typé :" },
+                            { "type": "text", "text": " Structure de données définie et validée" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Point d'entrée unique :" },
+                            { "type": "text", "text": " Une seule URL pour toutes les requêtes" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Flexibilité :" },
+                            { "type": "text", "text": " Adapté aux interfaces complexes avec besoins variés" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Exemple de requête GraphQL" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "graphql" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "query {\n  user(id: 123) {\n    name\n    email\n    posts {\n      title\n      createdAt\n    }\n  }\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Avantages" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Réduction du sur-échantillonnage (over-fetching)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Évite le sous-échantillonnage (under-fetching) - une seule requête pour plusieurs ressources" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Type safety avec le schéma" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Particulièrement adapté aux interfaces complexes" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Défis et considérations" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Complexité côté serveur :" },
+                            { "type": "text", "text": " Nécessite une implémentation soignée des resolvers" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Sécurité :" },
+                            { "type": "text", "text": " Attention aux requêtes profondes (N+1 queries) et aux attaques de complexité" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Performances :" },
+                            { "type": "text", "text": " Gestion du cache plus complexe qu'avec REST" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "game",
+          "title": "3.2 - Jeu : REST vs GraphQL",
+          "position": 2,
+          "published": true,
+          "content": {
+            "gameType": "column-matching",
+            "description": "Associez chaque caractéristique au bon paradigme",
+            "instructions": "Faites correspondre les caractéristiques avec REST ou GraphQL",
+            "leftColumn": [
+              "Orienté ressources",
+              "Point d'entrée unique",
+              "Utilise les verbes HTTP",
+              "Schéma fortement typé",
+              "Stateless",
+              "Requête précise des champs",
+              "Plusieurs URLs par ressource",
+              "Réduction du over-fetching"
+            ],
+            "rightColumn": [
+              "REST",
+              "GraphQL",
+              "REST",
+              "GraphQL",
+              "REST",
+              "GraphQL",
+              "REST",
+              "GraphQL"
+            ],
+            "correctMatches": [
+              { "left": 0, "right": 0 },
+              { "left": 1, "right": 1 },
+              { "left": 2, "right": 0 },
+              { "left": 3, "right": 1 },
+              { "left": 4, "right": 0 },
+              { "left": 5, "right": 1 },
+              { "left": 6, "right": 0 },
+              { "left": 7, "right": 1 }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : RPC / gRPC - Orienté actions",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#8B5CF6",
+        "secondaryColor": "#7C3AED"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 - RPC et gRPC pour la performance",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Comprendre RPC/gRPC et leur approche orientée actions",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "RPC / gRPC : orienté actions" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Le paradigme RPC / gRPC est " },
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "orienté actions" },
+                    { "type": "text", "text": " et vise la " },
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "performance" },
+                    { "type": "text", "text": ". Il repose sur des contrats stricts et des échanges binaires." }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Caractéristiques principales" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Contrats stricts :" },
+                            { "type": "text", "text": " Définition précise des méthodes et paramètres (protobuf)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Échanges binaires :" },
+                            { "type": "text", "text": " Format compact et efficace (Protocol Buffers)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Faible latence :" },
+                            { "type": "text", "text": " Optimisé pour la vitesse" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Forte fiabilité :" },
+                            { "type": "text", "text": " Gestion robuste des erreurs et du streaming" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Exemple de définition gRPC (protobuf)" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "protobuf" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "service UserService {\n  rpc GetUser(GetUserRequest) returns (User);\n  rpc CreateUser(CreateUserRequest) returns (User);\n}\n\nmessage GetUserRequest {\n  int32 id = 1;\n}\n\nmessage User {\n  int32 id = 1;\n  string name = 2;\n  string email = 3;\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Avantages" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Performance optimale (format binaire compact)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Type safety avec les contrats" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Support du streaming (données en temps réel)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Multi-langages (génération de code automatique)" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Cas d'usage" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "RPC / gRPC est principalement utilisé pour :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Communications internes entre micro-services" },
+                            { "type": "text", "text": " : Où la performance est critique" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Environnements où la lisibilité humaine est moins critique que l'efficacité" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Systèmes nécessitant un débit élevé et une faible latence" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Limitations" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Moins lisible que REST (format binaire)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Nécessite des outils spécifiques pour le débogage" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Moins adapté aux API publiques (complexité de déploiement)" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "slide",
+          "title": "4.2 - Comparaison des performances",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Support visuel comparant les performances des différents paradigmes"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : WebSocket - Communication temps réel",
+      "position": 5,
+      "theme": {
+        "primaryColor": "#EF4444",
+        "secondaryColor": "#DC2626"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "5.1 - WebSocket pour le temps réel",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Comprendre WebSocket et la communication bidirectionnelle",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "WebSocket : communication temps réel" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Le paradigme WebSocket répond aux besoins de " },
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "communication temps réel" },
+                    { "type": "text", "text": ". Grâce à une connexion persistante et bidirectionnelle, il permet au serveur de pousser des données vers le client sans attente de requête explicite." }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Caractéristiques principales" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Connexion persistante :" },
+                            { "type": "text", "text": " Une seule connexion maintenue ouverte" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Bidirectionnelle :" },
+                            { "type": "text", "text": " Client et serveur peuvent envoyer des messages à tout moment" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Push du serveur :" },
+                            { "type": "text", "text": " Le serveur peut envoyer des données sans requête préalable" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Faible overhead :" },
+                            { "type": "text", "text": " Pas besoin de rétablir la connexion à chaque échange" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Exemple d'utilisation WebSocket" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "javascript" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "// Client\nconst socket = new WebSocket('ws://example.com/ws');\n\nsocket.onopen = () => {\n  console.log('Connexion établie');\n};\n\nsocket.onmessage = (event) => {\n  console.log('Message reçu:', event.data);\n};\n\n// Envoyer un message\nsocket.send(JSON.stringify({ type: 'subscribe', channel: 'notifications' }));"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Cas d'usage" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "WebSocket est particulièrement adapté aux cas d'usage suivants :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Notifications en temps réel" },
+                            { "type": "text", "text": " : Alertes, messages, mises à jour" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Tableaux de bord en temps réel" },
+                            { "type": "text", "text": " : Métriques, statistiques, monitoring" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Applications interactives" },
+                            { "type": "text", "text": " : Chat, jeux multijoueurs, collaboration" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Trading, monitoring de systèmes" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Comparaison avec HTTP" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Contrairement à HTTP qui suit un modèle requête-réponse, WebSocket permet :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Une communication continue sans reconnexion" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Le serveur peut initier la communication" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Réduction de la latence (pas d'overhead de connexion)" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "5.2 - Exercice : Quand utiliser WebSocket ?",
+          "position": 2,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Pour chacun des scénarios suivants, indiquez si WebSocket serait approprié ou si REST/GraphQL serait suffisant :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Récupérer la liste des utilisateurs d'une application" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Afficher les prix d'actions en temps réel sur un tableau de bord" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Créer un nouveau produit dans un catalogue" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Recevoir des notifications de messages instantanés" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Réponses :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "REST/GraphQL suffisant" },
+                            { "type": "text", "text": " - Opération ponctuelle, pas besoin de temps réel" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "WebSocket approprié" },
+                            { "type": "text", "text": " - Données qui changent constamment, besoin de mise à jour en temps réel" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "REST/GraphQL suffisant" },
+                            { "type": "text", "text": " - Action ponctuelle, pas besoin de communication continue" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "WebSocket approprié" },
+                            { "type": "text", "text": " - Le serveur doit pouvoir pousser les notifications sans attendre de requête" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 6 : Comparaison et choix d'architecture",
+      "position": 6,
+      "theme": {
+        "primaryColor": "#6366F1",
+        "secondaryColor": "#4F46E5"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "6.1 - Tableau comparatif des paradigmes",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Synthèse comparative des différents paradigmes",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "Comparaison des paradigmes d'API" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Voici un tableau récapitulatif des caractéristiques de chaque paradigme :" }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "REST" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Orientation :" },
+                            { "type": "text", "text": " Ressources" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Format :" },
+                            { "type": "text", "text": " HTTP + JSON" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Cas d'usage :" },
+                            { "type": "text", "text": " API publiques, architectures classiques" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "GraphQL" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Orientation :" },
+                            { "type": "text", "text": " Données" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Format :" },
+                            { "type": "text", "text": " HTTP + GraphQL (schéma typé)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Cas d'usage :" },
+                            { "type": "text", "text": " Interfaces complexes, besoins variés" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "RPC / gRPC" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Orientation :" },
+                            { "type": "text", "text": " Actions" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Format :" },
+                            { "type": "text", "text": " Binaire (Protocol Buffers)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Cas d'usage :" },
+                            { "type": "text", "text": " Micro-services internes, haute performance" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "WebSocket" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Orientation :" },
+                            { "type": "text", "text": " Communication temps réel" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Format :" },
+                            { "type": "text", "text": " Connexion persistante bidirectionnelle" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Cas d'usage :" },
+                            { "type": "text", "text": " Notifications, tableaux de bord temps réel, applications interactives" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "6.2 - Comment choisir le bon paradigme ?",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Guide pour choisir le paradigme adapté à son contexte",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "Critères de choix" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Il n'existe pas de paradigme universel. Le choix d'une API est une " },
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "décision d'architecture" },
+                    { "type": "text", "text": " qui dépend de plusieurs facteurs :" }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "1. Contexte fonctionnel" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Quels sont les besoins métier ?" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Quelle est la complexité des interactions ?" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Y a-t-il besoin de communication temps réel ?" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "2. Contraintes techniques" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Infrastructure existante (compatibilité)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Technologies déjà en place" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Compétences de l'équipe" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "3. Besoins de performance" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Latence acceptable ?" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Débit requis ?" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Temps réel nécessaire ?" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "4. Exigences de sécurité" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Niveau de protection requis" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "API publique ou interne ?" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Gestion de l'authentification et de l'autorisation" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Approche hybride" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Il est également possible de " },
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "combiner plusieurs paradigmes" },
+                    { "type": "text", "text": " dans une même application :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "REST pour les opérations CRUD classiques" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "GraphQL pour les interfaces complexes" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "gRPC pour les communications internes entre micro-services" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "WebSocket pour les fonctionnalités temps réel" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "Conclusion" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Comprendre ces paradigmes permet de concevoir des API adaptées, évolutives et cohérentes avec les objectifs du système d'information. Le choix n'est pas exclusif : chaque paradigme a sa place selon le contexte." }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "activity",
+          "title": "6.3 - Activité : Concevoir une architecture d'API",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Exercice pratique de conception d'architecture",
+            "instructions": "Pour un système de e-commerce, concevez une architecture d'API en choisissant les paradigmes appropriés pour :\n\n1. Consultation du catalogue de produits\n2. Gestion du panier\n3. Traitement des commandes\n4. Notifications en temps réel (expédition, livraison)\n5. Communication entre micro-services (gestion des stocks, facturation)\n\nJustifiez vos choix pour chaque cas d'usage."
+          }
+        },
+        {
+          "type": "game",
+          "title": "6.4 - Jeu final : Associer paradigme et cas d'usage",
+          "position": 4,
+          "published": true,
+          "content": {
+            "gameType": "column-matching",
+            "description": "Associez chaque cas d'usage au paradigme d'API le plus approprié",
+            "instructions": "Faites correspondre les cas d'usage avec le paradigme d'API recommandé",
+            "leftColumn": [
+              "API publique pour un service de météo",
+              "Interface complexe avec besoins de données variés",
+              "Communication entre services de facturation et stock",
+              "Chat en temps réel dans une application",
+              "Création d'un nouveau compte utilisateur",
+              "Tableau de bord avec métriques en direct",
+              "Récupération d'une liste d'articles de blog",
+              "Système de trading haute fréquence"
+            ],
+            "rightColumn": [
+              "REST",
+              "GraphQL",
+              "RPC/gRPC",
+              "WebSocket",
+              "REST",
+              "WebSocket",
+              "REST",
+              "RPC/gRPC"
+            ],
+            "correctMatches": [
+              { "left": 0, "right": 0 },
+              { "left": 1, "right": 1 },
+              { "left": 2, "right": 2 },
+              { "left": 3, "right": 3 },
+              { "left": 4, "right": 0 },
+              { "left": 5, "right": 3 },
+              { "left": 6, "right": 0 },
+              { "left": 7, "right": 2 }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
+

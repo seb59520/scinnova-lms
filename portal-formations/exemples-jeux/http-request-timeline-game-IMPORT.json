@@ -1,0 +1,26 @@
+{
+  "type": "game",
+  "title": "2.3 - Jeu : Cycle de vie d'une requête HTTP",
+  "position": 3,
+  "published": true,
+  "content": {
+    "gameType": "timeline",
+    "description": "Reconstituez le cycle de vie complet d'une requête HTTP, de l'initiation par le client jusqu'à l'affichage de la réponse. Comprenez chaque étape du processus !",
+    "instructions": "Placez les étapes dans l'ordre chronologique correct sur la timeline. Cliquez sur une étape, puis sur un emplacement de la timeline pour la placer.",
+    "events": [
+      "L'utilisateur clique sur un bouton dans l'interface",
+      "Le client (navigateur/app) prépare la requête HTTP",
+      "La requête HTTP est envoyée au serveur via le réseau",
+      "Le serveur reçoit et parse la requête",
+      "Le serveur exécute la logique métier (validation, traitement)",
+      "Le serveur interroge la base de données si nécessaire",
+      "Le serveur génère la réponse HTTP avec les données",
+      "La réponse HTTP est envoyée au client",
+      "Le client reçoit et parse la réponse",
+      "Le client met à jour l'interface utilisateur avec les données"
+    ],
+    "correctOrder": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  },
+  "chapters": []
+}
+

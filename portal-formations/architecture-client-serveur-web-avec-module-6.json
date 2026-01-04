@@ -1,0 +1,4797 @@
+{
+  "title": "Architecture client–serveur et bases du Web",
+  "description": "Ce cours vous présente les fondamentaux de l'architecture client-serveur et les bases du Web. Vous découvrirez comment les applications web communiquent, les protocoles utilisés, et les technologies impliquées.",
+  "status": "draft",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3B82F6",
+    "secondaryColor": "#8B5CF6",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Introduction à l'architecture client-serveur",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#3B82F6",
+        "secondaryColor": "#8B5CF6"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 - Qu'est-ce que l'architecture client-serveur ?",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Introduction aux concepts fondamentaux de l'architecture client-serveur",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Définition de l'architecture client-serveur"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "L'architecture client-serveur est un modèle de communication dans lequel un "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "client"
+                    },
+                    {
+                      "type": "text",
+                      "text": " (ordinateur, smartphone, tablette) fait des "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "requêtes"
+                    },
+                    {
+                      "type": "text",
+                      "text": " à un "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "serveur"
+                    },
+                    {
+                      "type": "text",
+                      "text": " (ordinateur distant) qui traite ces requêtes et renvoie des "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "réponses"
+                    },
+                    {
+                      "type": "text",
+                      "text": "."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les composants principaux"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Le client :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Interface utilisateur qui envoie des requêtes (navigateur web, application mobile)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Le serveur :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Machine qui reçoit, traite les requêtes et renvoie des réponses"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Le réseau :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Infrastructure permettant la communication (Internet, LAN)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Avantages de cette architecture"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Centralisation des données et de la logique métier"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Sécurité renforcée (contrôle côté serveur)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Mise à jour centralisée des applications"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Scalabilité (possibilité de gérer de nombreux clients)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "slide",
+          "title": "1.2 - Schéma de l'architecture client-serveur",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Support visuel illustrant le flux de communication client-serveur"
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "1.3 - Quiz : Architecture client-serveur",
+          "position": 3,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Quel est le rôle principal du serveur dans l'architecture client-serveur ?"
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Le serveur a pour rôle principal de recevoir les requêtes des clients, de les traiter (accès aux données, exécution de la logique métier), et de renvoyer des réponses appropriées. Il centralise les ressources et assure la sécurité des données."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : Protocoles et standards du Web",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#059669"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 - Le protocole HTTP",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Comprendre le protocole HTTP, fondement de la communication web",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "HTTP : HyperText Transfer Protocol"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "HTTP est le protocole de communication utilisé sur le Web. Il définit comment les clients et serveurs échangent des informations."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les méthodes HTTP principales"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "GET :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Récupérer des données (lecture seule)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "POST :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Envoyer des données pour créer une ressource"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "PUT :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Mettre à jour complètement une ressource"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "DELETE :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Supprimer une ressource"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Structure d'une requête HTTP"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "http"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "GET /api/users HTTP/1.1\nHost: example.com\nUser-Agent: Mozilla/5.0\nAccept: application/json"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Structure d'une réponse HTTP"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "http"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "HTTP/1.1 200 OK\nContent-Type: application/json\nContent-Length: 123\n\n{\n  \"users\": [...]\n}"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "2.2 - HTTPS et sécurité",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "HTTPS et les mécanismes de sécurité sur le Web",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "HTTPS : HTTP sécurisé"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "HTTPS est la version sécurisée de HTTP. Il utilise "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "TLS/SSL"
+                    },
+                    {
+                      "type": "text",
+                      "text": " (Transport Layer Security / Secure Sockets Layer) pour chiffrer les communications."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Avantages de HTTPS"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Chiffrement des données échangées"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Authentification du serveur (certificat)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Intégrité des données (détection de modification)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Confiance accrue pour les utilisateurs"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "game",
+          "title": "2.3 - Jeu : Associer les méthodes HTTP",
+          "position": 3,
+          "published": true,
+          "content": {
+            "gameType": "column-matching",
+            "description": "Associez chaque méthode HTTP à son action correspondante",
+            "instructions": "Faites glisser les éléments de la colonne de gauche vers ceux de la colonne de droite",
+            "leftColumn": [
+              "GET",
+              "POST",
+              "PUT",
+              "DELETE",
+              "PATCH"
+            ],
+            "rightColumn": [
+              "Récupérer une ressource",
+              "Créer une nouvelle ressource",
+              "Mettre à jour complètement une ressource",
+              "Supprimer une ressource",
+              "Mettre à jour partiellement une ressource"
+            ],
+            "correctMatches": [
+              {
+                "left": 0,
+                "right": 0
+              },
+              {
+                "left": 1,
+                "right": 1
+              },
+              {
+                "left": 2,
+                "right": 2
+              },
+              {
+                "left": 3,
+                "right": 3
+              },
+              {
+                "left": 4,
+                "right": 4
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : Communication client-serveur",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#F59E0B",
+        "secondaryColor": "#D97706"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 - Le cycle requête-réponse",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Comprendre le cycle complet d'une communication client-serveur",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Le cycle requête-réponse"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Toute communication client-serveur suit un cycle standard :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": {
+                    "start": 1
+                  },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Le client envoie une requête"
+                            },
+                            {
+                              "type": "text",
+                              "text": " : Il formule sa demande (URL, méthode HTTP, en-têtes, corps)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Le serveur traite la requête"
+                            },
+                            {
+                              "type": "text",
+                              "text": " : Il analyse la demande, exécute la logique métier, accède aux données"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Le serveur envoie une réponse"
+                            },
+                            {
+                              "type": "text",
+                              "text": " : Code de statut, en-têtes, corps de la réponse"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Le client traite la réponse"
+                            },
+                            {
+                              "type": "text",
+                              "text": " : Affichage, stockage, ou traitement des données reçues"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Codes de statut HTTP"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "2xx (Succès) :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " 200 OK, 201 Created, 204 No Content"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "3xx (Redirection) :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " 301 Moved Permanently, 302 Found"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "4xx (Erreur client) :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " 400 Bad Request, 404 Not Found, 401 Unauthorized"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "5xx (Erreur serveur) :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " 500 Internal Server Error, 503 Service Unavailable"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "3.2 - Formats de données : JSON, XML, HTML",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Les différents formats utilisés pour échanger des données",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Formats de données sur le Web"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "JSON (JavaScript Object Notation)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Format léger et lisible, très utilisé pour les APIs modernes."
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "json"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"name\": \"John Doe\",\n  \"age\": 30,\n  \"city\": \"Paris\"\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "XML (eXtensible Markup Language)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Format structuré avec balises, plus verbeux mais très structuré."
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "xml"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "<user>\n  <name>John Doe</name>\n  <age>30</age>\n  <city>Paris</city>\n</user>"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "HTML (HyperText Markup Language)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Format utilisé pour structurer le contenu des pages web affichées dans le navigateur."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "slide",
+          "title": "3.3 - Schéma du cycle requête-réponse",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Support visuel illustrant le cycle complet de communication"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : Technologies côté client et serveur",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#8B5CF6",
+        "secondaryColor": "#7C3AED"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 - Technologies côté client",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Les technologies utilisées dans le navigateur",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Technologies frontend"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "HTML, CSS, JavaScript"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "HTML :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Structure et contenu de la page"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "CSS :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Mise en forme et présentation"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "JavaScript :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Interactivité et communication avec le serveur"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "API Fetch et XMLHttpRequest"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ces APIs permettent à JavaScript d'envoyer des requêtes HTTP au serveur."
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "javascript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "// Exemple avec Fetch API\nfetch('https://api.example.com/users')\n  .then(response => response.json())\n  .then(data => console.log(data));"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "4.2 - Technologies côté serveur",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Les technologies utilisées sur le serveur",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Technologies backend"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Langages et frameworks"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Node.js :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " JavaScript côté serveur (Express, NestJS)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Python :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Django, Flask, FastAPI"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Java :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Spring Boot"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "PHP :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Laravel, Symfony"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Bases de données"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les serveurs utilisent des bases de données pour stocker et récupérer les informations :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Bases relationnelles : PostgreSQL, MySQL, SQL Server"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Bases NoSQL : MongoDB, Redis, Cassandra"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "game",
+          "title": "4.3 - Jeu : Client ou Serveur ?",
+          "position": 3,
+          "published": true,
+          "content": {
+            "gameType": "column-matching",
+            "description": "Associez chaque technologie à son côté (client ou serveur)",
+            "instructions": "Faites correspondre les technologies avec leur environnement d'exécution",
+            "leftColumn": [
+              "HTML",
+              "Node.js",
+              "CSS",
+              "PostgreSQL",
+              "JavaScript (navigateur)",
+              "Express.js",
+              "React",
+              "MongoDB"
+            ],
+            "rightColumn": [
+              "Client",
+              "Serveur",
+              "Client",
+              "Serveur",
+              "Client",
+              "Serveur",
+              "Client",
+              "Serveur"
+            ],
+            "correctMatches": [
+              {
+                "left": 0,
+                "right": 0
+              },
+              {
+                "left": 1,
+                "right": 1
+              },
+              {
+                "left": 2,
+                "right": 0
+              },
+              {
+                "left": 3,
+                "right": 1
+              },
+              {
+                "left": 4,
+                "right": 0
+              },
+              {
+                "left": 5,
+                "right": 1
+              },
+              {
+                "left": 6,
+                "right": 0
+              },
+              {
+                "left": 7,
+                "right": 1
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : Exercices pratiques",
+      "position": 5,
+      "theme": {
+        "primaryColor": "#EF4444",
+        "secondaryColor": "#DC2626"
+      },
+      "items": [
+        {
+          "type": "tp",
+          "title": "5.1 - TP : Analyser une requête HTTP",
+          "position": 1,
+          "published": true,
+          "content": {
+            "instructions": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📋 Objectif pédagogique"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "À l'issue de ce TP, vous serez capable de :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utiliser les outils de développement du navigateur pour inspecter les requêtes HTTP"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifier et comprendre les composants d'une requête HTTP (méthode, URL, headers, body)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Analyser les réponses HTTP (code de statut, headers, body)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comprendre le cycle de vie d'une requête HTTP"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Détecter les problèmes courants (erreurs 404, 500, timeouts)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🎯 Prérequis"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Navigateur web moderne (Chrome, Firefox, Edge, Safari)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Connaissances de base sur le web (URL, navigateur)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Aucune installation logicielle requise"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📚 Partie 1 : Préparation de l'environnement"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 1.1 : Ouvrir les outils de développement"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Action à réaliser :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": {
+                    "start": 1
+                  },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Ouvrez votre navigateur (Chrome recommandé pour ce TP)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Appuyez sur la touche "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "F12"
+                            },
+                            {
+                              "type": "text",
+                              "text": " (ou "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Cmd+Option+I"
+                            },
+                            {
+                              "type": "text",
+                              "text": " sur Mac, "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Ctrl+Shift+I"
+                            },
+                            {
+                              "type": "text",
+                              "text": " sur Windows/Linux)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Vous devriez voir un panneau s'ouvrir en bas ou sur le côté de votre navigateur"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Vérification :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "✅ Le panneau des outils de développement est visible"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "✅ Vous voyez plusieurs onglets : Elements, Console, Sources, Network, etc."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 1.2 : Accéder à l'onglet Network (Réseau)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Action à réaliser :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": {
+                    "start": 1
+                  },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Dans le panneau des outils de développement, cliquez sur l'onglet "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "\"Network\""
+                            },
+                            {
+                              "type": "text",
+                              "text": " (ou "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "\"Réseau\""
+                            },
+                            {
+                              "type": "text",
+                              "text": " en français)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Si vous ne voyez pas cet onglet, il peut être caché sous le menu "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "⋮"
+                            },
+                            {
+                              "type": "text",
+                              "text": " (trois points) → sélectionnez-le"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Ce que vous voyez :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Name"
+                            },
+                            {
+                              "type": "text",
+                              "text": " : Nom de la ressource (fichier, API, etc.)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Status"
+                            },
+                            {
+                              "type": "text",
+                              "text": " : Code de statut HTTP (200, 404, etc.)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Type"
+                            },
+                            {
+                              "type": "text",
+                              "text": " : Type de ressource (document, xhr, fetch, etc.)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Size"
+                            },
+                            {
+                              "type": "text",
+                              "text": " : Taille de la réponse"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Time"
+                            },
+                            {
+                              "type": "text",
+                              "text": " : Temps de chargement"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📚 Partie 2 : Capturer une requête simple"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 2.1 : Nettoyer l'historique et recharger"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Action à réaliser :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": {
+                    "start": 1
+                  },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Cliquez sur le bouton "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "🚫"
+                            },
+                            {
+                              "type": "text",
+                              "text": " (Clear) pour effacer l'historique actuel"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Naviguez vers une page web simple, par exemple : "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "code"
+                                }
+                              ],
+                              "text": "https://jsonplaceholder.typicode.com/posts/1"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Observez la liste des requêtes qui apparaissent dans l'onglet Network"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 2.2 : Sélectionner et examiner la requête principale"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Action à réaliser :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": {
+                    "start": 1
+                  },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Cliquez sur la première requête dans la liste (généralement celle qui correspond à l'URL de la page)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Un panneau de détails s'ouvre en dessous avec plusieurs onglets : Headers, Preview, Response, etc."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📚 Partie 3 : Analyser les composants de la requête"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 3.1 : Examiner les Headers de la requête (Request Headers)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Action à réaliser :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": {
+                    "start": 1
+                  },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Dans le panneau de détails, cliquez sur l'onglet "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "\"Headers\""
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Faites défiler jusqu'à la section "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "\"Request Headers\""
+                            },
+                            {
+                              "type": "text",
+                              "text": " (En-têtes de requête)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifiez et notez les en-têtes suivants :"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "En-têtes à identifier :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "text"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Host              : Domaine du serveur\nUser-Agent        : Identifiant du navigateur\nAccept            : Types de contenu acceptés\nAccept-Language   : Langues préférées\nAccept-Encoding   : Encodages acceptés\nConnection        : Type de connexion\nReferer           : Page d'origine (si applicable)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 3.2 : Identifier la méthode HTTP et l'URL"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Action à réaliser :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": {
+                    "start": 1
+                  },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Dans l'onglet "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "\"Headers\""
+                            },
+                            {
+                              "type": "text",
+                              "text": ", regardez la section "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "\"General\""
+                            },
+                            {
+                              "type": "text",
+                              "text": " (en haut)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifiez :"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    {
+                                      "type": "text",
+                                      "marks": [
+                                        {
+                                          "type": "bold"
+                                        }
+                                      ],
+                                      "text": "Request Method"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "text": " : La méthode HTTP utilisée (GET, POST, PUT, DELETE, etc.)"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    {
+                                      "type": "text",
+                                      "marks": [
+                                        {
+                                          "type": "bold"
+                                        }
+                                      ],
+                                      "text": "Request URL"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "text": " : L'URL complète de la requête"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    {
+                                      "type": "text",
+                                      "marks": [
+                                        {
+                                          "type": "bold"
+                                        }
+                                      ],
+                                      "text": "Status Code"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "text": " : Le code de statut de la réponse (200, 404, 500, etc.)"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📚 Partie 4 : Analyser la réponse HTTP"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 4.1 : Examiner les Headers de la réponse (Response Headers)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Action à réaliser :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": {
+                    "start": 1
+                  },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Dans l'onglet "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "\"Headers\""
+                            },
+                            {
+                              "type": "text",
+                              "text": ", faites défiler jusqu'à "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "\"Response Headers\""
+                            },
+                            {
+                              "type": "text",
+                              "text": " (En-têtes de réponse)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifiez et notez les en-têtes suivants :"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "text"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Content-Type    : Type de contenu de la réponse\nContent-Length  : Taille du contenu en octets\nDate            : Date et heure de la réponse\nServer          : Logiciel serveur utilisé\nCache-Control   : Instructions de mise en cache\nStatus          : Code de statut HTTP"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 4.2 : Examiner le corps de la réponse (Response Body)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Action à réaliser :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": {
+                    "start": 1
+                  },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Cliquez sur l'onglet "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "\"Response\""
+                            },
+                            {
+                              "type": "text",
+                              "text": " (ou "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "\"Preview\""
+                            },
+                            {
+                              "type": "text",
+                              "text": " pour un affichage formaté)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Examinez le contenu de la réponse"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "json"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"userId\": 1,\n  \"id\": 1,\n  \"title\": \"sunt aut facere...\",\n  \"body\": \"quia et suscipit...\"\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📚 Partie 5 : Analyser différents types de requêtes"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 5.1 : Analyser une requête POST avec corps"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Action à réaliser :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": {
+                    "start": 1
+                  },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Dans l'onglet Network, assurez-vous que "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "\"Preserve log\""
+                            },
+                            {
+                              "type": "text",
+                              "text": " est coché"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Ouvrez la console JavaScript (onglet "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Console"
+                            },
+                            {
+                              "type": "text",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Exécutez cette commande pour faire une requête POST :"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "javascript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "fetch('https://jsonplaceholder.typicode.com/posts', {\n  method: 'POST',\n  headers: {\n    'Content-Type': 'application/json',\n  },\n  body: JSON.stringify({\n    title: 'Mon nouveau post',\n    body: 'Contenu de mon post',\n    userId: 1\n  })\n})\n.then(response => response.json())\n.then(data => console.log('Réponse:', data));"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 5.2 : Analyser une requête avec paramètres de requête"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "javascript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "fetch('https://jsonplaceholder.typicode.com/posts?userId=1&_limit=5')\n  .then(response => response.json())\n  .then(data => console.log('Réponse:', data));"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 5.3 : Analyser une requête avec erreur (404, 500)"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "javascript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "fetch('https://jsonplaceholder.typicode.com/posts/99999')\n  .then(response => {\n    console.log('Status:', response.status);\n    return response.json();\n  })\n  .then(data => console.log('Réponse:', data))\n  .catch(error => console.error('Erreur:', error));"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📚 Partie 6 : Filtrer et rechercher dans les requêtes"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 6.1 : Utiliser les filtres de type"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "En haut de l'onglet Network, vous voyez des boutons de filtre : "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "All"
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "XHR"
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "JS"
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "CSS"
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Img"
+                    },
+                    {
+                      "type": "text",
+                      "text": ", etc."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Checklist de validation"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cochez chaque point une fois complété :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "[ ] J'ai ouvert les outils de développement (F12)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "[ ] J'ai accédé à l'onglet Network"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "[ ] J'ai identifié au moins 5 headers de requête"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "[ ] J'ai identifié la méthode HTTP et l'URL"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "[ ] J'ai identifié au moins 5 headers de réponse"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "[ ] J'ai examiné le corps de la réponse"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "[ ] J'ai analysé une requête POST avec corps"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "[ ] J'ai analysé une requête avec erreur (404 ou 500)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "checklist": [
+              "Ouvrir les outils de développement (F12)",
+              "Accéder à l'onglet Network (Réseau)",
+              "Configurer les options d'affichage (Preserve log)",
+              "Capturer une requête simple en naviguant vers une page",
+              "Sélectionner et examiner une requête dans la liste",
+              "Identifier au moins 5 headers de requête (Host, User-Agent, Accept, etc.)",
+              "Identifier la méthode HTTP (GET, POST, etc.) et l'URL complète",
+              "Identifier le code de statut HTTP (200, 404, 500, etc.)",
+              "Identifier au moins 5 headers de réponse (Content-Type, Content-Length, etc.)",
+              "Examiner le corps de la réponse (Response ou Preview)",
+              "Analyser une requête POST avec corps en utilisant la console JavaScript",
+              "Analyser une requête avec paramètres de requête (query string)",
+              "Analyser une requête avec erreur (404 ou 500)",
+              "Utiliser les filtres de type (XHR, JS, CSS, etc.)",
+              "Utiliser la fonction de recherche dans l'onglet Network",
+              "Exporter une requête en cURL (clic droit → Copy as cURL)"
+            ]
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "5.2 - Exercice : Créer une requête Fetch",
+          "position": 2,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Écrivez une requête Fetch pour récupérer des données depuis l'API suivante :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "text"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "URL: https://api.example.com/users\nMéthode: GET"
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "javascript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "fetch('https://api.example.com/users')\n  .then(response => {\n    if (!response.ok) {\n      throw new Error('Erreur réseau');\n    }\n    return response.json();\n  })\n  .then(data => {\n    console.log('Données reçues:', data);\n  })\n  .catch(error => {\n    console.error('Erreur:', error);\n  });"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ou avec async/await :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "javascript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "async function fetchUsers() {\n  try {\n    const response = await fetch('https://api.example.com/users');\n    if (!response.ok) {\n      throw new Error('Erreur réseau');\n    }\n    const data = await response.json();\n    console.log('Données reçues:', data);\n  } catch (error) {\n    console.error('Erreur:', error);\n  }\n}"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "activity",
+          "title": "5.3 - Activité : Schéma d'architecture",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Créez un schéma illustrant l'architecture client-serveur d'une application web moderne",
+            "instructions": "Dessinez ou utilisez un outil de diagramme pour représenter :\n- Le client (navigateur)\n- Le serveur web\n- La base de données\n- Les flux de communication\n- Les protocoles utilisés"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 6 : Du client-serveur aux API",
+      "position": 6,
+      "theme": {
+        "primaryColor": "#6366F1",
+        "secondaryColor": "#4F46E5"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "6.1 - Introduction aux API : Le pont entre client et serveur",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Comprendre comment les API utilisent l'architecture client-serveur pour exposer des fonctionnalités",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Qu'est-ce qu'une API ?"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Une "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "API (Application Programming Interface)"
+                    },
+                    {
+                      "type": "text",
+                      "text": " est une interface qui permet à un client de communiquer avec un serveur de manière standardisée. Elle définit comment les applications peuvent demander des données ou effectuer des actions sur le serveur."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "API dans l'architecture client-serveur"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dans l'architecture client-serveur que nous avons vue précédemment, l'API est la "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "couche d'abstraction"
+                    },
+                    {
+                      "type": "text",
+                      "text": " qui permet au client de communiquer avec le serveur sans connaître les détails d'implémentation internes."
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "text"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "┌─────────────┐\n│   Client    │ (Navigateur, App mobile)\n│  (Frontend) │\n└──────┬──────┘\n       │\n       │ Requête HTTP (GET, POST, etc.)\n       │\n       ▼\n┌─────────────────┐\n│      API        │ ← Interface standardisée\n│  (Endpoints)    │\n└────────┬────────┘\n         │\n         │ Traitement\n         │\n         ▼\n┌─────────────────┐\n│    Serveur      │ (Logique métier)\n│   (Backend)     │\n└────────┬────────┘\n         │\n         │ Requête SQL\n         │\n         ▼\n┌─────────────────┐\n│ Base de données │\n└─────────────────┘"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exemple concret : API REST"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Une API REST utilise les méthodes HTTP que nous avons vues (GET, POST, PUT, DELETE) pour exposer des "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "endpoints"
+                    },
+                    {
+                      "type": "text",
+                      "text": " (points d'accès) que le client peut appeler."
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "javascript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "// Le client envoie une requête HTTP\nfetch('https://api.example.com/users')\n  .then(response => response.json())\n  .then(data => {\n    // Le serveur répond avec des données JSON\n    console.log(data); // [{ id: 1, name: 'John' }, ...]\n  });"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Avantages des API"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Réutilisabilité :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Une même API peut être utilisée par plusieurs clients (web, mobile, desktop)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Séparation des responsabilités :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Le client se concentre sur l'interface, le serveur sur la logique métier"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Évolutivité :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " On peut modifier le serveur sans impacter les clients (tant que l'API reste compatible)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Standardisation :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Utilisation de protocoles standards (HTTP, JSON) compris par tous"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "6.2 - Endpoints et ressources : Les points d'accès de l'API",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Comprendre les concepts d'endpoints et de ressources dans une API",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Qu'est-ce qu'un endpoint ?"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Un "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "endpoint"
+                    },
+                    {
+                      "type": "text",
+                      "text": " est une URL spécifique que le client peut appeler pour accéder à une ressource ou effectuer une action sur le serveur."
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "text"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "https://api.example.com/users          → Endpoint pour la liste des utilisateurs\nhttps://api.example.com/users/123     → Endpoint pour un utilisateur spécifique\nhttps://api.example.com/products      → Endpoint pour les produits\nhttps://api.example.com/orders        → Endpoint pour les commandes"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Structure d'un endpoint"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Un endpoint est composé de plusieurs parties :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "text"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "https://api.example.com/users/123\n│     │              │      │\n│     │              │      └─ Identifiant de la ressource (ID)\n│     │              └──────── Ressource (users)\n│     └────────────────────── Domaine du serveur\n└──────────────────────────── Protocole (HTTPS)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ressources et méthodes HTTP"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dans une API REST, chaque ressource peut être manipulée avec différentes méthodes HTTP :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "text"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "GET    /users        → Récupérer la liste des utilisateurs\nGET    /users/123     → Récupérer l'utilisateur avec l'ID 123\nPOST   /users         → Créer un nouvel utilisateur\nPUT    /users/123     → Mettre à jour complètement l'utilisateur 123\nPATCH  /users/123     → Mettre à jour partiellement l'utilisateur 123\nDELETE /users/123     → Supprimer l'utilisateur 123"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exemple complet : Interaction avec une API"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "javascript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "// 1. Récupérer tous les utilisateurs\nfetch('https://api.example.com/users')\n  .then(response => response.json())\n  .then(users => console.log(users));\n\n// 2. Créer un nouvel utilisateur\nfetch('https://api.example.com/users', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    name: 'Alice',\n    email: 'alice@example.com'\n  })\n})\n  .then(response => response.json())\n  .then(newUser => console.log('Utilisateur créé:', newUser));\n\n// 3. Mettre à jour un utilisateur\nfetch('https://api.example.com/users/123', {\n  method: 'PATCH',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({ name: 'Alice Updated' })\n});\n\n// 4. Supprimer un utilisateur\nfetch('https://api.example.com/users/123', {\n  method: 'DELETE'\n});"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "6.3 - JSON dans les API : Le format de données standard",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Comprendre comment JSON est utilisé comme format d'échange dans les API",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Pourquoi JSON dans les API ?"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "JSON (JavaScript Object Notation) est devenu le format standard pour échanger des données dans les API modernes car il est :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Léger et lisible"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Facilement parsable par JavaScript (et la plupart des langages)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Supporté nativement par les navigateurs"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Plus compact que XML"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Structure d'une réponse API en JSON"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "json"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"John Doe\",\n      \"email\": \"john@example.com\",\n      \"created_at\": \"2024-01-15T10:30:00Z\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Jane Smith\",\n      \"email\": \"jane@example.com\",\n      \"created_at\": \"2024-01-16T14:20:00Z\"\n    }\n  ],\n  \"pagination\": {\n    \"page\": 1,\n    \"per_page\": 10,\n    \"total\": 25\n  }\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "En-tête Content-Type"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Lorsqu'une API renvoie du JSON, elle doit indiquer le type de contenu dans l'en-tête HTTP :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "http"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "HTTP/1.1 200 OK\nContent-Type: application/json\nContent-Length: 245\n\n{\n  \"id\": 1,\n  \"name\": \"John Doe\"\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Envoyer du JSON dans une requête"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "javascript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "// Créer un utilisateur avec des données JSON\nfetch('https://api.example.com/users', {\n  method: 'POST',\n  headers: {\n    'Content-Type': 'application/json'  // Important !\n  },\n  body: JSON.stringify({  // Convertir l'objet JavaScript en JSON\n    name: 'Alice',\n    email: 'alice@example.com',\n    age: 30\n  })\n})\n  .then(response => response.json())  // Parser la réponse JSON\n  .then(data => console.log(data));"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "6.4 - Codes de statut HTTP dans les API",
+          "position": 4,
+          "published": true,
+          "content": {
+            "description": "Comprendre comment les codes de statut HTTP sont utilisés dans les API pour indiquer le résultat d'une requête",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Codes de statut et API"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les codes de statut HTTP que nous avons vus précédemment prennent tout leur sens dans les API. Ils permettent au client de savoir immédiatement si sa requête a réussi ou échoué."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Codes de succès (2xx)"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "200 OK :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Requête réussie (GET, PUT, PATCH)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "201 Created :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Ressource créée avec succès (POST)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "204 No Content :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Succès sans contenu à retourner (DELETE)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Codes d'erreur client (4xx)"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "400 Bad Request :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Requête mal formée (données invalides)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "401 Unauthorized :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Authentification requise"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "403 Forbidden :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Accès refusé (pas les permissions)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "404 Not Found :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Ressource introuvable"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Codes d'erreur serveur (5xx)"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "500 Internal Server Error :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Erreur interne du serveur"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "503 Service Unavailable :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Service temporairement indisponible"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Gestion des erreurs dans le code"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "javascript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "fetch('https://api.example.com/users/123')\n  .then(response => {\n    // Vérifier le code de statut\n    if (!response.ok) {\n      if (response.status === 404) {\n        throw new Error('Utilisateur introuvable');\n      } else if (response.status === 401) {\n        throw new Error('Authentification requise');\n      } else {\n        throw new Error(`Erreur ${response.status}`);\n      }\n    }\n    return response.json();\n  })\n  .then(data => console.log('Succès:', data))\n  .catch(error => console.error('Erreur:', error));"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "game",
+          "title": "6.5 - Jeu : Associer les endpoints API à leurs fonctions",
+          "position": 5,
+          "published": true,
+          "content": {
+            "gameType": "column-matching",
+            "description": "Associez chaque endpoint HTTP à sa fonction correspondante pour maîtriser les opérations REST",
+            "instructions": "Faites glisser les éléments de la colonne de gauche vers ceux de la colonne de droite",
+            "leftColumn": [
+              "GET /health",
+              "GET /tasks",
+              "GET /tasks/{id}",
+              "POST /tasks",
+              "PUT /tasks/{id}",
+              "PATCH /tasks/{id}",
+              "DELETE /tasks/{id}"
+            ],
+            "rightColumn": [
+              "Vérification de l'état de santé de l'API",
+              "Récupération d'une tâche par son identifiant unique",
+              "Création d'une nouvelle tâche",
+              "Mise à jour complète d'une tâche (tous les champs)",
+              "Mise à jour partielle d'une tâche (champs sélectionnés)",
+              "Suppression d'une tâche",
+              "Liste des tâches avec pagination et filtres"
+            ],
+            "correctMatches": [
+              {
+                "left": 0,
+                "right": 0
+              },
+              {
+                "left": 1,
+                "right": 6
+              },
+              {
+                "left": 2,
+                "right": 1
+              },
+              {
+                "left": 3,
+                "right": 2
+              },
+              {
+                "left": 4,
+                "right": 3
+              },
+              {
+                "left": 5,
+                "right": 4
+              },
+              {
+                "left": 6,
+                "right": 5
+              }
+            ]
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "6.6 - Exercice : Analyser une réponse API",
+          "position": 6,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Analysez cette réponse API et identifiez :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "http"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "HTTP/1.1 201 Created\nContent-Type: application/json\nLocation: https://api.example.com/users/42\n\n{\n  \"id\": 42,\n  \"name\": \"Alice\",\n  \"email\": \"alice@example.com\",\n  \"created_at\": \"2024-01-20T10:30:00Z\"\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Le code de statut HTTP et sa signification"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Le type de contenu"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "L'en-tête Location et son rôle"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Les données retournées"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Correction"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Code de statut 201 Created :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Indique qu'une ressource a été créée avec succès. C'est typiquement la réponse à une requête POST."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Content-Type: application/json :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Indique que le corps de la réponse est au format JSON."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Location header :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Contient l'URL de la ressource nouvellement créée. Le client peut utiliser cette URL pour accéder à la ressource plus tard."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Données JSON :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Contiennent les informations de l'utilisateur créé : id (42), name (Alice), email, et la date de création."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "6.7 - Du client-serveur aux API REST : Synthèse",
+          "position": 7,
+          "published": true,
+          "content": {
+            "description": "Synthèse des concepts et préparation aux API REST",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Récapitulatif : Les fondations des API"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Maintenant que vous maîtrisez l'architecture client-serveur et les bases du Web, vous avez toutes les fondations pour comprendre les API REST :"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Concepts clés à retenir"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Architecture client-serveur :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Le client envoie des requêtes, le serveur traite et répond"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Protocole HTTP :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Le langage de communication entre client et serveur"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Méthodes HTTP :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " GET (lire), POST (créer), PUT/PATCH (modifier), DELETE (supprimer)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Endpoints :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Les URLs que le client appelle pour accéder aux ressources"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Format JSON :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Le format standard pour échanger des données"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ],
+                              "text": "Codes de statut :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Indiquent le résultat de la requête (200 = succès, 404 = non trouvé, etc.)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Vers les API REST"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les API REST (Representational State Transfer) utilisent tous ces concepts de manière structurée :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Organisation des ressources en URLs logiques"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utilisation cohérente des méthodes HTTP"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Stateless : chaque requête est indépendante"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Format de réponse standardisé (JSON)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exemple complet : Flux client-serveur avec API"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "text"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "1. L'utilisateur clique sur \"Voir mes commandes\" dans l'application\n   ↓\n2. Le client (navigateur/app) envoie une requête HTTP :\n   GET https://api.example.com/users/123/orders\n   ↓\n3. L'API (serveur) reçoit la requête et traite la demande\n   ↓\n4. L'API interroge la base de données\n   ↓\n5. L'API renvoie une réponse HTTP :\n   Status: 200 OK\n   Content-Type: application/json\n   Body: [{ id: 1, product: 'Livre', ... }, ...]\n   ↓\n6. Le client reçoit la réponse et affiche les commandes à l'utilisateur"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Prochaines étapes"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Vous êtes maintenant prêt à approfondir :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Les principes REST (ressources, stateless, etc.)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "La conception d'API (URLs, versioning, pagination)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "La documentation d'API (OpenAPI/Swagger)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "La sécurité des API (authentification, autorisation)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

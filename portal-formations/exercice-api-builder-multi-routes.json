@@ -1,0 +1,68 @@
+{
+  "type": "game",
+  "title": "API BUILDER – Construisez une API REST complète",
+  "position": 0,
+  "published": true,
+  "content": {
+    "gameType": "api-builder",
+    "description": "Construisez une API REST complète pour un système de bibliothèque. Vous devez créer **5 routes** différentes pour gérer les livres (CRUD complet).",
+    "instructions": "🎯 Objectif : Créer 5 routes REST pour la ressource 'books'\n\n📋 Routes à créer :\n\n1️⃣ **Route 1** : Récupérer tous les livres\n   - Ressource : Book\n   - Verbe : GET\n   - Endpoint : /books\n   - Status : 200 OK\n\n2️⃣ **Route 2** : Récupérer un livre spécifique\n   - Ressource : Book\n   - Verbe : GET\n   - Endpoint : /books/{id}\n   - Status : 200 OK\n\n3️⃣ **Route 3** : Créer un nouveau livre\n   - Ressource : Book\n   - Verbe : POST\n   - Endpoint : /books\n   - Status : 201 Created\n\n4️⃣ **Route 4** : Mettre à jour un livre\n   - Ressource : Book\n   - Verbe : PUT\n   - Endpoint : /books/{id}\n   - Status : 200 OK\n\n5️⃣ **Route 5** : Supprimer un livre\n   - Ressource : Book\n   - Verbe : DELETE\n   - Endpoint : /books/{id}\n   - Status : 204 No Content\n\n💡 Astuce : Cliquez sur 'Ajouter une route' pour créer plusieurs routes dans le même exercice !",
+    "resources": [
+      { "id": "book", "label": "Book", "value": "books" },
+      { "id": "author", "label": "Author", "value": "authors" }
+    ],
+    "verbs": [
+      { "id": "get", "label": "GET", "value": "GET" },
+      { "id": "post", "label": "POST", "value": "POST" },
+      { "id": "put", "label": "PUT", "value": "PUT" },
+      { "id": "patch", "label": "PATCH", "value": "PATCH" },
+      { "id": "delete", "label": "DELETE", "value": "DELETE" }
+    ],
+    "endpoints": [
+      { "id": "books-collection", "label": "/books", "value": "/books" },
+      { "id": "books-item", "label": "/books/{id}", "value": "/books/{id}" },
+      { "id": "authors-collection", "label": "/authors", "value": "/authors" },
+      { "id": "authors-item", "label": "/authors/{id}", "value": "/authors/{id}" }
+    ],
+    "statusCodes": [
+      { "id": "200", "label": "200 OK", "value": "200" },
+      { "id": "201", "label": "201 Created", "value": "201" },
+      { "id": "204", "label": "204 No Content", "value": "204" },
+      { "id": "400", "label": "400 Bad Request", "value": "400" },
+      { "id": "404", "label": "404 Not Found", "value": "404" }
+    ],
+    "correctRoutes": [
+      {
+        "resource": "books",
+        "verb": "GET",
+        "endpoint": "/books",
+        "status": "200"
+      },
+      {
+        "resource": "books",
+        "verb": "GET",
+        "endpoint": "/books/{id}",
+        "status": "200"
+      },
+      {
+        "resource": "books",
+        "verb": "POST",
+        "endpoint": "/books",
+        "status": "201"
+      },
+      {
+        "resource": "books",
+        "verb": "PUT",
+        "endpoint": "/books/{id}",
+        "status": "200"
+      },
+      {
+        "resource": "books",
+        "verb": "DELETE",
+        "endpoint": "/books/{id}",
+        "status": "204"
+      }
+    ]
+  }
+}
+

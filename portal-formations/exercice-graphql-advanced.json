@@ -1,0 +1,139 @@
+{
+  "type": "game",
+  "title": "GraphQL Query Builder - Scénarios avancés",
+  "position": 0,
+  "published": true,
+  "content": {
+    "gameType": "graphql-query-builder",
+    "description": "Scénarios avancés pour maîtriser GraphQL : requêtes complexes, optimisations, et bonnes pratiques.",
+    "instructions": "🎯 Objectifs avancés :\n\n- Construire des requêtes imbriquées complexes\n- Optimiser les requêtes (limiter les champs)\n- Comprendre les relations entre types\n- Gérer les arguments de requête\n\n💡 Conseil : Essayez de minimiser le nombre de champs pour optimiser les performances !",
+    "scenarios": [
+      {
+        "id": "advanced-1",
+        "title": "Optimisation : Champs minimaux",
+        "description": "Récupérez uniquement les informations strictement nécessaires",
+        "objective": "Construire une requête optimisée pour récupérer uniquement le nom d'un utilisateur et l'ID de ses commandes (sans les détails)",
+        "expectedFields": ["user", "name", "orders", "id"],
+        "maxCost": 4
+      },
+      {
+        "id": "advanced-2",
+        "title": "Requête complète : E-commerce",
+        "description": "Récupérez toutes les informations d'une commande avec produits",
+        "objective": "Construire une requête complète pour récupérer un utilisateur avec ses commandes, les items de chaque commande, et les détails des produits",
+        "expectedFields": ["user", "name", "orders", "id", "total", "date", "items", "quantity", "product", "name", "price"],
+        "maxCost": 12
+      },
+      {
+        "id": "advanced-3",
+        "title": "Liste avec filtres",
+        "description": "Récupérez une liste limitée d'utilisateurs",
+        "objective": "Construire une requête pour récupérer une liste de 5 utilisateurs avec leur nom et email",
+        "expectedFields": ["users", "name", "email"],
+        "maxCost": 3
+      }
+    ],
+    "schema": {
+      "queryType": "Query",
+      "types": [
+        {
+          "name": "Query",
+          "kind": "OBJECT",
+          "fields": [
+            {
+              "id": "user",
+              "name": "user",
+              "type": "User",
+              "isRequired": false,
+              "isList": false,
+              "args": [
+                { "name": "id", "type": "ID!", "defaultValue": null }
+              ],
+              "fields": [
+                { "id": "id", "name": "id", "type": "ID", "isRequired": true, "isList": false },
+                { "id": "name", "name": "name", "type": "String", "isRequired": true, "isList": false },
+                { "id": "email", "name": "email", "type": "String", "isRequired": true, "isList": false },
+                { "id": "orders", "name": "orders", "type": "Order", "isRequired": false, "isList": true }
+              ]
+            },
+            {
+              "id": "users",
+              "name": "users",
+              "type": "User",
+              "isRequired": false,
+              "isList": true,
+              "args": [
+                { "name": "limit", "type": "Int", "defaultValue": 10 }
+              ],
+              "fields": [
+                { "id": "id", "name": "id", "type": "ID", "isRequired": true, "isList": false },
+                { "id": "name", "name": "name", "type": "String", "isRequired": true, "isList": false },
+                { "id": "email", "name": "email", "type": "String", "isRequired": true, "isList": false }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "User",
+          "kind": "OBJECT",
+          "fields": [
+            { "id": "id", "name": "id", "type": "ID", "isRequired": true, "isList": false },
+            { "id": "name", "name": "name", "type": "String", "isRequired": true, "isList": false },
+            { "id": "email", "name": "email", "type": "String", "isRequired": true, "isList": false },
+            {
+              "id": "orders",
+              "name": "orders",
+              "type": "Order",
+              "isRequired": false,
+              "isList": true,
+              "args": [
+                { "name": "limit", "type": "Int", "defaultValue": null }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Order",
+          "kind": "OBJECT",
+          "fields": [
+            { "id": "id", "name": "id", "type": "ID", "isRequired": true, "isList": false },
+            { "id": "total", "name": "total", "type": "Float", "isRequired": true, "isList": false },
+            { "id": "date", "name": "date", "type": "String", "isRequired": true, "isList": false },
+            {
+              "id": "items",
+              "name": "items",
+              "type": "OrderItem",
+              "isRequired": false,
+              "isList": true
+            }
+          ]
+        },
+        {
+          "name": "OrderItem",
+          "kind": "OBJECT",
+          "fields": [
+            { "id": "id", "name": "id", "type": "ID", "isRequired": true, "isList": false },
+            { "id": "quantity", "name": "quantity", "type": "Int", "isRequired": true, "isList": false },
+            {
+              "id": "product",
+              "name": "product",
+              "type": "Product",
+              "isRequired": false,
+              "isList": false
+            }
+          ]
+        },
+        {
+          "name": "Product",
+          "kind": "OBJECT",
+          "fields": [
+            { "id": "id", "name": "id", "type": "ID", "isRequired": true, "isList": false },
+            { "id": "name", "name": "name", "type": "String", "isRequired": true, "isList": false },
+            { "id": "price", "name": "price", "type": "Float", "isRequired": true, "isList": false }
+          ]
+        }
+      ]
+    }
+  }
+}
+

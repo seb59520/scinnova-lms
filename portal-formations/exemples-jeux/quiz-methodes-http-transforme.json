@@ -1,0 +1,112 @@
+{
+  "type": "game",
+  "title": "2.3 - Quiz : Associer les méthodes HTTP",
+  "position": 3,
+  "published": true,
+  "content": {
+    "gameType": "quiz",
+    "description": "Testez vos connaissances sur les méthodes HTTP et leurs actions",
+    "instructions": "Répondez aux questions pour valider votre compréhension des méthodes HTTP. Vous obtiendrez une note à la fin du quiz.",
+    "objectives": [
+      "Comprendre les différentes méthodes HTTP",
+      "Associer chaque méthode à son action",
+      "Maîtriser les opérations CRUD en HTTP"
+    ],
+    "scoring": {
+      "totalQuestions": 5,
+      "pointsPerQuestion": 1,
+      "passingScore": 4,
+      "levels": {
+        "0-2": "Bases à renforcer",
+        "3-4": "Bon niveau",
+        "5": "Parfait !"
+      }
+    },
+    "levels": [
+      {
+        "level": 1,
+        "name": "Association méthodes HTTP",
+        "description": "Associez chaque méthode HTTP à son action",
+        "questions": [
+          {
+            "id": "q1-1",
+            "type": "mcq",
+            "prompt": "Quelle est l'action de la méthode HTTP GET ?",
+            "options": [
+              "Récupérer une ressource",
+              "Créer une nouvelle ressource",
+              "Mettre à jour complètement une ressource",
+              "Supprimer une ressource",
+              "Mettre à jour partiellement une ressource"
+            ],
+            "answer": "Récupérer une ressource",
+            "explanation": "GET est utilisée pour récupérer (lire) une ressource existante. C'est une méthode sûre et idempotente.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-2",
+            "type": "mcq",
+            "prompt": "Quelle est l'action de la méthode HTTP POST ?",
+            "options": [
+              "Récupérer une ressource",
+              "Créer une nouvelle ressource",
+              "Mettre à jour complètement une ressource",
+              "Supprimer une ressource",
+              "Mettre à jour partiellement une ressource"
+            ],
+            "answer": "Créer une nouvelle ressource",
+            "explanation": "POST est utilisée pour créer une nouvelle ressource. Le serveur génère généralement l'identifiant de la nouvelle ressource.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-3",
+            "type": "mcq",
+            "prompt": "Quelle est l'action de la méthode HTTP PUT ?",
+            "options": [
+              "Récupérer une ressource",
+              "Créer une nouvelle ressource",
+              "Mettre à jour complètement une ressource",
+              "Supprimer une ressource",
+              "Mettre à jour partiellement une ressource"
+            ],
+            "answer": "Mettre à jour complètement une ressource",
+            "explanation": "PUT est utilisée pour mettre à jour complètement une ressource existante. Tous les champs de la ressource sont remplacés par les nouvelles valeurs.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-4",
+            "type": "mcq",
+            "prompt": "Quelle est l'action de la méthode HTTP DELETE ?",
+            "options": [
+              "Récupérer une ressource",
+              "Créer une nouvelle ressource",
+              "Mettre à jour complètement une ressource",
+              "Supprimer une ressource",
+              "Mettre à jour partiellement une ressource"
+            ],
+            "answer": "Supprimer une ressource",
+            "explanation": "DELETE est utilisée pour supprimer une ressource existante. L'opération est généralement irréversible.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-5",
+            "type": "mcq",
+            "prompt": "Quelle est l'action de la méthode HTTP PATCH ?",
+            "options": [
+              "Récupérer une ressource",
+              "Créer une nouvelle ressource",
+              "Mettre à jour complètement une ressource",
+              "Supprimer une ressource",
+              "Mettre à jour partiellement une ressource"
+            ],
+            "answer": "Mettre à jour partiellement une ressource",
+            "explanation": "PATCH est utilisée pour mettre à jour partiellement une ressource. Seuls les champs spécifiés dans la requête sont modifiés, les autres restent inchangés.",
+            "difficulty": 1
+          }
+        ]
+      }
+    ]
+  },
+  "chapters": []
+}
+

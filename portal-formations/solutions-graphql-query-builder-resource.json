@@ -1,0 +1,143 @@
+{
+  "type": "resource",
+  "title": "Solutions - GraphQL Query Builder",
+  "position": 0,
+  "published": true,
+  "content": {
+    "description": "Solutions complètes pour tous les scénarios de l'exercice GraphQL Query Builder avec requêtes GraphQL attendues et explications détaillées.",
+    "body": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "Solutions - GraphQL Query Builder" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Ce document contient les solutions complètes pour tous les scénarios de l'exercice GraphQL Query Builder." }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Scénario 1 : Informations utilisateur" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "graphql" },
+          "content": [
+            {
+              "type": "text",
+              "text": "query {\n  user(id: \"42\") {\n    name\n    email\n  }\n}"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Commencez par le champ user de Query (avec l'argument id: \"42\"), puis ajoutez les champs scalaires name et email du type User." }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Scénario 2 : Commandes utilisateur" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "graphql" },
+          "content": [
+            {
+              "type": "text",
+              "text": "query {\n  user(id: \"42\") {\n    name\n    orders {\n      id\n      total\n    }\n  }\n}"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Commencez par user(id: \"42\"), ajoutez name (champ scalaire), puis orders (relation vers Order), et dans orders ajoutez id et total." }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Scénario 3 : Dernières commandes" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "graphql" },
+          "content": [
+            {
+              "type": "text",
+              "text": "query {\n  user(id: \"42\") {\n    name\n    orders(limit: 3) {\n      id\n      total\n      date\n    }\n  }\n}"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Commencez par user(id: \"42\"), ajoutez name, puis orders(limit: 3) avec l'argument limit: 3, et dans orders ajoutez id, total, et date." }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Scénario 4 : Détails produits" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "graphql" },
+          "content": [
+            {
+              "type": "text",
+              "text": "query {\n  user(id: \"42\") {\n    orders {\n      items {\n        product {\n          name\n          price\n        }\n      }\n    }\n  }\n}"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Commencez par user(id: \"42\"), ajoutez orders (relation), dans orders ajoutez items (relation vers OrderItem), dans items ajoutez product (relation vers Product), et dans product ajoutez name et price." }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Scénario 5 : Liste utilisateurs" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "graphql" },
+          "content": [
+            {
+              "type": "text",
+              "text": "query {\n  users(limit: 10) {\n    name\n    email\n  }\n}"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Utilisez le champ users de Query (liste), ajoutez l'argument limit: 10 pour limiter à 10 utilisateurs, et ajoutez les champs name et email du type User." }
+          ]
+        }
+      ]
+    }
+  }
+}
+

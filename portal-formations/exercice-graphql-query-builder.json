@@ -1,0 +1,155 @@
+{
+  "type": "game",
+  "title": "QUERY BUILDER » GraphQL (Drag & Drop de champs) ⭐",
+  "position": 0,
+  "published": true,
+  "content": {
+    "gameType": "graphql-query-builder",
+    "description": "Construisez des requêtes GraphQL en glissant-déposant des champs depuis le schéma. Visualisez le résultat en temps réel et apprenez à optimiser vos requêtes.",
+    "instructions": "🎯 Comment utiliser :\n\n1. **Glissez-déposez** des champs depuis le schéma (gauche) vers la zone de construction (centre)\n2. **Commencez** par un champ de Query (user, users, etc.)\n3. **Ajoutez** des sous-champs en les glissant dans les zones de dépôt\n4. **Exécutez** la requête pour voir le résultat JSON\n5. **Optimisez** en ne sélectionnant que les champs nécessaires\n\n💡 Astuce : Les champs de type objet (User, Order, etc.) nécessitent au moins un sous-champ !",
+    "scenarios": [
+      {
+        "id": "scenario-1",
+        "title": "Scénario 1 : Informations utilisateur",
+        "description": "Récupérez les informations de base d'un utilisateur",
+        "objective": "Construire une requête pour récupérer le nom et l'email d'un utilisateur avec l'ID '42'",
+        "expectedFields": ["user", "name", "email"],
+        "maxCost": 3
+      },
+      {
+        "id": "scenario-2",
+        "title": "Scénario 2 : Commandes utilisateur",
+        "description": "Récupérez les commandes d'un utilisateur",
+        "objective": "Construire une requête pour récupérer le nom d'un utilisateur et ses commandes (ID et total)",
+        "expectedFields": ["user", "name", "orders", "id", "total"],
+        "maxCost": 5
+      },
+      {
+        "id": "scenario-3",
+        "title": "Scénario 3 : Dernières commandes",
+        "description": "Récupérez les 3 dernières commandes d'un utilisateur",
+        "objective": "Construire une requête pour récupérer le nom d'un utilisateur et ses 3 dernières commandes (ID, total, date)",
+        "expectedFields": ["user", "name", "orders", "id", "total", "date"],
+        "maxCost": 6
+      },
+      {
+        "id": "scenario-4",
+        "title": "Scénario 4 : Détails produits",
+        "description": "Récupérez les détails complets d'une commande avec les produits",
+        "objective": "Construire une requête pour récupérer les commandes d'un utilisateur avec les items et les produits associés",
+        "expectedFields": ["user", "orders", "items", "product", "name", "price"],
+        "maxCost": 8
+      },
+      {
+        "id": "scenario-5",
+        "title": "Scénario 5 : Liste utilisateurs",
+        "description": "Récupérez une liste d'utilisateurs",
+        "objective": "Construire une requête pour récupérer une liste de 10 utilisateurs avec leur nom et email",
+        "expectedFields": ["users", "name", "email"],
+        "maxCost": 3
+      }
+    ],
+    "schema": {
+      "queryType": "Query",
+      "types": [
+        {
+          "name": "Query",
+          "kind": "OBJECT",
+          "fields": [
+            {
+              "id": "user",
+              "name": "user",
+              "type": "User",
+              "isRequired": false,
+              "isList": false,
+              "args": [
+                { "name": "id", "type": "ID!", "defaultValue": null }
+              ],
+              "fields": [
+                { "id": "id", "name": "id", "type": "ID", "isRequired": true, "isList": false },
+                { "id": "name", "name": "name", "type": "String", "isRequired": true, "isList": false },
+                { "id": "email", "name": "email", "type": "String", "isRequired": true, "isList": false },
+                { "id": "orders", "name": "orders", "type": "Order", "isRequired": false, "isList": true }
+              ]
+            },
+            {
+              "id": "users",
+              "name": "users",
+              "type": "User",
+              "isRequired": false,
+              "isList": true,
+              "args": [
+                { "name": "limit", "type": "Int", "defaultValue": 10 }
+              ],
+              "fields": [
+                { "id": "id", "name": "id", "type": "ID", "isRequired": true, "isList": false },
+                { "id": "name", "name": "name", "type": "String", "isRequired": true, "isList": false },
+                { "id": "email", "name": "email", "type": "String", "isRequired": true, "isList": false }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "User",
+          "kind": "OBJECT",
+          "fields": [
+            { "id": "id", "name": "id", "type": "ID", "isRequired": true, "isList": false },
+            { "id": "name", "name": "name", "type": "String", "isRequired": true, "isList": false },
+            { "id": "email", "name": "email", "type": "String", "isRequired": true, "isList": false },
+            {
+              "id": "orders",
+              "name": "orders",
+              "type": "Order",
+              "isRequired": false,
+              "isList": true,
+              "args": [
+                { "name": "limit", "type": "Int", "defaultValue": null }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Order",
+          "kind": "OBJECT",
+          "fields": [
+            { "id": "id", "name": "id", "type": "ID", "isRequired": true, "isList": false },
+            { "id": "total", "name": "total", "type": "Float", "isRequired": true, "isList": false },
+            { "id": "date", "name": "date", "type": "String", "isRequired": true, "isList": false },
+            {
+              "id": "items",
+              "name": "items",
+              "type": "OrderItem",
+              "isRequired": false,
+              "isList": true
+            }
+          ]
+        },
+        {
+          "name": "OrderItem",
+          "kind": "OBJECT",
+          "fields": [
+            { "id": "id", "name": "id", "type": "ID", "isRequired": true, "isList": false },
+            { "id": "quantity", "name": "quantity", "type": "Int", "isRequired": true, "isList": false },
+            {
+              "id": "product",
+              "name": "product",
+              "type": "Product",
+              "isRequired": false,
+              "isList": false
+            }
+          ]
+        },
+        {
+          "name": "Product",
+          "kind": "OBJECT",
+          "fields": [
+            { "id": "id", "name": "id", "type": "ID", "isRequired": true, "isList": false },
+            { "id": "name", "name": "name", "type": "String", "isRequired": true, "isList": false },
+            { "id": "price", "name": "price", "type": "Float", "isRequired": true, "isList": false }
+          ]
+        }
+      ]
+    }
+  }
+}
+

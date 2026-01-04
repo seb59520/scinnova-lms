@@ -1,0 +1,37 @@
+{
+  "title": "Test Slide Minimal",
+  "description": "Test minimal pour vérifier que le type slide fonctionne",
+  "status": "draft",
+  "access_type": "free",
+  "modules": [
+    {
+      "title": "Module Test",
+      "position": 1,
+      "items": [
+        {
+          "type": "slide",
+          "title": "Test Slide Simple",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ceci est un test simple pour vérifier que le type slide fonctionne correctement."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+

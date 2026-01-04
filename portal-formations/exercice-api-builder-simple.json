@@ -1,0 +1,27 @@
+{
+  "type": "game",
+  "title": "API BUILDER – Introduction aux routes REST",
+  "position": 0,
+  "published": true,
+  "content": {
+    "gameType": "api-builder",
+    "description": "Construisez votre première route REST en glissant-déposant les blocs. Commencez par créer une route GET pour récupérer tous les utilisateurs.",
+    "instructions": "🎯 Objectif : Créer une route GET /users qui retourne 200 OK\n\n📝 Étapes :\n1. Glissez le bloc 'User' (🧱) vers le slot Ressource\n2. Glissez le bloc 'GET' (🔧) vers le slot Verbe HTTP\n3. Glissez le bloc '/users' (🎯) vers le slot Endpoint\n4. Glissez le bloc '200 OK' (🏷️) vers le slot Status Code\n5. Cliquez sur 'Valider les routes' pour voir si c'est correct !",
+    "resources": [
+      { "id": "user", "label": "User", "value": "users" }
+    ],
+    "verbs": [
+      { "id": "get", "label": "GET", "value": "GET" },
+      { "id": "post", "label": "POST", "value": "POST" }
+    ],
+    "endpoints": [
+      { "id": "users-collection", "label": "/users", "value": "/users" },
+      { "id": "users-item", "label": "/users/{id}", "value": "/users/{id}" }
+    ],
+    "statusCodes": [
+      { "id": "200", "label": "200 OK", "value": "200" },
+      { "id": "201", "label": "201 Created", "value": "201" }
+    ]
+  }
+}
+

@@ -1,0 +1,34 @@
+{
+  "_comment": "⚠️ IMPORTANT : Ce fichier contient uniquement le CONTENT du jeu. Le TITLE et la DESCRIPTION doivent être remplis dans les champs séparés de l'interface admin. Titre suggéré : 'Méthodes HTTP et leurs codes de réponse'",
+  "gameType": "connection",
+  "leftColumn": [
+    "GET /tasks",
+    "POST /tasks",
+    "PUT /tasks/{id}",
+    "PATCH /tasks/{id}",
+    "DELETE /tasks/{id}",
+    "GET /tasks/{id} (non trouvé)",
+    "POST /tasks (validation échouée)"
+  ],
+  "rightColumn": [
+    "200 OK - Liste retournée avec succès",
+    "201 Created - Ressource créée avec succès",
+    "204 No Content - Suppression réussie (pas de contenu)",
+    "200 OK - Ressource mise à jour avec succès",
+    "200 OK - Ressource récupérée avec succès",
+    "400 Bad Request - Données invalides",
+    "404 Not Found - Ressource introuvable"
+  ],
+  "correctMatches": [
+    { "left": 0, "right": 0 },
+    { "left": 1, "right": 1 },
+    { "left": 2, "right": 3 },
+    { "left": 3, "right": 3 },
+    { "left": 4, "right": 2 },
+    { "left": 5, "right": 6 },
+    { "left": 6, "right": 5 }
+  ],
+  "description": "Chaque méthode HTTP retourne des codes de statut spécifiques selon le résultat de l'opération. Apprenez les codes standards REST.",
+  "instructions": "Connectez chaque endpoint avec le code de statut HTTP qu'il retourne dans le cas d'un succès ou d'une erreur typique."
+}
+
