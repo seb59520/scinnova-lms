@@ -12,15 +12,14 @@ Après connexion avec Google, vous êtes redirigé vers `http://localhost:3000` 
 3. Allez dans **Authentication** → **URL Configuration**
 4. Dans la section **Redirect URLs**, ajoutez les URLs suivantes (une par ligne, SANS wildcards) :
    ```
-   https://lms.scinnova.fr
-   https://lms.scinnova.fr/
    https://lms.scinnova.fr/app
-   http://localhost:5173
-   http://localhost:5173/
    http://localhost:5173/app
    ```
    
-   **Important :** Supabase n'accepte PAS les wildcards (`**`). Vous devez ajouter chaque URL spécifique que vous souhaitez autoriser.
+   **Important :** 
+   - Supabase n'accepte PAS les wildcards (`**`)
+   - Ne mettez pas à la fois `https://lms.scinnova.fr` et `https://lms.scinnova.fr/` (Supabase les considère comme identiques)
+   - Ajoutez uniquement les URLs spécifiques dont vous avez besoin (généralement juste `/app` pour la redirection après connexion)
 
 5. Dans **Site URL**, définissez :
    ```
@@ -66,15 +65,14 @@ https://lms.scinnova.fr
 
 **Redirect URLs (une par ligne, SANS wildcards) :**
 ```
-https://lms.scinnova.fr
-https://lms.scinnova.fr/
 https://lms.scinnova.fr/app
-http://localhost:5173
-http://localhost:5173/
 http://localhost:5173/app
 ```
 
-**Note :** Si vous avez d'autres routes spécifiques qui nécessitent une redirection OAuth, ajoutez-les également une par une.
+**Note :** 
+- Ne mettez pas à la fois l'URL avec et sans slash final (Supabase les considère comme identiques)
+- Ajoutez uniquement les routes spécifiques dont vous avez besoin
+- La route `/app` est celle utilisée par défaut après connexion OAuth dans le code
 
 ### 6. Si le problème persiste
 
