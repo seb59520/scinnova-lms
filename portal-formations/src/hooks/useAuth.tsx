@@ -187,6 +187,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           // Attendre un court délai pour que le trigger SQL crée le profil
           setTimeout(async () => {
             await fetchProfile(session.user.id)
+            // Rediriger vers /app après connexion OAuth si on est sur la page de callback
+            if (window.location.pathname === '/' || window.location.pathname.includes('code=')) {
+              window.location.replace('/app')
+            }
           }, 500)
         } else {
           await fetchProfile(session.user.id)
