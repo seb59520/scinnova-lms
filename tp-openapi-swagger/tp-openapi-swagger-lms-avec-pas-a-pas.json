@@ -1,0 +1,3145 @@
+{
+  "title": "TP : Swagger UI / OpenAPI 3 – Création d'une API simple",
+  "description": "TP complet pour MBA1 Développeur Full Stack sur la création d'une API REST avec OpenAPI 3 et Swagger UI. Ce TP couvre la conception d'une API, l'implémentation avec Express/TypeScript, la validation avec Zod, et la documentation interactive avec Swagger UI.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3B82F6",
+    "secondaryColor": "#8B5CF6",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Contexte et préparation",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#3B82F6",
+        "secondaryColor": "#8B5CF6"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Introduction au TP",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "TP : Swagger UI / OpenAPI 3"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Contexte"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Vous êtes développeur backend dans une startup qui souhaite adopter une approche API-first pour développer ses services. Votre mission est de concevoir et implémenter une API REST simple pour la gestion de tâches, en suivant les bonnes pratiques OpenAPI 3 et en utilisant Swagger UI pour la documentation interactive."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Objectifs pédagogiques"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Concevoir une spécification OpenAPI 3 complète pour une API REST"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Configurer Swagger UI pour servir et tester votre API"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Implémenter une API Express avec TypeScript conforme à la spécification"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Valider les données d'entrée avec Zod"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Gérer les erreurs de manière standardisée"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Durée estimée"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "2h30 à 3h30",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Prérequis et stack technique",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Prérequis"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Node.js 18+ installé"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Connaissances de base en TypeScript"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Connaissances de base en Express.js"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Compréhension des concepts REST (GET, POST, PUT, PATCH, DELETE)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Stack technique"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Runtime : Node.js 18+"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Language : TypeScript"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Framework : Express.js"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Validation : Zod"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Documentation : Swagger UI + OpenAPI 3"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Persistence : En mémoire (array)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : TP pratique",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#059669"
+      },
+      "items": [
+        {
+          "type": "tp",
+          "title": "TP : Création d'une API OpenAPI 3 avec Swagger UI",
+          "position": 1,
+          "published": true,
+          "content": {
+            "instructions": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "TP : Swagger UI / OpenAPI 3 – Création d'une API simple"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Durée estimée : 2h30 à 3h30",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Contexte"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Vous êtes développeur backend dans une startup qui souhaite adopter une approche API-first pour développer ses services. Votre mission est de concevoir et implémenter une API REST simple pour la gestion de tâches, en suivant les bonnes pratiques OpenAPI 3 et en utilisant Swagger UI pour la documentation interactive."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Objectifs pédagogiques"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "À la fin de ce TP, vous serez capable de :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Concevoir une spécification OpenAPI 3 complète pour une API REST"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Configurer Swagger UI pour servir et tester votre API"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Implémenter une API Express avec TypeScript conforme à la spécification"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Valider les données d'entrée avec Zod"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Gérer les erreurs de manière standardisée"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Tester l'API via Swagger UI et curl"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Périmètre fonctionnel"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "API \"Tasks\" - Gestion de tâches"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Modèle de données :",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "id : UUID v4 (généré automatiquement)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "title : string (minimum 3 caractères, requis)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "description : string (optionnel)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "status : enum 'todo' | 'doing' | 'done' (défaut: 'todo')"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "createdAt : date ISO 8601 (généré automatiquement)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "updatedAt : date ISO 8601 (mis à jour automatiquement)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Endpoints à implémenter :",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "GET /health - Vérification de l'état de santé de l'API"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "GET /tasks - Liste des tâches (avec pagination limit, offset et filtre status optionnel)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "GET /tasks/:id - Récupération d'une tâche par ID"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "POST /tasks - Création d'une nouvelle tâche"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PUT /tasks/:id - Mise à jour complète d'une tâche"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PATCH /tasks/:id - Mise à jour partielle d'une tâche"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "DELETE /tasks/:id - Suppression d'une tâche"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étapes du TP"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 1 : Initialisation du projet (15 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Créer un nouveau projet Node.js avec TypeScript"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Installer les dépendances nécessaires (Express, Zod, Swagger UI, etc.)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Configurer tsconfig.json avec les options strictes"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Créer la structure de dossiers (routes, middlewares, services, types, openapi, docs)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 2 : Création de la spécification OpenAPI 3 (45 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créer le fichier src/openapi/openapi.yaml avec :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Section info (titre, description, version)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Section servers (local et production)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Section paths (tous les endpoints avec parameters, requestBody, responses)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Section components (schemas, parameters, responses réutilisables)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 3 : Configuration Swagger UI (20 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créer src/docs/swagger.ts pour charger le fichier OpenAPI et servir Swagger UI sur /docs"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 4 : Implémentation des types et du service (30 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créer les types TypeScript et le service de gestion des tâches (stockage en mémoire)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 5 : Implémentation des middlewares (30 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créer les middlewares de validation (Zod), gestion d'erreurs, et rate limiting"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 6 : Implémentation des routes (45 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Implémenter tous les endpoints avec validation et gestion d'erreurs"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 7 : Configuration du serveur Express (15 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Configurer Express avec middlewares, routes, et démarrage du serveur"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 8 : Tests et validation (20 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Tester tous les endpoints dans Swagger UI et avec curl"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Critères de réussite"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Obligatoires (80% de la note)"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Le fichier OpenAPI 3 est complet et valide"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Swagger UI est accessible sur /docs et fonctionne"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Tous les endpoints sont implémentés et fonctionnels"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Les validations Zod sont en place pour tous les inputs"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "La gestion d'erreurs est standardisée (format ErrorEnvelope)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Les codes HTTP sont corrects (201 pour POST, 204 pour DELETE, etc.)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "La pagination et le filtrage fonctionnent sur GET /tasks"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Le code est structuré et propre (pas de code dupliqué)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "checklist": [
+              "Le fichier OpenAPI 3 est complet et valide",
+              "Swagger UI est accessible sur /docs et fonctionne",
+              "Tous les endpoints sont implémentés et fonctionnels",
+              "Les validations Zod sont en place pour tous les inputs",
+              "La gestion d'erreurs est standardisée (format ErrorEnvelope)",
+              "Les codes HTTP sont corrects (201 pour POST, 204 pour DELETE, etc.)",
+              "La pagination et le filtrage fonctionnent sur GET /tasks",
+              "Le code est structuré et propre (pas de code dupliqué)",
+              "Rate limiting implémenté et fonctionnel (bonus)",
+              "Tests unitaires pour le service (bonus)"
+            ]
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Exemples d'appels curl",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exemples d'appels curl"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "bash"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Health Check\ncurl -X GET http://localhost:3000/health\n\n# Créer une tâche\ncurl -X POST http://localhost:3000/tasks \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"title\": \"Réviser le cours OpenAPI\",\n    \"description\": \"Relire les chapitres 1 à 5\",\n    \"status\": \"todo\"\n  }'\n\n# Lister les tâches\ncurl -X GET \"http://localhost:3000/tasks?limit=10&offset=0\"\n\n# Récupérer une tâche par ID\ncurl -X GET http://localhost:3000/tasks/550e8400-e29b-41d4-a716-446655440000\n\n# Mettre à jour complètement (PUT)\ncurl -X PUT http://localhost:3000/tasks/550e8400-e29b-41d4-a716-446655440000 \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"title\": \"Tâche mise à jour\",\n    \"description\": \"Nouvelle description\",\n    \"status\": \"done\"\n  }'\n\n# Mettre à jour partiellement (PATCH)\ncurl -X PATCH http://localhost:3000/tasks/550e8400-e29b-41d4-a716-446655440000 \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"status\": \"doing\"\n  }'\n\n# Supprimer une tâche\ncurl -X DELETE http://localhost:3000/tasks/550e8400-e29b-41d4-a716-446655440000"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Checklist de conformité",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Checklist de conformité OpenAPI/Swagger"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Utilisez cette checklist pour vérifier que votre API est conforme aux bonnes pratiques OpenAPI 3."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Structure OpenAPI"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Section info complète (title, description, version)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Section servers définie"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Tous les endpoints documentés dans paths"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Composants réutilisables définis (schemas, parameters, responses)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Swagger UI"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Accessible sur /docs"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Tous les endpoints testables"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Pas d'erreurs de chargement"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Implémentation"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Tous les endpoints implémentés"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Codes HTTP corrects"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Validation des inputs"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Format d'erreur standardisé"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Documentation technique complète",
+          "position": 4,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Documentation technique"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Pour la documentation technique complète (README, structure du projet, etc.), consultez les fichiers fournis avec le TP :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "README.md : Instructions d'installation et exemples"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "ARBORESCENCE.md : Structure du projet"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CHECKLIST.md : Checklist de conformité détaillée"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Le code source complet du projet est disponible dans le dossier tp-openapi-swagger/"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Pas à pas détaillé - Instructions complètes",
+          "position": 5,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "TP OpenAPI 3 + Swagger UI - Pas à pas détaillé"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Durée estimée : 2h30 à 3h30",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Objectif final"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créer une API REST complète pour gérer des tâches, avec documentation OpenAPI 3 et interface Swagger UI interactive."
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "7 endpoints REST (GET /health + CRUD sur /tasks)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Spécification OpenAPI 3 complète"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Interface Swagger UI pour tester l'API"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Validation des données avec Zod"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Gestion d'erreurs standardisée"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "ÉTAPE 1 : Initialiser le projet (15 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "1.1 Créer le dossier et initialiser npm"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "bash"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "mkdir tp-openapi-swagger\ncd tp-openapi-swagger\nnpm init -y"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "1.2 Installer les dépendances"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dépendances de production :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "bash"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "npm install express swagger-ui-express swagger-jsdoc zod express-rate-limit cors uuid js-yaml"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dépendances de développement :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "bash"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "npm install -D @types/express @types/swagger-ui-express @types/swagger-jsdoc @types/cors @types/uuid @types/js-yaml @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint tsx typescript"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "1.3 Créer tsconfig.json"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créez le fichier tsconfig.json à la racine du projet avec ce contenu :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "json"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"commonjs\",\n    \"lib\": [\"ES2022\"],\n    \"outDir\": \"./dist\",\n    \"rootDir\": \"./src\",\n    \"strict\": true,\n    \"esModuleInterop\": true,\n    \"skipLibCheck\": true,\n    \"forceConsistentCasingInFileNames\": true,\n    \"resolveJsonModule\": true,\n    \"moduleResolution\": \"node\"\n  },\n  \"include\": [\"src/**/*\"],\n  \"exclude\": [\"node_modules\", \"dist\"]\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "1.4 Créer la structure de dossiers"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "bash"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "mkdir -p src/routes src/middlewares src/services src/types src/openapi src/docs"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "1.5 Ajouter les scripts dans package.json"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Modifiez la section \"scripts\" de votre package.json :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "json"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "\"scripts\": {\n  \"dev\": \"tsx watch src/server.ts\",\n  \"build\": \"tsc\",\n  \"start\": \"node dist/server.js\"\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Vérification : Exécutez ",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "npm run dev",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " → Le serveur doit démarrer (même s'il n'y a pas encore de routes)."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "ÉTAPE 2 : Créer la spécification OpenAPI 3 (45 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "2.1 Créer le fichier openapi.yaml"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créez le fichier ",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "src/openapi/openapi.yaml",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " et commencez par la structure de base :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "yaml"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "openapi: 3.0.3\ninfo:\n  title: API Tasks - Gestion de tâches\n  description: API REST simple pour la gestion de tâches\n  version: 1.0.0\n\nservers:\n  - url: http://localhost:3000\n    description: Serveur de développement local\n\ntags:\n  - name: Health\n    description: Endpoints de santé\n  - name: Tasks\n    description: Gestion des tâches"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "2.2 Définir les schémas (components/schemas)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ajoutez la section ",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "components",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " avec les schémas suivants :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "yaml"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "components:\n  schemas:\n    Task:\n      type: object\n      required:\n        - id\n        - title\n        - status\n        - createdAt\n        - updatedAt\n      properties:\n        id:\n          type: string\n          format: uuid\n        title:\n          type: string\n          minLength: 3\n        description:\n          type: string\n          nullable: true\n        status:\n          type: string\n          enum: [todo, doing, done]\n        createdAt:\n          type: string\n          format: date-time\n        updatedAt:\n          type: string\n          format: date-time\n\n    TaskCreate:\n      type: object\n      required:\n        - title\n      properties:\n        title:\n          type: string\n          minLength: 3\n        description:\n          type: string\n          nullable: true\n        status:\n          type: string\n          enum: [todo, doing, done]\n          default: todo\n\n    TaskUpdate:\n      type: object\n      properties:\n        title:\n          type: string\n          minLength: 3\n        description:\n          type: string\n          nullable: true\n        status:\n          type: string\n          enum: [todo, doing, done]\n\n    ErrorEnvelope:\n      type: object\n      required:\n        - error\n      properties:\n        error:\n          type: object\n          required:\n            - code\n            - message\n          properties:\n            code:\n              type: string\n            message:\n              type: string\n            details:\n              type: object\n            traceId:\n              type: string\n              format: uuid"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "2.3 Définir les endpoints (paths)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ajoutez la section ",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "paths",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " avec les 7 endpoints. Commencez par GET /health :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "yaml"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "paths:\n  /health:\n    get:\n      tags:\n        - Health\n      summary: Vérifie l'état de santé de l'API\n      operationId: getHealth\n      responses:\n        '200':\n          description: API opérationnelle\n          content:\n            application/json:\n              schema:\n                type: object\n                properties:\n                  status:\n                    type: string\n                    example: ok\n                  timestamp:\n                    type: string\n                    format: date-time\n                  uptime:\n                    type: number"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Puis ajoutez les endpoints pour /tasks. Exemple pour GET /tasks :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "yaml"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "  /tasks:\n    get:\n      tags:\n        - Tasks\n      summary: Liste toutes les tâches\n      operationId: listTasks\n      parameters:\n        - name: limit\n          in: query\n          schema:\n            type: integer\n            minimum: 1\n            maximum: 100\n            default: 10\n        - name: offset\n          in: query\n          schema:\n            type: integer\n            minimum: 0\n            default: 0\n        - name: status\n          in: query\n          schema:\n            type: string\n            enum: [todo, doing, done]\n      responses:\n        '200':\n          description: Liste des tâches\n          content:\n            application/json:\n              schema:\n                type: object\n                properties:\n                  data:\n                    type: array\n                    items:\n                      $ref: '#/components/schemas/Task'\n                  pagination:\n                    type: object\n                    properties:\n                      total:\n                        type: integer\n                      limit:\n                        type: integer\n                      offset:\n                        type: integer"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Continuez avec POST /tasks, GET /tasks/{id}, PUT /tasks/{id}, PATCH /tasks/{id}, et DELETE /tasks/{id}."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Vérification : Validez votre YAML sur ",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://editor.swagger.io/",
+                            "target": "_blank"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "Swagger Editor",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://editor.swagger.io/",
+                            "target": "_blank"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " → Aucune erreur de syntaxe."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "ÉTAPE 3 : Configurer Swagger UI (20 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "3.1 Créer src/docs/swagger.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "typescript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "import swaggerUi from 'swagger-ui-express';\nimport { Express } from 'express';\nimport fs from 'fs';\nimport path from 'path';\nimport * as yaml from 'js-yaml';\n\nexport function setupSwagger(app: Express): void {\n  const openApiPath = path.join(__dirname, '../openapi/openapi.yaml');\n  const openApiFile = fs.readFileSync(openApiPath, 'utf8');\n  const openApiSpec = yaml.load(openApiFile) as Record<string, unknown>;\n\n  // Servir le YAML brut\n  app.get('/openapi', (req, res) => {\n    res.setHeader('Content-Type', 'application/yaml');\n    res.send(openApiFile);\n  });\n\n  // Servir le JSON\n  app.get('/openapi.json', (req, res) => {\n    res.json(openApiSpec);\n  });\n\n  // Configurer Swagger UI\n  app.use('/docs', swaggerUi.serve, swaggerUi.setup(openApiSpec));\n\n  console.log('📚 Swagger UI disponible sur http://localhost:3000/docs');\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "3.2 Créer src/server.ts minimal"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "typescript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "import express from 'express';\nimport { setupSwagger } from './docs/swagger';\n\nconst app = express();\nsetupSwagger(app);\n\napp.listen(3000, () => {\n  console.log('🚀 Serveur démarré sur http://localhost:3000');\n  console.log('📚 Swagger UI : http://localhost:3000/docs');\n});"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Vérification : Exécutez ",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "npm run dev",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " puis ouvrez ",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "http://localhost:3000/docs",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " → Swagger UI doit s'afficher."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "ÉTAPE 4 : Créer les types et le service (30 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "4.1 Créer src/types/task.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "typescript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "export type TaskStatus = 'todo' | 'doing' | 'done';\n\nexport interface Task {\n  id: string;\n  title: string;\n  description?: string;\n  status: TaskStatus;\n  createdAt: string;\n  updatedAt: string;\n}\n\nexport interface TaskCreate {\n  title: string;\n  description?: string;\n  status?: TaskStatus;\n}\n\nexport interface TaskUpdate {\n  title?: string;\n  description?: string;\n  status?: TaskStatus;\n}\n\nexport interface TaskQueryParams {\n  limit?: number;\n  offset?: number;\n  status?: TaskStatus;\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "4.2 Créer src/services/taskService.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "typescript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "import { v4 as uuidv4 } from 'uuid';\nimport { Task, TaskCreate, TaskUpdate, TaskStatus, TaskQueryParams } from '../types/task';\n\nclass TaskService {\n  private tasks: Task[] = [];\n\n  findAll(params: TaskQueryParams): { tasks: Task[]; total: number } {\n    let filtered = [...this.tasks];\n\n    // Filtre par status si fourni\n    if (params.status) {\n      filtered = filtered.filter((task) => task.status === params.status);\n    }\n\n    const total = filtered.length;\n    const offset = params.offset || 0;\n    const limit = params.limit || 10;\n    const paginated = filtered.slice(offset, offset + limit);\n\n    return { tasks: paginated, total };\n  }\n\n  findById(id: string): Task | undefined {\n    return this.tasks.find((task) => task.id === id);\n  }\n\n  create(data: TaskCreate): Task {\n    const now = new Date().toISOString();\n    const task: Task = {\n      id: uuidv4(),\n      title: data.title,\n      description: data.description,\n      status: data.status || 'todo',\n      createdAt: now,\n      updatedAt: now,\n    };\n    this.tasks.push(task);\n    return task;\n  }\n\n  update(id: string, data: TaskUpdate): Task | null {\n    const task = this.findById(id);\n    if (!task) return null;\n\n    const updated: Task = {\n      ...task,\n      ...data,\n      updatedAt: new Date().toISOString(),\n    };\n\n    const index = this.tasks.findIndex((t) => t.id === id);\n    this.tasks[index] = updated;\n    return updated;\n  }\n\n  patch(id: string, data: Partial<TaskUpdate>): Task | null {\n    const task = this.findById(id);\n    if (!task) return null;\n\n    const updated: Task = {\n      ...task,\n      ...data,\n      updatedAt: new Date().toISOString(),\n    };\n\n    const index = this.tasks.findIndex((t) => t.id === id);\n    this.tasks[index] = updated;\n    return updated;\n  }\n\n  delete(id: string): boolean {\n    const index = this.tasks.findIndex((task) => task.id === id);\n    if (index === -1) return false;\n    this.tasks.splice(index, 1);\n    return true;\n  }\n}\n\nexport const taskService = new TaskService();"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Vérification : Le code compile sans erreur (",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "npm run build",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ")."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "ÉTAPE 5 : Créer les middlewares (30 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "5.1 Créer src/middlewares/errorHandler.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "typescript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "import { Request, Response, NextFunction } from 'express';\nimport { v4 as uuidv4 } from 'uuid';\n\nexport interface ApiError {\n  code: string;\n  message: string;\n  details?: unknown;\n  traceId?: string;\n}\n\nexport interface ErrorResponse {\n  error: ApiError;\n}\n\nexport function errorHandler(\n  err: Error | ApiError,\n  req: Request,\n  res: Response,\n  next: NextFunction\n): void {\n  const traceId = uuidv4();\n\n  if ('code' in err && 'message' in err) {\n    const apiError: ApiError = {\n      code: err.code,\n      message: err.message,\n      details: err.details,\n      traceId,\n    };\n    const statusCode = getStatusCode(err.code);\n    res.status(statusCode).json({ error: apiError });\n    return;\n  }\n\n  const apiError: ApiError = {\n    code: 'INTERNAL_ERROR',\n    message: err.message || 'Une erreur interne est survenue',\n    traceId,\n  };\n\n  console.error(`[${traceId}] Error:`, err);\n  res.status(500).json({ error: apiError });\n}\n\nexport function createError(\n  code: string,\n  message: string,\n  details?: unknown\n): ApiError {\n  return { code, message, details };\n}\n\nfunction getStatusCode(code: string): number {\n  const statusMap: Record<string, number> = {\n    VALIDATION_ERROR: 400,\n    UNAUTHORIZED: 401,\n    NOT_FOUND: 404,\n    INTERNAL_ERROR: 500,\n  };\n  return statusMap[code] || 500;\n}\n\nexport function notFoundHandler(req: Request, res: Response): void {\n  const error: ErrorResponse = {\n    error: {\n      code: 'NOT_FOUND',\n      message: `Route ${req.method} ${req.path} non trouvée`,\n      traceId: uuidv4(),\n    },\n  };\n  res.status(404).json(error);\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "5.2 Créer src/middlewares/validate.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "typescript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "import { Request, Response, NextFunction } from 'express';\nimport { ZodSchema, ZodError } from 'zod';\nimport { createError } from './errorHandler';\n\nexport function validate(schema: {\n  body?: ZodSchema;\n  query?: ZodSchema;\n  params?: ZodSchema;\n}) {\n  return (req: Request, res: Response, next: NextFunction): void => {\n    try {\n      if (schema.body) {\n        req.body = schema.body.parse(req.body);\n      }\n      if (schema.query) {\n        req.query = schema.query.parse(req.query);\n      }\n      if (schema.params) {\n        req.params = schema.params.parse(req.params);\n      }\n      next();\n    } catch (error) {\n      if (error instanceof ZodError) {\n        const details = error.errors.map((err) => ({\n          path: err.path.join('.'),\n          message: err.message,\n        }));\n        const apiError = createError('VALIDATION_ERROR', 'Erreur de validation', details);\n        res.status(400).json({ error: apiError });\n        return;\n      }\n      next(error);\n    }\n  };\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "5.3 Créer src/middlewares/rateLimit.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "typescript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "import rateLimit from 'express-rate-limit';\n\nexport const apiRateLimiter = rateLimit({\n  windowMs: 15 * 60 * 1000, // 15 minutes\n  max: 100, // Limite de 100 requêtes par IP\n  message: {\n    error: {\n      code: 'RATE_LIMIT_EXCEEDED',\n      message: 'Trop de requêtes depuis cette IP, veuillez réessayer plus tard.',\n    },\n  },\n});"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "ÉTAPE 6 : Implémenter les routes (45 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "6.1 Créer src/routes/tasks.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créez le fichier avec les schémas Zod et les routes. Voici le code complet :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "typescript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "import { Router, Request, Response } from 'express';\nimport { z } from 'zod';\nimport { taskService } from '../services/taskService';\nimport { validate } from '../middlewares/validate';\nimport { createError } from '../middlewares/errorHandler';\nimport { TaskStatus } from '../types/task';\n\nconst router = Router();\n\n// Schémas de validation Zod\nconst taskStatusSchema = z.enum(['todo', 'doing', 'done']);\n\nconst taskCreateSchema = z.object({\n  title: z.string().min(3, 'Le titre doit contenir au moins 3 caractères'),\n  description: z.string().optional(),\n  status: taskStatusSchema.optional(),\n});\n\nconst taskUpdateSchema = z.object({\n  title: z.string().min(3).optional(),\n  description: z.string().optional(),\n  status: taskStatusSchema.optional(),\n});\n\nconst taskParamsSchema = z.object({\n  id: z.string().uuid('ID doit être un UUID valide'),\n});\n\nconst taskQuerySchema = z.object({\n  limit: z\n    .string()\n    .optional()\n    .transform((val) => (val ? parseInt(val, 10) : undefined))\n    .pipe(z.number().int().positive().max(100).optional()),\n  offset: z\n    .string()\n    .optional()\n    .transform((val) => (val ? parseInt(val, 10) : undefined))\n    .pipe(z.number().int().nonnegative().optional()),\n  status: taskStatusSchema.optional(),\n});\n\n// GET /health\nrouter.get('/health', (req: Request, res: Response) => {\n  res.json({\n    status: 'ok',\n    timestamp: new Date().toISOString(),\n    uptime: process.uptime(),\n  });\n});\n\n// GET /tasks\nrouter.get(\n  '/tasks',\n  validate({ query: taskQuerySchema }),\n  (req: Request, res: Response) => {\n    const { limit, offset, status } = req.query as {\n      limit?: number;\n      offset?: number;\n      status?: TaskStatus;\n    };\n    const result = taskService.findAll({ limit, offset, status });\n    res.json({\n      data: result.tasks,\n      pagination: {\n        total: result.total,\n        limit: limit || 10,\n        offset: offset || 0,\n      },\n    });\n  }\n);\n\n// GET /tasks/:id\nrouter.get(\n  '/tasks/:id',\n  validate({ params: taskParamsSchema }),\n  (req: Request, res: Response) => {\n    const { id } = req.params;\n    const task = taskService.findById(id);\n    if (!task) {\n      const error = createError('NOT_FOUND', `Tâche avec l'ID ${id} non trouvée`);\n      res.status(404).json({ error });\n      return;\n    }\n    res.json({ data: task });\n  }\n);\n\n// POST /tasks\nrouter.post(\n  '/tasks',\n  validate({ body: taskCreateSchema }),\n  (req: Request, res: Response) => {\n    const task = taskService.create(req.body);\n    res.status(201).json({ data: task });\n  }\n);\n\n// PUT /tasks/:id\nrouter.put(\n  '/tasks/:id',\n  validate({\n    params: taskParamsSchema,\n    body: taskCreateSchema,\n  }),\n  (req: Request, res: Response) => {\n    const { id } = req.params;\n    const existingTask = taskService.findById(id);\n    if (!existingTask) {\n      const error = createError('NOT_FOUND', `Tâche avec l'ID ${id} non trouvée`);\n      res.status(404).json({ error });\n      return;\n    }\n    const updated = taskService.update(id, req.body);\n    res.json({ data: updated });\n  }\n);\n\n// PATCH /tasks/:id\nrouter.patch(\n  '/tasks/:id',\n  validate({\n    params: taskParamsSchema,\n    body: taskUpdateSchema,\n  }),\n  (req: Request, res: Response) => {\n    const { id } = req.params;\n    const updated = taskService.patch(id, req.body);\n    if (!updated) {\n      const error = createError('NOT_FOUND', `Tâche avec l'ID ${id} non trouvée`);\n      res.status(404).json({ error });\n      return;\n    }\n    res.json({ data: updated });\n  }\n);\n\n// DELETE /tasks/:id\nrouter.delete(\n  '/tasks/:id',\n  validate({ params: taskParamsSchema }),\n  (req: Request, res: Response) => {\n    const { id } = req.params;\n    const deleted = taskService.delete(id);\n    if (!deleted) {\n      const error = createError('NOT_FOUND', `Tâche avec l'ID ${id} non trouvée`);\n      res.status(404).json({ error });\n      return;\n    }\n    res.status(204).send();\n  }\n);\n\nexport default router;"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "ÉTAPE 7 : Configurer le serveur Express (15 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "7.1 Compléter src/server.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "typescript"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "import express, { Express } from 'express';\nimport cors from 'cors';\nimport tasksRouter from './routes/tasks';\nimport { errorHandler, notFoundHandler } from './middlewares/errorHandler';\nimport { apiRateLimiter } from './middlewares/rateLimit';\nimport { setupSwagger } from './docs/swagger';\n\nconst app: Express = express();\nconst PORT = process.env.PORT || 3000;\n\n// Middlewares globaux\napp.use(cors());\napp.use(express.json());\napp.use(express.urlencoded({ extended: true }));\n\n// Rate limiting (sauf /health et /docs)\napp.use((req, res, next) => {\n  if (req.path === '/health' || req.path.startsWith('/docs') || req.path.startsWith('/openapi')) {\n    return next();\n  }\n  return apiRateLimiter(req, res, next);\n});\n\n// Configuration Swagger UI\nsetupSwagger(app);\n\n// Routes\napp.use('/', tasksRouter);\n\n// Gestion des erreurs (en dernier)\napp.use(notFoundHandler);\napp.use(errorHandler);\n\n// Démarrage du serveur\napp.listen(PORT, () => {\n  console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);\n  console.log(`📚 Documentation Swagger UI : http://localhost:${PORT}/docs`);\n  console.log(`📄 OpenAPI spec : http://localhost:${PORT}/openapi`);\n});\n\nexport default app;"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "ÉTAPE 8 : Tester et valider (20 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "8.1 Tester dans Swagger UI"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Ouvrez ",
+                              "marks": [
+                                {
+                                  "type": "code"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": "http://localhost:3000/docs",
+                              "marks": [
+                                {
+                                  "type": "code"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": " dans votre navigateur"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Pour chaque endpoint, cliquez sur \"Try it out\""
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Remplissez les paramètres nécessaires"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Cliquez sur \"Execute\" et vérifiez la réponse"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "8.2 Tester avec curl"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "bash"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Health check\ncurl http://localhost:3000/health\n\n# Créer une tâche\ncurl -X POST http://localhost:3000/tasks \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"title\": \"Réviser OpenAPI\", \"status\": \"todo\"}'\n\n# Lister les tâches\ncurl http://localhost:3000/tasks\n\n# Récupérer une tâche (remplacer l'ID)\ncurl http://localhost:3000/tasks/VOTRE_ID_ICI"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "8.3 Tester les cas d'erreur"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Titre trop court (< 3 caractères) → doit retourner 400"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "ID invalide (pas un UUID) → doit retourner 400"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "ID inexistant → doit retourner 404"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Vérification finale"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Swagger UI accessible sur /docs"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Tous les 7 endpoints implémentés et fonctionnels"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Validations en place"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Gestion d'erreurs standardisée"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Code propre et structuré"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🎯 Critères de réussite"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Obligatoires (80% de la note)"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Le fichier OpenAPI 3 est complet et valide"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Swagger UI est accessible sur /docs et fonctionne"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Tous les 7 endpoints sont implémentés et fonctionnels"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Les validations Zod sont en place pour tous les inputs"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "La gestion d'erreurs est standardisée (format ErrorEnvelope)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Les codes HTTP sont corrects (201 pour POST, 204 pour DELETE, etc.)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "La pagination et le filtrage fonctionnent sur GET /tasks"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Bonus (20% de la note)"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Rate limiting implémenté et fonctionnel"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Tests unitaires pour le service"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🐛 Dépannage"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Le serveur ne démarre pas"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Vérifiez que Node.js 18+ est installé : ",
+                              "marks": [
+                                {
+                                  "type": "code"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": "node --version",
+                              "marks": [
+                                {
+                                  "type": "code"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Vérifiez que toutes les dépendances sont installées : ",
+                              "marks": [
+                                {
+                                  "type": "code"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": "npm install",
+                              "marks": [
+                                {
+                                  "type": "code"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Swagger UI ne s'affiche pas"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Vérifiez que le chemin vers openapi.yaml est correct"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Validez votre YAML sur ",
+                              "marks": [
+                                {
+                                  "type": "link",
+                                  "attrs": {
+                                    "href": "https://editor.swagger.io/",
+                                    "target": "_blank"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": "Swagger Editor",
+                              "marks": [
+                                {
+                                  "type": "link",
+                                  "attrs": {
+                                    "href": "https://editor.swagger.io/",
+                                    "target": "_blank"
+                                  }
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Bon courage ! 🚀",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,514 @@
+openapi: 3.0.3
+info:
+  title: API Tasks - Gestion de tâches
+  description: |
+    API REST simple pour la gestion de tâches avec OpenAPI 3.
+    
+    Cette API permet de :
+    - Créer, lire, mettre à jour et supprimer des tâches
+    - Filtrer et paginer les résultats
+    - Valider les données d'entrée
+    - Gérer les erreurs de manière standardisée
+    
+    **Authentification** : JWT Bearer (optionnel, non implémenté dans cette version)
+  version: 1.0.0
+  contact:
+    name: Support API
+    email: support@example.com
+
+servers:
+  - url: http://localhost:3000
+    description: Serveur de développement local
+  - url: https://api.example.com
+    description: Serveur de production (exemple)
+
+tags:
+  - name: Health
+    description: Endpoints de santé et monitoring
+  - name: Tasks
+    description: Gestion des tâches (CRUD complet)
+
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Vérifie l'état de santé de l'API
+      description: Retourne le statut de l'API, l'horodatage et le temps de fonctionnement
+      operationId: getHealth
+      responses:
+        '200':
+          description: API opérationnelle
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /tasks:
+    get:
+      tags:
+        - Tasks
+      summary: Liste toutes les tâches
+      description: |
+        Récupère la liste des tâches avec pagination et filtres optionnels.
+        - Pagination via `limit` et `offset`
+        - Filtre par `status` (todo, doing, done)
+      operationId: listTasks
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/StatusFilter'
+      responses:
+        '200':
+          description: Liste des tâches récupérée avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TasksListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - bearerAuth: []
+
+    post:
+      tags:
+        - Tasks
+      summary: Crée une nouvelle tâche
+      description: Crée une nouvelle tâche avec les données fournies
+      operationId: createTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCreate'
+            examples:
+              basic:
+                summary: Tâche basique
+                value:
+                  title: "Réviser le cours OpenAPI"
+                  description: "Relire les chapitres 1 à 5"
+              withStatus:
+                summary: Tâche avec statut
+                value:
+                  title: "Implémenter l'endpoint GET /tasks"
+                  status: "doing"
+      responses:
+        '201':
+          description: Tâche créée avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - bearerAuth: []
+
+  /tasks/{id}:
+    get:
+      tags:
+        - Tasks
+      summary: Récupère une tâche par son ID
+      description: Retourne les détails d'une tâche spécifique
+      operationId: getTaskById
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      responses:
+        '200':
+          description: Tâche trouvée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - bearerAuth: []
+
+    put:
+      tags:
+        - Tasks
+      summary: Met à jour complètement une tâche
+      description: |
+        Remplace toutes les propriétés d'une tâche existante.
+        Tous les champs requis doivent être fournis.
+      operationId: updateTask
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCreate'
+            example:
+              title: "Tâche mise à jour"
+              description: "Nouvelle description"
+              status: "done"
+      responses:
+        '200':
+          description: Tâche mise à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - bearerAuth: []
+
+    patch:
+      tags:
+        - Tasks
+      summary: Met à jour partiellement une tâche
+      description: |
+        Met à jour uniquement les champs fournis.
+        Les champs non fournis restent inchangés.
+      operationId: patchTask
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskUpdate'
+            examples:
+              updateStatus:
+                summary: Mise à jour du statut uniquement
+                value:
+                  status: "done"
+              updateTitle:
+                summary: Mise à jour du titre uniquement
+                value:
+                  title: "Nouveau titre"
+      responses:
+        '200':
+          description: Tâche mise à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - bearerAuth: []
+
+    delete:
+      tags:
+        - Tasks
+      summary: Supprime une tâche
+      description: Supprime définitivement une tâche par son ID
+      operationId: deleteTask
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      responses:
+        '204':
+          description: Tâche supprimée avec succès
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - bearerAuth: []
+
+components:
+  schemas:
+    Task:
+      type: object
+      required:
+        - id
+        - title
+        - status
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Identifiant unique de la tâche (UUID v4)
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        title:
+          type: string
+          minLength: 3
+          description: Titre de la tâche
+          example: "Réviser le cours OpenAPI"
+        description:
+          type: string
+          nullable: true
+          description: Description détaillée de la tâche
+          example: "Relire les chapitres 1 à 5 et faire les exercices"
+        status:
+          type: string
+          enum:
+            - todo
+            - doing
+            - done
+          description: Statut de la tâche
+          example: "todo"
+        createdAt:
+          type: string
+          format: date-time
+          description: Date de création (ISO 8601)
+          example: "2024-01-15T10:30:00.000Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: Date de dernière mise à jour (ISO 8601)
+          example: "2024-01-15T14:45:00.000Z"
+
+    TaskCreate:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          minLength: 3
+          description: Titre de la tâche (minimum 3 caractères)
+          example: "Réviser le cours OpenAPI"
+        description:
+          type: string
+          nullable: true
+          description: Description détaillée de la tâche
+          example: "Relire les chapitres 1 à 5"
+        status:
+          type: string
+          enum:
+            - todo
+            - doing
+            - done
+          default: todo
+          description: Statut initial de la tâche (par défaut: todo)
+          example: "todo"
+
+    TaskUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 3
+          description: Nouveau titre de la tâche
+          example: "Tâche mise à jour"
+        description:
+          type: string
+          nullable: true
+          description: Nouvelle description
+          example: "Description mise à jour"
+        status:
+          type: string
+          enum:
+            - todo
+            - doing
+            - done
+          description: Nouveau statut
+          example: "done"
+
+    TasksListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        pagination:
+          type: object
+          properties:
+            total:
+              type: integer
+              description: Nombre total de tâches (après filtres)
+              example: 42
+            limit:
+              type: integer
+              description: Nombre d'éléments par page
+              example: 10
+            offset:
+              type: integer
+              description: Nombre d'éléments ignorés
+              example: 0
+
+    TaskResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Task'
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "ok"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2024-01-15T10:30:00.000Z"
+        uptime:
+          type: number
+          description: Temps de fonctionnement en secondes
+          example: 3600.5
+
+    ErrorEnvelope:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: Code d'erreur standardisé
+              example: "NOT_FOUND"
+            message:
+              type: string
+              description: Message d'erreur lisible
+              example: "Tâche avec l'ID 550e8400-e29b-41d4-a716-446655440000 non trouvée"
+            details:
+              type: object
+              description: Détails supplémentaires sur l'erreur (optionnel)
+              additionalProperties: true
+            traceId:
+              type: string
+              format: uuid
+              description: Identifiant unique pour le suivi de l'erreur
+              example: "660e8400-e29b-41d4-a716-446655440001"
+
+  parameters:
+    TaskId:
+      name: id
+      in: path
+      required: true
+      description: Identifiant unique de la tâche (UUID)
+      schema:
+        type: string
+        format: uuid
+      example: "550e8400-e29b-41d4-a716-446655440000"
+
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Nombre maximum d'éléments à retourner (max 100)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+      example: 10
+
+    Offset:
+      name: offset
+      in: query
+      required: false
+      description: Nombre d'éléments à ignorer (pour la pagination)
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+      example: 0
+
+    StatusFilter:
+      name: status
+      in: query
+      required: false
+      description: Filtrer les tâches par statut
+      schema:
+        type: string
+        enum:
+          - todo
+          - doing
+          - done
+      example: "todo"
+
+  responses:
+    BadRequest:
+      description: Requête invalide (erreur de validation)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error:
+              code: "VALIDATION_ERROR"
+              message: "Erreur de validation"
+              details:
+                - path: "title"
+                  message: "Le titre doit contenir au moins 3 caractères"
+              traceId: "660e8400-e29b-41d4-a716-446655440001"
+
+    Unauthorized:
+      description: Authentification requise
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error:
+              code: "UNAUTHORIZED"
+              message: "Token JWT manquant ou invalide"
+              traceId: "660e8400-e29b-41d4-a716-446655440001"
+
+    NotFound:
+      description: Ressource non trouvée
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error:
+              code: "NOT_FOUND"
+              message: "Tâche avec l'ID 550e8400-e29b-41d4-a716-446655440000 non trouvée"
+              traceId: "660e8400-e29b-41d4-a716-446655440001"
+
+    InternalServerError:
+      description: Erreur interne du serveur
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error:
+              code: "INTERNAL_ERROR"
+              message: "Une erreur interne est survenue"
+              traceId: "660e8400-e29b-41d4-a716-446655440001"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Authentification JWT via Bearer token.
+        Format: `Authorization: Bearer <token>`
+        
+        **Note** : Dans cette version, l'authentification est documentée mais non implémentée.
+        Les endpoints fonctionnent sans authentification.
+
+security:
+  - bearerAuth: []
+

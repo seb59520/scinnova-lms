@@ -1,0 +1,50 @@
+{
+  "name": "tp-openapi-swagger",
+  "version": "1.0.0",
+  "description": "TP OpenAPI 3 + Swagger UI - API Tasks",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "type-check": "tsc --noEmit",
+    "generate-pdf": "node generer-pdf.js"
+  },
+  "keywords": [
+    "openapi",
+    "swagger",
+    "api",
+    "express",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "swagger-ui-express": "^5.0.0",
+    "swagger-jsdoc": "^6.2.8",
+    "zod": "^3.22.4",
+    "express-rate-limit": "^7.1.5",
+    "cors": "^2.8.5",
+    "uuid": "^9.0.1",
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/swagger-ui-express": "^4.1.6",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/cors": "^2.8.17",
+    "@types/uuid": "^9.0.1",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.10.6",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "eslint": "^8.56.0",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3",
+    "puppeteer": "^21.6.1"
+  }
+}
+
