@@ -1,0 +1,115 @@
+{
+  "type": "resource",
+  "title": "Solutions - GraphQL Query Builder - Scénarios avancés",
+  "position": 0,
+  "published": true,
+  "content": {
+    "description": "Solutions complètes pour tous les scénarios avancés de l'exercice GraphQL Query Builder avec requêtes GraphQL attendues et explications détaillées.",
+    "body": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "Solutions - GraphQL Query Builder - Scénarios avancés" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Ce document contient les solutions complètes pour tous les scénarios avancés de l'exercice GraphQL Query Builder." }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Scénario 1 : Optimisation : Champs minimaux" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "graphql" },
+          "content": [
+            {
+              "type": "text",
+              "text": "query {\n  user(id: \"42\") {\n    name\n    orders {\n      id\n    }\n  }\n}"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Ne sélectionnez que les champs strictement nécessaires : user avec l'argument id, puis name (champ scalaire), et orders avec uniquement id. Évitez les champs inutiles comme email, total, date, etc. Optimisation : 4 champs au total (user, name, orders, id)." }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Champs attendus : user, name, orders, id" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Scénario 2 : Requête complète : E-commerce" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "graphql" },
+          "content": [
+            {
+              "type": "text",
+              "text": "query {\n  user(id: \"42\") {\n    name\n    orders {\n      id\n      total\n      date\n      items {\n        quantity\n        product {\n          name\n          price\n        }\n      }\n    }\n  }\n}"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Requête complète avec tous les niveaux de relations : User → Orders → Items → Product. Commencez par user(id: \"42\"), ajoutez name, puis orders avec id, total, date. Dans orders, ajoutez items avec quantity, puis product avec name et price. Tous les champs pertinents sélectionnés pour une vue complète e-commerce." }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Champs attendus : user, name, orders, id, total, date, items, quantity, product, name, price" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Scénario 3 : Liste avec filtres" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "graphql" },
+          "content": [
+            {
+              "type": "text",
+              "text": "query {\n  users(limit: 5) {\n    name\n    email\n  }\n}"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Utilisez le champ users de Query (liste), ajoutez l'argument limit: 5 pour limiter à 5 utilisateurs, et sélectionnez uniquement les champs name et email du type User. Optimisation : 3 champs au total (users, name, email)." }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Champs attendus : users, name, email" }
+          ]
+        }
+      ]
+    }
+  }
+}
+

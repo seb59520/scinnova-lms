@@ -40,6 +40,8 @@ import { DiagnosticRole } from './pages/DiagnosticRole'
 import { PresentationView } from './pages/PresentationView'
 import { LandingPage } from './pages/LandingPage'
 import { LearnerMailbox } from './pages/LearnerMailbox'
+import { Chat } from './pages/Chat'
+import { ChatWidget } from './components/ChatWidget'
 import { TimeTrackingProvider } from './components/TimeTrackingProvider'
 
 function App() {
@@ -121,6 +123,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Help />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/chat"
+            element={
+              <ProtectedRoute>
+                <Chat />
               </ProtectedRoute>
             }
           />
@@ -372,6 +382,8 @@ function App() {
           {/* Route par défaut */}
           <Route path="/" element={<ProtectedRoute requireAuth={false}><Login /></ProtectedRoute>} />
         </Routes>
+        {/* Widget de chat disponible partout */}
+        <ChatWidget />
       </div>
       </TimeTrackingProvider>
     </AuthProvider>

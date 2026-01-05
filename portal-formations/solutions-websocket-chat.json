@@ -1,0 +1,475 @@
+{
+  "type": "resource",
+  "title": "Solutions - Application de chat avec WebSocket",
+  "position": 0,
+  "published": true,
+  "content": {
+    "description": "Solutions complètes pour le TP Application de chat avec WebSocket, incluant le code complet de la classe WebSocketClient, l'interface HTML/CSS/JS, et les explications détaillées pour chaque étape.",
+    "body": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "Solutions - Application de chat avec WebSocket" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Ce document contient les solutions complètes pour le TP Application de chat avec WebSocket, incluant tous les fichiers nécessaires et les explications détaillées." }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Fichier 1 : websocket-client.js - Classe WebSocketClient complète" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "javascript" },
+          "content": [
+            {
+              "type": "text",
+              "text": "// Classe WebSocketClient avec reconnexion automatique et heartbeat\nclass WebSocketClient {\n  constructor(url) {\n    this.url = url;\n    this.ws = null;\n    this.reconnectAttempts = 0;\n    this.maxReconnectAttempts = 5;\n    this.reconnectDelay = 1000; // 1 seconde initialement\n    this.heartbeatInterval = null;\n    this.heartbeatTimeout = null;\n    this.onMessageCallback = null;\n    this.onConnectionChangeCallback = null;\n    this.lastPingTime = null;\n  }\n\n  connect() {\n    if (this.onConnectionChangeCallback) {\n      this.onConnectionChangeCallback('connecting');\n    }\n    \n    this.ws = new WebSocket(this.url);\n\n    this.ws.onopen = () => {\n      console.log('WebSocket connecté');\n      this.reconnectAttempts = 0;\n      this.reconnectDelay = 1000; // Réinitialiser le délai\n      this.startHeartbeat();\n      if (this.onConnectionChangeCallback) {\n        this.onConnectionChangeCallback('connected');\n      }\n    };\n\n    this.ws.onmessage = (event) => {\n      try {\n        const message = JSON.parse(event.data);\n        \n        if (message.type === 'pong') {\n          console.log('Pong reçu');\n          this.resetHeartbeatTimeout();\n        } else {\n          this.handleMessage(message);\n        }\n      } catch (error) {\n        console.error('Erreur lors du parsing du message:', error);\n      }\n    };\n\n    this.ws.onerror = (error) => {\n      console.error('Erreur WebSocket:', error);\n      if (this.onConnectionChangeCallback) {\n        this.onConnectionChangeCallback('error');\n      }\n    };\n\n    this.ws.onclose = (event) => {\n      console.log('WebSocket fermé', event.code, event.reason);\n      this.stopHeartbeat();\n      if (this.onConnectionChangeCallback) {\n        this.onConnectionChangeCallback('disconnected');\n      }\n      // Ne pas reconnecter si la fermeture est intentionnelle (code 1000)\n      if (event.code !== 1000) {\n        this.attemptReconnect();\n      }\n    };\n  }\n\n  send(message) {\n    if (this.ws && this.ws.readyState === WebSocket.OPEN) {\n      this.ws.send(JSON.stringify(message));\n      return true;\n    } else {\n      console.error('WebSocket n'est pas connecté');\n      return false;\n    }\n  }\n\n  startHeartbeat() {\n    // Nettoyer les intervalles précédents si nécessaire\n    this.stopHeartbeat();\n    \n    // Envoyer un ping toutes les 30 secondes\n    this.heartbeatInterval = setInterval(() => {\n      if (this.ws && this.ws.readyState === WebSocket.OPEN) {\n        this.ws.send(JSON.stringify({ type: 'ping' }));\n        console.log('Ping envoyé');\n        this.lastPingTime = Date.now();\n        this.resetHeartbeatTimeout();\n      }\n    }, 30000); // Toutes les 30 secondes\n  }\n\n  resetHeartbeatTimeout() {\n    // Nettoyer le timeout précédent\n    if (this.heartbeatTimeout) {\n      clearTimeout(this.heartbeatTimeout);\n    }\n    \n    // Créer un nouveau timeout de 35 secondes (5 secondes après le ping)\n    this.heartbeatTimeout = setTimeout(() => {\n      if (this.ws && this.ws.readyState === WebSocket.OPEN) {\n        console.warn('Pas de réponse du serveur, fermeture de la connexion');\n        this.ws.close();\n      }\n    }, 35000); // 35 secondes\n  }\n\n  stopHeartbeat() {\n    if (this.heartbeatInterval) {\n      clearInterval(this.heartbeatInterval);\n      this.heartbeatInterval = null;\n    }\n    if (this.heartbeatTimeout) {\n      clearTimeout(this.heartbeatTimeout);\n      this.heartbeatTimeout = null;\n    }\n  }\n\n  attemptReconnect() {\n    if (this.reconnectAttempts < this.maxReconnectAttempts) {\n      this.reconnectAttempts++;\n      // Délai exponentiel : 1s, 2s, 4s, 8s, 16s (max 30s)\n      const delay = Math.min(\n        this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1),\n        30000\n      );\n      \n      console.log(`Tentative de reconnexion ${this.reconnectAttempts}/${this.maxReconnectAttempts} dans ${delay}ms...`);\n      \n      if (this.onConnectionChangeCallback) {\n        this.onConnectionChangeCallback('connecting');\n      }\n      \n      setTimeout(() => {\n        this.connect();\n      }, delay);\n    } else {\n      console.error('Nombre maximum de tentatives de reconnexion atteint');\n      if (this.onConnectionChangeCallback) {\n        this.onConnectionChangeCallback('failed');\n      }\n    }\n  }\n\n  handleMessage(message) {\n    if (this.onMessageCallback) {\n      this.onMessageCallback(message);\n    } else {\n      console.log('Message reçu:', message);\n    }\n  }\n\n  onMessage(callback) {\n    this.onMessageCallback = callback;\n  }\n\n  onConnectionChange(callback) {\n    this.onConnectionChangeCallback = callback;\n  }\n\n  disconnect() {\n    this.stopHeartbeat();\n    this.reconnectAttempts = this.maxReconnectAttempts; // Empêcher la reconnexion\n    if (this.ws) {\n      this.ws.close(1000, 'Déconnexion intentionnelle');\n    }\n  }\n\n  getReadyState() {\n    if (!this.ws) return WebSocket.CONNECTING;\n    return this.ws.readyState;\n  }\n}"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Points clés de cette implémentation :" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Gestion complète du cycle de vie de la connexion (onopen, onmessage, onerror, onclose)" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Reconnexion automatique avec délai exponentiel (1s, 2s, 4s, 8s, 16s, max 30s)" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Système de heartbeat (ping/pong) toutes les 30 secondes avec timeout de 35 secondes" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Callbacks pour les messages et les changements de statut de connexion" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Gestion propre de la déconnexion intentionnelle (code 1000)" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Fichier 2 : index.html - Interface HTML complète" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "html" },
+          "content": [
+            {
+              "type": "text",
+              "text": "<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Chat WebSocket</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <div class=\"container\">\n    <h1>💬 Chat WebSocket</h1>\n    \n    <div class=\"user-section\">\n      <label for=\"usernameInput\">Nom d'utilisateur :</label>\n      <input \n        type=\"text\" \n        id=\"usernameInput\" \n        placeholder=\"Entrez votre nom...\" \n        value=\"Utilisateur\"\n      />\n    </div>\n    \n    <div id=\"status\" class=\"status disconnected\">\n      <span class=\"status-indicator\"></span>\n      <span class=\"status-text\">Déconnecté</span>\n    </div>\n    \n    <div id=\"messages\" class=\"messages\"></div>\n    \n    <form id=\"messageForm\" class=\"message-form\">\n      <input \n        type=\"text\" \n        id=\"messageInput\" \n        placeholder=\"Tapez votre message...\" \n        disabled\n        autocomplete=\"off\"\n      />\n      <button type=\"submit\" id=\"sendButton\" disabled>Envoyer</button>\n    </form>\n  </div>\n\n  <script src=\"websocket-client.js\"></script>\n  <script src=\"app.js\"></script>\n</body>\n</html>"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Fichier 3 : styles.css - Styles CSS professionnels" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "css" },
+          "content": [
+            {
+              "type": "text",
+              "text": "* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\nbody {\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  min-height: 100vh;\n  padding: 20px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.container {\n  background: white;\n  border-radius: 12px;\n  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);\n  max-width: 800px;\n  width: 100%;\n  padding: 30px;\n  display: flex;\n  flex-direction: column;\n  height: 90vh;\n  max-height: 800px;\n}\n\nh1 {\n  text-align: center;\n  color: #333;\n  margin-bottom: 20px;\n  font-size: 2em;\n}\n\n.user-section {\n  margin-bottom: 15px;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.user-section label {\n  font-weight: 600;\n  color: #555;\n  white-space: nowrap;\n}\n\n.user-section input {\n  flex: 1;\n  padding: 10px;\n  border: 2px solid #e0e0e0;\n  border-radius: 6px;\n  font-size: 14px;\n  transition: border-color 0.3s;\n}\n\n.user-section input:focus {\n  outline: none;\n  border-color: #667eea;\n}\n\n.status {\n  padding: 12px 20px;\n  margin-bottom: 20px;\n  border-radius: 8px;\n  text-align: center;\n  font-weight: 600;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  gap: 10px;\n  transition: all 0.3s;\n}\n\n.status-indicator {\n  width: 12px;\n  height: 12px;\n  border-radius: 50%;\n  display: inline-block;\n  animation: pulse 2s infinite;\n}\n\n@keyframes pulse {\n  0%, 100% { opacity: 1; }\n  50% { opacity: 0.5; }\n}\n\n.status.connected {\n  background-color: #4CAF50;\n  color: white;\n}\n\n.status.connected .status-indicator {\n  background-color: white;\n}\n\n.status.disconnected {\n  background-color: #f44336;\n  color: white;\n}\n\n.status.disconnected .status-indicator {\n  background-color: white;\n}\n\n.status.connecting {\n  background-color: #ff9800;\n  color: white;\n}\n\n.status.connecting .status-indicator {\n  background-color: white;\n}\n\n.status.failed {\n  background-color: #9e9e9e;\n  color: white;\n}\n\n.messages {\n  border: 2px solid #e0e0e0;\n  border-radius: 8px;\n  height: 100%;\n  overflow-y: auto;\n  padding: 15px;\n  margin-bottom: 20px;\n  background-color: #f9f9f9;\n  flex: 1;\n  min-height: 0;\n}\n\n.messages::-webkit-scrollbar {\n  width: 8px;\n}\n\n.messages::-webkit-scrollbar-track {\n  background: #f1f1f1;\n  border-radius: 4px;\n}\n\n.messages::-webkit-scrollbar-thumb {\n  background: #888;\n  border-radius: 4px;\n}\n\n.messages::-webkit-scrollbar-thumb:hover {\n  background: #555;\n}\n\n.message {\n  margin-bottom: 15px;\n  padding: 12px 15px;\n  background-color: white;\n  border-radius: 8px;\n  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);\n  animation: slideIn 0.3s ease-out;\n}\n\n@keyframes slideIn {\n  from {\n    opacity: 0;\n    transform: translateY(-10px);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n\n.message-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 8px;\n  font-size: 0.9em;\n}\n\n.message-header .user {\n  font-weight: 600;\n  color: #667eea;\n}\n\n.message-header .timestamp {\n  color: #999;\n  font-size: 0.85em;\n}\n\n.message-content {\n  color: #333;\n  line-height: 1.5;\n  word-wrap: break-word;\n}\n\n.message.system {\n  background-color: #e3f2fd;\n  border-left: 4px solid #2196F3;\n}\n\n.message.error {\n  background-color: #ffebee;\n  border-left: 4px solid #f44336;\n}\n\n.message-form {\n  display: flex;\n  gap: 10px;\n}\n\n.message-form input {\n  flex: 1;\n  padding: 12px 15px;\n  border: 2px solid #e0e0e0;\n  border-radius: 8px;\n  font-size: 14px;\n  transition: border-color 0.3s;\n}\n\n.message-form input:focus {\n  outline: none;\n  border-color: #667eea;\n}\n\n.message-form input:disabled {\n  background-color: #f5f5f5;\n  cursor: not-allowed;\n}\n\n.message-form button {\n  padding: 12px 24px;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  color: white;\n  border: none;\n  border-radius: 8px;\n  font-size: 14px;\n  font-weight: 600;\n  cursor: pointer;\n  transition: transform 0.2s, box-shadow 0.2s;\n}\n\n.message-form button:hover:not(:disabled) {\n  transform: translateY(-2px);\n  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);\n}\n\n.message-form button:active:not(:disabled) {\n  transform: translateY(0);\n}\n\n.message-form button:disabled {\n  background: #ccc;\n  cursor: not-allowed;\n  transform: none;\n  box-shadow: none;\n}\n\n/* Responsive */\n@media (max-width: 600px) {\n  .container {\n    padding: 20px;\n    height: 100vh;\n    max-height: none;\n    border-radius: 0;\n  }\n  \n  h1 {\n    font-size: 1.5em;\n  }\n  \n  .user-section {\n    flex-direction: column;\n    align-items: stretch;\n  }\n}"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Fichier 4 : app.js - Logique de l'application" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "javascript" },
+          "content": [
+            {
+              "type": "text",
+              "text": "// Configuration\nconst WS_URL = 'wss://echo.websocket.org';\n\n// Éléments DOM\nconst statusElement = document.getElementById('status');\nconst statusText = statusElement.querySelector('.status-text');\nconst messagesContainer = document.getElementById('messages');\nconst messageForm = document.getElementById('messageForm');\nconst messageInput = document.getElementById('messageInput');\nconst sendButton = document.getElementById('sendButton');\nconst usernameInput = document.getElementById('usernameInput');\n\n// Instance du client WebSocket\nlet client = null;\n\n// Initialisation\nfunction init() {\n  // Créer le client WebSocket\n  client = new WebSocketClient(WS_URL);\n  \n  // Gérer les messages reçus\n  client.onMessage((message) => {\n    displayMessage(message);\n  });\n  \n  // Gérer les changements de statut de connexion\n  client.onConnectionChange((status) => {\n    updateConnectionStatus(status);\n  });\n  \n  // Connecter au serveur\n  client.connect();\n  \n  // Gérer l'envoi de messages\n  messageForm.addEventListener('submit', (e) => {\n    e.preventDefault();\n    sendMessage();\n  });\n  \n  // Permettre l'envoi avec Enter\n  messageInput.addEventListener('keypress', (e) => {\n    if (e.key === 'Enter' && !e.shiftKey) {\n      e.preventDefault();\n      sendMessage();\n    }\n  });\n}\n\n// Mettre à jour le statut de connexion\nfunction updateConnectionStatus(status) {\n  // Retirer toutes les classes de statut\n  statusElement.className = 'status';\n  \n  switch (status) {\n    case 'connected':\n      statusElement.classList.add('connected');\n      statusText.textContent = 'Connecté';\n      messageInput.disabled = false;\n      sendButton.disabled = false;\n      messageInput.focus();\n      addSystemMessage('Connexion établie avec succès');\n      break;\n      \n    case 'connecting':\n      statusElement.classList.add('connecting');\n      statusText.textContent = 'Connexion en cours...';\n      messageInput.disabled = true;\n      sendButton.disabled = true;\n      break;\n      \n    case 'disconnected':\n      statusElement.classList.add('disconnected');\n      statusText.textContent = 'Déconnecté';\n      messageInput.disabled = true;\n      sendButton.disabled = true;\n      break;\n      \n    case 'error':\n      statusElement.classList.add('disconnected');\n      statusText.textContent = 'Erreur de connexion';\n      messageInput.disabled = true;\n      sendButton.disabled = true;\n      addSystemMessage('Une erreur est survenue', 'error');\n      break;\n      \n    case 'failed':\n      statusElement.classList.add('failed');\n      statusText.textContent = 'Échec de connexion';\n      messageInput.disabled = true;\n      sendButton.disabled = true;\n      addSystemMessage('Impossible de se connecter au serveur après plusieurs tentatives', 'error');\n      break;\n  }\n}\n\n// Envoyer un message\nfunction sendMessage() {\n  const messageText = messageInput.value.trim();\n  const username = usernameInput.value.trim() || 'Utilisateur';\n  \n  if (!messageText) {\n    return;\n  }\n  \n  if (!client || client.getReadyState() !== WebSocket.OPEN) {\n    addSystemMessage('Vous n'êtes pas connecté', 'error');\n    return;\n  }\n  \n  const message = {\n    type: 'message',\n    content: messageText,\n    timestamp: new Date().toISOString(),\n    user: username\n  };\n  \n  if (client.send(message)) {\n    // Afficher le message localement immédiatement (optimistic update)\n    displayMessage(message);\n    // Vider le champ de saisie\n    messageInput.value = '';\n  } else {\n    addSystemMessage('Impossible d'envoyer le message', 'error');\n  }\n}\n\n// Afficher un message\nfunction displayMessage(message) {\n  // Ignorer les messages ping/pong\n  if (message.type === 'ping' || message.type === 'pong') {\n    return;\n  }\n  \n  const messageElement = document.createElement('div');\n  messageElement.className = 'message';\n  \n  if (message.type === 'system' || !message.user) {\n    messageElement.classList.add('system');\n    messageElement.innerHTML = `\n      <div class=\"message-content\">${escapeHtml(message.content)}</div>\n    `;\n  } else {\n    const timestamp = new Date(message.timestamp).toLocaleTimeString('fr-FR', {\n      hour: '2-digit',\n      minute: '2-digit',\n      second: '2-digit'\n    });\n    \n    messageElement.innerHTML = `\n      <div class=\"message-header\">\n        <span class=\"user\">${escapeHtml(message.user)}</span>\n        <span class=\"timestamp\">${timestamp}</span>\n      </div>\n      <div class=\"message-content\">${escapeHtml(message.content)}</div>\n    `;\n  }\n  \n  messagesContainer.appendChild(messageElement);\n  \n  // Défilement automatique vers le bas\n  scrollToBottom();\n}\n\n// Ajouter un message système\nfunction addSystemMessage(content, type = 'system') {\n  displayMessage({\n    type: type,\n    content: content,\n    timestamp: new Date().toISOString()\n  });\n}\n\n// Défilement automatique vers le bas\nfunction scrollToBottom() {\n  messagesContainer.scrollTop = messagesContainer.scrollHeight;\n}\n\n// Échapper le HTML pour éviter les injections XSS\nfunction escapeHtml(text) {\n  const div = document.createElement('div');\n  div.textContent = text;\n  return div.innerHTML;\n}\n\n// Nettoyage lors de la fermeture de la page\nwindow.addEventListener('beforeunload', () => {\n  if (client) {\n    client.disconnect();\n  }\n});\n\n// Initialiser l'application au chargement\ninit();"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Explications détaillées par étape" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Étape 1 : Structure HTML de base" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "La structure HTML inclut :" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Un formulaire pour saisir le nom d'utilisateur" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Un indicateur de statut de connexion (connecté/déconnecté/en cours)" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Une zone de messages avec défilement automatique" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Un formulaire d'envoi de messages avec champ de saisie et bouton" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Étape 2 : Classe WebSocketClient" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "La classe encapsule toute la logique WebSocket :" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Méthode connect() : établit la connexion et configure tous les event handlers" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Méthode send() : envoie des messages JSON avec vérification de l'état de connexion" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Méthode disconnect() : ferme proprement la connexion (code 1000)" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Système de callbacks pour les messages et changements de statut" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Étape 3 : Gestion des événements WebSocket" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "onopen : Réinitialise les compteurs de reconnexion, démarre le heartbeat, et notifie le callback" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "onmessage : Parse le JSON, gère les pong du heartbeat, et transmet les autres messages" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "onerror : Log l'erreur et notifie le callback" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "onclose : Arrête le heartbeat, notifie le callback, et tente la reconnexion si nécessaire" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Étape 4 : Envoi de messages avec format JSON" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Format standardisé :" },
+            { "type": "hardBreak" },
+            { "type": "code", "text": "{ type: 'message', content: '...', timestamp: '...', user: '...' }" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "Le timestamp est au format ISO 8601 pour faciliter le parsing côté serveur." }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Étape 5 : Réception et affichage des messages" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "La fonction displayMessage() :" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Crée un élément DOM pour chaque message" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Affiche l'utilisateur, le timestamp formaté, et le contenu" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Utilise escapeHtml() pour prévenir les injections XSS" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Appelle scrollToBottom() pour le défilement automatique" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Étape 6 : Reconnexion automatique avec délai exponentiel" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "L'algorithme de reconnexion :" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Délai initial : 1 seconde" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Multiplicateur exponentiel : 2^n (1s, 2s, 4s, 8s, 16s)" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Délai maximum : 30 secondes" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Maximum de 5 tentatives avant abandon" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Ne reconnecte pas si la fermeture est intentionnelle (code 1000)" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Étape 7 : Système de heartbeat (ping/pong)" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Le heartbeat maintient la connexion active :" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Envoie un ping toutes les 30 secondes" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Attend un pong en réponse" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Timeout de 35 secondes : si pas de pong, ferme la connexion" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Réinitialise le timeout à chaque réception de pong" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• S'arrête proprement lors de la déconnexion" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Étape 8 : Affichage du statut de connexion" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Les états gérés :" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• connecting : Connexion en cours (orange)" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• connected : Connecté (vert)" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• disconnected : Déconnecté (rouge)" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• error : Erreur de connexion (rouge)" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• failed : Échec après toutes les tentatives (gris)" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Étape 9 : Gestion des erreurs" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Gestion complète des erreurs :" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Try/catch pour le parsing JSON" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Vérification de l'état avant envoi" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Messages d'erreur utilisateur clairs" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Logs console pour le débogage" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Étape 10 : Améliorations de l'interface" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Fonctionnalités UI/UX :" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Design moderne avec dégradés et ombres" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Animations pour les nouveaux messages (slideIn)" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Indicateur de statut avec animation pulse" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Défilement automatique vers le bas" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Responsive design pour mobile/tablette" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Saisie du nom d'utilisateur" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "• Messages système pour les événements importants" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Tests et validation" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Test 1 : Reconnexion automatique" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Pour tester la reconnexion :" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "1. Ouvrir la console du navigateur (F12)" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "2. Désactiver le réseau (DevTools > Network > Offline)" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "3. Observer les tentatives de reconnexion dans la console" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "4. Réactiver le réseau et vérifier la reconnexion automatique" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "5. Vérifier que les messages sont bien envoyés après reconnexion" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Test 2 : Heartbeat" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Pour tester le heartbeat :" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "1. Ouvrir la console du navigateur" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "2. Observer les logs 'Ping envoyé' toutes les 30 secondes" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "3. Vérifier que le serveur répond (echo.websocket.org renvoie le ping)" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "4. Simuler une perte de connexion et vérifier le timeout" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Test 3 : Envoi et réception de messages" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Pour tester les messages :" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "1. Saisir un nom d'utilisateur" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "2. Envoyer plusieurs messages" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "3. Vérifier l'affichage correct (utilisateur, timestamp, contenu)" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "4. Vérifier le défilement automatique" },
+            { "type": "hardBreak" },
+            { "type": "text", "text": "5. Tester avec des messages longs et des caractères spéciaux" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Points d'attention et bonnes pratiques" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Sécurité : Toujours échapper le HTML avec escapeHtml() pour prévenir les injections XSS" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Gestion d'erreurs : Toujours utiliser try/catch pour le parsing JSON et vérifier l'état de connexion avant d'envoyer" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Performance : Le défilement automatique ne se fait que lors de l'ajout de nouveaux messages, pas à chaque scroll" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Nettoyage : Toujours arrêter les intervalles et timeouts lors de la déconnexion pour éviter les fuites mémoire" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "UX : Feedback visuel immédiat avec l'indicateur de statut et les messages système" }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

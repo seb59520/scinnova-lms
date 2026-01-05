@@ -1,0 +1,667 @@
+{
+  "title": "TP : Application de chat avec WebSocket",
+  "description": "TP complet pour créer une application de chat en temps réel utilisant WebSocket. Ce TP couvre la connexion WebSocket bidirectionnelle, la reconnexion automatique avec délai exponentiel, le système de heartbeat (ping/pong), et la gestion complète des événements WebSocket.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#667eea",
+    "secondaryColor": "#764ba2",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Contexte et préparation",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#667eea",
+        "secondaryColor": "#764ba2"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Introduction au TP",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "TP : Application de chat avec WebSocket" }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "Contexte" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dans ce TP, vous allez créer une application de chat simple utilisant WebSocket pour permettre la communication en temps réel entre plusieurs utilisateurs. Vous apprendrez à gérer les connexions WebSocket, implémenter la reconnexion automatique, et maintenir la connexion active avec un système de heartbeat."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "Objectifs pédagogiques" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Comprendre le fonctionnement de WebSocket" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Implémenter une connexion WebSocket bidirectionnelle" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Gérer la reconnexion automatique en cas de perte de connexion" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Implémenter un système de heartbeat pour maintenir la connexion active" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "Durée estimée" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "2h à 3h", "marks": [{ "type": "bold" }] }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Prérequis et ressources",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "Prérequis" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Connaissances de base en JavaScript (ES6+)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Connaissances de base en HTML et CSS" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Compréhension des concepts de programmation asynchrone" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Un navigateur moderne supportant WebSocket" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "Ressources supplémentaires" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Documentation MDN WebSocket : " },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "link",
+                                  "attrs": {
+                                    "href": "https://developer.mozilla.org/fr/docs/Web/API/WebSocket",
+                                    "target": "_blank"
+                                  }
+                                }
+                              ],
+                              "text": "developer.mozilla.org/fr/docs/Web/API/WebSocket"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "RFC 6455 - WebSocket Protocol : " },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "link",
+                                  "attrs": {
+                                    "href": "https://tools.ietf.org/html/rfc6455",
+                                    "target": "_blank"
+                                  }
+                                }
+                              ],
+                              "text": "tools.ietf.org/html/rfc6455"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "WebSocket.org - Outils de test : " },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "link",
+                                  "attrs": {
+                                    "href": "https://www.websocket.org/echo.html",
+                                    "target": "_blank"
+                                  }
+                                }
+                              ],
+                              "text": "websocket.org/echo.html"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : TP pratique",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#059669"
+      },
+      "items": [
+        {
+          "type": "tp",
+          "title": "TP : Application de chat avec WebSocket",
+          "position": 1,
+          "published": true,
+          "content": {
+            "instructions": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "TP : Application de chat avec WebSocket" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Durée estimée : 2h à 3h", "marks": [{ "type": "bold" }] }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dans ce TP, vous allez créer une application de chat simple utilisant WebSocket pour permettre la communication en temps réel entre plusieurs utilisateurs."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "🎯 Objectifs" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Comprendre le fonctionnement de WebSocket" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Implémenter une connexion WebSocket bidirectionnelle" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Gérer la reconnexion automatique en cas de perte de connexion" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Implémenter un système de heartbeat pour maintenir la connexion active" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "📋 Étapes du TP" }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Étape 1 : Connexion au serveur WebSocket" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Pour tester votre application, vous pouvez utiliser le serveur WebSocket public de websocket.org :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "javascript" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "const ws = new WebSocket('wss://echo.websocket.org');\n\nws.onopen = () => {\n  console.log('Connexion WebSocket établie');\n};\n\nws.onerror = (error) => {\n  console.error('Erreur WebSocket:', error);\n};\n\nws.onclose = () => {\n  console.log('Connexion WebSocket fermée');\n};"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Étape 2 : Envoyer des messages" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Implémentez une fonction pour envoyer des messages au serveur. Assurez-vous que la connexion est ouverte avant d'envoyer :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "javascript" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "function sendMessage(message) {\n  if (ws && ws.readyState === WebSocket.OPEN) {\n    const messageData = {\n      type: 'message',\n      content: message,\n      timestamp: new Date().toISOString(),\n      user: 'Utilisateur' // Vous pouvez demander le nom d'utilisateur\n    };\n    ws.send(JSON.stringify(messageData));\n  } else {\n    console.error('WebSocket n'est pas connecté');\n  }\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Étape 3 : Recevoir et afficher les messages" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Implémentez la réception des messages et leur affichage dans l'interface utilisateur :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "javascript" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "ws.onmessage = (event) => {\n  try {\n    const message = JSON.parse(event.data);\n    \n    // Afficher le message dans l'interface\n    displayMessage(message);\n    \n    // Optionnel : faire défiler vers le bas\n    scrollToBottom();\n  } catch (error) {\n    console.error('Erreur lors du parsing du message:', error);\n  }\n};\n\nfunction displayMessage(message) {\n  const messagesContainer = document.getElementById('messages');\n  const messageElement = document.createElement('div');\n  messageElement.className = 'message';\n  messageElement.innerHTML = `\n    <div class=\"message-header\">\n      <span class=\"user\">${message.user}</span>\n      <span class=\"timestamp\">${new Date(message.timestamp).toLocaleTimeString()}</span>\n    </div>\n    <div class=\"message-content\">${message.content}</div>\n  `;\n  messagesContainer.appendChild(messageElement);\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Étape 4 : Reconnexion automatique" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Implémentez un système de reconnexion automatique avec un délai exponentiel :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "javascript" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "class WebSocketClient {\n  constructor(url) {\n    this.url = url;\n    this.ws = null;\n    this.reconnectAttempts = 0;\n    this.maxReconnectAttempts = 5;\n    this.reconnectDelay = 1000; // 1 seconde initialement\n  }\n\n  connect() {\n    this.ws = new WebSocket(this.url);\n\n    this.ws.onopen = () => {\n      console.log('WebSocket connecté');\n      this.reconnectAttempts = 0;\n      this.reconnectDelay = 1000;\n      this.startHeartbeat();\n    };\n\n    this.ws.onclose = () => {\n      console.log('WebSocket fermé');\n      this.stopHeartbeat();\n      this.attemptReconnect();\n    };\n\n    this.ws.onerror = (error) => {\n      console.error('Erreur WebSocket:', error);\n    };\n\n    this.ws.onmessage = (event) => {\n      const message = JSON.parse(event.data);\n      this.handleMessage(message);\n    };\n  }\n\n  attemptReconnect() {\n    if (this.reconnectAttempts < this.maxReconnectAttempts) {\n      this.reconnectAttempts++;\n      // Délai exponentiel : 1s, 2s, 4s, 8s, 16s (max 30s)\n      const delay = Math.min(\n        this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1),\n        30000\n      );\n      \n      console.log(`Tentative de reconnexion ${this.reconnectAttempts}/${this.maxReconnectAttempts} dans ${delay}ms...`);\n      \n      setTimeout(() => {\n        this.connect();\n      }, delay);\n    } else {\n      console.error('Nombre maximum de tentatives de reconnexion atteint');\n    }\n  }\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [
+                    { "type": "text", "text": "Étape 5 : Système de heartbeat" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Implémentez un système de heartbeat (ping/pong) pour maintenir la connexion active et détecter les connexions mortes :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "javascript" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "startHeartbeat() {\n  // Envoyer un ping toutes les 30 secondes\n  this.heartbeatInterval = setInterval(() => {\n    if (this.ws && this.ws.readyState === WebSocket.OPEN) {\n      this.ws.send(JSON.stringify({ type: 'ping' }));\n      console.log('Ping envoyé');\n    }\n  }, 30000); // 30 secondes\n\n  // Timeout pour détecter si le serveur ne répond pas\n  this.heartbeatTimeout = setTimeout(() => {\n    if (this.ws && this.ws.readyState === WebSocket.OPEN) {\n      console.warn('Pas de réponse du serveur, fermeture de la connexion');\n      this.ws.close();\n    }\n  }, 35000); // 35 secondes (5 secondes après le ping)\n}\n\nstopHeartbeat() {\n  if (this.heartbeatInterval) {\n    clearInterval(this.heartbeatInterval);\n    this.heartbeatInterval = null;\n  }\n  if (this.heartbeatTimeout) {\n    clearTimeout(this.heartbeatTimeout);\n    this.heartbeatTimeout = null;\n  }\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "💻 Code de base complet" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Voici un exemple complet de classe WebSocketClient que vous pouvez utiliser comme point de départ. Consultez le fichier solutions-websocket-chat.json pour le code complet avec toutes les fonctionnalités."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "📝 Interface HTML de base" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créez une interface HTML simple avec un formulaire de message et une zone d'affichage. Consultez le fichier solutions-websocket-chat.json pour un exemple complet avec CSS professionnel."
+                    }
+                  ]
+                }
+              ]
+            },
+            "checklist": [
+              "Créer la structure HTML de base avec un formulaire de message et une zone d'affichage",
+              "Implémenter la classe WebSocketClient avec les méthodes connect(), send(), et disconnect()",
+              "Gérer les événements onopen, onmessage, onerror, et onclose",
+              "Implémenter l'envoi de messages avec format JSON (type, content, timestamp, user)",
+              "Implémenter la réception et l'affichage des messages dans l'interface",
+              "Ajouter la gestion de reconnexion automatique avec délai exponentiel",
+              "Implémenter le système de heartbeat (ping/pong) toutes les 30 secondes",
+              "Ajouter un timeout pour détecter les connexions mortes",
+              "Afficher le statut de connexion (connecté/déconnecté/en cours de connexion)",
+              "Gérer les erreurs et afficher des messages appropriés à l'utilisateur",
+              "Tester la reconnexion en simulant une perte de connexion",
+              "Tester le heartbeat en vérifiant que les pings sont envoyés régulièrement",
+              "Ajouter la possibilité de saisir un nom d'utilisateur",
+              "Améliorer l'interface avec du CSS pour un rendu plus professionnel",
+              "Ajouter un défilement automatique vers le bas lors de l'arrivée de nouveaux messages"
+            ]
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Solutions complètes",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "Solutions complètes" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les solutions complètes pour ce TP sont disponibles dans le fichier solutions-websocket-chat.json. Ce fichier contient :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Le code complet de la classe WebSocketClient avec toutes les fonctionnalités" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "L'interface HTML complète avec CSS professionnel" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "La logique JavaScript complète de l'application" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Des explications détaillées pour chaque étape" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Un guide de tests et validation" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Consultez ce fichier pour obtenir des solutions complètes et des bonnes pratiques d'implémentation."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
