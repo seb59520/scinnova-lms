@@ -311,7 +311,7 @@ export function AdminUserEnrollments() {
     return (
       <div className="min-h-screen bg-gray-50">
         <AppHeader title="SCINNOVA - LMS" showBackButton={true} backTo="/admin/users" backLabel="Retour aux utilisateurs" />
-        <div className="flex items-center justify-center py-12">
+        <div className="flex items-center justify-center py-12 pt-24">
           <div className="text-center">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
             <p className="mt-4 text-gray-600">Chargement...</p>
@@ -324,7 +324,7 @@ export function AdminUserEnrollments() {
   return (
     <div className="min-h-screen bg-gray-50">
       <AppHeader title="SCINNOVA - LMS" showBackButton={true} backTo="/admin/users" backLabel="Retour aux utilisateurs" />
-      <div className="py-8 px-4 sm:px-6 lg:px-8">
+      <div className="py-8 px-4 sm:px-6 lg:px-8 pt-24">
         <div className="max-w-7xl mx-auto">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-gray-900">

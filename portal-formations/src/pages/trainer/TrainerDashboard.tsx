@@ -149,7 +149,7 @@ export function TrainerDashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       <TrainerHeader />
-      <div className="p-6">
+      <div className="p-6 pt-28">
         <div className="mx-auto max-w-7xl">
           {/* Header */}
           <div className="mb-8">

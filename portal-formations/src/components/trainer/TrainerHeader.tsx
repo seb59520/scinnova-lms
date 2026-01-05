@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { LogOut, User, ChevronDown, Settings, Home } from 'lucide-react';
+import logoScinnova from '../../../Logo SCINNOVA avec cerveau et fusée.png';
 
 export function TrainerHeader() {
   const { user, profile, signOut } = useAuth();
@@ -22,14 +23,18 @@ export function TrainerHeader() {
     .slice(0, 2);
 
   return (
-    <header className="border-b border-gray-200 bg-white">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-gray-200 bg-white">
       <div className="mx-auto max-w-7xl px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo / Title */}
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3">
+            <img 
+              src={logoScinnova} 
+              alt="SCINNOVA" 
+              className="h-16 w-auto"
+            />
             <div className="text-center">
               <h1 className="text-xl font-bold text-gray-900">SCINNOVA - LMS</h1>
-              <p className="text-xs text-gray-500 mt-0.5">La soif d'apprendre</p>
             </div>
           </div>
 

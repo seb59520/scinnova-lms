@@ -90,7 +90,7 @@ export function DiagnosticRole() {
     return (
       <div className="min-h-screen bg-gray-50">
         <AppHeader title="Diagnostic Rôle" showBackButton backTo="/app" />
-        <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="flex items-center justify-center min-h-[60vh] pt-24">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
         </div>
       </div>
@@ -106,7 +106,7 @@ export function DiagnosticRole() {
     <div className="min-h-screen bg-gray-50">
       <AppHeader title="Diagnostic Rôle" showBackButton backTo="/app" />
       
-      <main className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      <main className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 pt-24">
         <div className="space-y-6">
           {/* Bouton de rafraîchissement */}
           <div className="bg-white shadow rounded-lg p-6">

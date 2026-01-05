@@ -135,7 +135,7 @@ export function Profile() {
     <div className="min-h-screen bg-gray-50">
       <AppHeader title="Mon profil" showBackButton backTo="/app" />
       
-      <main className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      <main className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 pt-24">
         <div className="bg-white shadow rounded-lg">
           <div className="px-6 py-8">
             {/* Header avec avatar */}

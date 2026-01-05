@@ -1446,7 +1446,7 @@ export function TrainerCourseScript() {
       <TrainerHeader />
       {splitView ? (
         // Vue côte à côte : Cours à gauche, Script à droite
-        <div className="flex h-[calc(100vh-64px)] overflow-hidden">
+        <div className="flex h-[calc(100vh-112px)] overflow-hidden pt-28">
           {/* Panneau gauche : Cours */}
           <div className="flex-1 overflow-y-auto border-r border-gray-200 bg-white">
             <div className="p-6">
@@ -1681,7 +1681,7 @@ export function TrainerCourseScript() {
         </div>
       ) : (
         // Vue script seule (vue originale)
-        <div className="p-6">
+        <div className="p-6 pt-28">
           <div className="mx-auto max-w-6xl">
             {/* Header */}
             <div className="mb-8 bg-white rounded-lg shadow p-6">

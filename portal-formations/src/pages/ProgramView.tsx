@@ -143,7 +143,7 @@ export function ProgramView() {
     return (
       <div className="min-h-screen bg-gray-50">
         <AppHeader />
-        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 pt-24">
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
             {error}
           </div>
@@ -164,7 +164,7 @@ export function ProgramView() {
       <AppHeader />
 
       {/* Header du programme */}
-      <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white">
+      <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white pt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <Link
             to="/app"

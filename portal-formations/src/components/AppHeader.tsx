@@ -5,6 +5,7 @@ import { useUserRole } from '../hooks/useUserRole';
 import { getUserOrg } from '../lib/queries/userQueries';
 import type { Org } from '../types/database';
 import { Building2, LogOut, User, ChevronDown, Settings, GraduationCap, Home, Sparkles } from 'lucide-react';
+import logoScinnova from '../../Logo SCINNOVA avec cerveau et fusée.png';
 
 interface AppHeaderProps {
   title?: string;
@@ -62,10 +63,10 @@ export function AppHeader({
     .slice(0, 2);
 
   return (
-    <header className="bg-white shadow">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow">
       <div className="w-full px-2 sm:px-3">
-        <div className="flex justify-between items-center py-6">
-          {/* Left side - Title and back button */}
+        <div className="flex justify-between items-center py-4">
+          {/* Left side - Logo, Title and back button */}
           <div className="flex items-center space-x-4 flex-1">
             {showBackButton && (
               <Link
@@ -75,11 +76,15 @@ export function AppHeader({
                 ← {backLabel}
               </Link>
             )}
-            <div className="text-center">
-              <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
-              {title === 'SCINNOVA - LMS' && (
-                <p className="text-sm text-gray-500 mt-0.5">La soif d'apprendre</p>
-              )}
+            <div className="flex items-center space-x-3">
+              <img 
+                src={logoScinnova} 
+                alt="SCINNOVA" 
+                className="h-16 w-auto"
+              />
+              <div className="text-center">
+                <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
+              </div>
             </div>
             {children}
           </div>
