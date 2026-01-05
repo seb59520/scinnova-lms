@@ -112,25 +112,48 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
 
   const handleSelectUserFromDirectory = (userId: string, userName: string) => {
     // Vérifier que les étudiants ne peuvent sélectionner que les admins
+    // MAIS ils peuvent sélectionner quelqu'un avec qui ils ont déjà une conversation
     if (currentUser?.role === 'student') {
-      // Vérifier le rôle de l'utilisateur sélectionné
-      supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', userId)
-        .single()
-        .then(({ data, error }) => {
-          if (!error && data && data.role === 'admin') {
-            setCurrentRecipient(userId)
-            setShowDirectory(false)
-            setShowConversations(false)
-            setIsOpen(true)
-            setIsMinimized(false)
-          } else {
-            // Afficher un message d'erreur si l'étudiant essaie de contacter un non-admin
-            alert('Vous ne pouvez contacter que les administrateurs.')
-          }
-        })
+      // Vérifier d'abord s'il existe déjà une conversation avec cet utilisateur
+      supabase.auth.getUser().then(({ data: authData }) => {
+        if (!authData?.user) return
+        const currentUserId = authData.user.id
+
+        supabase
+          .from('chat_messages')
+          .select('id')
+          .or(`and(sender_id.eq.${currentUserId},recipient_id.eq.${userId}),and(sender_id.eq.${userId},recipient_id.eq.${currentUserId})`)
+          .limit(1)
+          .then(({ data: existingMessages }) => {
+            // Si une conversation existe déjà, permettre la sélection
+            if (existingMessages && existingMessages.length > 0) {
+              setCurrentRecipient(userId)
+              setShowDirectory(false)
+              setShowConversations(false)
+              setIsOpen(true)
+              setIsMinimized(false)
+            } else {
+              // Sinon, vérifier que c'est un admin
+              supabase
+                .from('profiles')
+                .select('role')
+                .eq('id', userId)
+                .single()
+                .then(({ data, error }) => {
+                  if (!error && data && data.role === 'admin') {
+                    setCurrentRecipient(userId)
+                    setShowDirectory(false)
+                    setShowConversations(false)
+                    setIsOpen(true)
+                    setIsMinimized(false)
+                  } else {
+                    // Afficher un message d'erreur si l'étudiant essaie de contacter un non-admin
+                    alert('Vous ne pouvez initier une conversation qu\'avec les administrateurs.')
+                  }
+                })
+            }
+          })
+      })
     } else {
       // Pour les admins/instructeurs, aucune restriction
       setCurrentRecipient(userId)
@@ -220,27 +243,29 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
                 <Building2 className="w-5 h-5 text-white" />
               </button>
               
-              {/* Liste des conversations : uniquement pour admins/instructeurs */}
-              {isAdminOrInstructor && (
-                <button
-                  onClick={() => {
-                    setShowConversations(!showConversations)
-                    setShowDirectory(false)
-                  }}
-                  className={`p-2 hover:bg-white/20 rounded transition-all ${
-                    showConversations ? 'bg-white/30 ring-2 ring-white/50' : ''
-                  }`}
-                  aria-label="Voir les conversations"
-                  title="Voir les conversations et rechercher des étudiants"
-                >
-                  <div className="relative">
-                    <User className="w-5 h-5 text-white" />
-                    {conversations.length > 0 && (
-                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full border border-white"></span>
-                    )}
-                  </div>
-                </button>
-              )}
+              {/* Liste des conversations : accessible à tous */}
+              <button
+                onClick={() => {
+                  setShowConversations(!showConversations)
+                  setShowDirectory(false)
+                }}
+                className={`p-2 hover:bg-white/20 rounded transition-all ${
+                  showConversations ? 'bg-white/30 ring-2 ring-white/50' : ''
+                }`}
+                aria-label="Voir les conversations"
+                title={
+                  isAdminOrInstructor
+                    ? 'Voir les conversations et rechercher des étudiants'
+                    : 'Voir vos conversations'
+                }
+              >
+                <div className="relative">
+                  <User className="w-5 h-5 text-white" />
+                  {conversations.length > 0 && (
+                    <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full border border-white"></span>
+                  )}
+                </div>
+              </button>
               <button
                 onClick={() => setIsMinimized(!isMinimized)}
                 className="p-1 hover:bg-white/20 rounded"
@@ -269,8 +294,8 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
             </div>
           )}
 
-          {/* Liste des conversations (pour admins/formateurs) */}
-          {showConversations && isAdminOrInstructor && !isMinimized && !showDirectory && (
+          {/* Liste des conversations (pour tous, mais avec fonctionnalités différentes selon le rôle) */}
+          {showConversations && !isMinimized && !showDirectory && (
             <div className="border-b border-gray-200 flex flex-col">
               {/* Barre de recherche */}
               <div className="p-3 border-b border-gray-200">
@@ -278,7 +303,11 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                   <input
                     type="text"
-                    placeholder="Rechercher un étudiant..."
+                    placeholder={
+                      isAdminOrInstructor
+                        ? 'Rechercher un étudiant...'
+                        : 'Rechercher une conversation...'
+                    }
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"

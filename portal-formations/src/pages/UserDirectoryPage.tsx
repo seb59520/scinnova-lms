@@ -28,19 +28,39 @@ export function UserDirectoryPage() {
 
   const handleSelectUser = (userId: string, userName: string) => {
     // Vérifier que les étudiants ne peuvent sélectionner que les admins
+    // MAIS ils peuvent sélectionner quelqu'un avec qui ils ont déjà une conversation
     if (currentUserRole === 'student') {
-      supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', userId)
-        .single()
-        .then(({ data, error }) => {
-          if (!error && data && data.role === 'admin') {
-            navigate('/chat', { state: { recipientId: userId, recipientName: userName } })
-          } else {
-            alert('Vous ne pouvez contacter que les administrateurs.')
-          }
-        })
+      supabase.auth.getUser().then(({ data: authData }) => {
+        if (!authData?.user) return
+        const currentUserId = authData.user.id
+
+        // Vérifier d'abord s'il existe déjà une conversation avec cet utilisateur
+        supabase
+          .from('chat_messages')
+          .select('id')
+          .or(`and(sender_id.eq.${currentUserId},recipient_id.eq.${userId}),and(sender_id.eq.${userId},recipient_id.eq.${currentUserId})`)
+          .limit(1)
+          .then(({ data: existingMessages }) => {
+            // Si une conversation existe déjà, permettre la navigation
+            if (existingMessages && existingMessages.length > 0) {
+              navigate('/chat', { state: { recipientId: userId, recipientName: userName } })
+            } else {
+              // Sinon, vérifier que c'est un admin
+              supabase
+                .from('profiles')
+                .select('role')
+                .eq('id', userId)
+                .single()
+                .then(({ data, error }) => {
+                  if (!error && data && data.role === 'admin') {
+                    navigate('/chat', { state: { recipientId: userId, recipientName: userName } })
+                  } else {
+                    alert('Vous ne pouvez initier une conversation qu\'avec les administrateurs.')
+                  }
+                })
+            }
+          })
+      })
     } else {
       // Pour les admins/instructeurs, aucune restriction
       navigate('/chat', { state: { recipientId: userId, recipientName: userName } })

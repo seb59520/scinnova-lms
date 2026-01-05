@@ -392,21 +392,14 @@ export function UserDirectory({ onSelectUser, showChatButton = true, currentUser
                       {showChatButton && onSelectUser && (
                         <button
                           onClick={() => {
-                            // Vérifier que les étudiants ne peuvent contacter que les admins
-                            if (currentUserRole === 'student' && user.role !== 'admin') {
-                              return // Ne rien faire si l'étudiant essaie de contacter un non-admin
-                            }
+                            // Les étudiants peuvent toujours cliquer, la vérification se fera dans handleSelectUserFromDirectory
+                            // qui vérifiera s'il y a déjà une conversation ou si c'est un admin
                             onSelectUser(user.id, user.full_name || 'Utilisateur')
                           }}
-                          disabled={currentUserRole === 'student' && user.role !== 'admin'}
-                          className={`ml-3 p-2 rounded-lg transition-colors flex-shrink-0 ${
-                            currentUserRole === 'student' && user.role !== 'admin'
-                              ? 'text-gray-300 cursor-not-allowed'
-                              : 'text-blue-600 hover:bg-blue-50'
-                          }`}
+                          className="ml-3 p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors flex-shrink-0"
                           title={
                             currentUserRole === 'student' && user.role !== 'admin'
-                              ? 'Vous ne pouvez contacter que les administrateurs'
+                              ? 'Ouvrir la conversation si elle existe déjà'
                               : 'Démarrer une conversation'
                           }
                         >
