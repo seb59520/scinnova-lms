@@ -57,3 +57,4 @@ FROM information_schema.columns
 WHERE table_name = 'chapters' 
 AND column_name = 'type';
 
+

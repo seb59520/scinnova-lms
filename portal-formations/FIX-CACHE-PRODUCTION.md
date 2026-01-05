@@ -118,3 +118,4 @@ Assurez-vous que :
 - Les utilisateurs qui ont l'application ouverte recevront la mise à jour automatiquement dans les 5 minutes
 - Pour forcer une mise à jour immédiate, les utilisateurs peuvent recharger la page (F5 ou Ctrl+R)
 
+

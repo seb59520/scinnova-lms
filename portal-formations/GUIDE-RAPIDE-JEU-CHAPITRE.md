@@ -119,3 +119,4 @@ Si le jeu n'apparaît toujours pas :
 2. Regardez les logs `=== RENDERING GAME ===`
 3. Partagez ces logs pour diagnostic
 
+

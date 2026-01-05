@@ -44,3 +44,4 @@ export function KPICard({ title, value, subtitle, icon, color = 'blue', trend }:
   );
 }
 
+

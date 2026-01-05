@@ -143,3 +143,4 @@ Pour la meilleure qualité avec le moins de complexité :
 3. Vérifiez que l'image est bien générée et uploadée
 4. Si erreur, vérifiez la console pour les détails
 
+

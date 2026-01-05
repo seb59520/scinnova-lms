@@ -292,3 +292,4 @@ Cette checklist permet de vérifier que votre API est conforme aux bonnes pratiq
 **Vérifié par :** _______________  
 **Score :** _______ / 100
 
+

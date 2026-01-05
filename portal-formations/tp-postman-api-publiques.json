@@ -1,0 +1,1084 @@
+{
+  "type": "tp",
+  "title": "TP : Tester des API publiques et gratuites avec Postman",
+  "position": 0,
+  "published": true,
+  "content": {
+    "instructions": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": { "level": 1 },
+          "content": [
+            { "type": "text", "text": "TP : Tester des API publiques et gratuites avec Postman" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Dans ce TP, vous allez apprendre à utiliser Postman pour tester différentes API publiques et gratuites. Vous découvrirez comment effectuer des requêtes HTTP (GET, POST, PUT, DELETE), analyser les réponses, et comprendre les différents formats de données retournés par les API."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "🎯 Objectifs pédagogiques" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Maîtriser l'utilisation de Postman pour tester des API" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Comprendre les différentes méthodes HTTP (GET, POST, PUT, DELETE)" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Analyser les réponses JSON et comprendre leur structure" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Gérer les paramètres de requête et les en-têtes HTTP" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Utiliser les variables d'environnement dans Postman" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "📋 Prérequis" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Postman installé sur votre machine (", "marks": [{ "type": "link", "attrs": { "href": "https://www.postman.com/downloads/", "target": "_blank" } }] },
+                    { "type": "text", "text": "téléchargement", "marks": [{ "type": "link", "attrs": { "href": "https://www.postman.com/downloads/", "target": "_blank" } }] },
+                    { "type": "text", "text": ")" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Connaissances de base sur HTTP et REST" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Compréhension du format JSON" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "🌐 API publiques à tester" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "1. JSONPlaceholder - API REST de test" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "URL de base : ", "marks": [{ "type": "bold" }] },
+            { "type": "text", "text": "https://jsonplaceholder.typicode.com" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Cette API permet de tester les opérations CRUD (Create, Read, Update, Delete) sans authentification." }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "text" },
+          "content": [
+            {
+              "type": "text",
+              "text": "GET    https://jsonplaceholder.typicode.com/posts\nGET    https://jsonplaceholder.typicode.com/posts/1\nPOST   https://jsonplaceholder.typicode.com/posts\nPUT    https://jsonplaceholder.typicode.com/posts/1\nDELETE https://jsonplaceholder.typicode.com/posts/1"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "2. REST Countries - Informations sur les pays" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "URL de base : ", "marks": [{ "type": "bold" }] },
+            { "type": "text", "text": "https://restcountries.com/v3.1" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "API gratuite fournissant des informations détaillées sur tous les pays du monde." }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "text" },
+          "content": [
+            {
+              "type": "text",
+              "text": "GET https://restcountries.com/v3.1/all\nGET https://restcountries.com/v3.1/name/france\nGET https://restcountries.com/v3.1/region/europe\nGET https://restcountries.com/v3.1/alpha/fr"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "3. Dog API - Images de chiens" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "URL de base : ", "marks": [{ "type": "bold" }] },
+            { "type": "text", "text": "https://dog.ceo/api" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "API simple et amusante pour récupérer des images aléatoires de chiens." }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "text" },
+          "content": [
+            {
+              "type": "text",
+              "text": "GET https://dog.ceo/api/breeds/list/all\nGET https://dog.ceo/api/breed/hound/images\nGET https://dog.ceo/api/breed/hound/images/random"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "4. Cat Facts - Faits sur les chats" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "URL de base : ", "marks": [{ "type": "bold" }] },
+            { "type": "text", "text": "https://catfact.ninja" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "API pour obtenir des faits aléatoires sur les chats." }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "text" },
+          "content": [
+            {
+              "type": "text",
+              "text": "GET https://catfact.ninja/fact\nGET https://catfact.ninja/facts?limit=5"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "5. HTTPBin - Service de test HTTP" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "URL de base : ", "marks": [{ "type": "bold" }] },
+            { "type": "text", "text": "https://httpbin.org" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Service utile pour tester et déboguer les requêtes HTTP. Il retourne les données que vous lui envoyez." }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "text" },
+          "content": [
+            {
+              "type": "text",
+              "text": "GET  https://httpbin.org/get\nPOST https://httpbin.org/post\nGET  https://httpbin.org/status/200\nGET  https://httpbin.org/headers"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "6. OpenWeatherMap - Données météorologiques" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "URL de base : ", "marks": [{ "type": "bold" }] },
+            { "type": "text", "text": "https://api.openweathermap.org/data/2.5" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "⚠️ ", "marks": [{ "type": "bold" }] },
+            { "type": "text", "text": "Nécessite une clé API gratuite (inscription sur ", "marks": [{ "type": "link", "attrs": { "href": "https://openweathermap.org/api", "target": "_blank" } }] },
+            { "type": "text", "text": "openweathermap.org", "marks": [{ "type": "link", "attrs": { "href": "https://openweathermap.org/api", "target": "_blank" } }] },
+            { "type": "text", "text": ")" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "text" },
+          "content": [
+            {
+              "type": "text",
+              "text": "GET https://api.openweathermap.org/data/2.5/weather?q=Paris&appid=VOTRE_CLE_API&units=metric"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "📝 Instructions détaillées" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Étape 1 : Configuration de Postman" }
+          ]
+        },
+        {
+          "type": "orderedList",
+          "attrs": { "start": 1 },
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Ouvrez Postman et créez un nouveau workspace ou utilisez le workspace par défaut" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créez une nouvelle collection nommée \"API Publiques - Tests\"" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créez des dossiers dans la collection pour organiser les requêtes par API (JSONPlaceholder, REST Countries, Dog API, etc.)" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Étape 2 : Créer votre première requête GET" }
+          ]
+        },
+        {
+          "type": "orderedList",
+          "attrs": { "start": 1 },
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Dans le dossier JSONPlaceholder, créez une nouvelle requête nommée \"Get all posts\"" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Sélectionnez la méthode ", "marks": [{ "type": "bold" }] },
+                    { "type": "text", "text": "GET" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Entrez l'URL : ", "marks": [{ "type": "code" }] },
+                    { "type": "text", "text": "https://jsonplaceholder.typicode.com/posts", "marks": [{ "type": "code" }] }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Cliquez sur ", "marks": [{ "type": "bold" }] },
+                    { "type": "text", "text": "Send" },
+                    { "type": "text", "text": " et observez la réponse" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Analysez le code de statut HTTP (devrait être 200), les en-têtes de réponse, et le corps de la réponse JSON" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Étape 3 : Tester une requête GET avec paramètres" }
+          ]
+        },
+        {
+          "type": "orderedList",
+          "attrs": { "start": 1 },
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créez une requête \"Get post by ID\" dans le dossier JSONPlaceholder" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Méthode GET, URL : ", "marks": [{ "type": "code" }] },
+                    { "type": "text", "text": "https://jsonplaceholder.typicode.com/posts/1", "marks": [{ "type": "code" }] }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Testez avec différents IDs (1, 2, 100, 999)" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Testez avec REST Countries : ", "marks": [{ "type": "code" }] },
+                    { "type": "text", "text": "https://restcountries.com/v3.1/name/france", "marks": [{ "type": "code" }] }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Étape 4 : Créer une requête POST" }
+          ]
+        },
+        {
+          "type": "orderedList",
+          "attrs": { "start": 1 },
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créez une requête \"Create new post\" dans le dossier JSONPlaceholder" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Méthode POST, URL : ", "marks": [{ "type": "code" }] },
+                    { "type": "text", "text": "https://jsonplaceholder.typicode.com/posts", "marks": [{ "type": "code" }] }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Allez dans l'onglet ", "marks": [{ "type": "bold" }] },
+                    { "type": "text", "text": "Body" },
+                    { "type": "text", "text": ", sélectionnez ", "marks": [{ "type": "bold" }] },
+                    { "type": "text", "text": "raw" },
+                    { "type": "text", "text": " et ", "marks": [{ "type": "bold" }] },
+                    { "type": "text", "text": "JSON" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Ajoutez le corps de la requête JSON :" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "json" },
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"title\": \"Mon nouveau post\",\n  \"body\": \"Contenu de mon post\",\n  \"userId\": 1\n}"
+            }
+          ]
+        },
+        {
+          "type": "orderedList",
+          "attrs": { "start": 5 },
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Envoyez la requête et observez la réponse (devrait retourner l'objet créé avec un ID)" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Étape 5 : Tester PUT et DELETE" }
+          ]
+        },
+        {
+          "type": "orderedList",
+          "attrs": { "start": 1 },
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créez une requête PUT \"Update post\" : ", "marks": [{ "type": "code" }] },
+                    { "type": "text", "text": "PUT https://jsonplaceholder.typicode.com/posts/1", "marks": [{ "type": "code" }] }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Ajoutez un body JSON avec les données à mettre à jour" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créez une requête DELETE \"Delete post\" : ", "marks": [{ "type": "code" }] },
+                    { "type": "text", "text": "DELETE https://jsonplaceholder.typicode.com/posts/1", "marks": [{ "type": "code" }] }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Observez les codes de statut HTTP (200 pour PUT, 200 pour DELETE)" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Étape 6 : Utiliser les variables d'environnement" }
+          ]
+        },
+        {
+          "type": "orderedList",
+          "attrs": { "start": 1 },
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créez un nouvel environnement dans Postman (icône en haut à droite)" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Ajoutez une variable ", "marks": [{ "type": "code" }] },
+                    { "type": "text", "text": "base_url", "marks": [{ "type": "code" }] },
+                    { "type": "text", "text": " avec la valeur ", "marks": [{ "type": "code" }] },
+                    { "type": "text", "text": "https://jsonplaceholder.typicode.com", "marks": [{ "type": "code" }] }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Modifiez vos requêtes pour utiliser ", "marks": [{ "type": "code" }] },
+                    { "type": "text", "text": "{{base_url}}/posts", "marks": [{ "type": "code" }] },
+                    { "type": "text", "text": " au lieu de l'URL complète" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Sélectionnez l'environnement dans le menu déroulant en haut à droite" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Étape 7 : Tester différentes API" }
+          ]
+        },
+        {
+          "type": "orderedList",
+          "attrs": { "start": 1 },
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Testez REST Countries : récupérez les informations sur la France, l'Allemagne, etc." }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Testez Dog API : récupérez la liste des races, puis des images aléatoires" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Testez Cat Facts : récupérez un fait aléatoire sur les chats" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Testez HTTPBin : envoyez des données et observez ce qui est retourné" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Étape 8 : Analyser les réponses" }
+          ]
+        },
+        {
+          "type": "orderedList",
+          "attrs": { "start": 1 },
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Pour chaque requête, notez :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Le code de statut HTTP (200, 404, 500, etc.)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Le temps de réponse (en millisecondes)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "La structure de la réponse JSON" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Les en-têtes de réponse (Content-Type, etc.)" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "💡 Conseils et bonnes pratiques" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Organisez vos requêtes dans des dossiers par API pour une meilleure lisibilité" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Utilisez des noms clairs et descriptifs pour vos requêtes" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Ajoutez des descriptions à vos requêtes pour expliquer leur objectif" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Utilisez les variables d'environnement pour les URLs de base et les clés API" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Testez les cas d'erreur (ID inexistant, paramètres invalides, etc.)" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Utilisez l'onglet \"Tests\" pour automatiser la validation des réponses" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "🔍 Questions de réflexion" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Quelle est la différence entre GET, POST, PUT et DELETE ?" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Quels codes de statut HTTP avez-vous observés ? Que signifient-ils ?" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Comment les API gèrent-elles les erreurs ?" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Quelle est l'utilité des variables d'environnement dans Postman ?" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Comment pourriez-vous automatiser ces tests ?" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "📚 Ressources supplémentaires" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Documentation Postman : ", "marks": [{ "type": "link", "attrs": { "href": "https://learning.postman.com/", "target": "_blank" } }] },
+                    { "type": "text", "text": "https://learning.postman.com/", "marks": [{ "type": "link", "attrs": { "href": "https://learning.postman.com/", "target": "_blank" } }] }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Liste d'API publiques : ", "marks": [{ "type": "link", "attrs": { "href": "https://github.com/public-apis/public-apis", "target": "_blank" } }] },
+                    { "type": "text", "text": "https://github.com/public-apis/public-apis", "marks": [{ "type": "link", "attrs": { "href": "https://github.com/public-apis/public-apis", "target": "_blank" } }] }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "JSONPlaceholder : ", "marks": [{ "type": "link", "attrs": { "href": "https://jsonplaceholder.typicode.com/", "target": "_blank" } }] },
+                    { "type": "text", "text": "https://jsonplaceholder.typicode.com/", "marks": [{ "type": "link", "attrs": { "href": "https://jsonplaceholder.typicode.com/", "target": "_blank" } }] }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "REST Countries : ", "marks": [{ "type": "link", "attrs": { "href": "https://restcountries.com/", "target": "_blank" } }] },
+                    { "type": "text", "text": "https://restcountries.com/", "marks": [{ "type": "link", "attrs": { "href": "https://restcountries.com/", "target": "_blank" } }] }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "checklist": [
+      "Postman installé et configuré",
+      "Collection créée avec des dossiers organisés par API",
+      "Requête GET testée avec JSONPlaceholder (récupérer tous les posts)",
+      "Requête GET avec paramètres testée (récupérer un post par ID)",
+      "Requête POST créée et testée (créer un nouveau post)",
+      "Requête PUT créée et testée (mettre à jour un post)",
+      "Requête DELETE créée et testée (supprimer un post)",
+      "Variables d'environnement configurées et utilisées",
+      "REST Countries testé (récupérer des informations sur un pays)",
+      "Dog API testé (récupérer des images de chiens)",
+      "Cat Facts testé (récupérer un fait aléatoire)",
+      "HTTPBin testé (tester différentes méthodes HTTP)",
+      "Codes de statut HTTP analysés et documentés",
+      "Structure des réponses JSON analysée",
+      "En-têtes HTTP observés et compris",
+      "Tests d'erreur effectués (ID inexistant, etc.)",
+      "Collection Postman sauvegardée et exportée"
+    ]
+  }
+}
+
+

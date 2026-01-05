@@ -107,3 +107,4 @@ CREATE POLICY "Admins and trainers can manage item documents" ON item_documents
 -- Note: Cette partie doit être exécutée manuellement dans l'interface Supabase Storage
 -- ou via l'API Supabase, car on ne peut pas créer des buckets via SQL directement
 
+

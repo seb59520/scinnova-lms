@@ -111,3 +111,4 @@ async function generateAdvancedSlideImage(
   throw new Error('Génération avancée non implémentée - utilisez la version client pour l\'instant')
 }
 
+

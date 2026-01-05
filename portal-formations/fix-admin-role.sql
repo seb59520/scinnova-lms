@@ -40,3 +40,4 @@ SELECT id, role, full_name, created_at
 FROM profiles 
 WHERE role = 'admin';
 
+

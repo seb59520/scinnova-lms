@@ -25,3 +25,4 @@ console.log('=== Test du registre de jeux ===')
 // Dans les sources (Sources tab), cherchez JsonFileTypesGame.tsx
 // Vérifiez qu'il n'y a pas d'erreurs de syntaxe
 
+

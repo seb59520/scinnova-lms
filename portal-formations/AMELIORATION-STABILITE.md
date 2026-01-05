@@ -171,3 +171,4 @@ Pour surveiller la stabilité :
 3. Augmentez les timeouts si nécessaire
 4. Vérifiez les performances de Supabase
 
+

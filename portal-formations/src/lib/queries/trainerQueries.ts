@@ -221,48 +221,145 @@ export async function getSessionKPIs(sessionId: string): Promise<{
     }
 
     // Apprenants actifs (7 derniers jours)
+    // Chercher dans activity_events avec session_id OU course_id
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    const { data: recentActivity } = await supabase
+    
+    // Requête 1 : activité liée à la session
+    const { data: recentActivityBySession } = await supabase
       .from('activity_events')
       .select('user_id')
       .eq('session_id', sessionId)
       .in('user_id', userIds)
       .gte('created_at', sevenDaysAgo.toISOString());
 
-    const activeUserIds = new Set(recentActivity?.map((a: any) => a.user_id) || []);
+    // Requête 2 : activité liée au cours (si pas de session_id)
+    const { data: recentActivityByCourse } = await supabase
+      .from('activity_events')
+      .select('user_id')
+      .eq('course_id', (session as any).course_id)
+      .is('session_id', null)
+      .in('user_id', userIds)
+      .gte('created_at', sevenDaysAgo.toISOString());
+
+    const allRecentActivity = [
+      ...(recentActivityBySession || []),
+      ...(recentActivityByCourse || [])
+    ];
+    const activeUserIds = new Set(allRecentActivity.map((a: any) => a.user_id));
     const active_learners_7d = activeUserIds.size;
 
     // Taux de complétion
-    const { data: progress } = await supabase
+    // Chercher dans module_progress avec session_id OU en trouvant les modules du cours
+    const { data: courseModules } = await supabase
+      .from('modules')
+      .select('id')
+      .eq('course_id', (session as any).course_id);
+
+    const moduleIds = courseModules?.map((m: any) => m.id) || [];
+    
+    // Requête 1 : progressions liées à la session
+    const { data: progressBySession } = await supabase
       .from('module_progress')
-      .select('percent')
+      .select('user_id, percent')
       .eq('session_id', sessionId)
       .in('user_id', userIds);
 
-    const totalProgress = progress?.reduce((sum, p) => sum + (p.percent || 0), 0) || 0;
-    const completion_rate = progress && progress.length > 0 ? totalProgress / progress.length : 0;
+    // Requête 2 : progressions liées aux modules du cours (si pas de session_id)
+    const { data: progressByModule } = await supabase
+      .from('module_progress')
+      .select('user_id, percent')
+      .in('module_id', moduleIds)
+      .is('session_id', null)
+      .in('user_id', userIds);
 
-    // Score moyen
-    const { data: submissions } = await supabase
+    const allProgress = [
+      ...(progressBySession || []),
+      ...(progressByModule || [])
+    ];
+    
+    // Calculer le taux de complétion par utilisateur, puis faire la moyenne
+    const userProgressMap: Record<string, number[]> = {};
+    allProgress.forEach((p: any) => {
+      if (!userProgressMap[p.user_id]) {
+        userProgressMap[p.user_id] = [];
+      }
+      userProgressMap[p.user_id].push(p.percent || 0);
+    });
+    
+    // Pour chaque utilisateur, calculer sa moyenne de progression
+    const userCompletionRates = Object.values(userProgressMap).map((percentages) => {
+      return percentages.reduce((sum, p) => sum + p, 0) / percentages.length;
+    });
+    
+    const completion_rate = userCompletionRates.length > 0 
+      ? userCompletionRates.reduce((sum, rate) => sum + rate, 0) / userCompletionRates.length 
+      : 0;
+
+    // Score moyen (submissions + game_scores)
+    // Chercher les soumissions avec session_id OU en trouvant les items du cours
+    const { data: courseItems } = await supabase
+      .from('items')
+      .select('id')
+      .in('module_id', moduleIds);
+
+    const itemIds = courseItems?.map((i: any) => i.id) || [];
+
+    // Requête 1 : soumissions liées à la session
+    const { data: submissionsBySession } = await supabase
       .from('submissions')
       .select('grade')
       .eq('session_id', sessionId)
       .in('user_id', userIds)
       .not('grade', 'is', null);
 
-    const scores = submissions?.map((s: any) => s.grade).filter((g: any) => g !== null) || [];
-    const avg_score = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : null;
+    // Requête 2 : soumissions liées aux items du cours (si pas de session_id)
+    const { data: submissionsByItem } = await supabase
+      .from('submissions')
+      .select('grade')
+      .in('item_id', itemIds)
+      .is('session_id', null)
+      .in('user_id', userIds)
+      .not('grade', 'is', null);
+
+    // Récupérer aussi les scores de jeux pour ce cours
+    const { data: gameScores } = await supabase
+      .from('game_scores')
+      .select('score')
+      .eq('course_id', (session as any).course_id)
+      .in('user_id', userIds);
+
+    const allSubmissionScores = [
+      ...(submissionsBySession || []),
+      ...(submissionsByItem || [])
+    ].map((s: any) => s.grade).filter((g: any) => g !== null);
+    const gameScoreValues = gameScores?.map((gs: any) => gs.score / 20).filter((s: any) => s !== null) || []; // Normaliser de 2000 à 100
+    const allScores = [...allSubmissionScores, ...gameScoreValues];
+    const avg_score = allScores.length > 0 ? allScores.reduce((a, b) => a + b, 0) / allScores.length : null;
 
     // Modules en difficulté
-    const { data: moduleProgress } = await supabase
+    // Requête 1 : progressions liées à la session
+    const { data: moduleProgressBySession } = await supabase
       .from('module_progress')
       .select('module_id, percent')
       .eq('session_id', sessionId)
       .in('user_id', userIds);
 
+    // Requête 2 : progressions liées aux modules du cours (si pas de session_id)
+    const { data: moduleProgressByModule } = await supabase
+      .from('module_progress')
+      .select('module_id, percent')
+      .in('module_id', moduleIds)
+      .is('session_id', null)
+      .in('user_id', userIds);
+
+    const allModuleProgress = [
+      ...(moduleProgressBySession || []),
+      ...(moduleProgressByModule || [])
+    ];
+
     const moduleStats: Record<string, { total: number; sum: number }> = {};
-    moduleProgress?.forEach((mp: any) => {
+    allModuleProgress.forEach((mp: any) => {
       if (!moduleStats[mp.module_id]) {
         moduleStats[mp.module_id] = { total: 0, sum: 0 };
       }
@@ -316,40 +413,185 @@ export async function getLearnersTable(sessionId: string): Promise<{
       return { learners: [], error: null };
     }
 
-    // Récupérer les profils
+    // Récupérer les profils avec full_name
     const { data: profiles } = await supabase
       .from('profiles')
-      .select('id, display_name')
+      .select('id, full_name')
       .in('id', userIds);
 
-    // Récupérer les progressions
-    const { data: progress } = await supabase
+    // Récupérer les display_name depuis org_members (si disponibles)
+    const { data: orgMembers } = await supabase
+      .from('org_members')
+      .select('user_id, display_name')
+      .in('user_id', userIds);
+
+    // Récupérer le course_id de la session
+    const { data: sessionData } = await supabase
+      .from('sessions')
+      .select('course_id')
+      .eq('id', sessionId)
+      .single();
+
+    const courseId = (sessionData as any)?.course_id;
+
+    // Récupérer les modules du cours
+    const { data: courseModules } = await supabase
+      .from('modules')
+      .select('id')
+      .eq('course_id', courseId);
+
+    const moduleIds = courseModules?.map((m: any) => m.id) || [];
+
+    // Récupérer les progressions (liées à la session OU aux modules du cours)
+    const { data: progressBySession } = await supabase
       .from('module_progress')
       .select('user_id, percent')
       .eq('session_id', sessionId)
       .in('user_id', userIds);
 
-    // Récupérer les scores
-    const { data: submissions } = await supabase
+    // Aussi chercher les progressions pour les modules du cours (même si session_id différent ou NULL)
+    const { data: progressByModule } = await supabase
+      .from('module_progress')
+      .select('user_id, percent')
+      .in('module_id', moduleIds)
+      .in('user_id', userIds);
+
+    // Combiner et dédupliquer (garder priorité sur session_id exact)
+    const progressMap = new Map<string, { user_id: string; percent: number }>();
+    
+    // D'abord ajouter celles avec session_id exact
+    progressBySession?.forEach((p: any) => {
+      progressMap.set(`${p.user_id}-${p.percent}`, p);
+    });
+    
+    // Ensuite ajouter celles par module (si pas déjà ajoutées)
+    progressByModule?.forEach((p: any) => {
+      const key = `${p.user_id}-${p.percent}`;
+      if (!progressMap.has(key)) {
+        progressMap.set(key, p);
+      }
+    });
+
+    const progress = Array.from(progressMap.values());
+
+    // Récupérer les items du cours
+    const { data: courseItems } = await supabase
+      .from('items')
+      .select('id')
+      .in('module_id', moduleIds);
+
+    const itemIds = courseItems?.map((i: any) => i.id) || [];
+
+    // Récupérer TOUTES les soumissions (pour la dernière activité) avec submitted_at
+    // Inclure aussi les soumissions draft qui ont été modifiées récemment
+    const { data: allSubmissionsBySession } = await supabase
       .from('submissions')
-      .select('user_id, grade')
+      .select('user_id, grade, submitted_at, created_at, updated_at, status')
       .eq('session_id', sessionId)
       .in('user_id', userIds)
-      .not('grade', 'is', null);
+      .in('status', ['draft', 'submitted', 'graded']);
 
-    // Récupérer la dernière activité
-    const { data: activities } = await supabase
+    // Aussi chercher les soumissions pour les items du cours (même si session_id différent ou NULL)
+    const { data: allSubmissionsByItem } = await supabase
+      .from('submissions')
+      .select('user_id, grade, submitted_at, created_at, updated_at, status')
+      .in('item_id', itemIds)
+      .in('user_id', userIds)
+      .in('status', ['draft', 'submitted', 'graded']);
+
+    // Récupérer seulement les soumissions notées pour le score moyen
+    const submissionsBySession = allSubmissionsBySession?.filter((s: any) => s.grade !== null) || [];
+    const submissionsByItem = allSubmissionsByItem?.filter((s: any) => s.grade !== null) || [];
+
+    const submissions = [
+      ...submissionsBySession,
+      ...submissionsByItem
+    ];
+
+    // Toutes les soumissions (pour la dernière activité)
+    const allSubmissions = [
+      ...(allSubmissionsBySession || []),
+      ...(allSubmissionsByItem || [])
+    ];
+
+    // Récupérer aussi les scores de jeux pour ce cours
+    const { data: gameScores } = await supabase
+      .from('game_scores')
+      .select('user_id, score')
+      .eq('course_id', courseId)
+      .in('user_id', userIds);
+
+    // Récupérer la dernière activité (liée à la session OU au cours)
+    const { data: activitiesBySession } = await supabase
       .from('activity_events')
       .select('user_id, created_at')
       .eq('session_id', sessionId)
       .in('user_id', userIds)
       .order('created_at', { ascending: false });
 
+    // Aussi chercher les activités pour le cours (même si session_id différent ou NULL)
+    const { data: activitiesByCourse } = await supabase
+      .from('activity_events')
+      .select('user_id, created_at')
+      .eq('course_id', courseId)
+      .in('user_id', userIds)
+      .order('created_at', { ascending: false });
+
+    const activities = [
+      ...(activitiesBySession || []),
+      ...(activitiesByCourse || [])
+    ];
+
+    // Récupérer les soumissions non notées (pour les notifications)
+    const { data: unreadSubmissionsBySession } = await supabase
+      .from('submissions')
+      .select('user_id, submitted_at')
+      .eq('session_id', sessionId)
+      .in('user_id', userIds)
+      .eq('status', 'submitted')
+      .is('graded_at', null);
+
+    // Aussi chercher les soumissions non notées pour les items du cours
+    const { data: unreadSubmissionsByItem } = await supabase
+      .from('submissions')
+      .select('user_id, submitted_at')
+      .in('item_id', itemIds)
+      .in('user_id', userIds)
+      .eq('status', 'submitted')
+      .is('graded_at', null);
+
+    const unreadSubmissions = [
+      ...(unreadSubmissionsBySession || []),
+      ...(unreadSubmissionsByItem || [])
+    ];
+
     const learners: LearnerRow[] = userIds.map((userId) => {
       const profile = profiles?.find((p: any) => p.id === userId);
+      const orgMember = orgMembers?.find((om: any) => om.user_id === userId);
       const userProgress = progress?.filter((p: any) => p.user_id === userId) || [];
-      const userScores = submissions?.filter((s: any) => s.user_id === userId).map((s: any) => s.grade) || [];
+      
+      // Combiner les scores des submissions et des jeux
+      // Les submissions sont sur 100, les jeux sont sur 2000, donc on normalise les jeux
+      const userSubmissionScores = submissions?.filter((s: any) => s.user_id === userId).map((s: any) => s.grade) || [];
+      const userGameScores = gameScores?.filter((gs: any) => gs.user_id === userId).map((gs: any) => gs.score / 20) || []; // Normaliser de 2000 à 100
+      const userScores = [...userSubmissionScores, ...userGameScores];
+      
+      // Combiner les activités et les soumissions pour la dernière activité
       const userActivities = activities?.filter((a: any) => a.user_id === userId) || [];
+      const userSubmissions = allSubmissions?.filter((s: any) => s.user_id === userId) || [];
+      
+      // Trouver la dernière activité (activité ou soumission)
+      // Utiliser submitted_at en priorité pour les soumissions, sinon updated_at, sinon created_at
+      const allUserActivities = [
+        ...userActivities.map((a: any) => ({ date: a.created_at, type: 'activity' })),
+        ...userSubmissions.map((s: any) => ({ 
+          date: s.submitted_at || s.updated_at || s.created_at, 
+          type: 'submission' 
+        }))
+      ].filter((a: any) => a.date && a.date !== null);
+      
+      // Compter les soumissions non notées
+      const unreadCount = unreadSubmissions?.filter((s: any) => s.user_id === userId).length || 0;
 
       const completion_percent = userProgress.length > 0
         ? userProgress.reduce((sum, p) => sum + (p.percent || 0), 0) / userProgress.length
@@ -359,20 +601,28 @@ export async function getLearnersTable(sessionId: string): Promise<{
         ? userScores.reduce((a, b) => a + b, 0) / userScores.length
         : null;
 
-      const last_activity_at = userActivities.length > 0 ? userActivities[0].created_at : null;
+      // Trier par date décroissante et prendre la plus récente
+      allUserActivities.sort((a: any, b: any) => 
+        new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+      const last_activity_at = allUserActivities.length > 0 ? allUserActivities[0].date : null;
 
       // Trouver le module avec la plus faible progression
       const moduleProgress = userProgress.map((p: any) => p.percent || 0);
       const minProgress = Math.min(...moduleProgress, 100);
       const main_blockage = minProgress < 50 ? `Module bloqué (${Math.round(minProgress)}%)` : null;
 
+      // Utiliser display_name de org_members en priorité, sinon full_name de profiles
+      const display_name = orgMember?.display_name || profile?.full_name || 'Utilisateur inconnu';
+
       return {
         user_id: userId,
-        display_name: profile?.display_name || 'Utilisateur inconnu',
+        display_name,
         completion_percent,
         avg_score,
         last_activity_at,
         main_blockage,
+        unread_submissions_count: unreadCount,
       };
     });
 
@@ -410,42 +660,108 @@ export async function getModuleAnalytics(sessionId: string): Promise<{
 
     const analytics: ModuleAnalytics[] = [];
 
-    for (const module of modules || []) {
-      // Récupérer les progressions pour ce module
-      const { data: progress } = await supabase
-        .from('module_progress')
-        .select('percent, updated_at')
-        .eq('module_id', module.id)
-        .eq('session_id', sessionId);
+    // Récupérer tous les user_ids de la session
+    const { data: enrollments } = await supabase
+      .from('enrollments')
+      .select('user_id')
+      .eq('session_id', sessionId)
+      .eq('status', 'active');
 
-      const totalUsers = progress?.length || 0;
+    const userIds = enrollments?.map((e: any) => e.user_id) || [];
+
+    for (const module of modules || []) {
+      // Récupérer les progressions pour ce module (avec session_id OU sans)
+      const { data: progressBySession } = await supabase
+        .from('module_progress')
+        .select('user_id, percent, updated_at, started_at')
+        .eq('module_id', module.id)
+        .eq('session_id', sessionId)
+        .in('user_id', userIds);
+
+      const { data: progressByModule } = await supabase
+        .from('module_progress')
+        .select('user_id, percent, updated_at, started_at')
+        .eq('module_id', module.id)
+        .in('user_id', userIds);
+
+      // Combiner et dédupliquer (priorité sur session_id exact)
+      const progressMap = new Map<string, any>();
+      progressBySession?.forEach((p: any) => {
+        progressMap.set(p.user_id, p);
+      });
+      progressByModule?.forEach((p: any) => {
+        if (!progressMap.has(p.user_id)) {
+          progressMap.set(p.user_id, p);
+        }
+      });
+
+      const progress = Array.from(progressMap.values());
+
+      const totalUsers = userIds.length;
       const completedUsers = progress?.filter((p: any) => (p.percent || 0) >= 100).length || 0;
       const startedUsers = progress?.filter((p: any) => (p.percent || 0) > 0).length || 0;
       const abandon_rate = startedUsers > 0 ? ((startedUsers - completedUsers) / startedUsers) * 100 : 0;
 
-      // Temps moyen (simplifié - basé sur updated_at - started_at)
-      const times = progress?.map((p: any) => {
-        // Approximation basée sur updated_at
-        return 30; // minutes par défaut
-      }) || [];
+      // Temps moyen basé sur started_at et updated_at
+      // Si started_at est NULL, utiliser une estimation basée sur la progression
+      const times = progress
+        ?.filter((p: any) => p.updated_at)
+        .map((p: any) => {
+          if (p.started_at && p.updated_at) {
+            const start = new Date(p.started_at).getTime();
+            const end = new Date(p.updated_at).getTime();
+            const diffMinutes = Math.max(0, (end - start) / (1000 * 60));
+            return diffMinutes;
+          } else if (p.updated_at) {
+            // Estimation : 30 minutes par 10% de progression
+            const estimatedMinutes = Math.max(5, (p.percent || 0) * 0.3);
+            return estimatedMinutes;
+          }
+          return 0;
+        })
+        .filter((t: number) => t > 0) || [];
       const avg_time_minutes = times.length > 0 ? times.reduce((a, b) => a + b, 0) / times.length : 0;
 
-      // Score moyen (basé sur les submissions des items de ce module)
+      // Score moyen (basé sur les submissions et game_scores des items de ce module)
       const { data: items } = await supabase
         .from('items')
         .select('id')
         .eq('module_id', module.id);
 
       const itemIds = items?.map((i: any) => i.id) || [];
-      const { data: submissions } = await supabase
+      
+      // Récupérer les soumissions (avec session_id OU sans)
+      const { data: submissionsBySession } = await supabase
         .from('submissions')
         .select('grade')
         .in('item_id', itemIds)
         .eq('session_id', sessionId)
+        .in('user_id', userIds)
         .not('grade', 'is', null);
 
-      const scores = submissions?.map((s: any) => s.grade).filter((g: any) => g !== null) || [];
-      const avg_score = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : null;
+      const { data: submissionsByItem } = await supabase
+        .from('submissions')
+        .select('grade')
+        .in('item_id', itemIds)
+        .in('user_id', userIds)
+        .not('grade', 'is', null);
+
+      // Récupérer aussi les scores de jeux pour ce module
+      const { data: gameScores } = await supabase
+        .from('game_scores')
+        .select('score')
+        .eq('course_id', courseId)
+        .in('item_id', itemIds)
+        .in('user_id', userIds);
+
+      const submissionScores = [
+        ...(submissionsBySession || []),
+        ...(submissionsByItem || [])
+      ].map((s: any) => s.grade).filter((g: any) => g !== null);
+      
+      const gameScoreValues = gameScores?.map((gs: any) => gs.score / 20).filter((s: any) => s !== null) || []; // Normaliser de 2000 à 100
+      const allScores = [...submissionScores, ...gameScoreValues];
+      const avg_score = allScores.length > 0 ? allScores.reduce((a, b) => a + b, 0) / allScores.length : null;
 
       analytics.push({
         module_id: module.id,
@@ -590,15 +906,24 @@ export async function getExerciseResults(
     const userIds = [...new Set(attempts?.map((a: any) => a.user_id) || [])];
     const { data: profiles } = await supabase
       .from('profiles')
-      .select('id, display_name')
+      .select('id, full_name')
       .in('id', userIds);
+
+    // Récupérer les display_name depuis org_members
+    const { data: orgMembers } = await supabase
+      .from('org_members')
+      .select('user_id, display_name')
+      .in('user_id', userIds);
 
     // Combiner les données
     const results = (attempts || []).map((attempt: any) => {
       const profile = profiles?.find((p: any) => p.id === attempt.user_id);
+      const orgMember = orgMembers?.find((om: any) => om.user_id === attempt.user_id);
+      const display_name = orgMember?.display_name || profile?.full_name || 'Utilisateur inconnu';
+      
       return {
         user_id: attempt.user_id,
-        display_name: profile?.display_name || 'Utilisateur inconnu',
+        display_name,
         attempt_number: attempt.attempt_number,
         answer_text: attempt.answer_text,
         answer_json: attempt.answer_json,
@@ -733,5 +1058,111 @@ export async function deleteTrainerNote(noteId: string): Promise<{ error: Error 
     return { error: null };
   } catch (error) {
     return { error: error as Error };
+  }
+}
+
+/**
+ * Récupère toutes les soumissions d'un apprenant pour une session
+ */
+export async function getLearnerSubmissions(
+  sessionId: string,
+  userId: string
+): Promise<{
+  submissions: Array<{
+    id: string;
+    item_id: string;
+    item_title: string;
+    item_type: string;
+    module_title: string;
+    answer_text: string | null;
+    answer_json: Record<string, any> | null;
+    file_path: string | null;
+    status: string;
+    grade: number | null;
+    submitted_at: string;
+    graded_at: string | null;
+  }>;
+  error: Error | null;
+}> {
+  try {
+    // Récupérer la session pour obtenir le course_id
+    const { data: session, error: sessionError } = await supabase
+      .from('sessions')
+      .select('course_id')
+      .eq('id', sessionId)
+      .single();
+
+    if (sessionError) {
+      return { submissions: [], error: sessionError };
+    }
+
+    // Récupérer toutes les soumissions de l'apprenant pour cette session
+    const { data: submissions, error: submissionsError } = await supabase
+      .from('submissions')
+      .select('*')
+      .eq('session_id', sessionId)
+      .eq('user_id', userId)
+      .order('submitted_at', { ascending: false });
+
+    if (submissionsError) {
+      return { submissions: [], error: submissionsError };
+    }
+
+    if (!submissions || submissions.length === 0) {
+      return { submissions: [], error: null };
+    }
+
+    // Récupérer les détails des items (titre, type, module)
+    const itemIds = submissions.map((s: any) => s.item_id);
+    const { data: items, error: itemsError } = await supabase
+      .from('items')
+      .select(`
+        id,
+        title,
+        type,
+        module_id,
+        modules (
+          id,
+          title
+        )
+      `)
+      .in('id', itemIds);
+
+    if (itemsError) {
+      return { submissions: [], error: itemsError };
+    }
+
+    // Combiner les données
+    const submissionsWithDetails = submissions.map((submission: any) => {
+      const item = items?.find((i: any) => i.id === submission.item_id);
+      // Gérer le cas où modules peut être un tableau ou un objet
+      let moduleTitle = 'Module inconnu';
+      if (item?.modules) {
+        if (Array.isArray(item.modules) && item.modules.length > 0) {
+          moduleTitle = item.modules[0].title || 'Module inconnu';
+        } else if (!Array.isArray(item.modules)) {
+          moduleTitle = item.modules.title || 'Module inconnu';
+        }
+      }
+      
+      return {
+        id: submission.id,
+        item_id: submission.item_id,
+        item_title: item?.title || 'Item inconnu',
+        item_type: item?.type || 'unknown',
+        module_title: moduleTitle,
+        answer_text: submission.answer_text,
+        answer_json: submission.answer_json,
+        file_path: submission.file_path,
+        status: submission.status,
+        grade: submission.grade,
+        submitted_at: submission.submitted_at,
+        graded_at: submission.graded_at,
+      };
+    });
+
+    return { submissions: submissionsWithDetails, error: null };
+  } catch (error) {
+    return { submissions: [], error: error as Error };
   }
 }

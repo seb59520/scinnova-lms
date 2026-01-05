@@ -529,3 +529,4 @@ Lors de l'import d'un cours JSON, la correction doit être dans `content.correct
 - `STRUCTURE-COMPLETE-EXERCICES.md` : Structure complète des exercices
 - `course-ia-si-tiptap.json` : Exemples de cours avec corrections
 
+

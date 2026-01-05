@@ -127,3 +127,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 - Si le problème persiste, il peut venir d'un problème de configuration Supabase ou de réseau
 - Les logs dans la console aideront à identifier le problème exact
 
+

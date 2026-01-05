@@ -103,3 +103,4 @@ LEFT JOIN sessions ses ON ses.id = s.session_id;
 - **Une session doit être liée à une organisation** : Les étudiants doivent être membres de l'organisation pour être liés à la session
 - **Le statut de la session** : Seules les sessions avec `status = 'active'` sont utilisées pour l'attribution automatique
 
+

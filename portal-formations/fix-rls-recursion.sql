@@ -141,3 +141,4 @@ CREATE POLICY "Users can manage their own game scores" ON game_scores
 
 CREATE POLICY "Admins can view all game scores" ON game_scores
   FOR SELECT USING (public.is_admin(auth.uid()));
+

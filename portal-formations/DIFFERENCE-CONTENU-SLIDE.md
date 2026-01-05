@@ -98,3 +98,4 @@ Les paramètres suivants seront sauvegardés :
 - **Taille de police** : Petite, normale, grande
 - **Mise en page** : Préférences d'affichage
 
+

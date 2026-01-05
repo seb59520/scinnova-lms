@@ -3,7 +3,7 @@
  */
 
 /**
- * Formate une date relative (ex: "il y a 2 jours")
+ * Formate une date relative (ex: "il y a 2 jours") avec date et heure complètes
  */
 export function formatRelativeDate(date: string | null): string {
   if (!date) return 'Jamais';
@@ -15,17 +15,33 @@ export function formatRelativeDate(date: string | null): string {
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
   const diffMinutes = Math.floor(diffMs / (1000 * 60));
 
-  if (diffDays > 7) {
-    return then.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
-  } else if (diffDays > 0) {
-    return `il y a ${diffDays} jour${diffDays > 1 ? 's' : ''}`;
-  } else if (diffHours > 0) {
-    return `il y a ${diffHours} heure${diffHours > 1 ? 's' : ''}`;
-  } else if (diffMinutes > 0) {
-    return `il y a ${diffMinutes} minute${diffMinutes > 1 ? 's' : ''}`;
-  } else {
-    return 'à l\'instant';
+  // Si moins de 24h, afficher date et heure
+  if (diffDays === 0) {
+    const timeStr = then.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    if (diffHours > 0) {
+      return `Aujourd'hui à ${timeStr} (il y a ${diffHours}h)`;
+    } else if (diffMinutes > 0) {
+      return `Aujourd'hui à ${timeStr} (il y a ${diffMinutes}min)`;
+    } else {
+      return `Aujourd'hui à ${timeStr}`;
+    }
   }
+
+  // Si moins de 7 jours, afficher date et heure
+  if (diffDays <= 7) {
+    const dateStr = then.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+    const timeStr = then.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    return `${dateStr} à ${timeStr} (il y a ${diffDays}j)`;
+  }
+
+  // Sinon, afficher date complète avec heure
+  return then.toLocaleString('fr-FR', { 
+    day: 'numeric', 
+    month: 'short', 
+    year: 'numeric',
+    hour: '2-digit', 
+    minute: '2-digit' 
+  });
 }
 
 /**

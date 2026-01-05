@@ -108,3 +108,4 @@ Le contenu est stocké au format JSON TipTap, qui est un format standard pour le
 - Les chapitres sont triés par position (ordre croissant)
 - Le premier chapitre s'ouvre automatiquement pour les étudiants
 
+

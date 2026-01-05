@@ -71,3 +71,4 @@ Le code détecte maintenant spécifiquement :
 - Les index sont créés sur toutes les colonnes utilisées dans les jointures
 - Les politiques RLS utilisent maintenant des fonctions au lieu de sous-requêtes complexes
 
+

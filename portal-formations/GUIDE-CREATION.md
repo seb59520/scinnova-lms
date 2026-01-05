@@ -216,3 +216,4 @@ Formation : "React Avancé"
 3. **Filtrage** : Les étudiants peuvent filtrer par type de contenu via les tuiles de fonctionnalités
 4. **Chapitres** : Utilisez les chapitres pour organiser le contenu long en sections
 
+

@@ -60,3 +60,4 @@ WHERE type = 'slide'
 ORDER BY created_at DESC
 LIMIT 10;
 
+

@@ -232,3 +232,4 @@ async function convertHTMLToImage(html: string): Promise<Blob> {
   throw new Error('Aucune API de génération d\'images configurée. Configurez HTML_CSS_TO_IMAGE_API_KEY ou SCREENSHOT_API_KEY')
 }
 
+

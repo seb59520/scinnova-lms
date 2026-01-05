@@ -5,7 +5,8 @@ import { AdminProgramsContent } from './AdminProgramsContent';
 import { AdminUsersContent } from './AdminUsersContent';
 import { AdminOrgsContent } from './AdminOrgsContent';
 import { AdminItemsContent } from './AdminItemsContent';
-import { BookOpen, Layers, Users, Building2, FileText } from 'lucide-react';
+import { BookOpen, Layers, Users, Building2, FileText, Clock } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import '../../styles/admin-unified.css';
 
 type AdminTab = 'courses' | 'programs' | 'users' | 'orgs' | 'items';
@@ -28,7 +29,7 @@ export function AdminUnified() {
       {/* Tabs Navigation */}
       <div className="bg-white border-b border-gray-200 pt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex space-x-8" aria-label="Tabs">
+          <nav className="flex space-x-8 items-center" aria-label="Tabs">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -50,6 +51,15 @@ export function AdminUnified() {
                 </button>
               );
             })}
+            <div className="ml-auto">
+              <Link
+                to="/trainer/time-tracking"
+                className="flex items-center gap-2 py-2 px-4 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
+              >
+                <Clock className="w-4 h-4" />
+                Temps passé
+              </Link>
+            </div>
           </nav>
         </div>
       </div>

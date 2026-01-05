@@ -149,3 +149,4 @@ if (profile?.role !== 'admin' && user?.id) {
 - Si le problème persiste, vérifier les logs Supabase pour plus de détails
 - Les admins n'ont pas besoin d'être inscrits pour accéder aux formations
 
+

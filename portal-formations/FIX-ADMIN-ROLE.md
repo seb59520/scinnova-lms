@@ -110,3 +110,4 @@ Si le problème persiste :
 3. Vérifiez que le rôle affiché est bien 'admin'
 4. Utilisez la page `/debug-profile` pour voir toutes les informations
 
+

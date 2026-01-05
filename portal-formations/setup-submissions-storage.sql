@@ -83,3 +83,4 @@ USING (
 -- Vérifier que le bucket a été créé
 SELECT * FROM storage.buckets WHERE id = 'submissions';
 
+

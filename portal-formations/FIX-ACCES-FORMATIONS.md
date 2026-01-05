@@ -138,3 +138,4 @@ Si vous avez des utilisateurs qui ont été bloqués par l'ancienne logique :
 - Gestion des invitations pour les formations sur invitation
 - Notification lors de la création automatique d'enrollment
 
+

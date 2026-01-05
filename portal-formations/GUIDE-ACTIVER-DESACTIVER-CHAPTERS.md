@@ -87,3 +87,4 @@ Les requêtes sont automatiquement filtrées selon le rôle de l'utilisateur :
 - ✅ L'ordre des chapitres est **préservé** même si certains sont désactivés
 - ✅ Les chapitres de type "game" peuvent aussi être activés/désactivés
 
+

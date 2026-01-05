@@ -48,3 +48,4 @@ CREATE INDEX IF NOT EXISTS idx_enrollments_user_course_status ON enrollments(use
 CREATE INDEX IF NOT EXISTS idx_program_enrollments_user_status ON program_enrollments(user_id, status);
 CREATE INDEX IF NOT EXISTS idx_program_courses_course_id ON program_courses(course_id);
 
+

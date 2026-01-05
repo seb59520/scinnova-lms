@@ -8,6 +8,7 @@ interface LearnersTableProps {
   onRelance?: (userId: string) => void;
   onAssignResource?: (userId: string) => void;
   onAddNote?: (userId: string) => void;
+  onViewDetails?: (userId: string, displayName: string) => void;
 }
 
 export function LearnersTable({
@@ -16,6 +17,7 @@ export function LearnersTable({
   onRelance,
   onAssignResource,
   onAddNote,
+  onViewDetails,
 }: LearnersTableProps) {
   if (loading) {
     return (
@@ -62,7 +64,14 @@ export function LearnersTable({
           {learners.map((learner) => (
             <tr key={learner.user_id} className="hover:bg-gray-50">
               <td className="whitespace-nowrap px-6 py-4">
-                <div className="font-medium text-gray-900">{learner.display_name}</div>
+                <div className="flex items-center gap-2">
+                  <div className="font-medium text-gray-900">{learner.display_name}</div>
+                  {learner.unread_submissions_count && learner.unread_submissions_count > 0 && (
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+                      {learner.unread_submissions_count}
+                    </span>
+                  )}
+                </div>
               </td>
               <td className="whitespace-nowrap px-6 py-4">
                 <div className="flex items-center">
@@ -100,6 +109,17 @@ export function LearnersTable({
               </td>
               <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                 <div className="flex justify-end gap-2">
+                  {onViewDetails && (
+                    <button
+                      onClick={() => {
+                        console.log('🔍 Ouvrir détails pour:', learner.user_id, learner.display_name);
+                        onViewDetails(learner.user_id, learner.display_name);
+                      }}
+                      className="rounded bg-green-600 px-3 py-1 text-white hover:bg-green-700"
+                    >
+                      Détails
+                    </button>
+                  )}
                   {onRelance && (
                     <button
                       onClick={() => onRelance(learner.user_id)}

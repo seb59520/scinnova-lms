@@ -743,3 +743,4 @@ ALTER TABLE user_settings ENABLE ROW LEVEL SECURITY;
 -- TOTAL : 22 tables
 -- ============================================================================
 
+

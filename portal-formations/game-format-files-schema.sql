@@ -132,3 +132,4 @@ COMMENT ON COLUMN game_attempts.wrong_ids IS 'Liste des IDs des questions ratée
 COMMENT ON COLUMN game_progress.best_score IS 'Meilleur score obtenu pour ce niveau';
 COMMENT ON COLUMN game_progress.last_score IS 'Dernier score obtenu pour ce niveau';
 
+

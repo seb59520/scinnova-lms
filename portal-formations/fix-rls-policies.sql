@@ -146,3 +146,4 @@ CREATE POLICY "Admins can view all game scores" ON game_scores
       WHERE p.id = auth.uid() AND p.role = 'admin'
     )
   );
+

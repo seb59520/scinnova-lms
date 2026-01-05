@@ -194,3 +194,4 @@ Après avoir sauvegardé, vérifiez dans Supabase :
 
 **SANS** les champs `type`, `title`, `position` dans `game_content`.
 
+

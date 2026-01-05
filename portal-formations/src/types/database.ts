@@ -233,6 +233,7 @@ export interface LearnerRow {
   last_activity_at: string | null;
   avg_score: number | null;
   main_blockage: string | null;
+  unread_submissions_count?: number;
 }
 
 export interface ModuleAnalytics {

@@ -40,3 +40,4 @@ CREATE POLICY "Admins can view all settings" ON user_settings
     )
   );
 
+

@@ -302,7 +302,7 @@ export function TrainerDashboard() {
 
         {/* Quick actions */}
         {selectedSessionId && (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
             <Link
               to={`/trainer/session/${selectedSessionId}`}
               className="rounded-lg border bg-white p-6 text-center hover:bg-gray-50"
@@ -316,6 +316,13 @@ export function TrainerDashboard() {
             >
               <h3 className="font-semibold text-gray-900">Analyses détaillées</h3>
               <p className="mt-2 text-sm text-gray-600">Modules et exercices</p>
+            </Link>
+            <Link
+              to={`/trainer/sessions/${selectedSessionId}/time-tracking`}
+              className="rounded-lg border bg-white p-6 text-center hover:bg-gray-50"
+            >
+              <h3 className="font-semibold text-gray-900">Temps passé</h3>
+              <p className="mt-2 text-sm text-gray-600">Temps actif par apprenant</p>
             </Link>
             <Link
               to="/trainer/notes"

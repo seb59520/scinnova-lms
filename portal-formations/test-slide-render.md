@@ -120,3 +120,4 @@ Puis accédez à cet item via `/app/items/{id}` et vérifiez s'il s'affiche corr
 3. Videz le cache du navigateur (Ctrl+Shift+Delete)
 4. Rechargez la page en forçant le rafraîchissement (Ctrl+F5)
 
+

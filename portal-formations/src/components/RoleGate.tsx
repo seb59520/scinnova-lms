@@ -21,3 +21,4 @@ export function RoleGate({ children, allowedRoles, fallback = null }: RoleGatePr
 
   return <>{fallback}</>
 }
+

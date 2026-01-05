@@ -136,3 +136,4 @@ window.location.href = '/login'
 - Un profil manquant n'empêche plus l'utilisation de l'application
 - Les redirections utilisent `replace` pour éviter l'historique
 
+

@@ -85,3 +85,4 @@ Les index suivants sont créés pour optimiser les performances :
 - `idx_courses_created_by` : Pour les vérifications de créateur
 - `idx_courses_status_access` : Pour les vérifications de statut/accès
 
+

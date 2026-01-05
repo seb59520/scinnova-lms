@@ -299,3 +299,4 @@ CREATE POLICY "Admins can view all notes in their orgs" ON trainer_notes
     )
   );
 
+

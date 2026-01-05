@@ -258,3 +258,4 @@ Pour éviter ce problème à l'avenir :
 3. **Utilisez les fichiers `*-content-only.json`** comme référence pour le format
 4. **Testez le jeu immédiatement après création** pour détecter les problèmes rapidement
 
+

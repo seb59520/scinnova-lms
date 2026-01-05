@@ -12,3 +12,4 @@ CREATE INDEX IF NOT EXISTS idx_chapters_item_id_published ON chapters(item_id, p
 -- 3. Commentaire pour documenter la colonne
 COMMENT ON COLUMN chapters.published IS 'Indique si le chapitre est publié et visible dans le mode cours. Les chapitres non publiés restent visibles en mode admin.';
 
+

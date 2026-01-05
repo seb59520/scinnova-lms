@@ -82,3 +82,4 @@ Après ces étapes :
 - **Une session doit être active** (`status = 'active'`) pour être utilisée automatiquement
 - **Si plusieurs sessions existent pour un cours**, la plus récente est utilisée
 
+

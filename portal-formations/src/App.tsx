@@ -32,18 +32,22 @@ import { SessionAnalytics } from './pages/trainer/SessionAnalytics'
 import { ExerciseResults } from './pages/trainer/ExerciseResults'
 import { TrainerNotes } from './pages/trainer/TrainerNotes'
 import { TrainerCourseScript } from './pages/trainer/TrainerCourseScript'
+import { UserTimeTracking } from './pages/trainer/UserTimeTracking'
 import { TrainerRouteGuard } from './components/trainer/TrainerRouteGuard'
 import { Profile } from './pages/Profile'
 import { DebugProfile } from './pages/DebugProfile'
 import { DiagnosticRole } from './pages/DiagnosticRole'
 import { PresentationView } from './pages/PresentationView'
 import { LandingPage } from './pages/LandingPage'
+import { LearnerMailbox } from './pages/LearnerMailbox'
+import { TimeTrackingProvider } from './components/TimeTrackingProvider'
 
 function App() {
   return (
     <AuthProvider>
-      <NetworkStatus />
-      <div className="min-h-screen bg-gray-50">
+      <TimeTrackingProvider>
+        <NetworkStatus />
+        <div className="min-h-screen bg-gray-50">
         <Routes>
           {/* Routes publiques */}
           <Route
@@ -348,11 +352,28 @@ function App() {
               </TrainerRouteGuard>
             }
           />
+          <Route
+            path="/trainer/time-tracking"
+            element={
+              <TrainerRouteGuard>
+                <UserTimeTracking />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/sessions/:sessionId/time-tracking"
+            element={
+              <TrainerRouteGuard>
+                <UserTimeTracking />
+              </TrainerRouteGuard>
+            }
+          />
 
           {/* Route par défaut */}
           <Route path="/" element={<ProtectedRoute requireAuth={false}><Login /></ProtectedRoute>} />
         </Routes>
       </div>
+      </TimeTrackingProvider>
     </AuthProvider>
   )
 }

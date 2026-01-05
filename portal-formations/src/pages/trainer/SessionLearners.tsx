@@ -4,12 +4,22 @@ import { getLearnersTable } from '../../lib/queries/trainerQueries';
 import type { LearnerRow } from '../../types/database';
 import { LearnersTable } from '../../components/trainer/LearnersTable';
 import { TrainerHeader } from '../../components/trainer/TrainerHeader';
+import { LearnerDetails } from '../../components/trainer/LearnerDetails';
+import { AssignResourceModal } from '../../components/trainer/AssignResourceModal';
 
 export function SessionLearners() {
   const { sessionId } = useParams<{ sessionId: string }>();
   const navigate = useNavigate();
   const [learners, setLearners] = useState<LearnerRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedLearner, setSelectedLearner] = useState<{
+    userId: string;
+    displayName: string;
+  } | null>(null);
+  const [assignResourceFor, setAssignResourceFor] = useState<{
+    userId: string;
+    displayName: string;
+  } | null>(null);
 
   useEffect(() => {
     async function loadLearners() {
@@ -36,13 +46,40 @@ export function SessionLearners() {
   }
 
   function handleAssignResource(userId: string) {
-    // TODO: Implémenter l'assignation de ressource
-    alert(`Assigner ressource pour l'apprenant ${userId} (à implémenter)`);
+    const learner = learners.find((l) => l.user_id === userId);
+    if (learner) {
+      setAssignResourceFor({
+        userId,
+        displayName: learner.display_name,
+      });
+    }
+  }
+
+  function handleCloseAssignResource() {
+    setAssignResourceFor(null);
+  }
+
+  function handleResourceAssigned() {
+    // Recharger la liste des apprenants pour mettre à jour les notifications
+    if (sessionId) {
+      getLearnersTable(sessionId).then(({ learners: sessionLearners }) => {
+        setLearners(sessionLearners);
+      });
+    }
   }
 
   function handleAddNote(userId: string) {
     // Rediriger vers la page de notes avec filtre
     navigate(`/trainer/notes?user_id=${userId}&session_id=${sessionId}`);
+  }
+
+  function handleViewDetails(userId: string, displayName: string) {
+    console.log('🔍 handleViewDetails appelé:', { userId, displayName, sessionId });
+    setSelectedLearner({ userId, displayName });
+  }
+
+  function handleCloseDetails() {
+    setSelectedLearner(null);
   }
 
   return (
@@ -69,9 +106,31 @@ export function SessionLearners() {
           onRelance={handleRelance}
           onAssignResource={handleAssignResource}
           onAddNote={handleAddNote}
+          onViewDetails={handleViewDetails}
         />
         </div>
       </div>
+
+      {/* Modal des détails de l'apprenant */}
+      {selectedLearner && sessionId && (
+        <LearnerDetails
+          sessionId={sessionId}
+          userId={selectedLearner.userId}
+          displayName={selectedLearner.displayName}
+          onClose={handleCloseDetails}
+        />
+      )}
+
+      {/* Modal d'assignation de ressource */}
+      {assignResourceFor && sessionId && (
+        <AssignResourceModal
+          learnerId={assignResourceFor.userId}
+          learnerName={assignResourceFor.displayName}
+          sessionId={sessionId}
+          onClose={handleCloseAssignResource}
+          onSuccess={handleResourceAssigned}
+        />
+      )}
     </div>
   );
 }

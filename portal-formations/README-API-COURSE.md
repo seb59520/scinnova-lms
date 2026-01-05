@@ -140,3 +140,4 @@ Une fois le cours créé :
 - [Guide de chapitrage](./CHAPITRAGE.md)
 - [Schéma de base de données](./supabase-schema.sql)
 
+

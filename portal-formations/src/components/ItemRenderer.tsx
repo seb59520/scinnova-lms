@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Item, Submission } from '../types/database'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../hooks/useAuth'
@@ -7,7 +7,8 @@ import { FileUpload } from './FileUpload'
 import { RichTextEditor } from './RichTextEditor'
 import { GameRenderer } from './GameRenderer'
 import { ItemDocuments } from './ItemDocuments'
-import { Presentation, Eye, Columns } from 'lucide-react'
+import { Presentation, Eye, Columns, Sparkles } from 'lucide-react'
+import { correctAnswer, CorrectionResult } from '../lib/answerCorrector'
 
 interface ItemRendererProps {
   item: Item
@@ -21,6 +22,17 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate }: ItemRende
   const [answer, setAnswer] = useState(submission?.answer_text || '')
   const [file, setFile] = useState<File | null>(null)
   const [viewMode, setViewMode] = useState<'normal' | 'slide' | 'comparison'>('normal')
+  const [aiCorrection, setAiCorrection] = useState<CorrectionResult | null>(null)
+  const [correcting, setCorrecting] = useState(false)
+
+  // Charger la correction IA depuis la soumission
+  useEffect(() => {
+    if (submission?.answer_json?.aiCorrection) {
+      setAiCorrection(submission.answer_json.aiCorrection as CorrectionResult)
+    } else {
+      setAiCorrection(null)
+    }
+  }, [submission])
 
   const handleExerciseSubmit = async () => {
     if (!user?.id || (!answer.trim() && !file)) return
@@ -157,6 +169,64 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate }: ItemRende
         })
     } catch (error) {
       console.error('Error saving game score:', error)
+    }
+  }
+
+  const handleAiCorrection = async () => {
+    if (!submission?.answer_text || !user?.id) {
+      alert('Aucune réponse à corriger')
+      return
+    }
+
+    setCorrecting(true)
+    try {
+      const content = item.content as any
+      
+      // Construire le contexte pour la correction
+      const context = {
+        question: item.content?.question || content?.question,
+        instructions: content?.instructions || (Array.isArray(content?.instructions) ? content.instructions.join('\n') : content?.instructions),
+        objective: content?.objective,
+        expectedOutputs: content?.expected_outputs,
+        criteria: content?.criteria,
+        scenario: content?.scenario,
+        context: content?.context
+      }
+
+      // Appeler le service de correction
+      const correctionResult = await correctAnswer(submission.answer_text, context)
+
+      // Sauvegarder la correction dans answer_json
+      const updatedAnswerJson = {
+        ...(submission.answer_json || {}),
+        aiCorrection: correctionResult
+      }
+
+      const { data, error } = await supabase
+        .from('submissions')
+        .update({
+          answer_json: updatedAnswerJson
+        })
+        .eq('id', submission.id)
+        .select()
+        .single()
+
+      if (error) {
+        throw error
+      }
+
+      // Mettre à jour l'état local
+      setAiCorrection(correctionResult)
+      if (data) {
+        onSubmissionUpdate(data as Submission)
+      }
+
+      console.log('✅ Correction IA sauvegardée avec succès')
+    } catch (error: any) {
+      console.error('❌ Erreur lors de la correction IA:', error)
+      alert(`Erreur lors de la correction IA: ${error.message || 'Une erreur est survenue'}`)
+    } finally {
+      setCorrecting(false)
     }
   }
 
@@ -457,6 +527,76 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate }: ItemRende
                 </div>
               )}
             </div>
+
+            {/* Bouton correction IA */}
+            {submission.answer_text && (
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={handleAiCorrection}
+                  disabled={correcting}
+                  className="btn-secondary disabled:opacity-50 flex items-center space-x-2"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span>{correcting ? 'Correction en cours...' : 'Faire corriger par l\'IA'}</span>
+                </button>
+                {aiCorrection && (
+                  <span className="text-sm text-green-600">✓ Correction disponible</span>
+                )}
+              </div>
+            )}
+
+            {/* Affichage de la correction IA */}
+            {aiCorrection && (
+              <div className="bg-gradient-to-br from-purple-50 to-blue-50 p-6 rounded-lg border-2 border-purple-200">
+                <h4 className="text-lg font-semibold text-purple-900 mb-4 flex items-center">
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Correction par l'IA
+                </h4>
+                
+                {aiCorrection.score !== null && aiCorrection.score !== undefined && (
+                  <div className="mb-4 p-3 bg-white rounded-lg border border-purple-300">
+                    <span className="text-sm font-medium text-gray-700">Note estimée : </span>
+                    <span className="text-lg font-bold text-purple-600">{aiCorrection.score}/100</span>
+                  </div>
+                )}
+
+                {aiCorrection.feedback && (
+                  <div className="mb-4 p-4 bg-white rounded-lg border border-blue-300">
+                    <h5 className="font-semibold text-blue-900 mb-2">💬 Feedback</h5>
+                    <p className="text-gray-800 whitespace-pre-wrap">{aiCorrection.feedback}</p>
+                  </div>
+                )}
+
+                {aiCorrection.strengths && aiCorrection.strengths.length > 0 && (
+                  <div className="mb-4 p-4 bg-green-50 rounded-lg border border-green-300">
+                    <h5 className="font-semibold text-green-900 mb-2">✅ Points forts</h5>
+                    <ul className="list-disc list-inside space-y-1 text-green-800">
+                      {aiCorrection.strengths.map((strength, idx) => (
+                        <li key={idx}>{strength}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {aiCorrection.improvements && aiCorrection.improvements.length > 0 && (
+                  <div className="mb-4 p-4 bg-amber-50 rounded-lg border border-amber-300">
+                    <h5 className="font-semibold text-amber-900 mb-2">🔧 Points à améliorer</h5>
+                    <ul className="list-disc list-inside space-y-1 text-amber-800">
+                      {aiCorrection.improvements.map((improvement, idx) => (
+                        <li key={idx}>{improvement}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {aiCorrection.correction && (
+                  <div className="p-4 bg-white rounded-lg border border-gray-300">
+                    <h5 className="font-semibold text-gray-900 mb-2">📝 Correction détaillée</h5>
+                    <div className="text-gray-800 whitespace-pre-wrap">{aiCorrection.correction}</div>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Boutons de vue si correction disponible */}
             {item.content?.correction && isGraded && (
@@ -875,28 +1015,101 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate }: ItemRende
             {loading ? 'Soumission...' : 'Soumettre'}
           </button>
         ) : (
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-sm text-gray-600">
-              Réponse soumise le {new Date(submission.submitted_at).toLocaleDateString('fr-FR')}
-            </p>
-            {submission.file_path && (
-              <div className="mt-2 flex items-center space-x-2 text-sm text-gray-600">
-                <span>Fichier soumis: {submission.file_path.split('/').pop()}</span>
-                <a
-                  href={supabase.storage.from('submissions').getPublicUrl(submission.file_path).data.publicUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
+          <div className="space-y-4">
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="text-sm text-gray-600">
+                Réponse soumise le {new Date(submission.submitted_at).toLocaleDateString('fr-FR')}
+              </p>
+              {submission.file_path && (
+                <div className="mt-2 flex items-center space-x-2 text-sm text-gray-600">
+                  <span>Fichier soumis: {submission.file_path.split('/').pop()}</span>
+                  <a
+                    href={supabase.storage.from('submissions').getPublicUrl(submission.file_path).data.publicUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    Télécharger
+                  </a>
+                </div>
+              )}
+              {isGraded && submission.grade && (
+                <p className="text-sm font-medium text-green-600">
+                  Note: {submission.grade}/100
+                </p>
+              )}
+            </div>
+
+            {/* Bouton correction IA */}
+            {submission.answer_text && (
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={handleAiCorrection}
+                  disabled={correcting}
+                  className="btn-secondary disabled:opacity-50 flex items-center space-x-2"
                 >
-                  Télécharger
-                </a>
+                  <Sparkles className="w-4 h-4" />
+                  <span>{correcting ? 'Correction en cours...' : 'Faire corriger par l\'IA'}</span>
+                </button>
+                {aiCorrection && (
+                  <span className="text-sm text-green-600">✓ Correction disponible</span>
+                )}
               </div>
             )}
-            {isGraded && submission.grade && (
-              <p className="text-sm font-medium text-green-600">
-                Note: {submission.grade}/100
-              </p>
+
+            {/* Affichage de la correction IA */}
+            {aiCorrection && (
+              <div className="bg-gradient-to-br from-purple-50 to-blue-50 p-6 rounded-lg border-2 border-purple-200">
+                <h4 className="text-lg font-semibold text-purple-900 mb-4 flex items-center">
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Correction par l'IA
+                </h4>
+                
+                {aiCorrection.score !== null && aiCorrection.score !== undefined && (
+                  <div className="mb-4 p-3 bg-white rounded-lg border border-purple-300">
+                    <span className="text-sm font-medium text-gray-700">Note estimée : </span>
+                    <span className="text-lg font-bold text-purple-600">{aiCorrection.score}/100</span>
+                  </div>
+                )}
+
+                {aiCorrection.feedback && (
+                  <div className="mb-4 p-4 bg-white rounded-lg border border-blue-300">
+                    <h5 className="font-semibold text-blue-900 mb-2">💬 Feedback</h5>
+                    <p className="text-gray-800 whitespace-pre-wrap">{aiCorrection.feedback}</p>
+                  </div>
+                )}
+
+                {aiCorrection.strengths && aiCorrection.strengths.length > 0 && (
+                  <div className="mb-4 p-4 bg-green-50 rounded-lg border border-green-300">
+                    <h5 className="font-semibold text-green-900 mb-2">✅ Points forts</h5>
+                    <ul className="list-disc list-inside space-y-1 text-green-800">
+                      {aiCorrection.strengths.map((strength, idx) => (
+                        <li key={idx}>{strength}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {aiCorrection.improvements && aiCorrection.improvements.length > 0 && (
+                  <div className="mb-4 p-4 bg-amber-50 rounded-lg border border-amber-300">
+                    <h5 className="font-semibold text-amber-900 mb-2">🔧 Points à améliorer</h5>
+                    <ul className="list-disc list-inside space-y-1 text-amber-800">
+                      {aiCorrection.improvements.map((improvement, idx) => (
+                        <li key={idx}>{improvement}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {aiCorrection.correction && (
+                  <div className="p-4 bg-white rounded-lg border border-gray-300">
+                    <h5 className="font-semibold text-gray-900 mb-2">📝 Correction détaillée</h5>
+                    <div className="text-gray-800 whitespace-pre-wrap">{aiCorrection.correction}</div>
+                  </div>
+                )}
+              </div>
             )}
+
             {/* Boutons de vue si correction disponible */}
             {content.correction && isGraded && (
               <div className="flex items-center space-x-2 mb-4">
@@ -1158,14 +1371,86 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate }: ItemRende
             {loading ? 'Soumission...' : 'Soumettre le TP'}
           </button>
         ) : (
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-sm text-gray-600">
-              TP soumis le {new Date(submission.submitted_at).toLocaleDateString('fr-FR')}
-            </p>
-            {isGraded && submission.grade && (
-              <p className="text-sm font-medium text-green-600">
-                Note: {submission.grade}/100
+          <div className="space-y-4">
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="text-sm text-gray-600">
+                TP soumis le {new Date(submission.submitted_at).toLocaleDateString('fr-FR')}
               </p>
+              {isGraded && submission.grade && (
+                <p className="text-sm font-medium text-green-600">
+                  Note: {submission.grade}/100
+                </p>
+              )}
+            </div>
+
+            {/* Bouton correction IA */}
+            {submission.answer_text && (
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={handleAiCorrection}
+                  disabled={correcting}
+                  className="btn-secondary disabled:opacity-50 flex items-center space-x-2"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span>{correcting ? 'Correction en cours...' : 'Faire corriger par l\'IA'}</span>
+                </button>
+                {aiCorrection && (
+                  <span className="text-sm text-green-600">✓ Correction disponible</span>
+                )}
+              </div>
+            )}
+
+            {/* Affichage de la correction IA */}
+            {aiCorrection && (
+              <div className="bg-gradient-to-br from-purple-50 to-blue-50 p-6 rounded-lg border-2 border-purple-200">
+                <h4 className="text-lg font-semibold text-purple-900 mb-4 flex items-center">
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Correction par l'IA
+                </h4>
+                
+                {aiCorrection.score !== null && aiCorrection.score !== undefined && (
+                  <div className="mb-4 p-3 bg-white rounded-lg border border-purple-300">
+                    <span className="text-sm font-medium text-gray-700">Note estimée : </span>
+                    <span className="text-lg font-bold text-purple-600">{aiCorrection.score}/100</span>
+                  </div>
+                )}
+
+                {aiCorrection.feedback && (
+                  <div className="mb-4 p-4 bg-white rounded-lg border border-blue-300">
+                    <h5 className="font-semibold text-blue-900 mb-2">💬 Feedback</h5>
+                    <p className="text-gray-800 whitespace-pre-wrap">{aiCorrection.feedback}</p>
+                  </div>
+                )}
+
+                {aiCorrection.strengths && aiCorrection.strengths.length > 0 && (
+                  <div className="mb-4 p-4 bg-green-50 rounded-lg border border-green-300">
+                    <h5 className="font-semibold text-green-900 mb-2">✅ Points forts</h5>
+                    <ul className="list-disc list-inside space-y-1 text-green-800">
+                      {aiCorrection.strengths.map((strength, idx) => (
+                        <li key={idx}>{strength}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {aiCorrection.improvements && aiCorrection.improvements.length > 0 && (
+                  <div className="mb-4 p-4 bg-amber-50 rounded-lg border border-amber-300">
+                    <h5 className="font-semibold text-amber-900 mb-2">🔧 Points à améliorer</h5>
+                    <ul className="list-disc list-inside space-y-1 text-amber-800">
+                      {aiCorrection.improvements.map((improvement, idx) => (
+                        <li key={idx}>{improvement}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {aiCorrection.correction && (
+                  <div className="p-4 bg-white rounded-lg border border-gray-300">
+                    <h5 className="font-semibold text-gray-900 mb-2">📝 Correction détaillée</h5>
+                    <div className="text-gray-800 whitespace-pre-wrap">{aiCorrection.correction}</div>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         )}

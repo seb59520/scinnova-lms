@@ -85,3 +85,4 @@ COMMENT ON TABLE trainer_scripts IS 'Scripts pédagogiques créés par les forma
 COMMENT ON COLUMN trainer_scripts.item_id IS 'ID de l''item (slide, exercice, etc.) - NULL pour les sections générales (introduction de module, etc.)';
 COMMENT ON COLUMN trainer_scripts.section_order IS 'Ordre d''affichage de la section dans le script';
 
+

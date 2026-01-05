@@ -78,3 +78,4 @@ Link.configure({
 - L'erreur 400 peut aussi venir d'un problème de configuration RLS dans Supabase
 - Si le problème persiste, vérifier les logs Supabase pour plus de détails
 
+

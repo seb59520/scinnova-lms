@@ -69,3 +69,4 @@ console.log('   1. Vérifiez le fichier tp-openapi-swagger-lms-avec-pas-a-pas.js
 console.log('   2. Si tout est correct, remplacez tp-openapi-swagger-lms.json par ce fichier');
 console.log('   3. Importez le JSON dans votre LMS via l\'interface admin');
 
+

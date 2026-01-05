@@ -175,3 +175,4 @@ Vous pouvez étendre cet exercice en demandant :
 - [HTTP Methods](https://developer.mozilla.org/fr/docs/Web/HTTP/Methods)
 - [RESTful API Design](https://restfulapi.net/rest-api-design-tutorial-with-example/)
 
+

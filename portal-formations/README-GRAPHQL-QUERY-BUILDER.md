@@ -324,3 +324,4 @@ Vous pouvez étendre l'exercice en ajoutant :
 3. **Optimisation** : Encouragez l'optimisation avec `maxCost`
 4. **Contexte métier** : Utilisez des exemples concrets (e-commerce, blog, etc.)
 
+

@@ -17,3 +17,4 @@ ON CONFLICT (id) DO UPDATE SET
 
 -- Vérifiez que c'est bien créé
 SELECT * FROM profiles WHERE role = 'admin';
+

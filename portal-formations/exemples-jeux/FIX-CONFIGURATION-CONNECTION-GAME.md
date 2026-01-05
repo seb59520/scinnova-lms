@@ -169,3 +169,4 @@ WHERE id = 'VOTRE_ITEM_ID';
 - Les champs `type`, `title`, `description` sont dans les colonnes de la table `items`, pas dans `content`
 - Pour les chapitres de type `game`, utilisez `game_content` au lieu de `content`
 
+

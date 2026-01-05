@@ -175,3 +175,4 @@ Après création, vous pouvez :
 - Les slides sont publiées par défaut (`published: true`)
 - Le format TipTap permet d'ajouter du formatage riche (gras, italique, liens, etc.)
 
+
