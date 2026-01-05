@@ -22,20 +22,34 @@ interface OrgWithUsers {
 interface UserDirectoryProps {
   onSelectUser?: (userId: string, userName: string) => void
   showChatButton?: boolean
+  currentUserRole?: string // Rôle de l'utilisateur actuel pour filtrer les permissions
 }
 
-export function UserDirectory({ onSelectUser, showChatButton = true }: UserDirectoryProps) {
+export function UserDirectory({ onSelectUser, showChatButton = true, currentUserRole }: UserDirectoryProps) {
   const [orgsWithUsers, setOrgsWithUsers] = useState<OrgWithUsers[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedOrg, setSelectedOrg] = useState<string | null>(null)
   const [expandedOrgs, setExpandedOrgs] = useState<Set<string>>(new Set())
+  
+  // Debounce pour la recherche
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('')
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery)
+    }, 300) // 300ms de debounce pour la recherche
+    
+    return () => clearTimeout(timer)
+  }, [searchQuery])
 
   // Récupérer les utilisateurs par organisation
   useEffect(() => {
     fetchUsersByOrg()
     
-    // Écouter les changements de présence en temps réel
+    // Écouter les changements de présence en temps réel (avec debounce)
+    let debounceTimer: NodeJS.Timeout | null = null
+    
     const presenceChannel = supabase
       .channel('directory-presence')
       .on(
@@ -46,12 +60,21 @@ export function UserDirectory({ onSelectUser, showChatButton = true }: UserDirec
           table: 'user_presence',
         },
         () => {
-          fetchUsersByOrg()
+          // Debounce : attendre 3 secondes avant de rafraîchir
+          if (debounceTimer) {
+            clearTimeout(debounceTimer)
+          }
+          debounceTimer = setTimeout(() => {
+            fetchUsersByOrg()
+          }, 3000) // 3 secondes de debounce
         }
       )
       .subscribe()
 
     return () => {
+      if (debounceTimer) {
+        clearTimeout(debounceTimer)
+      }
       supabase.removeChannel(presenceChannel)
     }
   }, [])
@@ -115,7 +138,7 @@ export function UserDirectory({ onSelectUser, showChatButton = true }: UserDirec
         }
 
         // Construire la liste des utilisateurs avec présence
-        const users: UserWithPresence[] = (members || [])
+        let users: UserWithPresence[] = (members || [])
           .map(m => {
             const profile = m.profiles as any
             if (!profile) return null
@@ -132,6 +155,11 @@ export function UserDirectory({ onSelectUser, showChatButton = true }: UserDirec
             }
           })
           .filter(Boolean) as UserWithPresence[]
+
+        // Si l'utilisateur est étudiant, ne montrer que les admins
+        if (currentUserRole === 'student') {
+          users = users.filter(user => user.role === 'admin')
+        }
 
         if (users.length > 0) {
           orgsData.push({
@@ -158,13 +186,13 @@ export function UserDirectory({ onSelectUser, showChatButton = true }: UserDirec
     }
   }
 
-  // Filtrer les organisations et utilisateurs selon la recherche
+  // Filtrer les organisations et utilisateurs selon la recherche (utiliser debouncedSearchQuery)
   const filteredOrgs = orgsWithUsers
     .map(org => ({
       ...org,
       users: org.users.filter(user => {
-        if (!searchQuery.trim()) return true
-        const query = searchQuery.toLowerCase()
+        if (!debouncedSearchQuery.trim()) return true
+        const query = debouncedSearchQuery.toLowerCase()
         return (
           user.full_name?.toLowerCase().includes(query) ||
           org.org_name.toLowerCase().includes(query) ||
@@ -172,7 +200,7 @@ export function UserDirectory({ onSelectUser, showChatButton = true }: UserDirec
         )
       }),
     }))
-    .filter(org => org.users.length > 0 || org.org_name.toLowerCase().includes(searchQuery.toLowerCase()))
+    .filter(org => org.users.length > 0 || org.org_name.toLowerCase().includes(debouncedSearchQuery.toLowerCase()))
 
   // Filtrer par organisation sélectionnée
   const displayOrgs = selectedOrg
@@ -229,8 +257,19 @@ export function UserDirectory({ onSelectUser, showChatButton = true }: UserDirec
       <div className="p-4 border-b border-gray-200 bg-white">
         <div className="flex items-center gap-3 mb-3">
           <Building2 className="w-5 h-5 text-gray-600" />
-          <h2 className="text-lg font-semibold text-gray-900">Répertoire des utilisateurs</h2>
+          <h2 className="text-lg font-semibold text-gray-900">
+            {currentUserRole === 'student' ? 'Administrateurs disponibles' : 'Répertoire des utilisateurs'}
+          </h2>
         </div>
+        
+        {/* Message informatif pour les étudiants */}
+        {currentUserRole === 'student' && (
+          <div className="mb-3 p-2 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-xs text-blue-800">
+              💡 En tant qu'étudiant, vous pouvez uniquement contacter les administrateurs.
+            </p>
+          </div>
+        )}
         
         {/* Barre de recherche */}
         <div className="relative mb-3">
@@ -352,9 +391,24 @@ export function UserDirectory({ onSelectUser, showChatButton = true }: UserDirec
                       </div>
                       {showChatButton && onSelectUser && (
                         <button
-                          onClick={() => onSelectUser(user.id, user.full_name || 'Utilisateur')}
-                          className="ml-3 p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors flex-shrink-0"
-                          title="Démarrer une conversation"
+                          onClick={() => {
+                            // Vérifier que les étudiants ne peuvent contacter que les admins
+                            if (currentUserRole === 'student' && user.role !== 'admin') {
+                              return // Ne rien faire si l'étudiant essaie de contacter un non-admin
+                            }
+                            onSelectUser(user.id, user.full_name || 'Utilisateur')
+                          }}
+                          disabled={currentUserRole === 'student' && user.role !== 'admin'}
+                          className={`ml-3 p-2 rounded-lg transition-colors flex-shrink-0 ${
+                            currentUserRole === 'student' && user.role !== 'admin'
+                              ? 'text-gray-300 cursor-not-allowed'
+                              : 'text-blue-600 hover:bg-blue-50'
+                          }`}
+                          title={
+                            currentUserRole === 'student' && user.role !== 'admin'
+                              ? 'Vous ne pouvez contacter que les administrateurs'
+                              : 'Démarrer une conversation'
+                          }
                         >
                           <MessageCircle className="w-5 h-5" />
                         </button>

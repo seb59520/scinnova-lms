@@ -113,6 +113,19 @@ export function useChat(recipientId: string | null = null) {
         .eq('id', user.id)
         .single()
 
+      // Vérifier que les étudiants ne peuvent envoyer des messages qu'aux admins
+      if (recipientId && profile?.role === 'student') {
+        const { data: recipientProfile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', recipientId)
+          .single()
+
+        if (!recipientProfile || recipientProfile.role !== 'admin') {
+          throw new Error('Vous ne pouvez envoyer des messages qu\'aux administrateurs.')
+        }
+      }
+
       const { data, error } = await supabase
         .from('chat_messages')
         .insert({
@@ -304,14 +317,15 @@ export function useChat(recipientId: string | null = null) {
   // Charger les conversations
   useEffect(() => {
     fetchConversations()
-    // Rafraîchir toutes les 30 secondes
-    const interval = setInterval(fetchConversations, 30000)
+    // Rafraîchir toutes les 60 secondes (réduit les rafraîchissements)
+    const interval = setInterval(fetchConversations, 60000) // 60 secondes au lieu de 30
     return () => clearInterval(interval)
   }, [fetchConversations])
 
-  // Écouter les changements de présence en temps réel
+  // Écouter les changements de présence en temps réel (avec debounce)
   useEffect(() => {
     let mounted = true
+    let debounceTimer: NodeJS.Timeout | null = null
 
     const setupPresenceListener = async () => {
       const { data: authData, error: authError } = await supabase.auth.getUser()
@@ -328,13 +342,23 @@ export function useChat(recipientId: string | null = null) {
           },
           () => {
             if (!mounted) return
-            // Rafraîchir les conversations quand la présence change
-            fetchConversations()
+            // Debounce : attendre 2 secondes avant de rafraîchir (évite les rafraîchissements multiples)
+            if (debounceTimer) {
+              clearTimeout(debounceTimer)
+            }
+            debounceTimer = setTimeout(() => {
+              if (mounted) {
+                fetchConversations()
+              }
+            }, 2000) // 2 secondes de debounce
           }
         )
         .subscribe()
 
       return () => {
+        if (debounceTimer) {
+          clearTimeout(debounceTimer)
+        }
         if (presenceChannel) {
           supabase.removeChannel(presenceChannel)
         }
@@ -348,6 +372,9 @@ export function useChat(recipientId: string | null = null) {
 
     return () => {
       mounted = false
+      if (debounceTimer) {
+        clearTimeout(debounceTimer)
+      }
       if (cleanup) cleanup()
     }
   }, [fetchConversations])

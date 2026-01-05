@@ -35,10 +35,10 @@ export function usePresence() {
   useEffect(() => {
     setOnline() // Marquer comme en ligne au montage
 
-    // Mettre à jour la présence toutes les 30 secondes
+    // Mettre à jour la présence toutes les 60 secondes (réduit les rafraîchissements)
     const interval = setInterval(() => {
       setOnline()
-    }, 30000)
+    }, 60000) // 60 secondes au lieu de 30
 
     // Gérer la visibilité de la page
     const handleVisibilityChange = () => {

@@ -58,22 +58,30 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
     })
   }, [])
 
-  // Faire défiler vers le bas quand de nouveaux messages arrivent
+  // Faire défiler vers le bas quand de nouveaux messages arrivent (avec debounce)
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+    const timer = setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, 100) // Petit délai pour éviter les scrolls multiples
+    
+    return () => clearTimeout(timer)
+  }, [messages.length]) // Utiliser messages.length au lieu de messages pour éviter les re-renders
 
-  // Marquer les messages comme lus quand la conversation est ouverte
+  // Marquer les messages comme lus quand la conversation est ouverte (avec debounce)
   useEffect(() => {
-    if (isOpen && currentRecipient) {
+    if (!isOpen || !currentRecipient || !currentUser) return
+    
+    const timer = setTimeout(() => {
       const unreadIds = messages
-        .filter(msg => !msg.read_at && msg.sender_id !== currentUser?.id)
+        .filter(msg => !msg.read_at && msg.sender_id !== currentUser.id)
         .map(msg => msg.id)
       if (unreadIds.length > 0) {
         markAsRead(unreadIds)
       }
-    }
-  }, [isOpen, messages, currentRecipient, currentUser, markAsRead])
+    }, 500) // Délai de 500ms pour éviter les appels multiples
+    
+    return () => clearTimeout(timer)
+  }, [isOpen, currentRecipient, currentUser?.id, messages.length]) // Utiliser messages.length
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -85,8 +93,11 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
     try {
       await sendMessage(content)
       inputRef.current?.focus()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erreur lors de l\'envoi:', error)
+      // Afficher un message d'erreur à l'utilisateur
+      const errorMessage = error?.message || 'Erreur lors de l\'envoi du message'
+      alert(errorMessage)
       setMessage(content) // Restaurer le message en cas d'erreur
     }
   }
@@ -100,11 +111,34 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
   }
 
   const handleSelectUserFromDirectory = (userId: string, userName: string) => {
-    setCurrentRecipient(userId)
-    setShowDirectory(false)
-    setShowConversations(false)
-    setIsOpen(true)
-    setIsMinimized(false)
+    // Vérifier que les étudiants ne peuvent sélectionner que les admins
+    if (currentUser?.role === 'student') {
+      // Vérifier le rôle de l'utilisateur sélectionné
+      supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', userId)
+        .single()
+        .then(({ data, error }) => {
+          if (!error && data && data.role === 'admin') {
+            setCurrentRecipient(userId)
+            setShowDirectory(false)
+            setShowConversations(false)
+            setIsOpen(true)
+            setIsMinimized(false)
+          } else {
+            // Afficher un message d'erreur si l'étudiant essaie de contacter un non-admin
+            alert('Vous ne pouvez contacter que les administrateurs.')
+          }
+        })
+    } else {
+      // Pour les admins/instructeurs, aucune restriction
+      setCurrentRecipient(userId)
+      setShowDirectory(false)
+      setShowConversations(false)
+      setIsOpen(true)
+      setIsMinimized(false)
+    }
   }
 
   const isAdminOrInstructor = currentUser?.role === 'admin' || currentUser?.role === 'instructor'
@@ -167,40 +201,45 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
               </div>
             </div>
             <div className="flex items-center gap-2">
+              {/* Répertoire : accessible à tous, mais les étudiants ne verront que les admins */}
+              <button
+                onClick={() => {
+                  setShowDirectory(!showDirectory)
+                  setShowConversations(false)
+                }}
+                className={`p-2 hover:bg-white/20 rounded transition-all ${
+                  showDirectory ? 'bg-white/30 ring-2 ring-white/50' : ''
+                }`}
+                aria-label="Répertoire des utilisateurs"
+                title={
+                  isAdminOrInstructor
+                    ? 'Voir le répertoire par organisation'
+                    : 'Voir les administrateurs disponibles'
+                }
+              >
+                <Building2 className="w-5 h-5 text-white" />
+              </button>
+              
+              {/* Liste des conversations : uniquement pour admins/instructeurs */}
               {isAdminOrInstructor && (
-                <>
-                  <button
-                    onClick={() => {
-                      setShowDirectory(!showDirectory)
-                      setShowConversations(false)
-                    }}
-                    className={`p-2 hover:bg-white/20 rounded transition-all ${
-                      showDirectory ? 'bg-white/30 ring-2 ring-white/50' : ''
-                    }`}
-                    aria-label="Répertoire des utilisateurs"
-                    title="Voir le répertoire par organisation"
-                  >
-                    <Building2 className="w-5 h-5 text-white" />
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowConversations(!showConversations)
-                      setShowDirectory(false)
-                    }}
-                    className={`p-2 hover:bg-white/20 rounded transition-all ${
-                      showConversations ? 'bg-white/30 ring-2 ring-white/50' : ''
-                    }`}
-                    aria-label="Voir les conversations"
-                    title="Voir les conversations et rechercher des étudiants"
-                  >
-                    <div className="relative">
-                      <User className="w-5 h-5 text-white" />
-                      {conversations.length > 0 && (
-                        <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full border border-white"></span>
-                      )}
-                    </div>
-                  </button>
-                </>
+                <button
+                  onClick={() => {
+                    setShowConversations(!showConversations)
+                    setShowDirectory(false)
+                  }}
+                  className={`p-2 hover:bg-white/20 rounded transition-all ${
+                    showConversations ? 'bg-white/30 ring-2 ring-white/50' : ''
+                  }`}
+                  aria-label="Voir les conversations"
+                  title="Voir les conversations et rechercher des étudiants"
+                >
+                  <div className="relative">
+                    <User className="w-5 h-5 text-white" />
+                    {conversations.length > 0 && (
+                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full border border-white"></span>
+                    )}
+                  </div>
+                </button>
               )}
               <button
                 onClick={() => setIsMinimized(!isMinimized)}
@@ -219,12 +258,13 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
             </div>
           </div>
 
-          {/* Répertoire des utilisateurs par organisation */}
-          {showDirectory && isAdminOrInstructor && !isMinimized && (
+          {/* Répertoire des utilisateurs par organisation (accessible à tous) */}
+          {showDirectory && !isMinimized && (
             <div className="flex-1 overflow-hidden flex flex-col min-h-0">
               <UserDirectory
                 onSelectUser={handleSelectUserFromDirectory}
                 showChatButton={true}
+                currentUserRole={currentUser?.role}
               />
             </div>
           )}
@@ -386,9 +426,11 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
                           })()
                         : isAdminOrInstructor
                         ? 'Sélectionnez une conversation pour répondre...'
+                        : currentUser?.role === 'student'
+                        ? 'Sélectionnez un administrateur pour commencer...'
                         : 'Envoyez un message au formateur...'
                     }
-                    disabled={sending || !currentRecipient}
+                    disabled={sending || !currentRecipient || (currentUser?.role === 'student' && !currentRecipient)}
                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
                   />
                   <button
