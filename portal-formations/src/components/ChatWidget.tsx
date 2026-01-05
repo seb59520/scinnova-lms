@@ -87,6 +87,12 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
     e.preventDefault()
     if (!message.trim() || sending) return
 
+    // Vérifier qu'un destinataire est sélectionné
+    if (!currentRecipient && currentUser?.role === 'student') {
+      alert('Veuillez sélectionner un administrateur pour commencer la conversation.')
+      return
+    }
+
     const content = message.trim()
     setMessage('')
     
@@ -110,50 +116,53 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
     setIsMinimized(false)
   }
 
-  const handleSelectUserFromDirectory = (userId: string, userName: string) => {
+  const handleSelectUserFromDirectory = async (userId: string, userName: string) => {
     // Vérifier que les étudiants ne peuvent sélectionner que les admins
     // MAIS ils peuvent sélectionner quelqu'un avec qui ils ont déjà une conversation
     if (currentUser?.role === 'student') {
-      // Vérifier d'abord s'il existe déjà une conversation avec cet utilisateur
-      supabase.auth.getUser().then(({ data: authData }) => {
+      try {
+        const { data: authData } = await supabase.auth.getUser()
         if (!authData?.user) return
         const currentUserId = authData.user.id
 
-        supabase
+        // Vérifier d'abord s'il existe déjà une conversation avec cet utilisateur
+        const { data: existingMessages, error: messagesError } = await supabase
           .from('chat_messages')
           .select('id')
           .or(`and(sender_id.eq.${currentUserId},recipient_id.eq.${userId}),and(sender_id.eq.${userId},recipient_id.eq.${currentUserId})`)
           .limit(1)
-          .then(({ data: existingMessages }) => {
-            // Si une conversation existe déjà, permettre la sélection
-            if (existingMessages && existingMessages.length > 0) {
-              setCurrentRecipient(userId)
-              setShowDirectory(false)
-              setShowConversations(false)
-              setIsOpen(true)
-              setIsMinimized(false)
-            } else {
-              // Sinon, vérifier que c'est un admin
-              supabase
-                .from('profiles')
-                .select('role')
-                .eq('id', userId)
-                .single()
-                .then(({ data, error }) => {
-                  if (!error && data && data.role === 'admin') {
-                    setCurrentRecipient(userId)
-                    setShowDirectory(false)
-                    setShowConversations(false)
-                    setIsOpen(true)
-                    setIsMinimized(false)
-                  } else {
-                    // Afficher un message d'erreur si l'étudiant essaie de contacter un non-admin
-                    alert('Vous ne pouvez initier une conversation qu\'avec les administrateurs.')
-                  }
-                })
-            }
-          })
-      })
+
+        // Si une conversation existe déjà, permettre la sélection
+        if (existingMessages && existingMessages.length > 0) {
+          setCurrentRecipient(userId)
+          setShowDirectory(false)
+          setShowConversations(false)
+          setIsOpen(true)
+          setIsMinimized(false)
+          return
+        }
+
+        // Sinon, vérifier que c'est un admin
+        const { data: recipientProfile, error: profileError } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', userId)
+          .single()
+
+        if (!profileError && recipientProfile && recipientProfile.role === 'admin') {
+          setCurrentRecipient(userId)
+          setShowDirectory(false)
+          setShowConversations(false)
+          setIsOpen(true)
+          setIsMinimized(false)
+        } else {
+          // Afficher un message d'erreur si l'étudiant essaie de contacter un non-admin
+          alert('Vous ne pouvez initier une conversation qu\'avec les administrateurs.')
+        }
+      } catch (error) {
+        console.error('Erreur lors de la sélection de l\'utilisateur:', error)
+        alert('Erreur lors de la sélection de l\'utilisateur. Veuillez réessayer.')
+      }
     } else {
       // Pour les admins/instructeurs, aucune restriction
       setCurrentRecipient(userId)
@@ -216,6 +225,8 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
                     ? recipientName
                     : isAdminOrInstructor
                     ? 'Messages des étudiants'
+                    : currentUser?.role === 'student'
+                    ? 'Chat avec l\'administrateur'
                     : 'Chat avec le formateur'}
                 </h3>
                 {unreadCount > 0 && !currentRecipient && (

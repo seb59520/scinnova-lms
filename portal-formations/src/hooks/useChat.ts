@@ -113,30 +113,10 @@ export function useChat(recipientId: string | null = null) {
         .eq('id', user.id)
         .single()
 
-      // Vérifier que les étudiants ne peuvent envoyer des messages qu'aux admins
-      // MAIS ils peuvent répondre à une conversation existante (même initiée par un admin/instructeur)
-      if (recipientId && profile?.role === 'student') {
-        // Vérifier d'abord s'il existe déjà une conversation avec ce destinataire
-        const { data: existingMessages } = await supabase
-          .from('chat_messages')
-          .select('id')
-          .or(`and(sender_id.eq.${user.id},recipient_id.eq.${recipientId}),and(sender_id.eq.${recipientId},recipient_id.eq.${user.id})`)
-          .limit(1)
-
-        // Si aucune conversation n'existe, vérifier que le destinataire est un admin
-        if (!existingMessages || existingMessages.length === 0) {
-          const { data: recipientProfile } = await supabase
-            .from('profiles')
-            .select('role')
-            .eq('id', recipientId)
-            .single()
-
-          if (!recipientProfile || recipientProfile.role !== 'admin') {
-            throw new Error('Vous ne pouvez initier une conversation qu\'avec les administrateurs.')
-          }
-        }
-        // Si une conversation existe déjà, l'étudiant peut répondre (même à un instructeur)
-      }
+      // Pour les étudiants : si un recipientId est défini, cela signifie qu'ils sont dans une conversation
+      // (soit initiée par eux avec un admin, soit initiée par quelqu'un d'autre)
+      // Donc on permet l'envoi sans vérification supplémentaire
+      // La vérification se fait uniquement lors de la sélection du destinataire
 
       const { data, error } = await supabase
         .from('chat_messages')

@@ -28,8 +28,21 @@ export async function correctAnswer(
   userAnswer: string,
   context: CorrectionContext
 ): Promise<CorrectionResult> {
-  if (!OPENROUTER_API_KEY) {
-    throw new Error('VITE_OPENROUTER_API_KEY n\'est pas configurée dans les variables d\'environnement')
+  // Vérification de la clé API avec message d'erreur détaillé
+  if (!OPENROUTER_API_KEY || OPENROUTER_API_KEY.trim() === '') {
+    throw new Error(
+      'VITE_OPENROUTER_API_KEY n\'est pas configurée dans les variables d\'environnement.\n\n' +
+      'Pour corriger ce problème :\n' +
+      '1. Créez un compte sur https://openrouter.ai/\n' +
+      '2. Générez une clé API dans la section "Keys"\n' +
+      '3. Ajoutez-la dans votre fichier .env : VITE_OPENROUTER_API_KEY=votre_cle_ici\n' +
+      '4. Redémarrez votre serveur de développement'
+    )
+  }
+
+  // Vérifier que la clé API a un format valide (commence par sk-or-v1-)
+  if (!OPENROUTER_API_KEY.startsWith('sk-or-v1-') && !OPENROUTER_API_KEY.startsWith('sk-or-')) {
+    console.warn('⚠️ La clé API OpenRouter ne semble pas avoir le format attendu (devrait commencer par "sk-or-v1-" ou "sk-or-")')
   }
 
   // Modèles à essayer dans l'ordre de priorité
@@ -100,10 +113,15 @@ RÉPONDS UNIQUEMENT AVEC LE JSON, SANS MARKDOWN, SANS EXPLICATIONS, SANS BACKTIC
       const currentModelName = defaultModels[i]
       console.log(`🤖 Correction IA - Tentative avec le modèle: ${currentModelName}`)
 
+      // Vérifier que la clé API est bien présente avant la requête
+      if (!OPENROUTER_API_KEY || OPENROUTER_API_KEY.trim() === '') {
+        throw new Error('La clé API OpenRouter est vide')
+      }
+
       const response = await fetch(OPENROUTER_API_URL, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+          'Authorization': `Bearer ${OPENROUTER_API_KEY.trim()}`,
           'Content-Type': 'application/json',
           'HTTP-Referer': window.location.origin,
           'X-Title': 'Portal Formations - Correcteur IA'
@@ -123,7 +141,31 @@ RÉPONDS UNIQUEMENT AVEC LE JSON, SANS MARKDOWN, SANS EXPLICATIONS, SANS BACKTIC
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
-        throw new Error(`HTTP ${response.status}: ${errorData.error?.message || response.statusText}`)
+        const errorMessage = errorData.error?.message || response.statusText || 'Erreur inconnue'
+        
+        // Messages d'erreur spécifiques selon le code HTTP
+        if (response.status === 401) {
+          throw new Error(
+            `HTTP 401: Erreur d'authentification. ${errorMessage}\n\n` +
+            'Causes possibles :\n' +
+            '- La clé API OpenRouter est invalide ou expirée\n' +
+            '- La clé API n\'est pas correctement configurée dans .env\n' +
+            '- Votre compte OpenRouter n\'a plus de crédits\n\n' +
+            'Solution : Vérifiez votre clé API sur https://openrouter.ai/keys'
+          )
+        } else if (response.status === 429) {
+          throw new Error(
+            `HTTP 429: Limite de requêtes atteinte. ${errorMessage}\n\n` +
+            'Attendez quelques minutes ou vérifiez votre plan OpenRouter.'
+          )
+        } else if (response.status === 404) {
+          throw new Error(
+            `HTTP 404: Modèle non trouvé. ${errorMessage}\n\n` +
+            'Le modèle spécifié n\'est peut-être plus disponible. Le système essaiera un autre modèle.'
+          )
+        } else {
+          throw new Error(`HTTP ${response.status}: ${errorMessage}`)
+        }
       }
 
       const data = await response.json()
@@ -149,6 +191,12 @@ RÉPONDS UNIQUEMENT AVEC LE JSON, SANS MARKDOWN, SANS EXPLICATIONS, SANS BACKTIC
     } catch (modelError: any) {
       lastError = modelError
       console.warn(`⚠️ Modèle ${defaultModels[i]} a échoué:`, modelError.message)
+      
+      // Si c'est une erreur d'authentification (401), ne pas essayer les autres modèles
+      if (modelError.message?.includes('401') || modelError.message?.includes('authentification')) {
+        console.error('❌ Erreur d\'authentification détectée, arrêt des tentatives')
+        throw modelError
+      }
       
       // Si c'est le dernier modèle, lancer l'erreur
       if (i === defaultModels.length - 1) {
