@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from 'react'
 import { useChat } from '../hooks/useChat'
 import { usePresence } from '../hooks/usePresence'
 import { supabase } from '../lib/supabaseClient'
-import { MessageCircle, X, Send, User, ChevronDown, ChevronUp, Search } from 'lucide-react'
+import { MessageCircle, X, Send, User, ChevronDown, ChevronUp, Search, Building2 } from 'lucide-react'
+import { UserDirectory } from './UserDirectory'
 
 interface ChatWidgetProps {
   recipientId?: string | null
@@ -16,6 +17,7 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
   const [message, setMessage] = useState('')
   const [currentRecipient, setCurrentRecipient] = useState<string | null>(recipientId)
   const [showConversations, setShowConversations] = useState(false)
+  const [showDirectory, setShowDirectory] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -92,6 +94,15 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
   const handleSelectConversation = (interlocutorId: string | null) => {
     setCurrentRecipient(interlocutorId)
     setShowConversations(false)
+    setShowDirectory(false)
+    setIsOpen(true)
+    setIsMinimized(false)
+  }
+
+  const handleSelectUserFromDirectory = (userId: string, userName: string) => {
+    setCurrentRecipient(userId)
+    setShowDirectory(false)
+    setShowConversations(false)
     setIsOpen(true)
     setIsMinimized(false)
   }
@@ -156,14 +167,40 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
               </div>
             </div>
             <div className="flex items-center gap-2">
-              {isAdminOrInstructor && conversations.length > 0 && (
-                <button
-                  onClick={() => setShowConversations(!showConversations)}
-                  className="p-1 hover:bg-white/20 rounded"
-                  aria-label="Voir les conversations"
-                >
-                  <User className="w-4 h-4" />
-                </button>
+              {isAdminOrInstructor && (
+                <>
+                  <button
+                    onClick={() => {
+                      setShowDirectory(!showDirectory)
+                      setShowConversations(false)
+                    }}
+                    className={`p-2 hover:bg-white/20 rounded transition-all ${
+                      showDirectory ? 'bg-white/30 ring-2 ring-white/50' : ''
+                    }`}
+                    aria-label="Répertoire des utilisateurs"
+                    title="Voir le répertoire par organisation"
+                  >
+                    <Building2 className="w-5 h-5 text-white" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowConversations(!showConversations)
+                      setShowDirectory(false)
+                    }}
+                    className={`p-2 hover:bg-white/20 rounded transition-all ${
+                      showConversations ? 'bg-white/30 ring-2 ring-white/50' : ''
+                    }`}
+                    aria-label="Voir les conversations"
+                    title="Voir les conversations et rechercher des étudiants"
+                  >
+                    <div className="relative">
+                      <User className="w-5 h-5 text-white" />
+                      {conversations.length > 0 && (
+                        <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full border border-white"></span>
+                      )}
+                    </div>
+                  </button>
+                </>
               )}
               <button
                 onClick={() => setIsMinimized(!isMinimized)}
@@ -182,8 +219,18 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
             </div>
           </div>
 
+          {/* Répertoire des utilisateurs par organisation */}
+          {showDirectory && isAdminOrInstructor && !isMinimized && (
+            <div className="flex-1 overflow-hidden flex flex-col min-h-0">
+              <UserDirectory
+                onSelectUser={handleSelectUserFromDirectory}
+                showChatButton={true}
+              />
+            </div>
+          )}
+
           {/* Liste des conversations (pour admins/formateurs) */}
-          {showConversations && isAdminOrInstructor && !isMinimized && (
+          {showConversations && isAdminOrInstructor && !isMinimized && !showDirectory && (
             <div className="border-b border-gray-200 flex flex-col">
               {/* Barre de recherche */}
               <div className="p-3 border-b border-gray-200">
@@ -256,7 +303,7 @@ export function ChatWidget({ recipientId = null, recipientName, defaultOpen = fa
           )}
 
           {/* Zone de messages */}
-          {!isMinimized && (
+          {!isMinimized && !showDirectory && (
             <>
               <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
                 {loading ? (

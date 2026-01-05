@@ -41,6 +41,7 @@ import { PresentationView } from './pages/PresentationView'
 import { LandingPage } from './pages/LandingPage'
 import { LearnerMailbox } from './pages/LearnerMailbox'
 import { Chat } from './pages/Chat'
+import { UserDirectoryPage } from './pages/UserDirectoryPage'
 import { ChatWidget } from './components/ChatWidget'
 import { TimeTrackingProvider } from './components/TimeTrackingProvider'
 
@@ -131,6 +132,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Chat />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/directory"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <UserDirectoryPage />
               </ProtectedRoute>
             }
           />
