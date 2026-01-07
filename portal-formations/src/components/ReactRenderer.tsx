@@ -1363,7 +1363,11 @@ function renderGame(item: CourseJson['modules'][0]['items'][0], theme: any) {
           quizType={
             (item.title?.toLowerCase().includes('data science') || 
              item.content.description?.toLowerCase().includes('data science'))
-              ? `data_science_quiz_${item.id || 'default'}` 
+              ? `data_science_quiz_${item.id || 'default'}`
+              : (item.title?.toLowerCase().includes('machine learning') || 
+                 item.title?.toLowerCase().includes('machinelearning') ||
+                 item.content.description?.toLowerCase().includes('machine learning'))
+              ? `machine_learning_quiz_${item.id || 'default'}`
               : `big_data_quiz_${item.id || 'default'}`
           }
         />
