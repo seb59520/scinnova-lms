@@ -79,12 +79,22 @@ export function TrainerDataScienceExercises() {
 
       const { data, error: fetchError } = await query;
 
-      if (fetchError) throw fetchError;
+      if (fetchError) {
+        // Si la table n'existe pas, afficher un message clair
+        if (fetchError.code === '42P01' || fetchError.message?.includes('does not exist')) {
+          throw new Error('La table data_science_exercises n\'existe pas encore. Veuillez exécuter le script SQL creer-table-data-science-exercises.sql dans Supabase.');
+        }
+        throw fetchError;
+      }
 
       setSubmissions((data || []) as ExerciseSubmissionRecord[]);
     } catch (err: any) {
       console.error('Error fetching exercise submissions:', err);
-      setError('Erreur lors du chargement des soumissions.');
+      if (err.message && err.message.includes('n\'existe pas encore')) {
+        setError(err.message);
+      } else {
+        setError('Erreur lors du chargement des soumissions. ' + (err.message || ''));
+      }
     } finally {
       setLoading(false);
     }
@@ -123,7 +133,22 @@ export function TrainerDataScienceExercises() {
 
   if (error) {
     return (
-      <div className="p-8 text-center text-red-600">Erreur: {error}</div>
+      <div className="p-8">
+        <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
+          <h3 className="text-lg font-semibold text-red-800 mb-2">⚠️ Erreur</h3>
+          <p className="text-red-700 mb-4">{error}</p>
+          {error.includes('n\'existe pas encore') && (
+            <div className="bg-white p-4 rounded border border-red-200">
+              <p className="text-sm text-gray-700 mb-2"><strong>Solution :</strong></p>
+              <ol className="list-decimal list-inside text-sm text-gray-700 space-y-1">
+                <li>Ouvrez l'interface SQL de Supabase</li>
+                <li>Exécutez le script <code className="bg-gray-100 px-2 py-1 rounded">creer-table-data-science-exercises.sql</code></li>
+                <li>Rechargez cette page</li>
+              </ol>
+            </div>
+          )}
+        </div>
+      </div>
     );
   }
 

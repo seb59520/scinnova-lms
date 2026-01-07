@@ -1,16 +1,25 @@
 -- Table pour stocker les soumissions d'exercices Data Science
-CREATE TABLE IF NOT EXISTS data_science_exercises (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
-  exercise_id TEXT NOT NULL,
-  exercise_title TEXT NOT NULL,
-  answers JSONB NOT NULL,
-  score INTEGER,
-  feedback TEXT,
-  submitted_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(user_id, exercise_id)
-);
+-- Vérifier si la table existe avant de la créer
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'data_science_exercises') THEN
+    CREATE TABLE data_science_exercises (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      user_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+      exercise_id TEXT NOT NULL,
+      exercise_title TEXT NOT NULL,
+      answers JSONB NOT NULL,
+      score INTEGER,
+      feedback TEXT,
+      submitted_at TIMESTAMPTZ DEFAULT NOW(),
+      updated_at TIMESTAMPTZ DEFAULT NOW(),
+      UNIQUE(user_id, exercise_id)
+    );
+    RAISE NOTICE 'Table data_science_exercises créée avec succès';
+  ELSE
+    RAISE NOTICE 'Table data_science_exercises existe déjà';
+  END IF;
+END $$;
 
 -- Index pour améliorer les performances
 CREATE INDEX IF NOT EXISTS idx_data_science_exercises_user_id ON data_science_exercises(user_id);
@@ -19,6 +28,11 @@ CREATE INDEX IF NOT EXISTS idx_data_science_exercises_submitted_at ON data_scien
 
 -- RLS (Row Level Security)
 ALTER TABLE data_science_exercises ENABLE ROW LEVEL SECURITY;
+
+-- Supprimer les politiques existantes si elles existent
+DROP POLICY IF EXISTS "Users can view their own exercise submissions" ON data_science_exercises;
+DROP POLICY IF EXISTS "Users can insert their own exercise submissions" ON data_science_exercises;
+DROP POLICY IF EXISTS "Users can update their own exercise submissions" ON data_science_exercises;
 
 -- Politique : les utilisateurs peuvent voir leurs propres soumissions
 CREATE POLICY "Users can view their own exercise submissions"
@@ -36,13 +50,16 @@ CREATE POLICY "Users can update their own exercise submissions"
   USING (auth.uid() = user_id);
 
 -- Politique : les formateurs/admin peuvent voir toutes les soumissions
+-- Supprimer la politique si elle existe déjà
+DROP POLICY IF EXISTS "Trainers can view all exercise submissions" ON data_science_exercises;
+
 CREATE POLICY "Trainers can view all exercise submissions"
   ON data_science_exercises FOR SELECT
   USING (
     EXISTS (
       SELECT 1 FROM profiles
       WHERE profiles.id = auth.uid()
-      AND profiles.role IN ('trainer', 'admin')
+      AND profiles.role IN ('trainer', 'admin', 'instructor')
     )
     OR
     -- Permettre aussi de voir les soumissions avec userId temporaires
