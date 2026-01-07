@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Trophy, RotateCcw, CheckCircle, XCircle, ArrowRight, ArrowLeft, BookOpen, ArrowUp } from 'lucide-react'
 import { calculateScore, validateAnswer } from '../lib/scoring'
 import { saveCompleteProgress, getGameProgress, type GameProgress } from '../lib/progress'
 import { useAuth } from '../hooks/useAuth'
+import { supabase } from '../lib/supabaseClient'
 
 export interface QuizQuestion {
   id: string
@@ -35,6 +36,8 @@ interface QuizGameProps {
       [key: string]: string
     }
   }
+  itemId?: string
+  quizType?: string
 }
 
 type GameState = 'menu' | 'playing' | 'results' | 'revision'
@@ -45,9 +48,12 @@ export function QuizGame({
   description,
   instructions,
   objectives,
-  scoring
+  scoring,
+  itemId,
+  quizType = 'big_data_quiz'
 }: QuizGameProps) {
-  const { user } = useAuth()
+  const { user, profile } = useAuth()
+  const quizContainerRef = useRef<HTMLDivElement>(null)
   
   // Vérification de sécurité : si aucun niveau n'est disponible
   if (!propsLevels || propsLevels.length === 0) {
@@ -137,8 +143,12 @@ export function QuizGame({
     setRevisionQuestions([])
     setGameState('playing')
     
-    // Scroll vers le haut
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    // Scroll vers le quiz au lieu de remonter en haut
+    setTimeout(() => {
+      if (quizContainerRef.current) {
+        quizContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }, 100)
   }
 
   // Démarrer le mode révision
@@ -225,6 +235,37 @@ export function QuizGame({
         scoreResult,
         wrongIds
       )
+
+      // Sauvegarder aussi dans user_responses pour le formateur
+      const userId = profile?.id || user.id
+      if (userId) {
+        try {
+          const quizTypeKey = itemId ? `quiz_${itemId}` : quizType
+          const responses = {
+            level: currentLevel,
+            score: scoreResult.score,
+            total: scoreResult.total,
+            percentage: scoreResult.percentage,
+            badge: scoreResult.badge,
+            wrongIds: wrongIds,
+            userAnswers: Object.fromEntries(userAnswers),
+            completedAt: new Date().toISOString()
+          }
+
+          await supabase
+            .from('user_responses')
+            .upsert({
+              user_id: userId,
+              quiz_type: quizTypeKey,
+              responses: responses,
+              updated_at: new Date().toISOString()
+            }, {
+              onConflict: 'user_id,quiz_type'
+            })
+        } catch (error) {
+          console.error('Erreur lors de la sauvegarde dans user_responses:', error)
+        }
+      }
     }
 
     // Appeler le callback onScore si fourni
@@ -499,17 +540,20 @@ export function QuizGame({
   // Rendu principal
   return (
     <>
-      <div className="quiz-game space-y-6">
+      <div 
+        ref={quizContainerRef}
+        className="quiz-game space-y-6 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border-2 border-blue-200 rounded-xl p-6 md:p-8 shadow-lg"
+      >
         {gameState === 'menu' && renderMenu()}
         {gameState === 'playing' && renderQuestion()}
         {gameState === 'results' && renderResults()}
       </div>
 
-      {/* Bouton pour remonter en haut */}
+      {/* Bouton pour remonter en haut - en bas à gauche */}
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          className="fixed bottom-8 left-8 z-50 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           aria-label="Remonter en haut"
           title="Remonter en haut"
         >

@@ -27,6 +27,7 @@ export interface CourseJson {
       content: {
         body?: any
         description?: string
+        summary?: string
         question?: any
         correction?: any
         instructions?: any
@@ -52,6 +53,12 @@ export interface CourseJson {
             difficulty: number
           }>
         }>
+        // Contexte pédagogique pour les slides (explications, annotations formateur)
+        pedagogical_context?: {
+          body?: any // Format TipTap JSON
+          text?: string // Texte simple
+          description?: string
+        }
         [key: string]: any
       }
       chapters?: Array<{

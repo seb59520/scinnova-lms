@@ -10,7 +10,7 @@ import { ReactRenderer } from '../components/ReactRenderer'
 import { CourseSidebar } from '../components/CourseSidebar'
 import { ResizableSidebar } from '../components/ResizableSidebar'
 import { CourseJson } from '../types/courseJson'
-import { Eye, EyeOff, X, BookOpen, FileText } from 'lucide-react'
+import { Eye, EyeOff, X, BookOpen, FileText, Download } from 'lucide-react'
 import { Lexique } from './Lexique'
 import { getCurrentUserRole } from '../lib/queries/userRole'
 
@@ -80,6 +80,138 @@ export function CourseView() {
     }
     checkTrainerRole()
   }, [user])
+
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
+
+  const handleDownloadPdf = async () => {
+    if (!courseId) {
+      alert('ID du cours manquant');
+      return;
+    }
+    
+    setDownloadingPdf(true);
+    
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const fullUrl = `${apiUrl}/api/courses/${courseId}/pdf`;
+      
+      console.log('📥 Début du téléchargement PDF...');
+      console.log('URL API:', apiUrl);
+      console.log('URL complète:', fullUrl);
+      
+      // Récupérer le token d'authentification
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError) {
+        console.error('Erreur lors de la récupération de la session:', sessionError);
+        throw new Error('Session expirée. Veuillez vous reconnecter.');
+      }
+      
+      if (!sessionData?.session?.access_token) {
+        console.error('Aucun token d\'authentification disponible');
+        throw new Error('Vous devez être connecté pour télécharger le PDF.');
+      }
+      
+      console.log('Token d\'authentification récupéré');
+      
+      // Faire la requête
+      const response = await fetch(fullUrl, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${sessionData.session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log('Réponse reçue:', {
+        status: response.status,
+        statusText: response.statusText,
+        ok: response.ok,
+        headers: Object.fromEntries(response.headers.entries())
+      });
+
+      if (!response.ok) {
+        // Essayer de récupérer le message d'erreur
+        let errorMessage = `Erreur ${response.status}: ${response.statusText}`;
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorData.message || errorMessage;
+          console.error('Erreur détaillée:', errorData);
+        } catch (e) {
+          // Si ce n'est pas du JSON, essayer de récupérer le texte
+          try {
+            const errorText = await response.text();
+            console.error('Erreur (texte):', errorText);
+            if (errorText) errorMessage = errorText;
+          } catch (e2) {
+            console.error('Impossible de lire la réponse d\'erreur');
+          }
+        }
+        
+        // Messages d'erreur spécifiques
+        if (response.status === 404) {
+          errorMessage = 'Cours non trouvé. Vérifiez que le cours existe.';
+        } else if (response.status === 403) {
+          errorMessage = 'Le téléchargement PDF n\'est pas activé pour ce cours.';
+        } else if (response.status === 500) {
+          errorMessage = 'Erreur serveur. Vérifiez que le serveur backend est démarré et que Puppeteer est installé.';
+        } else if (response.status === 0 || response.type === 'opaque') {
+          errorMessage = 'Impossible de se connecter au serveur. Vérifiez que le serveur backend est démarré sur ' + apiUrl;
+        }
+        
+        throw new Error(errorMessage);
+      }
+
+      console.log('Téléchargement du blob...');
+      const blob = await response.blob();
+      console.log('Blob reçu, taille:', blob.size, 'bytes');
+      
+      if (blob.size === 0) {
+        throw new Error('Le PDF généré est vide. Vérifiez les logs du serveur.');
+      }
+      
+      // Vérifier que c'est bien un PDF
+      if (!blob.type.includes('pdf') && !blob.type.includes('application/octet-stream')) {
+        console.warn('Type MIME inattendu:', blob.type);
+        // Essayer quand même de télécharger
+      }
+      
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${course?.title?.replace(/[^a-z0-9]/gi, '_') || 'cours'}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      
+      console.log('✅ PDF téléchargé avec succès');
+    } catch (error: any) {
+      console.error('❌ Erreur lors du téléchargement du PDF:', error);
+      console.error('Détails:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
+      
+      let errorMessage = 'Erreur lors du téléchargement';
+      
+      if (error.message) {
+        errorMessage = error.message;
+      } else if (error.name === 'TypeError' && error.message?.includes('Failed to fetch')) {
+        errorMessage = 'Impossible de se connecter au serveur backend. Vérifiez que:\n' +
+          '1. Le serveur backend est démarré (npm run dev:server dans le dossier server/)\n' +
+          '2. L\'URL de l\'API est correcte dans les variables d\'environnement\n' +
+          '3. Il n\'y a pas de problème CORS';
+      } else if (error.name === 'AbortError') {
+        errorMessage = 'La requête a expiré. Le serveur prend trop de temps à répondre.';
+      }
+      
+      alert(`Erreur lors du téléchargement:\n${errorMessage}`);
+    } finally {
+      setDownloadingPdf(false);
+    }
+  };
 
   const fetchCourse = async () => {
     try {
@@ -515,6 +647,26 @@ export function CourseView() {
             <div className="flex items-center space-x-3 flex-1 justify-end">
               {viewMode !== 'progress' && (
                 <>
+                  {course.allow_pdf_download && (
+                    <button
+                      onClick={handleDownloadPdf}
+                      disabled={downloadingPdf}
+                      className="flex items-center space-x-2 px-3 py-1.5 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      title="Télécharger le cours complet en PDF (format paysage)"
+                    >
+                      {downloadingPdf ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                          <span>Génération...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Download className="w-4 h-4" />
+                          <span>PDF</span>
+                        </>
+                      )}
+                    </button>
+                  )}
                   {hasLexique && (
                     <button
                       onClick={() => setLexiqueDrawerOpen(!lexiqueDrawerOpen)}

@@ -13,6 +13,7 @@ import { ApiBuilderGame } from '../components/ApiBuilderGame'
 import { GraphQLQueryBuilder } from '../components/GraphQLQueryBuilder'
 import { ApiParadigmsGame } from '../components/ApiParadigmsGame'
 import { WebSocketQuizGame } from '../components/WebSocketQuizGame'
+import { IntroductionQuiz } from '../components/IntroductionQuiz'
 
 /**
  * Interface pour les props communes à tous les jeux
@@ -295,6 +296,16 @@ gameRegistry.register({
     const hasTf = config.modes.vrai_faux && Array.isArray(config.modes.vrai_faux.questions) && config.modes.vrai_faux.questions.length > 0
     const hasDebug = config.modes.debug && Array.isArray(config.modes.debug.questions) && config.modes.debug.questions.length > 0
     return hasQcm || hasTf || hasDebug
+  }
+})
+
+gameRegistry.register({
+  gameType: 'introduction-quiz',
+  name: 'Quiz d\'introduction',
+  description: 'Quiz d\'introduction avec questions ouvertes pour recueillir les définitions et attentes des participants',
+  component: IntroductionQuiz,
+  validateConfig: (config) => {
+    return Array.isArray(config.questions) && config.questions.length > 0
   }
 })
 

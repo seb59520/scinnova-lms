@@ -12,6 +12,9 @@ import { ConnectionGame } from './ConnectionGame'
 import { TimelineGame } from './TimelineGame'
 import { CategoryGame } from './CategoryGame'
 import { QuizGame } from './QuizGame'
+import { IntroductionQuiz } from './IntroductionQuiz'
+import { SlideBlock } from './SlideBlock'
+import { ContextBlock } from './ContextBlock'
 import { supabase } from '../lib/supabaseClient'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -206,9 +209,9 @@ export function ReactRenderer({ courseJson }: ReactRendererProps) {
                 </div>
               </button>
 
-              {/* Items du module (affichés seulement si le module est déplié) - Vue simplifiée avec seulement les titres */}
+              {/* Items du module (affichés seulement si le module est déplié) */}
               {isExpanded && (
-              <div className="space-y-2 ml-4 mt-2">
+              <div className="space-y-6 ml-4 mt-4">
                 {moduleItems.map((item, itemIndex) => {
                   if (!item.published && item.published !== undefined) {
                     return null
@@ -221,53 +224,62 @@ export function ReactRenderer({ courseJson }: ReactRendererProps) {
                   const chaptersCount = item.chapters?.length || 0
 
                   return (
-                    <div key={itemIndex} className="py-2">
-                      {item.id ? (
-                        <Link
-                          to={`/items/${item.id}`}
-                          className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-blue-50 hover:shadow-sm transition-all duration-200 group cursor-pointer border border-transparent hover:border-blue-200"
-                          title="Voir le détail"
-                        >
-                          <span className={getItemTypeColor(item.type)}>
-                            {getItemIcon(item.type)}
-                          </span>
-                          <div className="flex-1 min-w-0">
+                    <div 
+                      key={itemIndex} 
+                      id={anchorId}
+                      className="item-container border-l-2 pl-6 py-4"
+                      style={{ borderLeftColor: moduleTheme.primaryColor }}
+                    >
+                      {/* Titre de l'item avec lien optionnel */}
+                      <div className="mb-4">
+                        {item.id ? (
+                          <Link
+                            to={`/items/${item.id}`}
+                            className="flex items-center space-x-2 group"
+                            title="Voir le détail complet"
+                          >
+                            <span className={getItemTypeColor(item.type)}>
+                              {getItemIcon(item.type)}
+                            </span>
                             <h3 
-                              className="text-sm font-medium text-gray-900 truncate group-hover:text-blue-900 transition-colors"
+                              className="text-lg font-semibold text-gray-900 group-hover:text-blue-900 transition-colors"
                             >
                               {item.title}
                             </h3>
-                            {chaptersCount > 0 && (
-                              <p className="text-xs text-gray-500 mt-0.5 group-hover:text-blue-600 transition-colors">
-                                {chaptersCount} chapitre{chaptersCount > 1 ? 's' : ''}
-                              </p>
-                            )}
-                          </div>
-                          <ArrowRight className="w-5 h-5 text-blue-600 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
-                        </Link>
-                      ) : (
-                        <div className="flex items-center space-x-2 px-3 rounded">
-                          <span className={getItemTypeColor(item.type)}>
-                            {getItemIcon(item.type)}
-                          </span>
-                          <div className="flex-1 min-w-0">
-                            <h3 
-                              className="text-sm font-medium text-gray-900 truncate"
-                            >
+                            <ArrowRight className="w-4 h-4 text-blue-600 opacity-60 group-hover:opacity-100 transition-opacity" />
+                          </Link>
+                        ) : (
+                          <div className="flex items-center space-x-2">
+                            <span className={getItemTypeColor(item.type)}>
+                              {getItemIcon(item.type)}
+                            </span>
+                            <h3 className="text-lg font-semibold text-gray-900">
                               {item.title}
                             </h3>
-                            {chaptersCount > 0 && (
-                              <p className="text-xs text-gray-500 mt-0.5">
-                                {chaptersCount} chapitre{chaptersCount > 1 ? 's' : ''}
-                              </p>
-                            )}
                           </div>
-                        </div>
-                      )}
+                        )}
+                        {chaptersCount > 0 && (
+                          <p className="text-xs text-gray-500 mt-1 ml-7">
+                            {chaptersCount} chapitre{chaptersCount > 1 ? 's' : ''}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Contenu de l'item selon son type */}
+                      <div className="item-content">
+                        {item.type === 'slide' ? (
+                          // Pour les slides, utiliser SlideBlock et ContextBlock
+                          renderSlide(item, moduleTheme)
+                        ) : (
+                          // Pour les autres types, utiliser renderItemContent
+                          renderItemContent(item, moduleTheme)
+                        )}
+                      </div>
                       
-                      {/* Afficher les titres des chapitres si disponibles */}
+                      {/* Afficher les titres des chapitres si disponibles (pour navigation) */}
                       {item.chapters && item.chapters.length > 0 && (
-                        <div className="ml-8 mt-1 space-y-1">
+                        <div className="mt-4 ml-7 space-y-1">
+                          <p className="text-xs font-medium text-gray-500 mb-2">Chapitres :</p>
                           {item.chapters
                             .sort((a, b) => (a.position || 0) - (b.position || 0))
                             .map((chapter, chapterIndex) => {
@@ -492,89 +504,28 @@ function renderResource(item: CourseJson['modules'][0]['items'][0], theme: any) 
 }
 
 function renderSlide(item: CourseJson['modules'][0]['items'][0], theme: any) {
-  // Si l'item a un asset_path (PDF ou image)
-  if (item.asset_path) {
-    const { data } = supabase.storage
-      .from('course-assets')
-      .getPublicUrl(item.asset_path)
-
-    return (
-      <div className="space-y-4">
-        {(item.content?.summary || item.content?.description) && (
-          <div 
-            className="p-3 rounded-lg mb-3"
-            style={{ backgroundColor: `${theme.primaryColor}10` }}
-          >
-            <p className="text-gray-700">
-              {item.content?.summary || item.content?.description}
-            </p>
-          </div>
-        )}
-        {item.asset_path.endsWith('.pdf') ? (
-          <PdfViewer url={data.publicUrl} />
-        ) : (
-          <img
-            src={data.publicUrl}
-            alt={item.title}
-            className="max-w-full max-h-[calc(100vh-200px)] h-auto rounded-lg shadow object-contain"
-          />
-        )}
-      </div>
-    )
-  }
-
-  // Si l'item a du contenu body
-  if (item.content?.body) {
-    return (
-      <div className="prose max-w-none">
-        <RichTextEditor
-          content={item.content.body}
-          onChange={() => {}}
-          editable={false}
+  // Utiliser les nouveaux composants SlideBlock et ContextBlock
+  return (
+    <div className="slide-container space-y-0">
+      {/* Slide principale (support projeté) */}
+      <SlideBlock item={item} theme={theme} />
+      
+      {/* Contexte pédagogique sous la slide */}
+      {item.content?.pedagogical_context && (
+        <ContextBlock 
+          context={item.content.pedagogical_context} 
+          theme={theme} 
         />
-      </div>
-    )
-  }
-
-  // Toujours afficher le résumé s'il existe, même sans chapitres
-  const hasSummary = item.content?.summary || item.content?.description
-  const hasChapters = item.chapters && item.chapters.length > 0
-
-  if (hasSummary || hasChapters) {
-    return (
-      <div className="space-y-4">
-        {hasSummary && (
-          <div 
-            className="p-4 rounded-lg"
-            style={{ backgroundColor: `${theme.primaryColor}10` }}
-          >
-            <h4 
-              className="font-medium mb-2"
-              style={{ color: theme.primaryColor }}
-            >
-              📝 Résumé
-            </h4>
-            <p className="text-gray-700">
-              {item.content?.summary || item.content?.description}
-            </p>
-          </div>
-        )}
-        {hasChapters && (
-          <p className="text-sm text-gray-500 italic">
-            Le contenu détaillé est disponible dans les chapitres ci-dessous.
-          </p>
-        )}
-        {!hasChapters && hasSummary && (
-          <p className="text-sm text-gray-500 italic">
-            Les chapitres seront affichés ci-dessous une fois chargés.
-          </p>
-        )}
-      </div>
-    )
-  }
-
-  // Si rien n'est disponible
-  return <p className="text-gray-600">Support non disponible.</p>
+      )}
+      
+      {/* Chapitres si disponibles (affichés après le contexte) */}
+      {item.chapters && item.chapters.length > 0 && (
+        <div className="mt-6">
+          <ChapterList chapters={item.chapters} theme={theme} />
+        </div>
+      )}
+    </div>
+  )
 }
 
 function renderExercise(item: CourseJson['modules'][0]['items'][0], theme: any) {
@@ -1408,6 +1359,25 @@ function renderGame(item: CourseJson['modules'][0]['items'][0], theme: any) {
           instructions={item.content.instructions}
           objectives={item.content.objectives}
           scoring={item.content.scoring}
+          itemId={item.id}
+          quizType={`quiz_${item.id || 'big_data'}`}
+        />
+      </div>
+    )
+  }
+
+  if (gameType === 'introduction-quiz') {
+    const questions = item.content.questions || []
+
+    return (
+      <div className="space-y-4">
+        <IntroductionQuiz
+          questions={questions}
+          title={item.title}
+          description={item.content.description || item.content.instructions}
+          onSave={(answers) => {
+            console.log('Réponses sauvegardées:', answers)
+          }}
         />
       </div>
     )

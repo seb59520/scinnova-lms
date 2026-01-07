@@ -1,0 +1,4332 @@
+{
+  "title": "TP : Identifier les impacts du Big Data et de la Data Science dans un contexte métier",
+  "description": "TP complet et interactif pour analyser et identifier les impacts du Big Data et de la Data Science dans différents contextes métier. Ce TP couvre l'analyse de cas d'usage réels, l'évaluation des impacts organisationnels, techniques et économiques, ainsi que la création d'une application React interactive pour visualiser ces impacts.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#6366F1",
+    "secondaryColor": "#8B5CF6",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 0 : Big Data - Définition, enjeux et décisions stratégiques",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#1E40AF",
+        "secondaryColor": "#3B82F6"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1. Accroche décideur",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Module 0 : Big Data - Définition, enjeux et décisions stratégiques"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "⏱️ 1. Accroche décideur (5 minutes)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Question d'ouverture (à poser au groupe)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "« Depuis votre réveil ce matin, combien de données pensez-vous avoir générées, sans le savoir ? »"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "👉 Laisser répondre (emails, GPS, badge, téléphone, carte bancaire, CRM, etc.)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Message clé"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Le Big Data ne commence pas dans l'IT.",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Il commence dans les usages métier.",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Source : MIT Sloan – Data as strategic asset"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "2. Ce que le Big Data n'est PAS",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🧠 2. Ce que le Big Data n'est PAS (5 minutes)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Erreurs fréquentes chez les décideurs"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "❌ « Big Data = beaucoup de données »"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "❌ « Big Data = projet IT »"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "❌ « Big Data = IA »"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "❌ « Big Data = cloud obligatoire »"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Reformulation claire"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Le Big Data n'est pas un volume.",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "C'est un changement de modèle de décision.",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Source : Gartner – Big Data definition & myths"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "3. Les 5 V : pourquoi ils posent problème",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📦 3. Les 5 V : pourquoi ils posent problème aux organisations (10 minutes)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "⚠️ Ici, on ne récite PAS la définition. On explique l'impact organisationnel de chaque V."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "1️⃣ Volume — le faux problème"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "« Stocker des données n'a jamais créé de valeur. »"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Le coût du stockage baisse → la vraie difficulté devient la sélection"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "80 % des données stockées ne sont jamais réutilisées"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Source : IBM – Data value realization"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "👉 Décision clé : Quelles données méritent d'être conservées ?"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "2️⃣ Vélocité — quand la décision devient temps réel"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exemples :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Fraude bancaire"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Recommandation e-commerce"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Maintenance prédictive"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "👉 Si la donnée arrive après la décision, elle ne sert plus."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Source : Google Cloud – Streaming data use cases"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "3️⃣ Variété — fin du tout-tableau Excel"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Emails"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Images"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Logs techniques"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PDF"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Données IoT"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "👉 Les outils historiques de BI échouent ici."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Source : McKinsey – Unstructured data impact"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "4️⃣ Véracité — le point aveugle majeur"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "« Une mauvaise donnée traitée rapidement reste une mauvaise décision. »"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Données biaisées"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Données incomplètes"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Données obsolètes"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "👉 Le Big Data amplifie les erreurs s'il n'y a pas de gouvernance."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Source : MIT – Data bias and decision risk"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "5️⃣ Valeur — le seul V qui compte vraiment"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "La valeur ne vient pas de la donnée, mais de son usage."
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "ROI attendu"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Décision améliorée"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Action automatisée"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Source : Harvard Business Review – Data-driven value"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "4. Big Data vs BI traditionnelle",
+          "position": 4,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🏢 4. Big Data vs BI traditionnelle : le vrai changement (7 minutes)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Tableau comparatif orienté décision"
+                    }
+                  ]
+                },
+                {
+                  "type": "table",
+                  "attrs": {
+                    "colwidth": [
+                      300,
+                      300
+                    ]
+                  },
+                  "content": [
+                    {
+                      "type": "tableRow",
+                      "content": [
+                        {
+                          "type": "tableCell",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "BI classique",
+                                  "marks": [
+                                    {
+                                      "type": "bold"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "tableCell",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Big Data",
+                                  "marks": [
+                                    {
+                                      "type": "bold"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "tableRow",
+                      "content": [
+                        {
+                          "type": "tableCell",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Analyse le passé"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "tableCell",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Anticipe le futur"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "tableRow",
+                      "content": [
+                        {
+                          "type": "tableCell",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Rapports figés"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "tableCell",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Modèles évolutifs"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "tableRow",
+                      "content": [
+                        {
+                          "type": "tableCell",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Décision humaine"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "tableCell",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Décision assistée"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "tableRow",
+                      "content": [
+                        {
+                          "type": "tableCell",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Données propres"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "tableCell",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Données imparfaites"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Message clé pour décideurs"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "La BI explique ce qui s'est passé.",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Le Big Data sert à décider ce qui va se passer.",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Source : IBM – Analytics evolution"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "5. Les 3 mauvaises décisions fréquentes",
+          "position": 5,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "⚠️ 5. Les 3 mauvaises décisions fréquentes en Big Data (5 minutes)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "❌ Décision n°1 : lancer un projet Big Data sans cas métier clair"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "→ Résultat : data lake inutile"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "❌ Décision n°2 : confier le sujet uniquement à l'IT"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "→ Résultat : modèles inutilisables"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "❌ Décision n°3 : croire que l'IA compensera la mauvaise donnée"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "→ Résultat : automatisation d'erreurs"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Source : Gartner – Big Data project failure rates"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "6. Ce que doit décider un dirigeant",
+          "position": 6,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🎯 6. Ce que doit décider un dirigeant (3 minutes)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Un dirigeant ne décide pas des algorithmes."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Il décide :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": {
+                    "start": 1
+                  },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Quels problèmes méritent d'être data-driven"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Quel niveau de confiance est requis"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Où l'automatisation est acceptable (ou pas)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Qui est responsable des décisions algorithmiques"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Source : OECD – AI & data governance"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🧩 Transition naturelle vers la Data Science"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "« Le Big Data vous donne la matière.",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "La Data Science vous donne le sens. »",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "👉 Transition logique vers le module suivant."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "⏱️ Bilan temps réel"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Accroche & interaction : 5 min"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Mythes & clarification : 5 min"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "5 V orientés décision : 10 min"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comparaison BI / Big Data : 7 min"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Erreurs stratégiques : 5 min"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Synthèse dirigeant : 3 min"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Total : 35 minutes réelles",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 1 : Contexte et fondamentaux",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#6366F1",
+        "secondaryColor": "#8B5CF6"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Introduction au TP",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "TP : Identifier les impacts du Big Data et de la Data Science"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Contexte"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Le Big Data et la Data Science transforment profondément les organisations modernes. De la santé à la finance, en passant par le commerce de détail et la logistique, ces technologies créent de nouveaux modèles économiques, optimisent les processus opérationnels et génèrent des avantages concurrentiels significatifs."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dans ce TP, vous allez analyser les impacts du Big Data et de la Data Science dans différents contextes métier. Vous créerez une application React interactive qui permet de visualiser et d'analyser ces impacts à travers des cas d'usage concrets."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Objectifs pédagogiques"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comprendre les différents types d'impacts du Big Data et de la Data Science (organisationnels, techniques, économiques, sociaux)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Analyser des cas d'usage réels dans différents secteurs d'activité"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifier les opportunités et les défis liés à l'implémentation du Big Data et de la Data Science"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Créer une application React interactive pour visualiser et analyser ces impacts"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Développer une réflexion critique sur les enjeux éthiques et réglementaires"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Durée estimée"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "4h à 6h",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Compétences visées"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Analyse stratégique et business intelligence"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Développement d'applications React interactives"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Visualisation de données et storytelling"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Pensée critique et évaluation d'impacts"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Les dimensions des impacts",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les 4 dimensions des impacts"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "1. Impacts organisationnels"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Transformation des processus métier et des workflows"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Évolution des rôles et des compétences nécessaires"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Changement de culture organisationnelle (data-driven)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Amélioration de la prise de décision (décisions basées sur les données)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Nouveaux modèles de collaboration (équipes data, data scientists, data engineers)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "2. Impacts techniques"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Infrastructure et architecture (cloud, distributed computing, data lakes)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Outils et technologies (Hadoop, Spark, Kafka, TensorFlow, PyTorch)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Gestion de la qualité et de la gouvernance des données"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Intégration avec les systèmes existants (legacy systems)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Cybersécurité et protection des données"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "3. Impacts économiques"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Réduction des coûts opérationnels (optimisation, automatisation)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Augmentation des revenus (nouveaux produits/services, personnalisation)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "ROI (Return on Investment) et valeur créée"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Avantage concurrentiel et différenciation"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Création de nouveaux modèles économiques (plateformes, marketplaces data-driven)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "4. Impacts sociaux et éthiques"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Protection de la vie privée et confidentialité"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Biais algorithmiques et équité"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Transparence et explicabilité des algorithmes"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Conformité réglementaire (RGPD, GDPR, etc.)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Impact sur l'emploi et les compétences"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Cas d'usage par secteur",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas d'usage par secteur d'activité"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🏥 Santé et médecine"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Diagnostic assisté par IA (détection précoce de cancers, analyse d'imagerie médicale)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Médecine personnalisée (génomique, traitement sur mesure)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Prédiction d'épidémies et santé publique"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Optimisation des ressources hospitalières"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "💰 Finance et banque"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Détection de fraude en temps réel"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Scoring de crédit et évaluation des risques"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Trading algorithmique et analyse de marché"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Recommandation de produits financiers personnalisés"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🛒 Commerce de détail et e-commerce"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Recommandation de produits (systèmes de recommandation)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Optimisation des prix dynamiques"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Gestion des stocks prédictive"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Analyse du comportement client (customer journey)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🚚 Logistique et transport"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Optimisation des itinéraires (routing)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Maintenance prédictive des véhicules"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Gestion intelligente de la chaîne d'approvisionnement"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Véhicules autonomes et mobilité intelligente"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🏭 Industrie et manufacturing"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Industrie 4.0 et usines intelligentes"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Contrôle qualité automatisé par vision par ordinateur"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Maintenance prédictive des équipements"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Optimisation de la production et réduction des déchets"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : TP pratique - Application interactive",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#059669"
+      },
+      "items": [
+        {
+          "type": "tp",
+          "title": "TP : Application d'analyse des impacts Big Data et Data Science",
+          "position": 1,
+          "published": true,
+          "content": {
+            "instructions": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "TP : Analyser les impacts du Big Data et de la Data Science"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Durée estimée : 2h à 3h",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🎯 Pourquoi ce TP ?"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Comprendre les impacts du Big Data et de la Data Science ne se limite pas à la théorie. Ce TP vous permet d'analyser concrètement des cas d'usage réels et d'identifier les patterns d'impacts dans différents secteurs d'activité."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📋 Objectif"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Utiliser une application interactive pour créer et analyser des cas d'usage de Big Data/Data Science, puis identifier les patterns d'impacts (organisationnel, technique, économique, social) et leurs corrélations."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Ce qui est attendu"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": {
+                    "start": 1
+                  },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Explorer les 5 cas d'usage pré-chargés dans l'application",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Créer au moins 3 nouveaux cas d'usage dans des secteurs différents",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Analyser les impacts via les visualisations (graphiques radar, barres, circulaire, scatter plot)",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comparer 2 à 4 cas d'usage pour identifier les patterns",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Soumettre votre analyse dans le formulaire ci-dessous",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "💡 Astuces"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "💡 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "Pour évaluer les impacts, pensez aux transformations réelles : nouveaux processus, changements organisationnels, investissements techniques, gains économiques mesurables, enjeux éthiques.",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "💡 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "Le ROI (%) doit refléter un retour sur investissement réaliste. Un ROI de 200% signifie que pour 1€ investi, on récupère 2€ de bénéfice.",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "💡 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "Utilisez le graphique scatter plot (ROI vs Impact) pour identifier les cas d'usage les plus performants : ceux avec un ROI élevé ET un impact global fort.",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "💡 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "Comparez des cas d'usage de secteurs différents pour identifier les patterns transversaux (ex: tous les cas d'usage temps réel ont un impact technique élevé).",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "💡 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "Les données sont sauvegardées automatiquement dans votre navigateur. Vous pouvez fermer et rouvrir l'application sans perdre votre travail.",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "💡 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "Pour votre analyse finale, notez les insights clés : quels secteurs bénéficient le plus ? Quels types d'impacts sont corrélés ? Quels défis reviennent souvent ?",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📤 Livrable"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dans le formulaire de soumission ci-dessous, rédigez une analyse (300-500 mots) qui répond aux questions suivantes :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Quels secteurs bénéficient le plus du Big Data/Data Science selon votre analyse ?"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Quels types d'impacts sont les plus corrélés avec un ROI élevé ?"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Quels sont les défis communs à tous les cas d'usage analysés ?"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Y a-t-il des patterns dans les technologies utilisées ?"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "💡 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "Votre analyse sera visible par votre formateur dans l'espace Quiz/Réponses du portail formateur.",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "checklist": [
+              "Explorer les 5 cas d'usage pré-chargés dans l'application",
+              "Créer au moins 3 nouveaux cas d'usage dans des secteurs différents",
+              "Analyser les impacts via les visualisations (graphiques radar, barres, circulaire, scatter plot)",
+              "Comparer 2 à 4 cas d'usage pour identifier les patterns",
+              "Rédiger une analyse répondant aux 4 questions du livrable",
+              "Soumettre l'analyse dans le formulaire de soumission"
+            ],
+            "criteria": [
+              "Qualité et pertinence des cas d'usage créés (réalisme, diversité des secteurs)",
+              "Compréhension des impacts (organisationnel, technique, économique, social)",
+              "Analyse des patterns et corrélations identifiées",
+              "Clarté et structure de l'analyse finale",
+              "Utilisation pertinente des visualisations pour appuyer l'analyse"
+            ],
+            "deliverables": [
+              "Analyse écrite (300-500 mots) répondant aux 4 questions posées",
+              "Soumission via le formulaire du TP (visible par le formateur)"
+            ]
+          }
+        },
+        {
+          "type": "resource",
+          "title": "🎯 Que faire avec l'application ? Guide d'utilisation",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🎯 Que faire avec l'application ?"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "L'application vous permet d'analyser les impacts du Big Data et de la Data Science. Voici ce que vous devez faire :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": {
+                    "start": 1
+                  },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Explorer les 5 cas d'usage pré-chargés",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    {
+                                      "type": "text",
+                                      "text": "Détection de fraude bancaire, Diagnostic médical IA, Recommandation produits, Optimisation logistique, Maintenance prédictive"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Créer au moins 3 nouveaux cas d'usage dans des secteurs différents",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Pour chaque cas d'usage, remplissez : titre, description, secteur, impacts (4 dimensions sur 10), ROI (%), technologies, défis."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Analyser via les visualisations",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    {
+                                      "type": "text",
+                                      "text": "Graphique radar : Comparez les 4 dimensions d'impacts"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    {
+                                      "type": "text",
+                                      "text": "Graphique circulaire : Répartition par secteur"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    {
+                                      "type": "text",
+                                      "text": "Scatter plot : Corrélation ROI vs Impact global"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comparer 2 à 4 cas d'usage pour identifier les patterns",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Rédiger votre analyse et la soumettre dans le formulaire ci-dessous",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "💡 Astuces pour réussir"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "💡 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "Choisissez des cas d'usage réels et documentés (pas fictifs). Recherchez des exemples concrets dans votre secteur d'activité ou dans l'actualité.",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "💡 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "Pour évaluer les impacts, pensez aux transformations réelles : nouveaux processus métier, changements organisationnels, investissements techniques, gains économiques mesurables, enjeux éthiques et sociaux.",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "💡 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "Le scatter plot (ROI vs Impact) est très utile pour identifier les cas d'usage les plus performants : ceux en haut à droite (ROI élevé ET impact fort) sont les meilleurs.",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "💡 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "Comparez des cas d'usage de secteurs différents pour identifier les patterns transversaux. Par exemple : tous les cas d'usage temps réel ont généralement un impact technique élevé.",
+                              "marks": [
+                                {
+                                  "type": "bold"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "📋 Instructions : Comment accéder à l'application",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🚀 Accès à l'application"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "L'application est accessible directement en ligne, aucune installation n'est nécessaire !"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cliquez sur le lien ",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "\"🚀 Application interactive - Big Data Impacts\"",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " ci-dessous pour ouvrir l'application dans un nouvel onglet."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "💡 ",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "Les données sont sauvegardées automatiquement dans votre navigateur. Vous pouvez fermer et rouvrir l'application sans perdre votre travail.",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "💡 Fonctionnalités disponibles"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Dashboard avec statistiques et graphiques"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Création, modification et suppression de cas d'usage"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Visualisations interactives (graphiques radar, barres, circulaire, scatter plot)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comparaison de plusieurs cas d'usage côte à côte"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Recherche et filtrage par secteur, par impact, par ROI"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "🚀 Application interactive - Big Data Impacts",
+          "position": 4,
+          "published": true,
+          "external_url": "https://bgmlds.netlify.app",
+          "content": {
+            "description": "🎯 **Ouvrez l'application interactive** pour commencer votre analyse !\n\n**Ce que vous allez pouvoir faire :**\n✅ Explorer 5 cas d'usage pré-chargés (fraude bancaire, diagnostic médical, recommandation produits, logistique, maintenance prédictive)\n✅ Créer vos propres cas d'usage avec évaluation des impacts\n✅ Visualiser les données via des graphiques interactifs (radar, barres, circulaire, scatter plot)\n✅ Comparer plusieurs cas d'usage côte à côte\n✅ Analyser les patterns et identifier les insights\n\n**⚠️ Important :** Assurez-vous d'avoir lancé l'application en local (voir les instructions ci-dessus) avant de cliquer sur ce lien. L'application s'ouvrira dans un nouvel onglet."
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Exemples de cas d'usage à implémenter",
+          "position": 5,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exemples de cas d'usage à implémenter"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "1. Détection de fraude bancaire en temps réel"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "json"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"title\": \"Détection de fraude bancaire en temps réel\",\n  \"sector\": \"Finance\",\n  \"description\": \"Système de détection de fraude utilisant le machine learning pour analyser les transactions en temps réel et identifier les comportements suspects\",\n  \"impacts\": {\n    \"organizational\": 8,\n    \"technical\": 9,\n    \"economic\": 9,\n    \"social\": 7\n  },\n  \"roi\": 350,\n  \"technologies\": [\"Apache Kafka\", \"TensorFlow\", \"Spark Streaming\", \"PostgreSQL\", \"Redis\"],\n  \"challenges\": [\"Latence temps réel\", \"Faux positifs\", \"Conformité RGPD\", \"Scalabilité\"]\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "2. Diagnostic médical assisté par IA"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "json"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"title\": \"Diagnostic médical assisté par IA\",\n  \"sector\": \"Santé\",\n  \"description\": \"Système d'aide au diagnostic utilisant le deep learning pour analyser des images médicales (IRM, radiographies) et détecter des anomalies\",\n  \"impacts\": {\n    \"organizational\": 9,\n    \"technical\": 10,\n    \"economic\": 8,\n    \"social\": 9\n  },\n  \"roi\": 280,\n  \"technologies\": [\"PyTorch\", \"TensorFlow\", \"DICOM\", \"AWS S3\", \"Kubernetes\"],\n  \"challenges\": [\"Explicabilité\", \"Conformité médicale\", \"Biais algorithmiques\", \"Intégration systèmes hospitaliers\"]\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "3. Recommandation de produits e-commerce"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "json"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"title\": \"Système de recommandation de produits\",\n  \"sector\": \"E-commerce\",\n  \"description\": \"Algorithme de recommandation personnalisé utilisant le collaborative filtering et le content-based filtering pour suggérer des produits aux clients\",\n  \"impacts\": {\n    \"organizational\": 7,\n    \"technical\": 8,\n    \"economic\": 9,\n    \"social\": 6\n  },\n  \"roi\": 420,\n  \"technologies\": [\"Apache Spark\", \"MongoDB\", \"Redis\", \"Python\", \"Scikit-learn\"],\n  \"challenges\": [\"Cold start problem\", \"Scalabilité\", \"Diversité des recommandations\", \"Privacy\"]\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "4. Optimisation de la chaîne logistique"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "json"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"title\": \"Optimisation de la chaîne logistique\",\n  \"sector\": \"Logistique\",\n  \"description\": \"Système d'optimisation des itinéraires et de la gestion des stocks utilisant l'optimisation combinatoire et la prédiction de la demande\",\n  \"impacts\": {\n    \"organizational\": 8,\n    \"technical\": 7,\n    \"economic\": 9,\n    \"social\": 7\n  },\n  \"roi\": 380,\n  \"technologies\": [\"Apache Hadoop\", \"Python\", \"OR-Tools\", \"PostgreSQL\", \"Apache Airflow\"],\n  \"challenges\": [\"Complexité algorithmique\", \"Intégration systèmes existants\", \"Données en temps réel\", \"Coûts infrastructure\"]\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "5. Maintenance prédictive industrielle"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "json"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"title\": \"Maintenance prédictive industrielle\",\n  \"sector\": \"Industrie\",\n  \"description\": \"Système de prédiction des pannes d'équipements industriels utilisant l'analyse de données IoT et le machine learning\",\n  \"impacts\": {\n    \"organizational\": 8,\n    \"technical\": 9,\n    \"economic\": 10,\n    \"social\": 6\n  },\n  \"roi\": 450,\n  \"technologies\": [\"Apache Kafka\", \"InfluxDB\", \"TensorFlow\", \"Grafana\", \"Kubernetes\"],\n  \"challenges\": [\"Qualité données capteurs\", \"Latence\", \"Interprétabilité\", \"Coûts IoT\"]\n}"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "game",
+          "title": "📊 Quiz d'évaluation - Impacts du Big Data et de la Data Science",
+          "position": 6,
+          "published": true,
+          "content": {
+            "gameType": "quiz",
+            "description": "Évaluez vos connaissances sur les impacts du Big Data et de la Data Science avec ce quiz de 20 questions réparties sur 3 niveaux de difficulté.",
+            "instructions": "Répondez aux questions pour chaque niveau. Vous obtiendrez une note à la fin du quiz. Les réponses sont enregistrées et visibles par votre formateur.",
+            "objectives": [
+              "Comprendre les différents types d'impacts du Big Data et de la Data Science",
+              "Identifier les enjeux organisationnels, techniques, économiques et sociaux",
+              "Reconnaître les cas d'usage et leurs caractéristiques",
+              "Évaluer les défis et opportunités du Big Data"
+            ],
+            "scoring": {
+              "totalQuestions": 21,
+              "pointsPerQuestion": 1,
+              "passingScore": 13,
+              "levels": {
+                "0-12": "Bases à renforcer - Revoyez les concepts fondamentaux",
+                "13-16": "Bon niveau - Vous maîtrisez les concepts essentiels",
+                "17-21": "Excellent niveau - Très bonne compréhension des impacts"
+              }
+            },
+            "levels": [
+              {
+                "level": 1,
+                "name": "Niveau 1 - Fondamentaux",
+                "description": "Questions sur les concepts de base du Big Data et des impacts",
+                "questions": [
+                  {
+                    "id": "q1-5v",
+                    "type": "mcq",
+                    "prompt": "Quels sont les 5 V du Big Data ?",
+                    "options": [
+                      "Volume, Vélocité, Variété, Véracité, Valeur",
+                      "Volume, Vitesse, Variété, Validation, Valeur",
+                      "Volume, Vélocité, Variété, Vérification, Valeur",
+                      "Volume, Vélocité, Variété, Véracité, Vision"
+                    ],
+                    "answer": "Volume, Vélocité, Variété, Véracité, Valeur",
+                    "explanation": "Les 5 V du Big Data sont : Volume (quantité de données), Vélocité (vitesse de génération et traitement), Variété (diversité des formats), Véracité (qualité et fiabilité), et Valeur (utilité business).",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q2-impact-org",
+                    "type": "mcq",
+                    "prompt": "Quel est un exemple d'impact organisationnel du Big Data ?",
+                    "options": [
+                      "Utilisation de Hadoop pour le stockage",
+                      "Transformation des processus métier et culture data-driven",
+                      "Augmentation du ROI de 300%",
+                      "Conformité au RGPD"
+                    ],
+                    "answer": "Transformation des processus métier et culture data-driven",
+                    "explanation": "Les impacts organisationnels incluent la transformation des processus métier, l'évolution des rôles, le changement de culture vers une approche data-driven, et l'amélioration de la prise de décision.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q3-bi-vs-bigdata",
+                    "type": "mcq",
+                    "prompt": "Quelle est la principale différence entre la BI traditionnelle et le Big Data ?",
+                    "options": [
+                      "Le Big Data coûte plus cher",
+                      "La BI analyse le passé, le Big Data anticipe le futur",
+                      "Le Big Data nécessite plus de serveurs",
+                      "Il n'y a pas de différence"
+                    ],
+                    "answer": "La BI analyse le passé, le Big Data anticipe le futur",
+                    "explanation": "La BI traditionnelle analyse des données historiques pour expliquer ce qui s'est passé. Le Big Data permet d'anticiper le futur grâce à des modèles prédictifs et des décisions en temps réel.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q4-impact-tech",
+                    "type": "mcq",
+                    "prompt": "Quel est un exemple d'impact technique du Big Data ?",
+                    "options": [
+                      "Amélioration de la satisfaction client",
+                      "Nécessité d'infrastructure cloud et d'outils distribués",
+                      "Réduction des coûts opérationnels",
+                      "Protection de la vie privée"
+                    ],
+                    "answer": "Nécessité d'infrastructure cloud et d'outils distribués",
+                    "explanation": "Les impacts techniques incluent l'infrastructure (cloud, distributed computing, data lakes), les outils (Hadoop, Spark, Kafka), la gestion de la qualité des données, et l'intégration avec les systèmes existants.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q5-roi-def",
+                    "type": "mcq",
+                    "prompt": "Que signifie ROI (Return on Investment) dans le contexte du Big Data ?",
+                    "options": [
+                      "Le retour sur investissement, mesurant la rentabilité d'un projet Big Data",
+                      "Un outil technique pour stocker les données",
+                      "Un type d'algorithme de machine learning",
+                      "Un protocole de communication"
+                    ],
+                    "answer": "Le retour sur investissement, mesurant la rentabilité d'un projet Big Data",
+                    "explanation": "Le ROI (Return on Investment) mesure le retour sur investissement, c'est-à-dire la rentabilité d'un projet Big Data. Il exprime généralement le pourcentage de gain par rapport à l'investissement initial. Par exemple, un ROI de 350% signifie que pour chaque euro investi, on récupère 3,50€ de bénéfice.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q5-roi",
+                    "type": "mcq",
+                    "prompt": "Le ROI (Return on Investment) fait partie de quel type d'impact ?",
+                    "options": [
+                      "Impact organisationnel",
+                      "Impact technique",
+                      "Impact économique",
+                      "Impact social"
+                    ],
+                    "answer": "Impact économique",
+                    "explanation": "Le ROI fait partie des impacts économiques, qui incluent également la réduction des coûts opérationnels, l'augmentation des revenus, l'avantage concurrentiel, et la création de nouveaux modèles économiques.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q6-cas-usage",
+                    "type": "mcq",
+                    "prompt": "Quel secteur bénéficie particulièrement du Big Data pour la détection de fraude ?",
+                    "options": [
+                      "Santé",
+                      "Finance",
+                      "E-commerce",
+                      "Logistique"
+                    ],
+                    "answer": "Finance",
+                    "explanation": "Le secteur financier utilise massivement le Big Data pour la détection de fraude en temps réel, le scoring de crédit, le trading algorithmique, et l'évaluation des risques.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q7-impact-social",
+                    "type": "mcq",
+                    "prompt": "Quel est un enjeu social/éthique du Big Data ?",
+                    "options": [
+                      "Coût de l'infrastructure",
+                      "Protection de la vie privée et confidentialité",
+                      "Complexité technique",
+                      "Temps de développement"
+                    ],
+                    "answer": "Protection de la vie privée et confidentialité",
+                    "explanation": "Les enjeux sociaux et éthiques incluent la protection de la vie privée, les biais algorithmiques, la transparence et l'explicabilité des algorithmes, la conformité réglementaire (RGPD), et l'impact sur l'emploi.",
+                    "difficulty": 1
+                  }
+                ]
+              },
+              {
+                "level": 2,
+                "name": "Niveau 2 - Intermédiaire",
+                "description": "Questions sur l'analyse des impacts et les cas d'usage",
+                "questions": [
+                  {
+                    "id": "q8-velocite",
+                    "type": "mcq",
+                    "prompt": "Pourquoi la vélocité est-elle importante dans le Big Data ?",
+                    "options": [
+                      "Parce que les données doivent être stockées rapidement",
+                      "Parce que si la donnée arrive après la décision, elle ne sert plus",
+                      "Parce que les serveurs doivent être rapides",
+                      "Parce que les utilisateurs sont pressés"
+                    ],
+                    "answer": "Parce que si la donnée arrive après la décision, elle ne sert plus",
+                    "explanation": "La vélocité est cruciale car dans de nombreux cas d'usage (fraude bancaire, recommandation e-commerce, maintenance prédictive), la décision doit être prise en temps réel. Si la donnée arrive après la décision, elle perd toute valeur.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q9-veracite",
+                    "type": "mcq",
+                    "prompt": "Quel est le risque principal lié à la véracité des données ?",
+                    "options": [
+                      "Les données prennent trop de place",
+                      "Une mauvaise donnée traitée rapidement reste une mauvaise décision",
+                      "Les données sont trop lentes à traiter",
+                      "Les données coûtent trop cher"
+                    ],
+                    "answer": "Une mauvaise donnée traitée rapidement reste une mauvaise décision",
+                    "explanation": "La véracité (qualité et fiabilité des données) est critique. Le Big Data amplifie les erreurs s'il n'y a pas de gouvernance. Des données biaisées, incomplètes ou obsolètes mènent à de mauvaises décisions, même si elles sont traitées rapidement.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q10-impact-economique",
+                    "type": "mcq",
+                    "prompt": "Quel type d'impact économique peut générer le Big Data ?",
+                    "options": [
+                      "Uniquement la réduction des coûts",
+                      "Uniquement l'augmentation des revenus",
+                      "Réduction des coûts, augmentation des revenus, et création de nouveaux modèles économiques",
+                      "Aucun impact économique"
+                    ],
+                    "answer": "Réduction des coûts, augmentation des revenus, et création de nouveaux modèles économiques",
+                    "explanation": "Le Big Data peut générer plusieurs types d'impacts économiques : réduction des coûts opérationnels (optimisation, automatisation), augmentation des revenus (nouveaux produits/services, personnalisation), et création de nouveaux modèles économiques (plateformes, marketplaces data-driven).",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q11-sante",
+                    "type": "mcq",
+                    "prompt": "Quel est un cas d'usage du Big Data dans le secteur de la santé ?",
+                    "options": [
+                      "Détection de fraude",
+                      "Diagnostic médical assisté par IA",
+                      "Optimisation des prix",
+                      "Maintenance prédictive"
+                    ],
+                    "answer": "Diagnostic médical assisté par IA",
+                    "explanation": "Dans le secteur de la santé, le Big Data permet le diagnostic assisté par IA (analyse d'imagerie médicale), la médecine personnalisée (génomique), la prédiction d'épidémies, et l'optimisation des ressources hospitalières.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q12-decision-erreur",
+                    "type": "mcq",
+                    "prompt": "Quelle est une erreur fréquente dans les projets Big Data ?",
+                    "options": [
+                      "Utiliser trop de serveurs",
+                      "Lancer un projet Big Data sans cas métier clair",
+                      "Traiter les données trop rapidement",
+                      "Utiliser le cloud"
+                    ],
+                    "answer": "Lancer un projet Big Data sans cas métier clair",
+                    "explanation": "Une erreur fréquente est de lancer un projet Big Data sans cas métier clair, ce qui mène souvent à un data lake inutile. Il faut également éviter de confier le sujet uniquement à l'IT et de croire que l'IA compensera la mauvaise donnée.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q13-variete",
+                    "type": "mcq",
+                    "prompt": "Pourquoi la variété des données pose-t-elle problème aux outils de BI traditionnels ?",
+                    "options": [
+                      "Parce qu'il y a trop de données",
+                      "Parce que les outils historiques échouent avec les données non structurées (emails, images, PDF, logs, IoT)",
+                      "Parce que les données sont trop rapides",
+                      "Parce que les données coûtent trop cher"
+                    ],
+                    "answer": "Parce que les outils historiques échouent avec les données non structurées (emails, images, PDF, logs, IoT)",
+                    "explanation": "La variété fait référence à la diversité des formats de données (emails, images, logs techniques, PDF, données IoT). Les outils de BI traditionnels (comme Excel) sont conçus pour des données structurées en tableaux et échouent avec les données non structurées.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q14-volume",
+                    "type": "mcq",
+                    "prompt": "Pourquoi le volume est-il considéré comme le 'faux problème' du Big Data ?",
+                    "options": [
+                      "Parce que le stockage est gratuit",
+                      "Parce que stocker des données n'a jamais créé de valeur - la vraie difficulté est la sélection",
+                      "Parce que les données sont petites",
+                      "Parce que personne n'a besoin de beaucoup de données"
+                    ],
+                    "answer": "Parce que stocker des données n'a jamais créé de valeur - la vraie difficulté est la sélection",
+                    "explanation": "Le volume est considéré comme le 'faux problème' car le coût du stockage baisse constamment. La vraie difficulté est de sélectionner quelles données méritent d'être conservées. 80% des données stockées ne sont jamais réutilisées.",
+                    "difficulty": 2
+                  }
+                ]
+              },
+              {
+                "level": 3,
+                "name": "Niveau 3 - Avancé",
+                "description": "Questions sur l'analyse approfondie et les décisions stratégiques",
+                "questions": [
+                  {
+                    "id": "q15-valeur",
+                    "type": "mcq",
+                    "prompt": "Pourquoi la Valeur est-elle considérée comme 'le seul V qui compte vraiment' ?",
+                    "options": [
+                      "Parce que c'est le plus facile à mesurer",
+                      "Parce que la valeur ne vient pas de la donnée, mais de son usage",
+                      "Parce que les autres V ne sont pas importants",
+                      "Parce que c'est le plus récent"
+                    ],
+                    "answer": "Parce que la valeur ne vient pas de la donnée, mais de son usage",
+                    "explanation": "La Valeur est le seul V qui compte vraiment car la valeur ne vient pas de la donnée elle-même, mais de son usage : ROI attendu, décision améliorée, action automatisée. Avoir beaucoup de données (Volume) ne crée pas de valeur si elles ne sont pas utilisées efficacement.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q16-decision-dirigeant",
+                    "type": "mcq",
+                    "prompt": "Qu'est-ce qu'un dirigeant doit décider concernant le Big Data ?",
+                    "options": [
+                      "Quels algorithmes utiliser",
+                      "Quels serveurs acheter",
+                      "Quels problèmes méritent d'être data-driven, quel niveau de confiance est requis, où l'automatisation est acceptable",
+                      "Quel langage de programmation choisir"
+                    ],
+                    "answer": "Quels problèmes méritent d'être data-driven, quel niveau de confiance est requis, où l'automatisation est acceptable",
+                    "explanation": "Un dirigeant ne décide pas des algorithmes (c'est technique). Il décide : quels problèmes méritent d'être data-driven, quel niveau de confiance est requis, où l'automatisation est acceptable (ou pas), et qui est responsable des décisions algorithmiques.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q17-biais",
+                    "type": "mcq",
+                    "prompt": "Quel est le risque des biais algorithmiques dans le Big Data ?",
+                    "options": [
+                      "Les algorithmes sont trop lents",
+                      "Les biais peuvent être amplifiés et mener à des discriminations et des décisions injustes",
+                      "Les algorithmes coûtent trop cher",
+                      "Les algorithmes ne fonctionnent pas"
+                    ],
+                    "answer": "Les biais peuvent être amplifiés et mener à des discriminations et des décisions injustes",
+                    "explanation": "Les biais algorithmiques sont un enjeu majeur. Si les données d'entraînement contiennent des biais (par exemple, discrimination basée sur le genre, l'origine, etc.), le modèle les reproduira et les amplifiera, menant à des décisions injustes et potentiellement discriminatoires.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q18-roi-correlation",
+                    "type": "mcq",
+                    "prompt": "Quel type d'impact semble le plus corrélé avec un ROI élevé selon les cas d'usage analysés ?",
+                    "options": [
+                      "Impact organisationnel uniquement",
+                      "Impact technique uniquement",
+                      "Impact économique - les cas d'usage avec un ROI élevé ont généralement un impact économique fort",
+                      "Impact social uniquement"
+                    ],
+                    "answer": "Impact économique - les cas d'usage avec un ROI élevé ont généralement un impact économique fort",
+                    "explanation": "Selon l'analyse des cas d'usage, il y a souvent une corrélation entre l'impact économique et le ROI. Cependant, les meilleurs cas d'usage combinent généralement plusieurs types d'impacts (économique + technique + organisationnel) pour maximiser la valeur créée.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q19-gouvernance",
+                    "type": "mcq",
+                    "prompt": "Pourquoi la gouvernance des données est-elle cruciale dans le Big Data ?",
+                    "options": [
+                      "Pour réduire les coûts",
+                      "Pour éviter que le Big Data amplifie les erreurs et les biais",
+                      "Pour accélérer le traitement",
+                      "Pour utiliser moins de serveurs"
+                    ],
+                    "answer": "Pour éviter que le Big Data amplifie les erreurs et les biais",
+                    "explanation": "La gouvernance des données est cruciale car sans elle, le Big Data amplifie les erreurs. Des données de mauvaise qualité (biaisées, incomplètes, obsolètes) traitées rapidement mènent à de mauvaises décisions. La gouvernance assure la qualité, la traçabilité, et la conformité réglementaire.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q20-patterns",
+                    "type": "mcq",
+                    "prompt": "Quels secteurs semblent bénéficier le plus du Big Data selon les analyses ?",
+                    "options": [
+                      "Uniquement la finance",
+                      "Uniquement la santé",
+                      "Plusieurs secteurs (finance, santé, e-commerce, logistique, industrie) selon les cas d'usage",
+                      "Aucun secteur ne bénéficie vraiment du Big Data"
+                    ],
+                    "answer": "Plusieurs secteurs (finance, santé, e-commerce, logistique, industrie) selon les cas d'usage",
+                    "explanation": "Plusieurs secteurs bénéficient du Big Data selon les cas d'usage : Finance (fraude, scoring), Santé (diagnostic, médecine personnalisée), E-commerce (recommandation, prix dynamiques), Logistique (optimisation itinéraires), Industrie (maintenance prédictive). Le succès dépend de la qualité du cas métier, pas uniquement du secteur.",
+                    "difficulty": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : Analyse et réflexion",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#F59E0B",
+        "secondaryColor": "#EF4444"
+      },
+      "items": [
+        {
+          "type": "exercise",
+          "title": "Exercice : Analyse critique des impacts",
+          "position": 1,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exercice : Analyse critique des impacts"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Après avoir créé votre application et analysé plusieurs cas d'usage, répondez aux questions suivantes de manière détaillée :"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Questions"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": {
+                    "start": 1
+                  },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Quels sont les secteurs qui semblent bénéficier le plus du Big Data et de la Data Science selon votre analyse ? Justifiez votre réponse avec des exemples concrets."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifiez les principaux défis techniques rencontrés dans l'implémentation de solutions Big Data. Comment ces défis peuvent-ils être surmontés ?"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Analysez la relation entre le ROI et les différents types d'impacts. Y a-t-il une corrélation ? Quels types d'impacts semblent les plus corrélés avec un ROI élevé ?"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Quels sont les enjeux éthiques et sociaux les plus critiques identifiés dans vos cas d'usage ? Proposez des solutions pour les adresser."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Imaginez un nouveau cas d'usage dans un secteur de votre choix. Décrivez les impacts attendus et les défis à surmonter."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Correction - Points clés à aborder"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les réponses doivent démontrer une compréhension approfondie des impacts du Big Data et de la Data Science, avec des exemples concrets et une réflexion critique."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Ressources supplémentaires",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ressources supplémentaires"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Articles et études"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "McKinsey Global Institute - "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "link",
+                                  "attrs": {
+                                    "href": "https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights",
+                                    "target": "_blank"
+                                  }
+                                }
+                              ],
+                              "text": "Big Data: The next frontier for innovation"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Harvard Business Review - "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "link",
+                                  "attrs": {
+                                    "href": "https://hbr.org/topic/data-science",
+                                    "target": "_blank"
+                                  }
+                                }
+                              ],
+                              "text": "Data Science and Analytics"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Outils et technologies"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Apache Spark - "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "link",
+                                  "attrs": {
+                                    "href": "https://spark.apache.org/",
+                                    "target": "_blank"
+                                  }
+                                }
+                              ],
+                              "text": "spark.apache.org"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "TensorFlow - "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "link",
+                                  "attrs": {
+                                    "href": "https://www.tensorflow.org/",
+                                    "target": "_blank"
+                                  }
+                                }
+                              ],
+                              "text": "tensorflow.org"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Recharts - "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "link",
+                                  "attrs": {
+                                    "href": "https://recharts.org/",
+                                    "target": "_blank"
+                                  }
+                                }
+                              ],
+                              "text": "recharts.org"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Documentation React"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "React Documentation - "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "link",
+                                  "attrs": {
+                                    "href": "https://react.dev/",
+                                    "target": "_blank"
+                                  }
+                                }
+                              ],
+                              "text": "react.dev"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Vite Documentation - "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "link",
+                                  "attrs": {
+                                    "href": "https://vitejs.dev/",
+                                    "target": "_blank"
+                                  }
+                                }
+                              ],
+                              "text": "vitejs.dev"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Tailwind CSS - "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "link",
+                                  "attrs": {
+                                    "href": "https://tailwindcss.com/",
+                                    "target": "_blank"
+                                  }
+                                }
+                              ],
+                              "text": "tailwindcss.com"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

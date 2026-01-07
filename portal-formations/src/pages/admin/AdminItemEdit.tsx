@@ -908,6 +908,9 @@ export function AdminItemEdit() {
                             <button
                               type="button"
                               onClick={() => {
+                                if (!confirm('Êtes-vous sûr de vouloir supprimer cette paire ?')) {
+                                  return
+                                }
                                 const currentPairs = item.content?.pairs || []
                                 handleContentChange('pairs', currentPairs.filter((_: any, i: number) => i !== index))
                               }}
@@ -1062,6 +1065,9 @@ export function AdminItemEdit() {
                               <button
                                 type="button"
                                 onClick={() => {
+                                  if (!confirm('Êtes-vous sûr de vouloir supprimer cette correspondance ?')) {
+                                    return
+                                  }
                                   const currentMatches = item.content?.correctMatches || []
                                   handleContentChange('correctMatches', currentMatches.filter((_: any, i: number) => i !== index))
                                 }}

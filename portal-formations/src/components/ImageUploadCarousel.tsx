@@ -131,6 +131,9 @@ export function ImageUploadCarousel({
   }
 
   const handleRemove = () => {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cette image ?')) {
+      return
+    }
     setPreview(null)
     onImageUploaded('')
     setError('')

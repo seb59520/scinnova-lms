@@ -99,6 +99,9 @@ export function FileUpload({
   }
 
   const handleRemove = () => {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce fichier ?')) {
+      return
+    }
     setSelectedFile(null)
     onFileSelect(null)
     setError('')

@@ -5,7 +5,7 @@ import { useUserRole } from '../hooks/useUserRole';
 import { getUserOrg } from '../lib/queries/userQueries';
 import { supabase } from '../lib/supabaseClient';
 import type { Org } from '../types/database';
-import { Building2, LogOut, User, ChevronDown, Settings, GraduationCap, Home, Sparkles, Mail } from 'lucide-react';
+import { Building2, LogOut, User, ChevronDown, Settings, Home, Mail } from 'lucide-react';
 import logoScinnova from '../../Logo SCINNOVA avec cerveau et fusée.png';
 
 interface AppHeaderProps {
@@ -42,10 +42,10 @@ export function AppHeader({
     loadOrg();
   }, [user?.id, isAdmin]);
 
-  // Charger les notifications non lues pour les apprenants
+  // Charger les notifications non lues pour tous les utilisateurs
   useEffect(() => {
     async function loadNotifications() {
-      if (!user?.id || isAdmin || isTrainer) return; // Seulement pour les apprenants
+      if (!user?.id) return;
       
       try {
         const { count, error } = await supabase
@@ -65,7 +65,7 @@ export function AppHeader({
     loadNotifications();
 
     // Écouter les nouvelles notifications en temps réel
-    if (user?.id && !isAdmin && !isTrainer) {
+    if (user?.id) {
       const subscription = supabase
         .channel('notifications')
         .on(
@@ -86,7 +86,7 @@ export function AppHeader({
         subscription.unsubscribe();
       };
     }
-  }, [user?.id, isAdmin, isTrainer]);
+  }, [user?.id]);
 
   const handleSignOut = async () => {
     try {
@@ -139,21 +139,19 @@ export function AppHeader({
 
           {/* Right side - User menu */}
           <div className="flex items-center space-x-4">
-            {/* Lien vers la boîte aux lettres pour les apprenants */}
-            {!isAdmin && !isTrainer && (
-              <Link
-                to="/mailbox"
-                className="relative text-sm text-gray-600 hover:text-gray-900 hidden md:flex items-center gap-2"
-                title="Boîte aux lettres"
-              >
-                <Mail className="w-5 h-5" />
-                {unreadNotifications > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
-                    {unreadNotifications > 9 ? '9+' : unreadNotifications}
-                  </span>
-                )}
-              </Link>
-            )}
+            {/* Lien vers la boîte aux lettres pour tous les utilisateurs */}
+            <Link
+              to="/mailbox"
+              className="relative text-sm text-gray-600 hover:text-gray-900 hidden md:flex items-center gap-2"
+              title="Boîte aux lettres"
+            >
+              <Mail className="w-5 h-5" />
+              {unreadNotifications > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+                  {unreadNotifications > 9 ? '9+' : unreadNotifications}
+                </span>
+              )}
+            </Link>
             <Link
               to="/help"
               className="text-sm text-gray-600 hover:text-gray-900 hidden md:block"
@@ -207,6 +205,14 @@ export function AppHeader({
                     {/* Menu items */}
                     <div className="p-2">
                       <Link
+                        to="/landing"
+                        onClick={() => setShowMenu(false)}
+                        className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                      >
+                        <Home className="h-4 w-4" />
+                        Page d'accueil
+                      </Link>
+                      <Link
                         to="/profile"
                         onClick={() => setShowMenu(false)}
                         className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
@@ -214,80 +220,17 @@ export function AppHeader({
                         <User className="h-4 w-4" />
                         Mon profil
                       </Link>
-                      <Link
-                        to="/app"
-                        onClick={() => setShowMenu(false)}
-                        className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                      >
-                        <Home className="h-4 w-4" />
-                        Tableau de bord
-                      </Link>
-                      {!isAdmin && !isTrainer && (
-                        <Link
-                          to="/mailbox"
-                          onClick={() => setShowMenu(false)}
-                          className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors relative"
-                        >
-                          <Mail className="h-4 w-4" />
-                          Boîte aux lettres
-                          {unreadNotifications > 0 && (
-                            <span className="ml-auto px-2 py-0.5 bg-red-500 text-white rounded-full text-xs font-bold">
-                              {unreadNotifications > 9 ? '9+' : unreadNotifications}
-                            </span>
-                          )}
-                        </Link>
-                      )}
-                      <Link
-                        to="/landing"
-                        onClick={() => setShowMenu(false)}
-                        className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                      >
-                        <Sparkles className="h-4 w-4" />
-                        Page d'accueil
-                      </Link>
-
                       {isAdmin && (
-                        <>
-                          <Link
-                            to="/admin"
-                            onClick={() => setShowMenu(false)}
-                            className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                          >
-                            <Settings className="h-4 w-4" />
-                            Administration
-                          </Link>
-                          <Link
-                            to="/admin/users"
-                            onClick={() => setShowMenu(false)}
-                            className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                          >
-                            <User className="h-4 w-4" />
-                            Gestion des utilisateurs
-                          </Link>
-                          <Link
-                            to="/trainer"
-                            onClick={() => setShowMenu(false)}
-                            className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                          >
-                            <GraduationCap className="h-4 w-4" />
-                            Portail Formateur
-                          </Link>
-                        </>
-                      )}
-
-                      {isTrainer && (
                         <Link
-                          to="/trainer"
+                          to="/admin"
                           onClick={() => setShowMenu(false)}
                           className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
                         >
-                          <GraduationCap className="h-4 w-4" />
-                          Portail Formateur
+                          <Settings className="h-4 w-4" />
+                          Administration
                         </Link>
                       )}
-
                       <div className="border-t border-gray-200 my-2" />
-
                       <button
                         onClick={handleSignOut}
                         disabled={signingOut}

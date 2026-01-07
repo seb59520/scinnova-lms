@@ -1,0 +1,182 @@
+openapi: 3.0.3
+info:
+  title: Portal Formations API
+  description: |
+    API REST pour le portail de formations.
+    
+    Cette API permet de :
+    - Gérer les formations et les cours
+    - Gérer les utilisateurs et les sessions
+    - Suivre les progressions et les résultats
+    
+    **Authentification** : JWT Bearer (via Supabase)
+  version: 1.0.0
+  contact:
+    name: Support API Portal Formations
+    email: support@portal-formations.com
+
+servers:
+  - url: http://localhost:3001
+    description: Serveur de développement local
+  - url: https://api.portal-formations.com
+    description: Serveur de production (exemple)
+
+tags:
+  - name: Health
+    description: Endpoints de santé et monitoring
+  - name: API
+    description: Informations générales sur l'API
+
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Vérifie l'état de santé de l'API
+      description: Retourne le statut de l'API, l'horodatage et le temps de fonctionnement
+      operationId: getHealth
+      responses:
+        '200':
+          description: API opérationnelle
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api:
+    get:
+      tags:
+        - API
+      summary: Informations sur l'API
+      description: Retourne les informations générales sur l'API et les endpoints disponibles
+      operationId: getApiInfo
+      responses:
+        '200':
+          description: Informations de l'API
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "API Portal Formations"
+                  version:
+                    type: string
+                    example: "1.0.0"
+                  endpoints:
+                    type: object
+                    properties:
+                      health:
+                        type: string
+                        example: "/health"
+                      docs:
+                        type: string
+                        example: "/docs"
+                      openapi:
+                        type: string
+                        example: "/openapi"
+
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "ok"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2024-01-15T10:30:00.000Z"
+        uptime:
+          type: number
+          description: Temps de fonctionnement en secondes
+          example: 3600.5
+
+    ErrorEnvelope:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: Code d'erreur standardisé
+              example: "NOT_FOUND"
+            message:
+              type: string
+              description: Message d'erreur lisible
+              example: "Ressource non trouvée"
+            details:
+              type: object
+              description: Détails supplémentaires sur l'erreur (optionnel)
+              additionalProperties: true
+
+  responses:
+    BadRequest:
+      description: Requête invalide (erreur de validation)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error:
+              code: "VALIDATION_ERROR"
+              message: "Erreur de validation"
+              details:
+                - path: "field"
+                  message: "Le champ est requis"
+
+    Unauthorized:
+      description: Authentification requise
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error:
+              code: "UNAUTHORIZED"
+              message: "Token JWT manquant ou invalide"
+
+    NotFound:
+      description: Ressource non trouvée
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error:
+              code: "NOT_FOUND"
+              message: "Ressource non trouvée"
+
+    InternalServerError:
+      description: Erreur interne du serveur
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error:
+              code: "INTERNAL_ERROR"
+              message: "Une erreur interne est survenue"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Authentification JWT via Bearer token (Supabase).
+        Format: `Authorization: Bearer <token>`
+
+security:
+  - bearerAuth: []
+

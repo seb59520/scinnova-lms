@@ -7,7 +7,7 @@ import { KPICard } from '../../components/trainer/KPICard';
 import { AlertCard } from '../../components/trainer/AlertCard';
 import { TrainerHeader } from '../../components/trainer/TrainerHeader';
 import { formatPercent, formatScore, daysSince } from '../../utils/trainerUtils';
-import { Users, BookOpen, TrendingUp, AlertTriangle, Building2, ChevronDown, ChevronRight } from 'lucide-react';
+import { Users, BookOpen, TrendingUp, AlertTriangle, Building2, ChevronDown, ChevronRight, MessageSquare } from 'lucide-react';
 
 interface OrgWithSessions extends Org {
   sessions: Session[];
@@ -333,6 +333,17 @@ export function TrainerDashboard() {
             </Link>
           </div>
         )}
+
+        {/* Quiz responses link */}
+        <div className="mb-8">
+          <Link
+            to={selectedSessionId ? `/trainer/sessions/${selectedSessionId}/quiz-responses` : '/trainer/quiz-responses'}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <MessageSquare className="w-5 h-5" />
+            Voir les réponses du quiz d'introduction
+          </Link>
+        </div>
 
         </div>
       </div>

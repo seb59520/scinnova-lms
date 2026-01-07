@@ -1,0 +1,226 @@
+{
+  "title": "Le Big Data : Fondamentaux pour Dirigeants",
+  "description": "Comprendre le Big Data avant l'IT : une approche métier stratégique",
+  "status": "draft",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3B82F6",
+    "secondaryColor": "#8B5CF6",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Le Big Data commence avant l'IT",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#3B82F6",
+        "secondaryColor": "#8B5CF6"
+      },
+      "items": [
+        {
+          "type": "slide",
+          "title": "Slide 1.1 : Introduction - Le Big Data dans notre quotidien",
+          "position": 1,
+          "published": true,
+          "content": {
+            "summary": "Cette première slide introduit le concept fondamental : le Big Data commence par les usages, pas par la technologie.",
+            "pedagogical_context": {
+              "text": "Dans notre quotidien professionnel et personnel, chaque interaction génère des données bien avant qu'elles ne deviennent un sujet technologique. Lorsque vous utilisez votre smartphone pour consulter vos emails, passez votre carte bancaire pour un achat, badgez à l'entrée de votre bureau, ou lorsque vos équipes enregistrent une interaction dans le CRM, vous créez de la donnée. Les logs serveurs, les capteurs IoT dans vos installations, les échanges par email — tout cela constitue la matière première du Big Data.\n\nLa donnée est générée par les usages, pas par les outils. Cette distinction est fondamentale pour un dirigeant : le Big Data ne commence pas avec l'achat d'une infrastructure technique, mais avec la compréhension des processus métiers qui génèrent naturellement ces flux d'information. Avant de parler de Hadoop ou de data lakes, il faut d'abord cartographier les moments où votre organisation crée, capture et pourrait exploiter de la donnée.\n\nC'est cette perspective métier qui transforme le Big Data d'un projet IT en un levier stratégique de transformation."
+            }
+          }
+        },
+        {
+          "type": "slide",
+          "title": "Slide 1.2 : Exemples concrets de génération de données",
+          "position": 2,
+          "published": true,
+          "asset_path": "big-data/exemples-donnees.png",
+          "content": {
+            "summary": "Illustration visuelle des différents moments où les données sont générées dans une organisation",
+            "pedagogical_context": {
+              "text": "Regardons cette slide ensemble. Vous voyez ici une cartographie des points de génération de données dans une organisation type.\n\nÀ gauche, nous avons les interactions clients : chaque clic sur votre site web, chaque appel au service client, chaque achat en magasin génère une trace. Ces données sont précieuses car elles révèlent les comportements, les préférences, les parcours d'achat.\n\nAu centre, les processus internes : la gestion des stocks, les flux de production, les ressources humaines. Chaque badge, chaque transaction interne, chaque rapport créé est une donnée potentielle.\n\nÀ droite, les données externes : les réseaux sociaux, les données publiques, les partenaires. Ces sources enrichissent votre vision.\n\nL'important n'est pas de tout capturer, mais d'identifier les données qui ont du sens pour votre stratégie métier."
+            }
+          }
+        },
+        {
+          "type": "slide",
+          "title": "Slide 1.3 : La distinction fondamentale - Usages vs Outils",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "La donnée est générée par les usages" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Pas par les outils" }
+                  ]
+                },
+                {
+                  "type": "horizontalRule"
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Les processus métiers génèrent naturellement des données" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "L'infrastructure IT vient ensuite pour capturer et exploiter" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Comprendre les usages avant d'investir dans la technologie" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "pedagogical_context": {
+              "body": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Cette distinction est "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [{ "type": "bold" }],
+                        "text": "fondamentale"
+                      },
+                      {
+                        "type": "text",
+                        "text": " pour un dirigeant. Trop souvent, les entreprises commencent par acheter des solutions techniques sophistiquées sans avoir d'abord cartographié leurs processus métiers."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Posez-vous ces questions avant tout investissement IT :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Quels sont les moments clés où mon organisation génère de la donnée ?"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Cette donnée est-elle déjà capturée quelque part ?"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Quelle valeur métier pourrait-elle apporter si elle était exploitée ?"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "C'est en répondant à ces questions que vous transformez le Big Data d'un projet IT en "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [{ "type": "bold" }],
+                        "text": "levier stratégique de transformation"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "slide",
+          "title": "Slide 1.4 : Cartographier avant d'investir",
+          "position": 4,
+          "published": true,
+          "content": {
+            "pedagogical_context": {
+              "text": "Avant de parler de Hadoop ou de data lakes, il faut d'abord cartographier les moments où votre organisation crée, capture et pourrait exploiter de la donnée.\n\nCette cartographie doit être réalisée en collaboration avec les équipes métiers, pas seulement avec l'IT. Les opérationnels connaissent mieux que quiconque les processus qui génèrent de la valeur.\n\nUne fois cette cartographie établie, vous pourrez identifier :\n- Les données critiques pour votre stratégie\n- Les opportunités d'exploitation immédiate\n- Les investissements IT réellement nécessaires\n\nCette approche évite les pièges classiques : investir dans des infrastructures surdimensionnées ou, au contraire, sous-estimer les besoins réels."
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+

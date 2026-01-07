@@ -142,10 +142,38 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate }: ItemRende
         throw error
       }
       
+      // Sauvegarder aussi dans user_responses pour le formateur (si c'est le TP Big Data)
+      if (item.id && answer) {
+        try {
+          const userId = user.id
+          const quizTypeKey = `tp_big_data_${item.id}`
+          const responses = {
+            analysis: answer,
+            submittedAt: new Date().toISOString(),
+            itemId: item.id,
+            itemTitle: item.title
+          }
+
+          await supabase
+            .from('user_responses')
+            .upsert({
+              user_id: userId,
+              quiz_type: quizTypeKey,
+              responses: responses,
+              updated_at: new Date().toISOString()
+            }, {
+              onConflict: 'user_id,quiz_type'
+            })
+        } catch (error) {
+          console.error('Erreur lors de la sauvegarde dans user_responses:', error)
+          // Ne pas bloquer la soumission si cette sauvegarde échoue
+        }
+      }
+      
       console.log('✅ TP soumis avec succès:', data)
       onSubmissionUpdate(data)
       setFile(null) // Réinitialiser le fichier après soumission
-      alert('TP soumis avec succès!')
+      alert('TP soumis avec succès! Votre analyse est visible par votre formateur.')
     } catch (error: any) {
       console.error('❌ Erreur complète lors de la soumission TP:', error)
       alert(`Erreur: ${error.message || 'Une erreur est survenue lors de la soumission'}`)
@@ -1466,6 +1494,7 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate }: ItemRende
         <GameRenderer
           gameContent={item.content}
           onScore={handleGameScore}
+          itemId={item.id}
         />
       </div>
     )

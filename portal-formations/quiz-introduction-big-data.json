@@ -1,0 +1,98 @@
+{
+  "type": "game",
+  "title": "Quiz d'introduction - Vos définitions et attentes",
+  "position": 1,
+  "published": true,
+  "content": {
+    "gameType": "quiz",
+    "description": "Partagez avec nous votre compréhension du Big Data, du Machine Learning et de la Data Science, ainsi que vos attentes pour ce cours",
+    "instructions": "Ce quiz d'introduction n'a pas de bonne ou mauvaise réponse. Il s'agit de recueillir votre vision actuelle de ces concepts et vos attentes pour personnaliser le cours. Répondez librement et honnêtement.",
+    "objectives": [
+      "Recueillir votre compréhension actuelle du Big Data",
+      "Comprendre votre vision du Machine Learning",
+      "Connaître votre perception de la Data Science",
+      "Identifier vos attentes et objectifs pour ce cours"
+    ],
+    "scoring": {
+      "totalQuestions": 4,
+      "pointsPerQuestion": 1,
+      "passingScore": 0,
+      "levels": {
+        "0-4": "Merci pour vos réponses !"
+      },
+      "note": "Ce quiz est informatif et n'a pas de note. Toutes les réponses sont valides."
+    },
+    "levels": [
+      {
+        "level": 1,
+        "name": "Vos définitions",
+        "description": "Partagez votre compréhension de ces concepts clés",
+        "questions": [
+          {
+            "id": "q1-bigdata",
+            "type": "mcq",
+            "prompt": "D'après vous, qu'est-ce que le Big Data ?",
+            "options": [
+              "De très grandes quantités de données",
+              "Des données complexes et variées qui nécessitent des outils spécialisés",
+              "L'exploitation de données pour prendre des décisions",
+              "Un ensemble de technologies pour stocker et analyser des données massives",
+              "Autre (précisez dans votre esprit)"
+            ],
+            "answer": "Toutes les réponses sont valides - c'est votre vision qui compte",
+            "explanation": "Le Big Data peut être défini de plusieurs façons. Il fait généralement référence à des volumes de données très importants (Volume), générées rapidement (Vélocité), de sources variées (Variété), parfois incertaines (Véracité), et ayant une valeur potentielle (Valeur) - les 5 V du Big Data. Votre définition reflète votre compréhension actuelle, et c'est parfait pour commencer !",
+            "difficulty": 1
+          },
+          {
+            "id": "q2-ml",
+            "type": "mcq",
+            "prompt": "Comment définiriez-vous le Machine Learning (Apprentissage Automatique) ?",
+            "options": [
+              "Des algorithmes qui apprennent à partir de données",
+              "L'intelligence artificielle qui remplace l'humain",
+              "Des systèmes qui s'améliorent avec l'expérience",
+              "Des outils pour prédire l'avenir",
+              "Autre (précisez dans votre esprit)"
+            ],
+            "answer": "Toutes les réponses sont valides - c'est votre vision qui compte",
+            "explanation": "Le Machine Learning est un domaine de l'intelligence artificielle où les systèmes apprennent à partir de données pour améliorer leurs performances sur une tâche spécifique, sans être explicitement programmés pour chaque cas. Il existe différents types : l'apprentissage supervisé (avec des exemples étiquetés), non supervisé (sans étiquettes), et par renforcement (par essais et erreurs). Votre compréhension évoluera au fil du cours !",
+            "difficulty": 1
+          },
+          {
+            "id": "q3-datascience",
+            "type": "mcq",
+            "prompt": "Qu'est-ce que la Data Science pour vous ?",
+            "options": [
+              "L'art d'extraire des insights à partir de données",
+              "Une discipline qui combine statistiques, programmation et expertise métier",
+              "L'analyse de données pour résoudre des problèmes business",
+              "Un mélange de science des données et de storytelling",
+              "Autre (précisez dans votre esprit)"
+            ],
+            "answer": "Toutes les réponses sont valides - c'est votre vision qui compte",
+            "explanation": "La Data Science est effectivement une discipline interdisciplinaire qui combine : les statistiques et les mathématiques, la programmation et l'informatique, et l'expertise métier. Elle vise à extraire de la valeur et des connaissances à partir de données, souvent pour résoudre des problèmes business concrets. C'est un domaine qui nécessite à la fois des compétences techniques et une compréhension du contexte métier.",
+            "difficulty": 1
+          },
+          {
+            "id": "q4-expectations",
+            "type": "mcq",
+            "prompt": "Qu'attendez-vous principalement de ce cours ?",
+            "options": [
+              "Comprendre les concepts fondamentaux du Big Data et de la Data Science",
+              "Apprendre à utiliser des outils concrets (Python, SQL, etc.)",
+              "Savoir identifier des opportunités business avec le Big Data",
+              "Comprendre comment démarrer un projet Data dans mon organisation",
+              "Tout ce qui précède",
+              "Autre (précisez dans votre esprit)"
+            ],
+            "answer": "Toutes les réponses sont valides - c'est votre vision qui compte",
+            "explanation": "Vos attentes sont importantes pour adapter le contenu du cours. Ce cours vise à vous donner une compréhension à la fois théorique et pratique, en vous permettant d'identifier les opportunités business et de comprendre comment mettre en œuvre des projets Data. N'hésitez pas à partager vos attentes spécifiques avec le formateur !",
+            "difficulty": 1
+          }
+        ]
+      }
+    ]
+  },
+  "chapters": []
+}
+

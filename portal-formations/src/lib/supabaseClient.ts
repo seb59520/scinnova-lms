@@ -34,8 +34,9 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     storage: window.localStorage,
     storageKey: 'sb-auth-token',
     flowType: 'pkce',
-    // Améliorer la gestion du refresh token
-    debug: import.meta.env.DEV,
+    // Désactiver les logs verbeux par défaut
+    // Activer uniquement si VITE_SUPABASE_DEBUG=true dans .env
+    debug: import.meta.env.VITE_SUPABASE_DEBUG === 'true',
   },
   global: {
     headers: {
@@ -78,14 +79,16 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   },
 })
 
-// Écouter les erreurs de refresh token
+// Écouter les erreurs de refresh token (logs uniquement si debug activé)
 supabase.auth.onAuthStateChange((event, session) => {
-  if (event === 'TOKEN_REFRESHED') {
-    console.log('Token refreshed successfully')
-  } else if (event === 'SIGNED_OUT') {
-    console.log('User signed out')
-  } else if (event === 'USER_UPDATED') {
-    console.log('User updated')
+  if (import.meta.env.VITE_SUPABASE_DEBUG === 'true') {
+    if (event === 'TOKEN_REFRESHED') {
+      console.log('Token refreshed successfully')
+    } else if (event === 'SIGNED_OUT') {
+      console.log('User signed out')
+    } else if (event === 'USER_UPDATED') {
+      console.log('User updated')
+    }
   }
 })
 

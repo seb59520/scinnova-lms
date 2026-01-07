@@ -1,0 +1,171 @@
+{
+  "type": "slide",
+  "title": "Quiz d'introduction - Vos définitions et attentes",
+  "position": 1,
+  "published": true,
+  "content": {
+    "body": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": { "level": 1 },
+          "content": [
+            { "type": "text", "text": "🎯 Quiz d'introduction" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Avant de commencer le cours, nous aimerions connaître votre compréhension actuelle du Big Data, du Machine Learning et de la Data Science, ainsi que vos attentes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [{ "type": "bold" }],
+              "text": "Il n'y a pas de bonne ou mauvaise réponse. "
+            },
+            {
+              "type": "text",
+              "text": "Ce quiz nous permet de personnaliser le cours selon votre niveau et vos besoins."
+            }
+          ]
+        },
+        {
+          "type": "horizontalRule"
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "Question 1 : Le Big Data" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "D'après vous, qu'est-ce que le Big Data ? Partagez votre définition personnelle."
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "text" },
+          "content": [
+            {
+              "type": "text",
+              "text": "[Espace pour votre réponse - à compléter lors de la session]"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "Question 2 : Le Machine Learning" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Comment définiriez-vous le Machine Learning (Apprentissage Automatique) ?"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "text" },
+          "content": [
+            {
+              "type": "text",
+              "text": "[Espace pour votre réponse - à compléter lors de la session]"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "Question 3 : La Data Science" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Qu'est-ce que la Data Science pour vous ?"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "text" },
+          "content": [
+            {
+              "type": "text",
+              "text": "[Espace pour votre réponse - à compléter lors de la session]"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "Question 4 : Vos attentes" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Qu'attendez-vous principalement de ce cours ? Quels sont vos objectifs d'apprentissage ?"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "text" },
+          "content": [
+            {
+              "type": "text",
+              "text": "[Espace pour votre réponse - à compléter lors de la session]"
+            }
+          ]
+        },
+        {
+          "type": "horizontalRule"
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [{ "type": "italic" }],
+              "text": "💡 Note pour le formateur : "
+            },
+            {
+              "type": "text",
+              "text": "Ce quiz peut être complété collectivement en début de session (brainstorming) ou individuellement. Les réponses peuvent être collectées via un outil externe (Google Forms, Mentimeter, etc.) ou directement dans le chat/forum du cours."
+            }
+          ]
+        }
+      ]
+    },
+    "pedagogical_context": {
+      "text": "Ce quiz d'introduction sert plusieurs objectifs pédagogiques :\n\n1. **Évaluer le niveau de départ** : Comprendre où en sont les participants permet d'adapter le rythme et la profondeur du cours.\n\n2. **Créer un engagement** : En demandant aux participants de partager leur vision, on les implique activement dès le début.\n\n3. **Identifier les attentes** : Connaître les objectifs de chacun permet de mettre en avant les parties du cours les plus pertinentes.\n\n4. **Créer un référentiel de départ** : À la fin du cours, on pourra revenir sur ces définitions pour montrer l'évolution de la compréhension.\n\n**Suggestions d'animation :**\n- Faire un tour de table où chacun partage sa définition\n- Utiliser un outil collaboratif (Mentimeter, Padlet) pour collecter les réponses\n- Créer un nuage de mots à partir des réponses\n- Revenir sur ces définitions en fin de cours pour mesurer l'apprentissage"
+    }
+  }
+}
+

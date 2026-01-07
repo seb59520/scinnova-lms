@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Course, Submission, Item, Profile } from '../../types/database'
-import { FileText, Search, Download, CheckCircle, Clock, XCircle, File, Eye } from 'lucide-react'
+import { FileText, Search, Download, CheckCircle, Clock, XCircle, File, Eye, MessageSquare } from 'lucide-react'
 import { RichTextEditor } from '../../components/RichTextEditor'
 
 interface SubmissionWithDetails extends Submission {
@@ -239,6 +239,15 @@ export function AdminCourseSubmissions() {
                   </p>
                 )}
               </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <Link
+                to={`/admin/courses/${courseId}/quiz-responses`}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <MessageSquare className="w-4 h-4" />
+                Voir les réponses du quiz d'introduction
+              </Link>
             </div>
           </div>
         </div>

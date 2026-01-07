@@ -106,6 +106,7 @@ export function AdminCourseEdit() {
         price_cents: course.price_cents || null,
         currency: course.currency || 'EUR',
         is_paid: course.access_type === 'paid',
+        allow_pdf_download: course.allow_pdf_download || false,
         created_by: isNew ? (user?.id || course.created_by) : course.created_by,
         updated_at: new Date().toISOString()
       }
@@ -985,6 +986,23 @@ export function AdminCourseEdit() {
                   </div>
                 </div>
               )}
+
+              <div className="mt-4">
+                <label className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={course.allow_pdf_download || false}
+                    onChange={(e) => setCourse({ ...course, allow_pdf_download: e.target.checked })}
+                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <span className="text-sm font-medium text-gray-700">
+                    Autoriser le téléchargement PDF du cours complet
+                  </span>
+                </label>
+                <p className="text-xs text-gray-500 mt-1 ml-6">
+                  Format paysage : slides à gauche, contexte pédagogique à droite
+                </p>
+              </div>
             </div>
           </div>
 

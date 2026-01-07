@@ -1,0 +1,35 @@
+{
+  "type": "game",
+  "title": "Quiz d'introduction - Vos définitions et attentes",
+  "position": 1,
+  "published": true,
+  "content": {
+    "gameType": "introduction-quiz",
+    "description": "Partagez avec nous votre compréhension du Big Data, du Machine Learning et de la Data Science, ainsi que vos attentes pour ce cours",
+    "instructions": "Ce quiz d'introduction n'a pas de bonne ou mauvaise réponse. Il s'agit de recueillir votre vision actuelle de ces concepts et vos attentes pour personnaliser le cours. Répondez librement et honnêtement.",
+    "questions": [
+      {
+        "id": "bigdata",
+        "label": "D'après vous, qu'est-ce que le Big Data ? Partagez votre définition personnelle.",
+        "placeholder": "Exemple : Le Big Data représente pour moi..."
+      },
+      {
+        "id": "machinelearning",
+        "label": "Comment définiriez-vous le Machine Learning (Apprentissage Automatique) ?",
+        "placeholder": "Exemple : Le Machine Learning est selon moi..."
+      },
+      {
+        "id": "datascience",
+        "label": "Qu'est-ce que la Data Science pour vous ?",
+        "placeholder": "Exemple : La Data Science consiste à..."
+      },
+      {
+        "id": "expectations",
+        "label": "Qu'attendez-vous principalement de ce cours ? Quels sont vos objectifs d'apprentissage ?",
+        "placeholder": "Exemple : J'aimerais apprendre à..."
+      }
+    ]
+  },
+  "chapters": []
+}
+

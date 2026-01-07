@@ -19,6 +19,7 @@ export interface Course {
   price_cents: number | null;
   currency: string | null;
   is_paid: boolean;
+  allow_pdf_download?: boolean;
   created_by: string;
   created_at: string;
   updated_at: string;

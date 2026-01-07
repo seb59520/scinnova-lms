@@ -27,6 +27,9 @@ export function CarouselEditor({ items: initialItems, onSave, onCancel }: Carous
 
   const removeItem = (index: number) => {
     if (items.length > 1) {
+      if (!confirm('Êtes-vous sûr de vouloir supprimer cet élément du carrousel ?')) {
+        return
+      }
       setItems(items.filter((_, i) => i !== index))
     }
   }

@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import { useUserRole } from '../hooks/useUserRole'
 import { useNetworkStatus } from '../hooks/useNetworkStatus'
 import { UserRole } from '../types/database'
 import { WifiOff, Wifi } from 'lucide-react'
@@ -17,6 +18,7 @@ export function ProtectedRoute({
   requireAuth = true
 }: ProtectedRouteProps) {
   const { user, profile, loading } = useAuth()
+  const { isAdmin, loading: roleLoading } = useUserRole()
   const { isOnline, wasOffline } = useNetworkStatus()
   const location = useLocation()
 
@@ -53,7 +55,7 @@ export function ProtectedRoute({
     )
   }
 
-  if (loading && !forceRender) {
+  if ((loading || roleLoading) && !forceRender) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -87,9 +89,32 @@ export function ProtectedRoute({
     return <>{children}</>
   }
 
-  // Vérifier le rôle si spécifié (seulement si le profil est chargé)
-  if (requiredRole && profile) {
-    if (profile.role !== requiredRole && profile.role !== 'admin') {
+  // Vérifier le rôle si spécifié (seulement si le rôle est chargé)
+  if (requiredRole && !roleLoading) {
+    // Si le rôle requis est 'admin', vérifier isAdmin
+    if (requiredRole === 'admin') {
+      if (!isAdmin) {
+        // Rediriger vers /app seulement si on n'y est pas déjà
+        if (!isOnAppPage) {
+          return <Navigate to="/app" replace />
+        }
+        return (
+          <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Accès refusé</h2>
+              <p className="text-gray-600 mb-4">
+                Vous devez être administrateur pour accéder à cette page.
+              </p>
+            </div>
+          </div>
+        )
+      }
+      // Si admin, autoriser l'accès
+      return <>{children}</>
+    }
+    
+    // Pour les autres rôles, utiliser le profil comme fallback
+    if (profile && profile.role !== requiredRole && profile.role !== 'admin') {
       // Rediriger vers /app seulement si on n'y est pas déjà
       if (!isOnAppPage) {
         return <Navigate to="/app" replace />

@@ -26,12 +26,15 @@ import { AdminUnified } from './pages/admin/AdminUnified'
 import { AdminPrograms } from './pages/admin/AdminPrograms'
 import { AdminProgramEdit } from './pages/admin/AdminProgramEdit'
 import { AdminProgramEnrollments } from './pages/admin/AdminProgramEnrollments'
+import { AdminQuizResponses } from './pages/admin/AdminQuizResponses'
 import { TrainerDashboard } from './pages/trainer/TrainerDashboard'
 import { SessionLearners } from './pages/trainer/SessionLearners'
 import { SessionAnalytics } from './pages/trainer/SessionAnalytics'
 import { ExerciseResults } from './pages/trainer/ExerciseResults'
 import { TrainerNotes } from './pages/trainer/TrainerNotes'
 import { TrainerCourseScript } from './pages/trainer/TrainerCourseScript'
+import { TrainerQuizResponses } from './pages/trainer/TrainerQuizResponses'
+import { TrainerUseCaseAnalyses } from './pages/trainer/TrainerUseCaseAnalyses'
 import { UserTimeTracking } from './pages/trainer/UserTimeTracking'
 import { TrainerRouteGuard } from './components/trainer/TrainerRouteGuard'
 import { Profile } from './pages/Profile'
@@ -136,6 +139,14 @@ function App() {
             }
           />
           <Route
+            path="/mailbox"
+            element={
+              <ProtectedRoute>
+                <LearnerMailbox />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/directory"
             element={
               <ProtectedRoute requiredRole="admin">
@@ -222,6 +233,22 @@ function App() {
             element={
               <ProtectedRoute requiredRole="admin">
                 <AdminCourseSubmissions />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/courses/:courseId/quiz-responses"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminQuizResponses />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/quiz-responses"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminQuizResponses />
               </ProtectedRoute>
             }
           />
@@ -384,6 +411,54 @@ function App() {
             element={
               <TrainerRouteGuard>
                 <UserTimeTracking />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/quiz-responses"
+            element={
+              <TrainerRouteGuard>
+                <TrainerQuizResponses />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/courses/:courseId/quiz-responses"
+            element={
+              <TrainerRouteGuard>
+                <TrainerQuizResponses />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/sessions/:sessionId/quiz-responses"
+            element={
+              <TrainerRouteGuard>
+                <TrainerQuizResponses />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/use-case-analyses"
+            element={
+              <TrainerRouteGuard>
+                <TrainerUseCaseAnalyses />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/courses/:courseId/use-case-analyses"
+            element={
+              <TrainerRouteGuard>
+                <TrainerUseCaseAnalyses />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/sessions/:sessionId/use-case-analyses"
+            element={
+              <TrainerRouteGuard>
+                <TrainerUseCaseAnalyses />
               </TrainerRouteGuard>
             }
           />

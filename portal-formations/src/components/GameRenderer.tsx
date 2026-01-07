@@ -9,6 +9,7 @@ interface GameRendererProps {
     position: number
     content?: any
   }>
+  itemId?: string
 }
 
 /**
@@ -20,7 +21,7 @@ interface GameRendererProps {
  * 3. Valide la configuration si une fonction de validation existe
  * 4. Rend le composant du jeu avec les props appropriées
  */
-export function GameRenderer({ gameContent, onScore, chapters }: GameRendererProps) {
+export function GameRenderer({ gameContent, onScore, chapters, itemId }: GameRendererProps) {
   // Extraire le game_content réel (gère les cas imbriqués)
   const actualGameContent = extractGameContent(gameContent)
 
@@ -189,7 +190,9 @@ export function GameRenderer({ gameContent, onScore, chapters }: GameRendererPro
     ...commonProps,
     ...gameSpecificProps,
     // Passer les chapitres si disponibles (pour les jeux de type scenario)
-    ...(chapters && { chapters })
+    ...(chapters && { chapters }),
+    // Passer itemId pour les quiz (pour sauvegarde dans user_responses)
+    ...(itemId && { itemId })
   }
 
   // Debug: log des props pour le débogage
