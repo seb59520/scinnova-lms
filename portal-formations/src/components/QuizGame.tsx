@@ -250,6 +250,11 @@ export function QuizGame({
               quizType.toLowerCase().includes('datascience') ||
               (description && description.toLowerCase().includes('data science'))) {
             quizTypeKey = `quiz_data_science_${itemId || 'default'}`
+          } else if (quizType.toLowerCase().includes('machine_learning') || 
+                     quizType.toLowerCase().includes('machinelearning') ||
+                     quizType.toLowerCase().includes('ml') ||
+                     (description && description.toLowerCase().includes('machine learning'))) {
+            quizTypeKey = `quiz_machine_learning_${itemId || 'default'}`
           } else if (quizType.toLowerCase().includes('big_data') || 
                      quizType.toLowerCase().includes('bigdata') ||
                      (description && description.toLowerCase().includes('big data'))) {

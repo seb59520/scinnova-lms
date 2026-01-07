@@ -62,9 +62,12 @@ export function TrainerQuizResponses() {
       } else if (quizTypeFilter === 'quiz_data_science') {
         // Filtrer uniquement les quiz Data Science
         query = query.like('quiz_type', 'quiz_data_science_%')
+      } else if (quizTypeFilter === 'quiz_machine_learning') {
+        // Filtrer uniquement les quiz Machine Learning
+        query = query.like('quiz_type', 'quiz_machine_learning_%')
       } else if (quizTypeFilter === 'quiz_all') {
-        // Tous les quiz avec score (Big Data + Data Science)
-        query = query.or('quiz_type.like.quiz_big_data_%,quiz_type.like.quiz_data_science_%')
+        // Tous les quiz avec score (Big Data + Data Science + Machine Learning)
+        query = query.or('quiz_type.like.quiz_big_data_%,quiz_type.like.quiz_data_science_%,quiz_type.like.quiz_machine_learning_%')
       } else if (quizTypeFilter === 'tp_big_data') {
         // Filtrer les TP Big Data qui commencent par "tp_big_data_"
         query = query.like('quiz_type', 'tp_big_data_%')
@@ -248,6 +251,7 @@ export function TrainerQuizResponses() {
                 <option value="quiz_all">Tous les quiz avec score</option>
                 <option value="quiz_big_data">📊 Quiz Big Data</option>
                 <option value="quiz_data_science">📈 Quiz Data Science</option>
+                <option value="quiz_machine_learning">🤖 Quiz Machine Learning</option>
                 <option value="tp_big_data">TP Big Data - Analyses</option>
               </select>
             </div>
