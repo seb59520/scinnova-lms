@@ -41,7 +41,8 @@
             ],
             "answer": "Une discipline interdisciplinaire combinant statistiques, programmation et expertise métier pour extraire de la valeur des données",
             "explanation": "💡 Astuce : La Data Science est un domaine interdisciplinaire qui combine : les statistiques et mathématiques (pour l'analyse), la programmation (Python, R, SQL), et l'expertise métier (pour comprendre le contexte et formuler les bonnes questions). Elle ne se limite pas à une seule technique mais utilise un ensemble d'outils et méthodes pour résoudre des problèmes business.",
-            "difficulty": 1
+            "difficulty": 1,
+            "slideReference": "Slide : Introduction à la Data Science - Définition et enjeux"
           },
           {
             "id": "q2-workflow",
@@ -55,7 +56,8 @@
             ],
             "answer": "Collecte → Nettoyage → Exploration → Modélisation → Déploiement",
             "explanation": "💡 Astuce : Le workflow classique (CRISP-DM) suit généralement : 1) Compréhension métier et collecte de données, 2) Nettoyage et préparation (80% du temps !), 3) Exploration et analyse exploratoire (EDA), 4) Modélisation et évaluation, 5) Déploiement et monitoring. Le nettoyage prend souvent plus de temps que la modélisation elle-même.",
-            "difficulty": 1
+            "difficulty": 1,
+            "slideReference": "Slide : Workflow Data Science - CRISP-DM et méthodologie"
           },
           {
             "id": "q3-supervised-vs-unsupervised",
@@ -69,7 +71,8 @@
             ],
             "answer": "L'apprentissage supervisé utilise des données étiquetées (avec labels), l'apprentissage non supervisé travaille sur des données sans labels",
             "explanation": "💡 Astuce : L'apprentissage supervisé (classification, régression) nécessite des exemples avec la réponse attendue (labels) pour apprendre. L'apprentissage non supervisé (clustering, réduction de dimensionnalité) découvre des patterns dans les données sans labels. Exemple : prédire le prix d'une maison (supervisé) vs découvrir des groupes de clients similaires (non supervisé).",
-            "difficulty": 1
+            "difficulty": 1,
+            "slideReference": "Slide : Types d'apprentissage - Supervisé vs Non supervisé"
           },
           {
             "id": "q4-overfitting",
@@ -83,7 +86,8 @@
             ],
             "answer": "Un modèle qui mémorise les données d'entraînement mais généralise mal sur de nouvelles données",
             "explanation": "💡 Astuce : Le surapprentissage se produit quand un modèle est trop complexe et 'mémorise' le bruit des données d'entraînement plutôt que d'apprendre les patterns généraux. Signes : excellente performance sur l'entraînement mais mauvaise sur les données de test. Solutions : validation croisée, régularisation, simplification du modèle, plus de données.",
-            "difficulty": 1
+            "difficulty": 1,
+            "slideReference": "Slide : Évaluation des modèles - Overfitting et Underfitting"
           },
           {
             "id": "q5-eda",
@@ -97,7 +101,8 @@
             ],
             "answer": "Une phase d'exploration pour comprendre les données, détecter les anomalies, identifier les patterns et formuler des hypothèses avant la modélisation",
             "explanation": "💡 Astuce : L'EDA est cruciale avant toute modélisation. Elle inclut : visualisations (distributions, corrélations), statistiques descriptives (moyenne, médiane, écart-type), détection d'anomalies et valeurs manquantes, identification de patterns et corrélations. Une bonne EDA guide le choix des features et des modèles appropriés.",
-            "difficulty": 1
+            "difficulty": 1,
+            "slideReference": "Slide : Analyse exploratoire des données (EDA) - Méthodes et outils"
           }
         ]
       },
@@ -118,7 +123,8 @@
             ],
             "answer": "Pour obtenir une estimation plus robuste de la performance du modèle en utilisant plusieurs splits train/test",
             "explanation": "💡 Astuce : La validation croisée (ex: k-fold) divise les données en k parties, entraîne k fois le modèle en laissant une partie différente comme test à chaque fois. Cela donne une estimation plus fiable de la performance qu'un simple split train/test, car elle teste sur différents sous-ensembles et réduit la variance de l'estimation.",
-            "difficulty": 2
+            "difficulty": 2,
+            "slideReference": "Slide : Validation croisée - K-fold et techniques d'évaluation"
           },
           {
             "id": "q7-feature-engineering",
@@ -132,7 +138,8 @@
             ],
             "answer": "La création, transformation et sélection de variables (features) pour améliorer les performances du modèle",
             "explanation": "💡 Astuce : Le feature engineering est souvent plus important que le choix de l'algorithme ! Il inclut : création de nouvelles features (ex: ratio, interactions), transformation (normalisation, encodage catégoriel), sélection (suppression de features redondantes ou peu informatives). Un bon feature engineering peut transformer un modèle médiocre en excellent modèle.",
-            "difficulty": 2
+            "difficulty": 2,
+            "slideReference": "Slide : Feature Engineering - Création et transformation de variables"
           },
           {
             "id": "q8-bias-variance",
@@ -146,7 +153,8 @@
             ],
             "answer": "Un équilibre entre la capacité du modèle à capturer les patterns (baisse du biais) et sa capacité à généraliser (baisse de la variance)",
             "explanation": "💡 Astuce : Biais élevé = modèle trop simple (sous-apprentissage), variance élevée = modèle trop complexe (surapprentissage). Le compromis optimal minimise l'erreur totale (biais² + variance + erreur irréductible). Un modèle trop simple a un biais élevé, un modèle trop complexe a une variance élevée. L'objectif est de trouver le sweet spot.",
-            "difficulty": 2
+            "difficulty": 2,
+            "slideReference": "Slide : Compromis biais-variance - Optimisation des modèles"
           },
           {
             "id": "q9-metrics",
@@ -160,7 +168,8 @@
             ],
             "answer": "La précision (precision), le rappel (recall) et le F1-score, plutôt que l'accuracy seule",
             "explanation": "💡 Astuce : Avec des classes déséquilibrées (ex: 95% classe A, 5% classe B), un modèle qui prédit toujours la classe majoritaire aura 95% d'accuracy mais sera inutile ! La précision mesure la qualité des prédictions positives, le rappel mesure la capacité à trouver tous les positifs. Le F1-score combine les deux. La matrice de confusion donne une vue complète.",
-            "difficulty": 2
+            "difficulty": 2,
+            "slideReference": "Slide : Métriques d'évaluation - Précision, Rappel, F1-score"
           },
           {
             "id": "q10-pipeline",
@@ -174,7 +183,8 @@
             ],
             "answer": "Pour garantir la reproductibilité, faciliter la maintenance et permettre le déploiement en production",
             "explanation": "💡 Astuce : Un pipeline reproductible (versioning du code, gestion des dépendances, documentation) permet de : reproduire exactement les résultats, faciliter la collaboration, maintenir et mettre à jour facilement, déployer en production de manière fiable. Utilisez des outils comme Git, Docker, MLflow, ou DVC pour la reproductibilité.",
-            "difficulty": 2
+            "difficulty": 2,
+            "slideReference": "Slide : Pipelines reproductibles - Bonnes pratiques et outils"
           }
         ]
       },
@@ -195,7 +205,8 @@
             ],
             "answer": "L'utilisation accidentelle d'informations du futur ou de la cible dans les features, ce qui donne des performances irréalistes en entraînement mais des échecs en production",
             "explanation": "💡 Astuce : Le data leakage est un piège classique ! Exemples : utiliser une feature calculée après l'événement à prédire, inclure la variable cible dans les features, utiliser des données de test pour le preprocessing. Le modèle semble excellent en entraînement mais échoue complètement en production. Toujours vérifier la temporalité et la disponibilité des features au moment de la prédiction.",
-            "difficulty": 3
+            "difficulty": 3,
+            "slideReference": "Slide : Pièges à éviter - Data Leakage et bonnes pratiques"
           },
           {
             "id": "q12-interpretability",
@@ -209,7 +220,8 @@
             ],
             "answer": "Pour comprendre les décisions du modèle, détecter les biais, gagner la confiance des parties prenantes et respecter la réglementation (RGPD, explicabilité)",
             "explanation": "💡 Astuce : Un modèle 'boîte noire' performant peut cacher des biais, des erreurs systématiques, ou des décisions incompréhensibles. L'interprétabilité permet de : comprendre pourquoi le modèle prend certaines décisions, détecter les biais algorithmiques, gagner la confiance des utilisateurs et métiers, respecter les exigences réglementaires. Outils : SHAP, LIME, feature importance, modèles interprétables (régression linéaire, arbres de décision).",
-            "difficulty": 3
+            "difficulty": 3,
+            "slideReference": "Slide : Interprétabilité des modèles - SHAP, LIME et explicabilité"
           },
           {
             "id": "q13-production",
@@ -223,7 +235,8 @@
             ],
             "answer": "Le monitoring de la performance (dérive des données, dégradation du modèle), la scalabilité, la latence, la maintenance et la gestion des versions",
             "explanation": "💡 Astuce : Déployer un modèle n'est que le début ! En production, il faut : monitorer la performance (détecter la data drift, concept drift, dégradation), gérer la scalabilité (charges variables), optimiser la latence (prédictions en temps réel), maintenir et mettre à jour le modèle, gérer les versions. Un modèle non monitoré peut dégrader silencieusement les performances business.",
-            "difficulty": 3
+            "difficulty": 3,
+            "slideReference": "Slide : Déploiement en production - Monitoring et maintenance"
           },
           {
             "id": "q14-ethics",
@@ -237,7 +250,8 @@
             ],
             "answer": "Les biais algorithmiques et discriminations, la vie privée et protection des données, la transparence et explicabilité, l'utilisation responsable de l'IA",
             "explanation": "💡 Astuce : La Data Science a un impact réel sur les personnes. Enjeux éthiques : biais (modèles qui discriminent), vie privée (utilisation des données personnelles, RGPD), transparence (décisions algorithmiques compréhensibles), responsabilité (qui est responsable des décisions automatisées ?). Il est crucial de : auditer les biais, respecter la vie privée, documenter les décisions, et considérer l'impact social des modèles.",
-            "difficulty": 3
+            "difficulty": 3,
+            "slideReference": "Slide : Éthique en Data Science - Biais, RGPD et responsabilité"
           },
           {
             "id": "q15-mlops",
@@ -251,7 +265,8 @@
             ],
             "answer": "L'application des pratiques DevOps au Machine Learning pour automatiser le cycle de vie des modèles (développement, déploiement, monitoring, retraining)",
             "explanation": "💡 Astuce : Le MLOps combine ML + DevOps pour : automatiser le pipeline (entraînement, validation, déploiement), versionner les modèles et données, monitorer en continu, retraiter automatiquement quand nécessaire. Cela permet de passer d'un modèle prototype à un système de production robuste et maintenable. Outils : MLflow, Kubeflow, TensorFlow Extended, Azure ML.",
-            "difficulty": 3
+            "difficulty": 3,
+            "slideReference": "Slide : MLOps - Automatisation du cycle de vie des modèles"
           }
         ]
       }
@@ -259,4 +274,5 @@
   },
   "chapters": []
 }
+
 

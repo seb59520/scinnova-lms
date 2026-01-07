@@ -13,6 +13,8 @@ export interface QuizQuestion {
   answer: string | boolean
   explanation: string
   difficulty: number
+  slideReference?: string // Titre ou ID de la slide où trouver la réponse
+  slideLink?: string // URL ou lien vers la slide
 }
 
 export interface QuizLevel {
@@ -476,6 +478,27 @@ export function QuizGame({
                     <p className="mt-2 text-gray-600">
                       <strong>Réponse correcte :</strong> {String(currentQuestion.answer)}
                     </p>
+                  )}
+                  {currentQuestion.slideReference && (
+                    <div className="mt-3 pt-3 border-t border-gray-300">
+                      <p className="font-semibold mb-1 flex items-center">
+                        <BookOpen className="w-4 h-4 mr-2" />
+                        📚 Référence :
+                      </p>
+                      {currentQuestion.slideLink ? (
+                        <a
+                          href={currentQuestion.slideLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center"
+                        >
+                          {currentQuestion.slideReference}
+                          <ArrowRight className="w-3 h-3 ml-1" />
+                        </a>
+                      ) : (
+                        <p className="text-gray-600">{currentQuestion.slideReference}</p>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
