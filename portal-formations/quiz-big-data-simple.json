@@ -41,7 +41,8 @@
             ],
             "answer": "Un changement de modèle de décision basé sur des données massives, variées et rapides",
             "explanation": "Le Big Data n'est pas qu'un volume. C'est un changement de modèle de décision qui permet de traiter des données massives (Volume), générées rapidement (Vélocité), de sources variées (Variété), avec des enjeux de qualité (Véracité), pour créer de la valeur (Valeur).",
-            "difficulty": 1
+            "difficulty": 1,
+            "slideReference": "Slide : Introduction au Big Data - Définition et enjeux"
           },
           {
             "id": "q2-5v",
@@ -55,7 +56,8 @@
             ],
             "answer": "Volume, Vélocité, Variété, Véracité, Valeur",
             "explanation": "Les 5 V du Big Data sont : Volume (quantité massive de données), Vélocité (vitesse de génération et traitement), Variété (diversité des formats : texte, images, vidéos, logs, etc.), Véracité (qualité et fiabilité), et Valeur (utilité business et ROI).",
-            "difficulty": 1
+            "difficulty": 1,
+            "slideReference": "Slide : Les 5 V du Big Data - Volume, Vélocité, Variété, Véracité, Valeur"
           },
           {
             "id": "q3-volume",
@@ -69,7 +71,8 @@
             ],
             "answer": "Parce que stocker des données n'a jamais créé de valeur - la vraie difficulté est la sélection des données pertinentes",
             "explanation": "Le coût du stockage baisse constamment. La vraie difficulté n'est pas de stocker, mais de sélectionner quelles données méritent d'être conservées et analysées. 80% des données stockées ne sont jamais réutilisées.",
-            "difficulty": 1
+            "difficulty": 1,
+            "slideReference": "Slide : Le Volume - Le faux problème du Big Data"
           },
           {
             "id": "q4-velocite",
@@ -83,7 +86,8 @@
             ],
             "answer": "Parce que si la donnée arrive après la décision, elle ne sert plus",
             "explanation": "Dans de nombreux cas d'usage (détection de fraude bancaire, recommandation e-commerce, maintenance prédictive), la décision doit être prise en temps réel. Si la donnée arrive après la décision, elle perd toute valeur opérationnelle.",
-            "difficulty": 1
+            "difficulty": 1,
+            "slideReference": "Slide : La Vélocité - Traitement en temps réel"
           },
           {
             "id": "q5-variete",
@@ -97,7 +101,8 @@
             ],
             "answer": "Emails, images, PDF, logs techniques, données IoT, vidéos, réseaux sociaux",
             "explanation": "La variété fait référence à la diversité des formats de données : données structurées (tableaux), semi-structurées (JSON, XML), et non structurées (emails, images, PDF, logs, vidéos, réseaux sociaux, IoT). Les outils de BI traditionnels échouent avec ces données non structurées.",
-            "difficulty": 1
+            "difficulty": 1,
+            "slideReference": "Slide : La Variété - Données structurées, semi-structurées et non structurées"
           }
         ]
       },
@@ -118,7 +123,8 @@
             ],
             "answer": "Une mauvaise donnée traitée rapidement reste une mauvaise décision",
             "explanation": "La véracité (qualité et fiabilité) est critique. Le Big Data amplifie les erreurs s'il n'y a pas de gouvernance. Des données biaisées, incomplètes ou obsolètes mènent à de mauvaises décisions, même si elles sont traitées rapidement.",
-            "difficulty": 2
+            "difficulty": 2,
+            "slideReference": "Slide : La Véracité - Qualité et gouvernance des données"
           },
           {
             "id": "q7-valeur",
@@ -132,7 +138,8 @@
             ],
             "answer": "Parce que la valeur ne vient pas de la donnée, mais de son usage",
             "explanation": "La Valeur est le seul V qui compte vraiment car la valeur ne vient pas de la donnée elle-même, mais de son usage : ROI attendu, décision améliorée, action automatisée. Avoir beaucoup de données (Volume) ne crée pas de valeur si elles ne sont pas utilisées efficacement.",
-            "difficulty": 2
+            "difficulty": 2,
+            "slideReference": "Slide : La Valeur - Le seul V qui compte vraiment"
           },
           {
             "id": "q8-bi-vs-bigdata",
@@ -146,7 +153,8 @@
             ],
             "answer": "La BI analyse le passé, le Big Data anticipe le futur",
             "explanation": "La BI traditionnelle analyse des données historiques structurées pour expliquer ce qui s'est passé (rapports, tableaux de bord). Le Big Data permet d'anticiper le futur grâce à des modèles prédictifs, des décisions en temps réel, et l'analyse de données non structurées.",
-            "difficulty": 2
+            "difficulty": 2,
+            "slideReference": "Slide : Big Data vs BI traditionnelle - Passé vs Futur"
           },
           {
             "id": "q9-impact-org",
@@ -160,7 +168,8 @@
             ],
             "answer": "Transformation des processus métier et culture data-driven",
             "explanation": "Les impacts organisationnels incluent : transformation des processus métier, évolution des rôles (data scientists, data engineers), changement de culture vers une approche data-driven, amélioration de la prise de décision basée sur les données, et nouveaux modèles de collaboration.",
-            "difficulty": 2
+            "difficulty": 2,
+            "slideReference": "Slide : Impacts organisationnels - Transformation et culture data-driven"
           },
           {
             "id": "q10-impact-tech",
@@ -174,7 +183,8 @@
             ],
             "answer": "Nécessité d'infrastructure cloud et d'outils distribués (Hadoop, Spark, Kafka)",
             "explanation": "Les impacts techniques incluent : infrastructure (cloud, distributed computing, data lakes), outils (Hadoop, Spark, Kafka, TensorFlow), gestion de la qualité et gouvernance des données, intégration avec les systèmes existants, et cybersécurité.",
-            "difficulty": 2
+            "difficulty": 2,
+            "slideReference": "Slide : Impacts techniques - Infrastructure et outils Big Data"
           }
         ]
       },
@@ -195,7 +205,8 @@
             ],
             "answer": "Détection de fraude en temps réel",
             "explanation": "Le secteur financier utilise massivement le Big Data pour : détection de fraude en temps réel, scoring de crédit, trading algorithmique, évaluation des risques, et recommandation de produits financiers personnalisés.",
-            "difficulty": 3
+            "difficulty": 3,
+            "slideReference": "Slide : Cas d'usage - Secteur financier et détection de fraude"
           },
           {
             "id": "q12-erreur-frequente",
@@ -209,7 +220,8 @@
             ],
             "answer": "Lancer un projet Big Data sans cas métier clair",
             "explanation": "Une erreur fréquente est de lancer un projet Big Data sans cas métier clair, ce qui mène souvent à un data lake inutile. Il faut également éviter de confier le sujet uniquement à l'IT et de croire que l'IA compensera la mauvaise donnée.",
-            "difficulty": 3
+            "difficulty": 3,
+            "slideReference": "Slide : Pièges à éviter - Erreurs fréquentes dans les projets Big Data"
           },
           {
             "id": "q13-decision-dirigeant",
@@ -223,7 +235,8 @@
             ],
             "answer": "Quels problèmes méritent d'être data-driven, quel niveau de confiance est requis, où l'automatisation est acceptable",
             "explanation": "Un dirigeant ne décide pas des algorithmes (c'est technique). Il décide : quels problèmes méritent d'être data-driven, quel niveau de confiance est requis, où l'automatisation est acceptable (ou pas), et qui est responsable des décisions algorithmiques.",
-            "difficulty": 3
+            "difficulty": 3,
+            "slideReference": "Slide : Décisions stratégiques - Rôle du dirigeant dans le Big Data"
           },
           {
             "id": "q14-biais",
@@ -237,7 +250,8 @@
             ],
             "answer": "Les biais peuvent être amplifiés et mener à des discriminations et des décisions injustes",
             "explanation": "Les biais algorithmiques sont un enjeu majeur. Si les données d'entraînement contiennent des biais (par exemple, discrimination basée sur le genre, l'origine, etc.), le modèle les reproduira et les amplifiera, menant à des décisions injustes et potentiellement discriminatoires.",
-            "difficulty": 3
+            "difficulty": 3,
+            "slideReference": "Slide : Biais algorithmiques - Risques et enjeux éthiques"
           },
           {
             "id": "q15-gouvernance",
@@ -251,7 +265,8 @@
             ],
             "answer": "Pour éviter que le Big Data amplifie les erreurs et les biais",
             "explanation": "La gouvernance des données est cruciale car sans elle, le Big Data amplifie les erreurs. Des données de mauvaise qualité (biaisées, incomplètes, obsolètes) traitées rapidement mènent à de mauvaises décisions. La gouvernance assure la qualité, la traçabilité, et la conformité réglementaire (RGPD).",
-            "difficulty": 3
+            "difficulty": 3,
+            "slideReference": "Slide : Gouvernance des données - Qualité, traçabilité et conformité"
           }
         ]
       }
@@ -259,4 +274,5 @@
   },
   "chapters": []
 }
+
 
