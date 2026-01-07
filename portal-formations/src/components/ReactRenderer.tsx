@@ -1360,7 +1360,12 @@ function renderGame(item: CourseJson['modules'][0]['items'][0], theme: any) {
           objectives={item.content.objectives}
           scoring={item.content.scoring}
           itemId={item.id}
-          quizType={`quiz_${item.id || 'big_data'}`}
+          quizType={
+            (item.title?.toLowerCase().includes('data science') || 
+             item.content.description?.toLowerCase().includes('data science'))
+              ? `data_science_quiz_${item.id || 'default'}` 
+              : `big_data_quiz_${item.id || 'default'}`
+          }
         />
       </div>
     )

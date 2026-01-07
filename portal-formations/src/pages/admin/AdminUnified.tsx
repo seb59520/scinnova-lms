@@ -45,6 +45,7 @@ export function AdminUnified() {
       subMenus: [
         { id: 'quiz', label: 'Quiz', icon: MessageSquare, path: '/trainer/quiz-responses' },
         { id: 'analyses', label: 'Analyses IA', icon: Sparkles, path: '/trainer/use-case-analyses' },
+        { id: 'data-science', label: 'Exercices Data Science', icon: BookOpen, path: '/trainer/data-science-exercises' },
         { id: 'time', label: 'Temps d\'écran', icon: Clock, path: '/trainer/time-tracking' },
       ]
     },

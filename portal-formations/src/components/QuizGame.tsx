@@ -240,7 +240,20 @@ export function QuizGame({
       const userId = profile?.id || user.id
       if (userId) {
         try {
-          const quizTypeKey = itemId ? `quiz_${itemId}` : quizType
+          // Déterminer le type de quiz basé sur le quizType ou le titre
+          let quizTypeKey = itemId ? `quiz_${itemId}` : quizType
+          
+          // Si le quizType contient "data_science" ou "Data Science", utiliser un identifiant spécifique
+          if (quizType.toLowerCase().includes('data_science') || 
+              quizType.toLowerCase().includes('datascience') ||
+              (description && description.toLowerCase().includes('data science'))) {
+            quizTypeKey = `quiz_data_science_${itemId || 'default'}`
+          } else if (quizType.toLowerCase().includes('big_data') || 
+                     quizType.toLowerCase().includes('bigdata') ||
+                     (description && description.toLowerCase().includes('big data'))) {
+            quizTypeKey = `quiz_big_data_${itemId || 'default'}`
+          }
+          
           const responses = {
             level: currentLevel,
             score: scoreResult.score,
@@ -249,7 +262,8 @@ export function QuizGame({
             badge: scoreResult.badge,
             wrongIds: wrongIds,
             userAnswers: Object.fromEntries(userAnswers),
-            completedAt: new Date().toISOString()
+            completedAt: new Date().toISOString(),
+            quizTitle: description || 'Quiz' // Stocker le titre pour l'affichage
           }
 
           await supabase

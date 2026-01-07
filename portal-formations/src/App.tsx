@@ -35,6 +35,7 @@ import { TrainerNotes } from './pages/trainer/TrainerNotes'
 import { TrainerCourseScript } from './pages/trainer/TrainerCourseScript'
 import { TrainerQuizResponses } from './pages/trainer/TrainerQuizResponses'
 import { TrainerUseCaseAnalyses } from './pages/trainer/TrainerUseCaseAnalyses'
+import { TrainerDataScienceExercises } from './pages/trainer/TrainerDataScienceExercises'
 import { UserTimeTracking } from './pages/trainer/UserTimeTracking'
 import { TrainerRouteGuard } from './components/trainer/TrainerRouteGuard'
 import { Profile } from './pages/Profile'
@@ -459,6 +460,30 @@ function App() {
             element={
               <TrainerRouteGuard>
                 <TrainerUseCaseAnalyses />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/data-science-exercises"
+            element={
+              <TrainerRouteGuard>
+                <TrainerDataScienceExercises />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/courses/:courseId/data-science-exercises"
+            element={
+              <TrainerRouteGuard>
+                <TrainerDataScienceExercises />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/sessions/:sessionId/data-science-exercises"
+            element={
+              <TrainerRouteGuard>
+                <TrainerDataScienceExercises />
               </TrainerRouteGuard>
             }
           />

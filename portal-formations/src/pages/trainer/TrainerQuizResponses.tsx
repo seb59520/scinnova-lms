@@ -30,7 +30,7 @@ export function TrainerQuizResponses() {
   const [error, setError] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [expandedResponse, setExpandedResponse] = useState<string | null>(null)
-  const [quizTypeFilter, setQuizTypeFilter] = useState<string>('introduction_big_data')
+  const [quizTypeFilter, setQuizTypeFilter] = useState<string>('all')
 
   useEffect(() => {
     fetchResponses()
@@ -57,8 +57,14 @@ export function TrainerQuizResponses() {
       if (quizTypeFilter === 'all') {
         // Pas de filtre, on prend tout
       } else if (quizTypeFilter === 'quiz_big_data') {
-        // Filtrer les quiz qui commencent par "quiz_"
-        query = query.like('quiz_type', 'quiz_%')
+        // Filtrer uniquement les quiz Big Data
+        query = query.like('quiz_type', 'quiz_big_data_%')
+      } else if (quizTypeFilter === 'quiz_data_science') {
+        // Filtrer uniquement les quiz Data Science
+        query = query.like('quiz_type', 'quiz_data_science_%')
+      } else if (quizTypeFilter === 'quiz_all') {
+        // Tous les quiz avec score (Big Data + Data Science)
+        query = query.or('quiz_type.like.quiz_big_data_%,quiz_type.like.quiz_data_science_%')
       } else if (quizTypeFilter === 'tp_big_data') {
         // Filtrer les TP Big Data qui commencent par "tp_big_data_"
         query = query.like('quiz_type', 'tp_big_data_%')
@@ -237,10 +243,12 @@ export function TrainerQuizResponses() {
                 onChange={(e) => setQuizTypeFilter(e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
-                <option value="introduction_big_data">Quiz d'introduction</option>
-                <option value="quiz_big_data">Quiz Big Data (avec score)</option>
-                <option value="tp_big_data">TP Big Data - Analyses</option>
                 <option value="all">Tous les quiz</option>
+                <option value="introduction_big_data">Quiz d'introduction</option>
+                <option value="quiz_all">Tous les quiz avec score</option>
+                <option value="quiz_big_data">📊 Quiz Big Data</option>
+                <option value="quiz_data_science">📈 Quiz Data Science</option>
+                <option value="tp_big_data">TP Big Data - Analyses</option>
               </select>
             </div>
           </div>
@@ -334,9 +342,13 @@ export function TrainerQuizResponses() {
                               TP Big Data
                             </div>
                           ) : response.responses.level !== undefined ? (
-                            <div className="flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold">
+                            <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ${
+                              response.quiz_type?.includes('data_science') 
+                                ? 'bg-purple-100 text-purple-800' 
+                                : 'bg-blue-100 text-blue-800'
+                            }`}>
                               <Trophy className="w-3 h-3" />
-                              Quiz: {response.responses.score}/{response.responses.total} ({response.responses.percentage}%)
+                              {response.quiz_type?.includes('data_science') ? '📈 Data Science' : '📊 Big Data'}: {response.responses.score}/{response.responses.total} ({response.responses.percentage}%)
                             </div>
                           ) : (
                             <div className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">
@@ -381,10 +393,21 @@ export function TrainerQuizResponses() {
                           )}
                         </div>
                       ) : response.responses.level !== undefined ? (
-                        // Quiz avec score (quiz Big Data)
+                        // Quiz avec score (quiz Big Data ou Data Science)
                         <div className="space-y-4">
-                          <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg p-6">
-                            <h4 className="text-xl font-bold mb-4">Résultats du Quiz</h4>
+                          <div className={`bg-gradient-to-r text-white rounded-lg p-6 ${
+                            response.quiz_type?.includes('data_science')
+                              ? 'from-purple-500 to-pink-500'
+                              : 'from-blue-500 to-purple-500'
+                          }`}>
+                            <h4 className="text-xl font-bold mb-2">
+                              {response.quiz_type?.includes('data_science') 
+                                ? '📈 Résultats du Quiz Data Science' 
+                                : '📊 Résultats du Quiz Big Data'}
+                            </h4>
+                            {response.responses.quizTitle && (
+                              <p className="text-sm opacity-90 mb-4">{response.responses.quizTitle}</p>
+                            )}
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                               <div>
                                 <div className="text-sm opacity-90">Niveau</div>
