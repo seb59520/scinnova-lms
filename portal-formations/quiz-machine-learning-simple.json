@@ -1,0 +1,277 @@
+{
+  "type": "game",
+  "title": "🤖 Quiz Machine Learning - Testez vos connaissances",
+  "position": 1,
+  "published": true,
+  "content": {
+    "gameType": "quiz",
+    "description": "Quiz complet sur le Machine Learning pour évaluer vos connaissances sur les concepts fondamentaux, les types d'apprentissage, les cas d'usage et quand automatiser (ou pas) une décision.",
+    "instructions": "Répondez aux questions pour chaque niveau. Vous obtiendrez une note à la fin du quiz avec des explications détaillées pour chaque réponse.",
+    "objectives": [
+      "Comprendre les concepts fondamentaux du Machine Learning",
+      "Maîtriser les différents types d'apprentissage",
+      "Identifier quand automatiser une décision et quand ne pas le faire",
+      "Reconnaître les cas d'usage appropriés et les limites"
+    ],
+    "scoring": {
+      "totalQuestions": 15,
+      "pointsPerQuestion": 1,
+      "passingScore": 10,
+      "levels": {
+        "0-9": "Bases à renforcer - Revoyez les concepts fondamentaux du Machine Learning",
+        "10-12": "Bon niveau - Vous maîtrisez les concepts essentiels",
+        "13-15": "Excellent niveau - Très bonne compréhension du Machine Learning"
+      }
+    },
+    "levels": [
+      {
+        "level": 1,
+        "name": "Niveau 1 - Fondamentaux",
+        "description": "Questions sur les concepts de base du Machine Learning",
+        "questions": [
+          {
+            "id": "q1-definition",
+            "type": "mcq",
+            "prompt": "Qu'est-ce que le Machine Learning ?",
+            "options": [
+              "Un langage de programmation",
+              "Une méthode d'analyse de données qui permet aux machines d'apprendre à partir d'exemples sans être explicitement programmées",
+              "Un logiciel de visualisation",
+              "Un type de base de données"
+            ],
+            "answer": "Une méthode d'analyse de données qui permet aux machines d'apprendre à partir d'exemples sans être explicitement programmées",
+            "explanation": "💡 Astuce : Le Machine Learning est une branche de l'IA qui permet aux systèmes d'apprendre et de s'améliorer automatiquement à partir d'expériences (données) sans être explicitement programmés pour chaque tâche. Contrairement à la programmation traditionnelle où on code les règles, le ML découvre les patterns dans les données.",
+            "difficulty": 1,
+            "slideReference": "Slide : Introduction au Machine Learning - Définition et principes"
+          },
+          {
+            "id": "q2-supervised",
+            "type": "mcq",
+            "prompt": "Qu'est-ce que l'apprentissage supervisé ?",
+            "options": [
+              "Un apprentissage sans données",
+              "Un apprentissage avec des données étiquetées (labels) pour apprendre à prédire ou classifier",
+              "Un apprentissage uniquement avec des images",
+              "Un apprentissage sans supervision humaine"
+            ],
+            "answer": "Un apprentissage avec des données étiquetées (labels) pour apprendre à prédire ou classifier",
+            "explanation": "💡 Astuce : L'apprentissage supervisé nécessite des exemples avec la réponse attendue (labels). Exemples : classification (spam/non-spam), régression (prédire un prix). Le modèle apprend la relation entre les features (entrées) et les labels (sorties) pour généraliser à de nouvelles données.",
+            "difficulty": 1,
+            "slideReference": "Slide : Apprentissage supervisé - Classification et régression"
+          },
+          {
+            "id": "q3-unsupervised",
+            "type": "mcq",
+            "prompt": "Qu'est-ce que l'apprentissage non supervisé ?",
+            "options": [
+              "Un apprentissage sans professeur",
+              "Un apprentissage sur des données sans labels pour découvrir des patterns cachés",
+              "Un apprentissage uniquement avec des textes",
+              "Un apprentissage supervisé par une machine"
+            ],
+            "answer": "Un apprentissage sur des données sans labels pour découvrir des patterns cachés",
+            "explanation": "💡 Astuce : L'apprentissage non supervisé travaille sur des données sans labels pour découvrir des structures cachées. Exemples : clustering (regrouper des clients similaires), réduction de dimensionnalité (PCA), détection d'anomalies. Utile quand on ne connaît pas les catégories à l'avance.",
+            "difficulty": 1,
+            "slideReference": "Slide : Apprentissage non supervisé - Clustering et découverte de patterns"
+          },
+          {
+            "id": "q4-reinforcement",
+            "type": "mcq",
+            "prompt": "Qu'est-ce que l'apprentissage par renforcement ?",
+            "options": [
+              "Un apprentissage avec beaucoup de données",
+              "Un apprentissage où un agent apprend par essai-erreur en interagissant avec un environnement pour maximiser une récompense",
+              "Un apprentissage uniquement pour les jeux vidéo",
+              "Un apprentissage supervisé amélioré"
+            ],
+            "answer": "Un apprentissage où un agent apprend par essai-erreur en interagissant avec un environnement pour maximiser une récompense",
+            "explanation": "💡 Astuce : L'apprentissage par renforcement implique un agent qui prend des actions dans un environnement, reçoit des récompenses ou pénalités, et apprend la meilleure stratégie (politique) pour maximiser les récompenses à long terme. Exemples : jeux (AlphaGo), robots, systèmes de recommandation adaptatifs.",
+            "difficulty": 1,
+            "slideReference": "Slide : Apprentissage par renforcement - Agent, environnement et récompenses"
+          },
+          {
+            "id": "q5-training-test",
+            "type": "mcq",
+            "prompt": "Pourquoi divise-t-on les données en ensemble d'entraînement et de test ?",
+            "options": [
+              "Pour avoir plus de données",
+              "Pour évaluer la capacité du modèle à généraliser sur de nouvelles données non vues",
+              "Pour accélérer l'entraînement",
+              "Pour réduire les coûts"
+            ],
+            "answer": "Pour évaluer la capacité du modèle à généraliser sur de nouvelles données non vues",
+            "explanation": "💡 Astuce : L'ensemble d'entraînement sert à apprendre, l'ensemble de test sert à évaluer la performance sur des données jamais vues. Cela permet de détecter le surapprentissage (overfitting) : si le modèle performe bien sur l'entraînement mais mal sur le test, il a mémorisé plutôt qu'appris.",
+            "difficulty": 1,
+            "slideReference": "Slide : Division des données - Entraînement, validation et test"
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "name": "Niveau 2 - Quand automatiser",
+        "description": "Questions sur quand utiliser le Machine Learning et automatiser des décisions",
+        "questions": [
+          {
+            "id": "q6-quand-automatiser",
+            "type": "mcq",
+            "prompt": "Quand est-il approprié d'automatiser une décision avec le Machine Learning ?",
+            "options": [
+              "Toujours, pour toutes les décisions",
+              "Quand il y a beaucoup de données, des patterns répétitifs, et que les erreurs sont acceptables ou gérables",
+              "Uniquement pour les décisions simples",
+              "Uniquement pour les décisions complexes"
+            ],
+            "answer": "Quand il y a beaucoup de données, des patterns répétitifs, et que les erreurs sont acceptables ou gérables",
+            "explanation": "💡 Astuce : L'automatisation ML est appropriée quand : 1) Il y a suffisamment de données historiques avec des patterns, 2) La tâche est répétitive et coûteuse à faire manuellement, 3) Les erreurs sont acceptables ou gérables (ex: recommandation produit), 4) Le contexte est stable (les patterns ne changent pas trop vite).",
+            "difficulty": 2,
+            "slideReference": "Slide : Quand automatiser - Critères d'opportunité pour le ML"
+          },
+          {
+            "id": "q7-quand-pas-automatiser",
+            "type": "mcq",
+            "prompt": "Quand ne faut-il PAS automatiser une décision avec le Machine Learning ?",
+            "options": [
+              "Jamais, il faut toujours automatiser",
+              "Quand les erreurs ont des conséquences graves, quand il n'y a pas assez de données, ou quand la transparence et l'explicabilité sont requises",
+              "Uniquement pour les décisions rapides",
+              "Uniquement pour les décisions lentes"
+            ],
+            "answer": "Quand les erreurs ont des conséquences graves, quand il n'y a pas assez de données, ou quand la transparence et l'explicabilité sont requises",
+            "explanation": "💡 Astuce : Ne pas automatiser quand : 1) Les erreurs ont des conséquences graves (médical, juridique, sécurité), 2) Pas assez de données ou données biaisées, 3) Besoin de transparence/explicabilité (décisions réglementées), 4) Contexte changeant rapidement, 5) Décision unique ou rare (pas de patterns répétitifs).",
+            "difficulty": 2,
+            "slideReference": "Slide : Quand ne pas automatiser - Limites et risques du ML"
+          },
+          {
+            "id": "q8-cas-usage-approprié",
+            "type": "mcq",
+            "prompt": "Quel est un cas d'usage approprié pour automatiser avec le ML ?",
+            "options": [
+              "Diagnostic médical critique sans supervision",
+              "Recommandation de produits e-commerce",
+              "Décision judiciaire automatique",
+              "Décision unique sans données historiques"
+            ],
+            "answer": "Recommandation de produits e-commerce",
+            "explanation": "💡 Astuce : La recommandation e-commerce est un bon cas d'usage car : beaucoup de données (historique d'achats), patterns répétitifs, erreurs acceptables (mauvaise recommandation n'est pas grave), contexte relativement stable. À l'inverse, le diagnostic médical nécessite supervision, la décision judiciaire nécessite transparence, et une décision unique n'a pas de patterns.",
+            "difficulty": 2,
+            "slideReference": "Slide : Cas d'usage appropriés - Exemples concrets d'automatisation"
+          },
+          {
+            "id": "q9-biais-données",
+            "type": "mcq",
+            "prompt": "Pourquoi les biais dans les données d'entraînement sont-ils problématiques ?",
+            "options": [
+              "Ils ralentissent l'entraînement",
+              "Ils sont reproduits et amplifiés par le modèle, menant à des décisions injustes ou discriminatoires",
+              "Ils augmentent les coûts",
+              "Ils n'ont pas d'impact"
+            ],
+            "answer": "Ils sont reproduits et amplifiés par le modèle, menant à des décisions injustes ou discriminatoires",
+            "explanation": "💡 Astuce : Les biais dans les données (ex: sous-représentation de certains groupes, stéréotypes) sont appris par le modèle et reproduits dans ses prédictions. Cela peut mener à des discriminations (recrutement, prêts bancaires). Il faut : auditer les données, diversifier les sources, et tester le modèle sur différents groupes.",
+            "difficulty": 2,
+            "slideReference": "Slide : Biais algorithmiques - Risques et mitigation"
+          },
+          {
+            "id": "q10-explicabilité",
+            "type": "mcq",
+            "prompt": "Pourquoi l'explicabilité est-elle importante pour certaines décisions automatisées ?",
+            "options": [
+              "Pour accélérer le modèle",
+              "Pour comprendre les décisions, gagner la confiance, respecter la réglementation (RGPD), et détecter les biais",
+              "Pour réduire les coûts",
+              "Pour augmenter la précision"
+            ],
+            "answer": "Pour comprendre les décisions, gagner la confiance, respecter la réglementation (RGPD), et détecter les biais",
+            "explanation": "💡 Astuce : L'explicabilité permet de : comprendre pourquoi le modèle a pris une décision (crucial pour la confiance), respecter le RGPD (droit à l'explication), détecter les biais et erreurs, améliorer le modèle. Pour les décisions critiques (médical, juridique, finance), l'explicabilité est souvent obligatoire.",
+            "difficulty": 2,
+            "slideReference": "Slide : Explicabilité - Pourquoi et comment expliquer les décisions ML"
+          }
+        ]
+      },
+      {
+        "level": 3,
+        "name": "Niveau 3 - Décisions stratégiques",
+        "description": "Questions sur les décisions stratégiques et les bonnes pratiques",
+        "questions": [
+          {
+            "id": "q11-décision-humain-ml",
+            "type": "mcq",
+            "prompt": "Quand faut-il combiner décision humaine et ML plutôt que d'automatiser complètement ?",
+            "options": [
+              "Jamais, il faut toujours choisir l'un ou l'autre",
+              "Quand les erreurs ont des conséquences modérées, quand l'expertise humaine est nécessaire pour le contexte, ou pour valider les décisions critiques",
+              "Uniquement pour les décisions rapides",
+              "Uniquement pour les décisions lentes"
+            ],
+            "answer": "Quand les erreurs ont des conséquences modérées, quand l'expertise humaine est nécessaire pour le contexte, ou pour valider les décisions critiques",
+            "explanation": "💡 Astuce : L'approche hybride (humain + ML) est idéale quand : 1) Le ML fait une première sélection/tri, l'humain valide (ex: tri CV, détection fraude), 2) L'expertise humaine est nécessaire pour le contexte (ex: diagnostic médical assisté), 3) Les erreurs ont des conséquences modérées mais pas critiques. Cela combine la vitesse du ML et la sagesse humaine.",
+            "difficulty": 3,
+            "slideReference": "Slide : Approche hybride - Combiner humain et ML"
+          },
+          {
+            "id": "q12-données-insuffisantes",
+            "type": "mcq",
+            "prompt": "Que faire si on n'a pas assez de données pour entraîner un modèle ML ?",
+            "options": [
+              "Utiliser le ML quand même",
+              "Considérer des alternatives : règles métier explicites, apprentissage par transfert, génération de données synthétiques, ou reporter le projet",
+              "Acheter plus de données",
+              "Réduire la complexité du modèle"
+            ],
+            "answer": "Considérer des alternatives : règles métier explicites, apprentissage par transfert, génération de données synthétiques, ou reporter le projet",
+            "explanation": "💡 Astuce : Sans assez de données, le ML risque de surapprendre ou de ne pas généraliser. Alternatives : 1) Règles métier explicites (si la logique est claire), 2) Transfer learning (réutiliser un modèle pré-entraîné), 3) Données synthétiques (GANs, augmentation), 4) Reporter jusqu'à avoir plus de données. Ne pas forcer le ML si ce n'est pas approprié.",
+            "difficulty": 3,
+            "slideReference": "Slide : Données insuffisantes - Alternatives au ML"
+          },
+          {
+            "id": "q13-contexte-changeant",
+            "type": "mcq",
+            "prompt": "Pourquoi un contexte qui change rapidement est-il problématique pour le ML ?",
+            "options": [
+              "Parce que les modèles sont trop lents",
+              "Parce que les patterns appris deviennent obsolètes rapidement (concept drift), nécessitant un retraining fréquent",
+              "Parce que les modèles coûtent trop cher",
+              "Parce que les modèles sont trop complexes"
+            ],
+            "answer": "Parce que les patterns appris deviennent obsolètes rapidement (concept drift), nécessitant un retraining fréquent",
+            "explanation": "💡 Astuce : Le concept drift se produit quand la relation entre features et cible change (ex: comportement clients pendant COVID, tendances mode). Le modèle entraîné sur d'anciennes données devient obsolète. Solutions : monitoring continu, retraining automatique, modèles adaptatifs, ou règles métier si le contexte change trop vite.",
+            "difficulty": 3,
+            "slideReference": "Slide : Concept drift - Gérer les contextes changeants"
+          },
+          {
+            "id": "q14-décision-critique",
+            "type": "mcq",
+            "prompt": "Comment gérer l'automatisation pour des décisions critiques (médical, juridique, sécurité) ?",
+            "options": [
+              "Automatiser complètement sans supervision",
+              "Utiliser le ML en assistance à la décision humaine, avec validation obligatoire et explicabilité",
+              "Ne jamais utiliser le ML",
+              "Utiliser uniquement des modèles simples"
+            ],
+            "answer": "Utiliser le ML en assistance à la décision humaine, avec validation obligatoire et explicabilité",
+            "explanation": "💡 Astuce : Pour les décisions critiques, le ML doit être en mode 'assistance' : 1) Le ML suggère, l'humain décide, 2) Validation obligatoire pour les cas à haut risque, 3) Explicabilité requise (pourquoi cette suggestion ?), 4) Monitoring des erreurs et biais. L'humain reste responsable de la décision finale.",
+            "difficulty": 3,
+            "slideReference": "Slide : Décisions critiques - ML en assistance à la décision"
+          },
+          {
+            "id": "q15-évaluation-automatisation",
+            "type": "mcq",
+            "prompt": "Quels critères utiliser pour évaluer si une automatisation ML est justifiée ?",
+            "options": [
+              "Uniquement le coût",
+              "ROI attendu, qualité des données disponibles, acceptabilité des erreurs, besoin d'explicabilité, stabilité du contexte",
+              "Uniquement la vitesse",
+              "Uniquement la complexité"
+            ],
+            "answer": "ROI attendu, qualité des données disponibles, acceptabilité des erreurs, besoin d'explicabilité, stabilité du contexte",
+            "explanation": "💡 Astuce : Pour évaluer si automatiser : 1) ROI (gain de temps/coût vs investissement), 2) Qualité/quantité des données, 3) Acceptabilité des erreurs (impact business), 4) Besoin d'explicabilité (réglementation), 5) Stabilité du contexte (les patterns restent valides). Si plusieurs critères sont défavorables, considérer des alternatives.",
+            "difficulty": 3,
+            "slideReference": "Slide : Évaluation d'une automatisation - Critères de décision"
+          }
+        ]
+      }
+    ]
+  },
+  "chapters": []
+}
+
