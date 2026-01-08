@@ -139,3 +139,4 @@ RETURNING id, type, title;
 Puis vérifiez qu'il s'affiche correctement. Si ce test fonctionne, le problème vient de l'item spécifique, pas du système.
 
 
+

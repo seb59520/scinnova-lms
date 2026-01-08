@@ -22,9 +22,11 @@ export async function getUserRole(userId: string): Promise<UserRoleContext> {
     console.log('🔍 getUserRole - Début pour userId:', userId);
 
     // 1. Vérifier d'abord le profil
+    // Note: On ne filtre pas par is_active ici car on doit pouvoir détecter le rôle admin
+    // même si is_active est NULL (rétrocompatibilité)
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .select('role, full_name, created_at')
+      .select('role, full_name, created_at, is_active')
       .eq('id', userId)
       .maybeSingle();
 
@@ -37,13 +39,19 @@ export async function getUserRole(userId: string): Promise<UserRoleContext> {
     }
 
     console.log('📋 Profil récupéré:', profile);
+    console.log('📋 is_active:', profile?.is_active);
+    console.log('📋 role:', profile?.role);
     
     if (!profile) {
-      console.warn('⚠️ Aucun profil trouvé pour userId:', userId);
-      console.warn('⚠️ Cela peut signifier :');
-      console.warn('   1. Le profil n\'existe pas dans la base de données');
-      console.warn('   2. Les policies RLS bloquent l\'accès');
-      console.warn('   3. L\'utilisateur n\'est pas authentifié correctement');
+      console.error('❌ Aucun profil trouvé pour userId:', userId);
+      console.error('❌ Cela peut signifier :');
+      console.error('   1. Le profil n\'existe pas dans la base de données');
+      console.error('   2. Les policies RLS bloquent l\'accès');
+      console.error('   3. L\'utilisateur n\'est pas authentifié correctement');
+      console.error('❌ ACTION: Vérifiez les policies RLS dans Supabase');
+      console.error('❌ ACTION: Vérifiez que votre profil existe avec role = \'admin\'');
+    } else {
+      console.log('✅ Profil trouvé - role:', profile.role, 'is_active:', profile.is_active);
     }
 
     // 2. Si admin dans profiles, retourner immédiatement 'admin'

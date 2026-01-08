@@ -1,0 +1,11 @@
+{
+  "type": "resource",
+  "title": "TP : Analyser les impacts Big Data et Data Science",
+  "position": 0,
+  "published": true,
+  "content": {
+    "description": "Accédez à l'application interactive pour analyser les impacts du Big Data et de la Data Science dans différents contextes métier. Créez des cas d'usage, évaluez les impacts organisationnels, techniques et économiques, et recevez des analyses IA personnalisées."
+  },
+  "external_url": "https://bgmlds.netlify.app"
+}
+

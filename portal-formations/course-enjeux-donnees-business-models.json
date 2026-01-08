@@ -1,0 +1,2463 @@
+{
+  "title": "Enjeux des données dans les nouveaux business models",
+  "description": "Développement argumenté à destination des décideurs sur le rôle stratégique de la donnée dans l'économie numérique. Ce cours explore comment la donnée est devenue un actif stratégique de gouvernance, comment elle transforme les business models, et quelles sont les responsabilités des dirigeants dans une stratégie data.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#2563EB",
+    "secondaryColor": "#7C3AED",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : La donnée comme actif stratégique de gouvernance",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#2563EB",
+        "secondaryColor": "#1E40AF"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 La donnée n'est pas un outil IT : c'est un actif stratégique",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Comprendre pourquoi la donnée est un actif stratégique et non un simple outil IT"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Comprendre pourquoi la donnée est un actif stratégique et non un simple outil IT"
+          },
+          "chapters": [
+            {
+              "title": "Contenu détaillé",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "La donnée n'est pas un outil IT : c'est un actif stratégique de gouvernance"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "strong"
+                          }
+                        ],
+                        "text": "Argument clé pour décideurs"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "👉 La donnée est devenue un facteur de pouvoir décisionnel, au même titre que :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "le capital financier"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "la marque"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "la maîtrise de la chaîne de valeur"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Ne pas gouverner la donnée, ce n'est pas un retard technologique"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "➡️ c'est un affaiblissement stratégique"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "published": true,
+              "type": "content"
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Ce que la donnée change concrètement au niveau direction",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Comparer les modes de décision avant et aujourd'hui grâce à la donnée"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Comparer les modes de décision avant et aujourd'hui grâce à la donnée"
+          },
+          "chapters": [
+            {
+              "title": "Contenu détaillé",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Ce que la donnée change concrètement au niveau direction"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Avant :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Décisions fondées sur :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "reporting mensuel"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "intuition"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "retour terrain partiel"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Décalage temporel entre fait → analyse → décision"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Aujourd'hui :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Décisions possibles :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "en temps quasi réel"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "avec scénarios probabilistes"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "avec priorisation automatisée"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "strong"
+                          }
+                        ],
+                        "text": "📌 Le pouvoir ne vient plus de l'information, mais de la capacité à l'exploiter vite"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "published": true,
+              "type": "content"
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.3 Risque pour un dirigeant",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Identifier les risques encourus par un dirigeant qui ne gère pas correctement la donnée"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Identifier les risques encourus par un dirigeant qui ne gère pas correctement la donnée"
+          },
+          "chapters": [
+            {
+              "title": "Contenu détaillé",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Risque pour un dirigeant"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Si la donnée est :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "dispersée"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "mal qualifiée"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "sous-exploitée"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Alors :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "les décisions sont objectivement moins performantes"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "la concurrence prend des décisions mieux informées"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "la perte d'avantage est invisible mais cumulative"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "published": true,
+              "type": "content"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : Les nouveaux business models reposent sur la captation et l'exploitation de la donnée",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#7C3AED",
+        "secondaryColor": "#6D28D9"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Introduction : Les nouveaux business models",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Introduction aux transformations des business models par la donnée"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Introduction aux transformations des business models par la donnée"
+          },
+          "chapters": [
+            {
+              "title": "Contenu détaillé",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Les nouveaux business models reposent sur la captation et l'exploitation de la donnée"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "strong"
+                          }
+                        ],
+                        "text": "Argument clé"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "👉 Les entreprises les plus valorisées ne vendent plus seulement un produit ou un service,"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "elles exploitent un flux de données continu."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Trois bascules majeures dans les modèles économiques"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "published": true,
+              "type": "content"
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.2 De la vente ponctuelle à la relation continue",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Comprendre comment la donnée transforme les modèles de vente ponctuelle en relations continues"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Comprendre comment la donnée transforme les modèles de vente ponctuelle en relations continues"
+          },
+          "chapters": [
+            {
+              "title": "Contenu détaillé",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "De la vente ponctuelle à la relation continue"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🔹 1. De la vente ponctuelle à la relation continue"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Abonnement"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Plateforme"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Service évolutif"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "strong"
+                          }
+                        ],
+                        "text": "📌 La donnée permet :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "de suivre l'usage réel"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "de détecter l'attrition"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "d'adapter l'offre en continu"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "➡️ La valeur se déplace de l'acte d'achat vers l'usage"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "published": true,
+              "type": "content"
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.3 De l'offre standard à l'offre adaptative",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Analyser comment la personnalisation devient un levier financier grâce à la donnée"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Analyser comment la personnalisation devient un levier financier grâce à la donnée"
+          },
+          "chapters": [
+            {
+              "title": "Contenu détaillé",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "De l'offre standard à l'offre adaptative"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🔹 2. De l'offre standard à l'offre adaptative"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Même produit"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Expériences différentes selon les profils"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "strong"
+                          }
+                        ],
+                        "text": "📌 Pour un décideur :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Meilleure satisfaction"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Meilleure fidélisation"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Meilleure marge (moins de surcoût marketing)"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "➡️ La personnalisation devient un levier financier, pas marketing"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "published": true,
+              "type": "content"
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.4 De la performance interne à l'optimisation systémique",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Comprendre comment la donnée optimise les systèmes au-delà de la performance interne"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Comprendre comment la donnée optimise les systèmes au-delà de la performance interne"
+          },
+          "chapters": [
+            {
+              "title": "Contenu détaillé",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "De la performance interne à l'optimisation systémique"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🔹 3. De la performance interne à l'optimisation systémique"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "La donnée permet :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "d'optimiser la logistique"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "d'anticiper les pannes"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "de réduire les gaspillages"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "d'améliorer la productivité sans pression humaine supplémentaire"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "➡️ La donnée agit comme un multiplicateur d'efficacité managériale"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "published": true,
+              "type": "content"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : La donnée est une opportunité... mais aussi une responsabilité de dirigeant",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#DC2626",
+        "secondaryColor": "#B91C1C"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Introduction : Opportunité et responsabilité",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Introduction aux risques et responsabilités liés à la gouvernance des données"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Introduction aux risques et responsabilités liés à la gouvernance des données"
+          },
+          "chapters": [
+            {
+              "title": "Contenu détaillé",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "La donnée est une opportunité... mais aussi une responsabilité de dirigeant"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "strong"
+                          }
+                        ],
+                        "text": "Argument clé"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "👉 La donnée mal gouvernée devient un risque juridique, financier et réputationnel."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Ce risque retombe toujours sur la direction, jamais sur la technique."
+                      }
+                    ]
+                  }
+                ]
+              },
+              "published": true,
+              "type": "content"
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Risque juridique et réglementaire",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Identifier les responsabilités juridiques et réglementaires du dirigeant concernant les données"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Identifier les responsabilités juridiques et réglementaires du dirigeant concernant les données"
+          },
+          "chapters": [
+            {
+              "title": "Contenu détaillé",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Risque juridique et réglementaire"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Un dirigeant est responsable :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "de la finalité des usages"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "du respect du consentement"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "de la durée de conservation"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "de la sécurité des données"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "strong"
+                          }
+                        ],
+                        "text": "📌 Ce n'est pas un sujet IT"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "➡️ c'est un sujet de conformité et de responsabilité légale"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "published": true,
+              "type": "content"
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.3 Risque décisionnel",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Comprendre les risques décisionnels liés à des données de mauvaise qualité"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Comprendre les risques décisionnels liés à des données de mauvaise qualité"
+          },
+          "chapters": [
+            {
+              "title": "Contenu détaillé",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Risque décisionnel"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Données :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "biaisées"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "incomplètes"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "mal interprétées"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "➡️ décisions :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "injustes"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "inefficaces"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "parfois discriminatoires"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "strong"
+                          }
+                        ],
+                        "text": "📌 Une décision automatisée erronée reste une décision managériale"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "published": true,
+              "type": "content"
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.4 Risque de perte de confiance",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Analyser l'importance de la confiance comme actif stratégique dans la gestion des données"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Analyser l'importance de la confiance comme actif stratégique dans la gestion des données"
+          },
+          "chapters": [
+            {
+              "title": "Contenu détaillé",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Risque de perte de confiance"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Clients, partenaires, collaborateurs :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "acceptent la donnée"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "refusent l'opacité"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "strong"
+                          }
+                        ],
+                        "text": "📌 La confiance devient :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "un actif stratégique"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "un facteur de fidélité"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "un élément de réputation"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "➡️ Sans confiance, la donnée perd sa valeur"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "published": true,
+              "type": "content"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : Le vrai sujet pour un décideur n'est pas la donnée, mais les décisions",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#059669",
+        "secondaryColor": "#047857"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Argument central : La donnée au service des décisions",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Comprendre que la donnée doit servir les décisions, pas l'inverse"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Comprendre que la donnée doit servir les décisions, pas l'inverse"
+          },
+          "chapters": [
+            {
+              "title": "Contenu détaillé",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Le vrai sujet pour un décideur n'est pas la donnée, mais les décisions"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "strong"
+                          }
+                        ],
+                        "text": "Argument central du module"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "❌ Mauvaise question :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "strong"
+                          }
+                        ],
+                        "text": "\"Avons-nous beaucoup de données ?\""
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "✅ Bonne question :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "strong"
+                          }
+                        ],
+                        "text": "\"Quelles décisions critiques voulons-nous améliorer ou automatiser ?\""
+                      }
+                    ]
+                  }
+                ]
+              },
+              "published": true,
+              "type": "content"
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "4.2 Typologie de décisions",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Comprendre la typologie des décisions et leur potentiel d'automatisation"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Comprendre la typologie des décisions et leur potentiel d'automatisation"
+          },
+          "chapters": [
+            {
+              "title": "Contenu détaillé",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Typologie de décisions (clé pour décideurs)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "table",
+                    "attrs": {
+                      "colwidth": [
+                        150,
+                        100,
+                        300
+                      ]
+                    },
+                    "content": [
+                      {
+                        "type": "tableRow",
+                        "content": [
+                          {
+                            "type": "tableCell",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "type": "text",
+                                    "marks": [
+                                      {
+                                        "type": "strong"
+                                      }
+                                    ],
+                                    "text": "Type de décision"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tableCell",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "type": "text",
+                                    "marks": [
+                                      {
+                                        "type": "strong"
+                                      }
+                                    ],
+                                    "text": "Automatisable ?"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tableCell",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "type": "text",
+                                    "marks": [
+                                      {
+                                        "type": "strong"
+                                      }
+                                    ],
+                                    "text": "Enjeu"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tableRow",
+                        "content": [
+                          {
+                            "type": "tableCell",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "type": "text",
+                                    "text": "Répétitive, fréquente"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tableCell",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "type": "text",
+                                    "text": "✅ Oui"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tableCell",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "type": "text",
+                                    "text": "Gain de temps, cohérence"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tableRow",
+                        "content": [
+                          {
+                            "type": "tableCell",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "type": "text",
+                                    "text": "Opérationnelle"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tableCell",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "type": "text",
+                                    "text": "✅ Partiellement"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tableCell",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "type": "text",
+                                    "text": "Performance"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tableRow",
+                        "content": [
+                          {
+                            "type": "tableCell",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "type": "text",
+                                    "text": "Stratégique"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tableCell",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "type": "text",
+                                    "text": "❌ Non"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tableCell",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "type": "text",
+                                    "text": "Vision, arbitrage"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tableRow",
+                        "content": [
+                          {
+                            "type": "tableCell",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "type": "text",
+                                    "text": "Éthique / humaine"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tableCell",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "type": "text",
+                                    "text": "❌ Jamais"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tableCell",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "type": "text",
+                                    "text": "Responsabilité"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "strong"
+                          }
+                        ],
+                        "text": "📌 La donnée doit servir la décision, pas la remplacer"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "published": true,
+              "type": "content"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : Rôle attendu du dirigeant dans une stratégie data",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#EA580C",
+        "secondaryColor": "#C2410C"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "5.1 Ce qu'un dirigeant ne doit pas faire",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Identifier ce qu'un dirigeant ne doit pas faire dans une stratégie data"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Identifier ce qu'un dirigeant ne doit pas faire dans une stratégie data"
+          },
+          "chapters": [
+            {
+              "title": "Contenu détaillé",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Rôle attendu du dirigeant dans une stratégie data"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Un dirigeant ne doit pas :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "devenir data scientist"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "choisir les algorithmes"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "coder des pipelines"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "published": true,
+              "type": "content"
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "5.2 Ce qu'un dirigeant doit faire",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Définir le rôle stratégique et de leadership du dirigeant dans une stratégie data"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Définir le rôle stratégique et de leadership du dirigeant dans une stratégie data"
+          },
+          "chapters": [
+            {
+              "title": "Contenu détaillé",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Ce qu'un dirigeant doit faire"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Mais il doit :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "fixer les priorités décisionnelles"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "arbitrer les usages acceptables"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "poser le cadre éthique"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "assurer la cohérence stratégique"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "➡️ La data est un sujet de leadership, pas de technique"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "published": true,
+              "type": "content"
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "5.3 Message clé à faire passer aux décideurs",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Synthèse du message clé à retenir sur la gouvernance des données"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Synthèse du message clé à retenir sur la gouvernance des données"
+          },
+          "chapters": [
+            {
+              "title": "Contenu détaillé",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🧠 Message clé à faire passer aux décideurs"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "La donnée ne crée pas de valeur toute seule."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Elle amplifie la qualité — ou la médiocrité — des décisions existantes."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "strong"
+                                  }
+                                ],
+                                "text": "Bonne gouvernance"
+                              },
+                              {
+                                "type": "text",
+                                "text": " → avantage compétitif durable"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "strong"
+                                  }
+                                ],
+                                "text": "Mauvaise gouvernance"
+                              },
+                              {
+                                "type": "text",
+                                "text": " → risque silencieux mais massif"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "published": true,
+              "type": "content"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

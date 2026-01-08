@@ -5,6 +5,7 @@ import { supabase } from '../../lib/supabaseClient'
 import { Course, Submission, Item, Profile } from '../../types/database'
 import { FileText, Search, Download, CheckCircle, Clock, XCircle, File, Eye, MessageSquare } from 'lucide-react'
 import { RichTextEditor } from '../../components/RichTextEditor'
+import { TitanicAnalysisPanel } from '../../components/trainer/TitanicAnalysisPanel'
 
 interface SubmissionWithDetails extends Submission {
   profiles: Profile
@@ -430,12 +431,33 @@ export function AdminCourseSubmissions() {
                       {/* Contenu détaillé */}
                       {expandedSubmission === submission.id && (
                         <div className="mt-4 pt-4 border-t border-gray-200 space-y-4">
+                          {/* Panneau d'analyse IA pour les réponses Titanic */}
+                          {submission.answer_json?.titanicData && (
+                            <TitanicAnalysisPanel
+                              submission={submission}
+                              itemTitle={submission.items?.title || ''}
+                              questions={[]} // TODO: Récupérer les questions depuis item.content
+                            />
+                          )}
+
                           {/* Réponse texte */}
                           {submission.answer_text && (
                             <div>
                               <h4 className="text-sm font-medium text-gray-900 mb-2">Réponse de l'étudiant</h4>
                               <div className="bg-gray-50 p-4 rounded-lg">
                                 <p className="text-gray-700 whitespace-pre-wrap">{submission.answer_text}</p>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Données JSON (si présentes) */}
+                          {submission.answer_json && !submission.answer_json.titanicData && (
+                            <div>
+                              <h4 className="text-sm font-medium text-gray-900 mb-2">Données JSON</h4>
+                              <div className="bg-gray-50 p-4 rounded-lg">
+                                <pre className="text-xs text-gray-700 overflow-auto max-h-96">
+                                  {JSON.stringify(submission.answer_json, null, 2)}
+                                </pre>
                               </div>
                             </div>
                           )}

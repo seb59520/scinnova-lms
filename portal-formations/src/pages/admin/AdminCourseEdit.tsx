@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Course, Module, Item } from '../../types/database'
 import { Save, Plus, Edit, Trash2, GripVertical, ChevronUp, ChevronDown, Code, Presentation } from 'lucide-react'
+import { LinkedInPostModal } from '../../components/LinkedInPostModal'
 
 interface ModuleWithItems extends Module {
   items: Item[]
@@ -34,6 +35,8 @@ export function AdminCourseEdit() {
   const [draggedItemModuleId, setDraggedItemModuleId] = useState<string | null>(null)
   const [draggedModuleId, setDraggedModuleId] = useState<string | null>(null)
   const [dragOverModuleId, setDragOverModuleId] = useState<string | null>(null)
+  const [showLinkedInModal, setShowLinkedInModal] = useState(false)
+  const [wasPublicBeforeSave, setWasPublicBeforeSave] = useState(false)
 
   useEffect(() => {
     if (!isNew && courseId) {
@@ -52,6 +55,7 @@ export function AdminCourseEdit() {
 
       if (courseError) throw courseError
       setCourse(courseData)
+      setWasPublicBeforeSave(courseData.is_public || false)
 
       // Récupérer les modules avec items
       const { data: modulesData, error: modulesError } = await supabase
@@ -97,6 +101,9 @@ export function AdminCourseEdit() {
     setError('')
 
     try {
+      // Vérifier si is_public passe de false à true
+      const isBecomingPublic = course.is_public && !wasPublicBeforeSave
+
       // S'assurer que tous les champs requis sont présents et valides
       const courseData = {
         title: title, // Utiliser la version trimée et validée
@@ -107,6 +114,7 @@ export function AdminCourseEdit() {
         currency: course.currency || 'EUR',
         is_paid: course.access_type === 'paid',
         allow_pdf_download: course.allow_pdf_download || false,
+        is_public: course.is_public || false,
         created_by: isNew ? (user?.id || course.created_by) : course.created_by,
         updated_at: new Date().toISOString()
       }
@@ -133,6 +141,24 @@ export function AdminCourseEdit() {
         if (error) throw error
         finalCourseId = courseId
       }
+
+      // Si la formation devient publique, proposer le post LinkedIn
+      if (isBecomingPublic) {
+        // Récupérer la formation mise à jour avec publication_date
+        const { data: updatedCourse } = await supabase
+          .from('courses')
+          .select('*')
+          .eq('id', finalCourseId)
+          .single()
+        
+        if (updatedCourse) {
+          setCourse(updatedCourse)
+          setShowLinkedInModal(true)
+        }
+      }
+
+      // Mettre à jour wasPublicBeforeSave
+      setWasPublicBeforeSave(course.is_public || false)
 
       // Sauvegarder/mettre à jour les modules
       const modulesToCreate = modules.filter(m => m.id.startsWith('temp-'))
@@ -987,7 +1013,7 @@ export function AdminCourseEdit() {
                 </div>
               )}
 
-              <div className="mt-4">
+              <div className="mt-4 space-y-4">
                 <label className="flex items-center space-x-2 cursor-pointer">
                   <input
                     type="checkbox"
@@ -1002,6 +1028,36 @@ export function AdminCourseEdit() {
                 <p className="text-xs text-gray-500 mt-1 ml-6">
                   Format paysage : slides à gauche, contexte pédagogique à droite
                 </p>
+
+                <div className="border-t border-gray-200 pt-4">
+                  <label className="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={course.is_public || false}
+                      onChange={(e) => setCourse({ ...course, is_public: e.target.checked })}
+                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <span className="text-sm font-medium text-gray-700">
+                      Rendre publique (afficher sur la landing page)
+                    </span>
+                  </label>
+                  <p className="text-xs text-gray-500 mt-1 ml-6">
+                    {course.is_public 
+                      ? '✅ Cette formation sera visible sur la landing page et apparaîtra dans les nouvelles formations'
+                      : '⚠️ Cette formation ne sera pas visible sur la landing page'}
+                  </p>
+                  {course.is_public && course.publication_date && (
+                    <p className="text-xs text-blue-600 mt-1 ml-6">
+                      📅 Publiée le {new Date(course.publication_date).toLocaleDateString('fr-FR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -1380,6 +1436,15 @@ export function AdminCourseEdit() {
           </div>
         </div>
       </main>
+
+      {/* Modal LinkedIn */}
+      {course.id && (
+        <LinkedInPostModal
+          course={course as Course}
+          isOpen={showLinkedInModal}
+          onClose={() => setShowLinkedInModal(false)}
+        />
+      )}
     </div>
   )
 }

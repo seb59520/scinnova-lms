@@ -139,3 +139,4 @@ Si vous avez des utilisateurs qui ont été bloqués par l'ancienne logique :
 - Notification lors de la création automatique d'enrollment
 
 
+

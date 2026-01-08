@@ -67,8 +67,65 @@ export function CourseView() {
   useEffect(() => {
     if (courseId && user) {
       fetchCourse()
+      
+      // Vérifier si l'utilisateur vient d'un magic link et doit être inscrit automatiquement
+      const autoEnroll = searchParams.get('auto_enroll')
+      if (autoEnroll === 'true' && courseId) {
+        handleAutoEnrollment()
+      }
     }
-  }, [courseId, user])
+  }, [courseId, user, searchParams])
+
+  const handleAutoEnrollment = async () => {
+    if (!user || !courseId) return
+    
+    try {
+      // Créer le profil si nécessaire
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', user.id)
+        .single()
+      
+      if (!existingProfile) {
+        const fullName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Utilisateur'
+        await supabase
+          .from('profiles')
+          .upsert({
+            id: user.id,
+            role: 'student',
+            full_name: fullName,
+            is_active: true
+          }, {
+            onConflict: 'id'
+          })
+      }
+      
+      // Créer l'inscription à la formation
+      const { error: enrollmentError } = await supabase
+        .from('enrollments')
+        .upsert({
+          user_id: user.id,
+          course_id: courseId,
+          status: 'active',
+          source: 'manual'
+        }, {
+          onConflict: 'user_id,course_id'
+        })
+      
+      if (enrollmentError) {
+        console.warn('Erreur lors de l\'inscription automatique:', enrollmentError)
+      } else {
+        console.log('Inscription automatique réussie pour le cours:', courseId)
+        // Nettoyer le paramètre de l'URL
+        const newSearchParams = new URLSearchParams(searchParams)
+        newSearchParams.delete('auto_enroll')
+        window.history.replaceState({}, '', `${window.location.pathname}${newSearchParams.toString() ? '?' + newSearchParams.toString() : ''}`)
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'inscription automatique:', error)
+    }
+  }
 
   // Vérifier si l'utilisateur est formateur
   useEffect(() => {

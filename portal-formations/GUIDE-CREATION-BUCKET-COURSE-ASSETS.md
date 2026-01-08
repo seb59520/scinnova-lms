@@ -79,3 +79,4 @@ course-assets/
 Exemple : `course-assets/abc123/def456/ghi789/1704123456789.jpg`
 
 
+

@@ -154,3 +154,4 @@ const interval = setInterval(() => {
 }, 30000) // Changez 30000 pour modifier l'intervalle (en ms)
 ```
 
+

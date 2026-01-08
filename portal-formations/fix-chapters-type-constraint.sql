@@ -58,3 +58,4 @@ WHERE table_name = 'chapters'
 AND column_name = 'type';
 
 
+

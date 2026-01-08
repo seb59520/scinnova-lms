@@ -65,3 +65,4 @@ Les sessions doivent être créées **manuellement**. Il n'y a pas de création 
 C'est une fonctionnalité à développer si vous souhaitez automatiser la création de sessions.
 
 
+

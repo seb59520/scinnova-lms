@@ -132,3 +132,4 @@ Le TP inclut une checklist de 21 points couvrant :
 
 Ce TP est conçu pour être très complet et permettre aux étudiants de développer une application professionnelle tout en approfondissant leur compréhension des impacts du Big Data et de la Data Science dans les organisations.
 
+

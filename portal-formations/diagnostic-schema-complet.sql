@@ -287,3 +287,4 @@ SELECT 'user_settings', COUNT(*) FROM user_settings
 ORDER BY table_name;
 
 
+

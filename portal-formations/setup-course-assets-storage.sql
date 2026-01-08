@@ -122,3 +122,4 @@ AND schemaname = 'storage'
 AND policyname LIKE '%course-assets%';
 
 
+

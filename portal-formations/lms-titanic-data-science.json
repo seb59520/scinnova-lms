@@ -1,0 +1,551 @@
+{
+  "title": "TP 2 : Data Science - Analyse et visualisation",
+  "description": "Travaux pratiques sur l'analyse statistique et la visualisation de données avec le dataset Titanic. Les étudiants apprennent à interpréter des graphiques, calculer des taux, identifier des corrélations et formuler des hypothèses basées sur des visualisations.\n\n**Application interactive :** https://titaniclearning.netlify.app\n\n**Durée estimée :** 2h\n**Niveau :** Intermédiaire\n**Prérequis :** TP 1 - Big Data terminé",
+  "status": "published",
+  "access_type": "free",
+  "price_cents": 0,
+  "currency": "EUR",
+  "theme": {
+    "primaryColor": "#8B5CF6",
+    "secondaryColor": "#EC4899",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 2 : Data Science - Analyse et visualisation",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#8B5CF6",
+        "secondaryColor": "#EC4899"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Introduction au TP",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Présentation des objectifs et du contexte du TP",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "TP 2 : Data Science - Analyse et visualisation"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Maintenant que vous avez exploré les données brutes, vous allez extraire du sens en utilisant des visualisations et des analyses statistiques simples. L'objectif est de comprendre quels facteurs influencent la survie des passagers."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Objectifs pédagogiques"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Interpréter des graphiques statistiques"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Calculer des taux et proportions"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifier des corrélations dans les données"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Formuler des hypothèses basées sur des visualisations"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comprendre les biais potentiels dans les données"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🌐 ",
+                      "marks": [{ "type": "bold" }]
+                    },
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "Application interactive :"
+                    },
+                    {
+                      "type": "text",
+                      "text": " https://titaniclearning.netlify.app"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "tp",
+          "title": "TP 2 : Analyse et visualisation",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Travaux pratiques interactifs sur l'analyse statistique et la visualisation avec le dataset Titanic",
+            "instructions": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Instructions du TP"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exercice 1 : Analyse du taux de survie par sexe (25 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": { "start": 1 },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Observez le graphique \"Taux de survie par Sexe\" dans l'application"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Calculez mentalement les pourcentages : combien de femmes au total ? combien ont survécu ? quel est le pourcentage ? Répétez pour les hommes"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utilisez les filtres pour vérifier vos calculs : filtrez par \"female\" et \"survivant: oui\" → comptez, puis faites de même pour \"male\""
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "Question à répondre dans l'application :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Qui survit le plus ? (Femmes / Hommes / Aucune différence) - Justification : Expliquez votre réponse en vous basant sur les données observées"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exercice 2 : Impact de la classe sur la survie (25 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": { "start": 1 },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Observez le graphique \"Taux de survie par Classe\""
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comparez les trois barres : quelle classe a le meilleur taux de survie ? la pire ? y a-t-il une progression évidente ?"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Analysez la relation entre classe et prix avec les filtres"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "Question à répondre dans l'application :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "La classe influence-t-elle la survie ? (Beaucoup / Un peu / Pas du tout) - Justification : Décrivez l'impact observé et son importance"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exercice 3 : Distribution de l'âge (20 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Observez l'histogramme \"Distribution de l'Âge\" et identifiez : la tranche d'âge la plus représentée, les tranches avec peu de passagers, la forme générale de la distribution. Analysez ensuite la relation âge/survie avec les filtres."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exercice 4 : Analyse du prix (20 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Observez le résumé \"Prix par Survivant\" et comparez le prix moyen des survivants vs non-survivants. Explorez avec les filtres en triant par prix."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exercice 5 : Facteur le plus influent (20 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Maintenant que vous avez analysé plusieurs facteurs (Sexe, Classe, Âge, Prix, Embarquement), déterminez lequel semble le plus important en comparant les graphiques entre eux."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "Question à répondre dans l'application :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Quel facteur semble le plus fort ? (Sexe / Classe / Age / Prix / Embarquement) - Justification : Expliquez pourquoi ce facteur vous semble le plus déterminant"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exercice 6 : Décision éthique (20 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Imaginez que vous êtes le capitaine du Titanic et que vous devez prendre des décisions sur qui sauver en priorité. Les canots de sauvetage sont limités. Vous devez établir des priorités en vous basant sur les données analysées."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "Question à répondre dans l'application :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Quelle décision humaine proposerais-tu ? (Priorité femmes & enfants / Priorité classe 1 / Priorité proches canots / Autre) - Détails : Décrivez votre stratégie et justifiez-la"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Validation"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Répondu aux 4 questions dans l'application"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Analysé tous les graphiques proposés"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utilisé les filtres pour vérifier vos observations"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Formulé des hypothèses basées sur les données"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Exporté vos réponses"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "checklist": [
+              "Ouvrir l'application et accéder au module Data Science",
+              "Observer le graphique 'Taux de survie par Sexe'",
+              "Répondre à la question 1 : Qui survit le plus ?",
+              "Observer le graphique 'Taux de survie par Classe'",
+              "Répondre à la question 2 : La classe influence-t-elle la survie ?",
+              "Observer l'histogramme 'Distribution de l'Âge'",
+              "Analyser le résumé 'Prix par Survivant'",
+              "Répondre à la question 3 : Quel facteur semble le plus fort ?",
+              "Répondre à la question 4 : Quelle décision humaine proposerais-tu ?",
+              "Exporter les réponses en JSON"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -136,3 +136,4 @@ Assurez-vous que le cours contient au moins une slide publiée.
 - L'authentification est requise pour accéder à l'API (via JWT Bearer token)
 - Seules les slides publiées sont incluses dans le PDF
 
+

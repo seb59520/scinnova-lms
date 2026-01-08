@@ -1,0 +1,818 @@
+{
+  "title": "TP 1 : Big Data - Exploration des données brutes",
+  "description": "Travaux pratiques sur l'exploration de données brutes avec le dataset Titanic. Les étudiants apprennent à identifier les types de données, détecter les valeurs manquantes, utiliser des filtres et formuler des observations sur la qualité des données.\n\n**Application interactive :** https://titaniclearning.netlify.app\n\n**Durée estimée :** 1h30\n**Niveau :** Débutant",
+  "status": "published",
+  "access_type": "free",
+  "price_cents": 0,
+  "currency": "EUR",
+  "theme": {
+    "primaryColor": "#3B82F6",
+    "secondaryColor": "#8B5CF6",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Big Data - Exploration des données",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#059669"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Introduction au TP",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Présentation des objectifs et du contexte du TP",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "TP 1 : Big Data - Exploration des données brutes"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dans ce TP, vous allez explorer un dataset contenant 25 passagers du Titanic avec les informations suivantes :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [{ "type": "bold" }],
+                              "text": "Sexe"
+                            },
+                            {
+                              "type": "text",
+                              "text": " : male ou female"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [{ "type": "bold" }],
+                              "text": "Âge"
+                            },
+                            {
+                              "type": "text",
+                              "text": " : nombre d'années (peut être vide)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [{ "type": "bold" }],
+                              "text": "Classe"
+                            },
+                            {
+                              "type": "text",
+                              "text": " : 1, 2 ou 3"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [{ "type": "bold" }],
+                              "text": "Prix"
+                            },
+                            {
+                              "type": "text",
+                              "text": " : prix du billet en livres sterling"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [{ "type": "bold" }],
+                              "text": "Embarquement"
+                            },
+                            {
+                              "type": "text",
+                              "text": " : port d'embarquement (S, C ou Q)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [{ "type": "bold" }],
+                              "text": "Survivant"
+                            },
+                            {
+                              "type": "text",
+                              "text": " : oui ou non"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Objectifs pédagogiques"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "À la fin de ce TP, vous serez capable de :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comprendre la structure d'un dataset"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifier les types de données (numériques, catégorielles)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Détecter les valeurs manquantes"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utiliser des filtres pour explorer les données"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Formuler des observations sur la qualité des données"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🌐 ",
+                      "marks": [{ "type": "bold" }]
+                    },
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "Application interactive :"
+                    },
+                    {
+                      "type": "text",
+                      "text": " https://titaniclearning.netlify.app"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "tp",
+          "title": "TP 1 : Exploration des données brutes",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Travaux pratiques interactifs sur l'exploration de données avec le dataset Titanic",
+            "instructions": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Instructions du TP"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exercice 1 : Exploration visuelle (15 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": { "start": 1 },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Ouvrez l'application https://titaniclearning.netlify.app et accédez au module \"Big Data\""
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Observez le tableau de données affiché"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comptez manuellement le nombre de lignes visibles"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Notez le nombre total de lignes affiché en haut du tableau"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "Question à répondre dans l'application :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Combien de lignes vois-tu ? (choisissez dans le dropdown puis saisissez le nombre exact)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exercice 2 : Identification des types de données (20 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": { "start": 1 },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Examinez chaque colonne du tableau"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifiez les colonnes qui contiennent des nombres"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Distinguer : les colonnes numériques (nombres entiers ou décimaux), les colonnes catégorielles (texte avec catégories limitées), les colonnes booléennes (oui/non)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "Question à répondre dans l'application :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Quelles colonnes sont numériques ? (sélectionnez dans le dropdown puis listez-les)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "italic" }],
+                      "text": "Réflexion : Pourquoi est-il important de distinguer les types de données ?"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exercice 3 : Détection des valeurs manquantes (20 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": { "start": 1 },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Parcourez toutes les lignes du tableau"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Cherchez les cellules vides ou contenant \"?\""
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Notez dans quelles colonnes se trouvent ces valeurs manquantes"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comptez le nombre de valeurs manquantes par colonne"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "Question à répondre dans l'application :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Y a-t-il des valeurs manquantes ? (oui/non) - Où ? (précisez la colonne et le nombre)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "italic" }],
+                      "text": "Réflexion : Quelles sont les conséquences des valeurs manquantes pour l'analyse ?"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exercice 4 : Utilisation des filtres (20 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": { "start": 1 },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Testez chaque filtre disponible : recherche globale, filtre par Sexe, Classe, Embarquement, Survivant, filtres min/max pour Âge et Prix"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Combinez plusieurs filtres pour répondre aux questions : Combien de femmes de classe 1 ont survécu ? Quel est l'âge minimum des passagers de classe 3 ? Combien de passagers ont payé plus de 50 livres ?"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utilisez le tri en cliquant sur les en-têtes de colonnes"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exercice 5 : Détection d'ambiguïtés (15 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": { "start": 1 },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Examinez attentivement les données"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Cherchez des incohérences ou ambiguïtés potentielles : valeurs qui semblent étranges, données contradictoires, formats incohérents"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "Question à répondre dans l'application :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Une donnée te semble ambiguë ? (oui/non) - Laquelle et pourquoi ? (décrivez l'ambiguïté)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Validation"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Avant de passer au module suivant, vérifiez que vous avez :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Répondu aux 4 questions dans l'application"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utilisé tous les types de filtres"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Testé le tri sur au moins 3 colonnes"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifié les valeurs manquantes"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Exporté vos réponses (bouton \"Exporter mes réponses\")"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "checklist": [
+              "Ouvrir l'application et accéder au module Big Data",
+              "Répondre à la question 1 : Combien de lignes vois-tu ?",
+              "Répondre à la question 2 : Quelles colonnes sont numériques ?",
+              "Répondre à la question 3 : Y a-t-il des valeurs manquantes ?",
+              "Répondre à la question 4 : Une donnée te semble ambiguë ?",
+              "Tester tous les filtres disponibles",
+              "Utiliser le tri sur au moins 3 colonnes",
+              "Exporter les réponses en JSON"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

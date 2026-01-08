@@ -88,3 +88,4 @@ CREATE POLICY "Admins can insert profiles" ON profiles
   );
 
 
+

@@ -166,3 +166,4 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 3. Crée les enrollments manquants si nécessaire
 
 
+

@@ -136,3 +136,4 @@ CREATE TRIGGER trigger_notify_resource_assigned
   EXECUTE FUNCTION notify_resource_assigned();
 
 
+

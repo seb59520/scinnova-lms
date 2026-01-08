@@ -142,3 +142,4 @@ Après ces étapes :
 Rafraîchissez le portail formateur (`/trainer`) et vous devriez voir les sessions avec les apprenants !
 
 
+

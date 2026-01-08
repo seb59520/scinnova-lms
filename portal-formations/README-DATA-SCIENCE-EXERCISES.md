@@ -75,3 +75,4 @@ Les politiques Row Level Security (RLS) sont activées :
 - Les politiques sont supprimées et recréées pour éviter les conflits
 - Les index sont créés pour optimiser les performances des requêtes
 
+

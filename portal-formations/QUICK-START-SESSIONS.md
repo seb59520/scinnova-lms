@@ -83,3 +83,4 @@ Après ces étapes :
 - **Si plusieurs sessions existent pour un cours**, la plus récente est utilisée
 
 
+

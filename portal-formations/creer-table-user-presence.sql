@@ -92,3 +92,4 @@ COMMENT ON TABLE user_presence IS 'État de connexion des utilisateurs (en ligne
 COMMENT ON COLUMN user_presence.is_online IS 'true si l''utilisateur est actuellement en ligne';
 COMMENT ON COLUMN user_presence.last_seen IS 'Dernière fois que l''utilisateur a été vu en ligne';
 
+

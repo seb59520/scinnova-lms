@@ -136,3 +136,4 @@ Pour déployer l'application en production :
 - [ ] Cliquer sur le lien "Application interactive - Big Data Impacts"
 - [ ] Utiliser l'application pour créer et analyser des cas d'usage
 
+

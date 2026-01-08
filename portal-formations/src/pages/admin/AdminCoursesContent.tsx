@@ -2,18 +2,39 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
-import { Course } from '../../types/database'
-import { Plus, Edit, Eye, Trash2, Users, Code, BookOpen, Search, Filter, MoreVertical, Copy, Calendar, DollarSign, LayoutGrid, List, FileText, Presentation } from 'lucide-react'
+import { Course, Chapter } from '../../types/database'
+import { Plus, Edit, Eye, Trash2, Users, Code, BookOpen, Search, Filter, MoreVertical, Copy, Calendar, DollarSign, LayoutGrid, List, FileText, Presentation, Sparkles, ArrowUpDown, Layers } from 'lucide-react'
+
+type SortOption = 'title-asc' | 'title-desc' | 'date-asc' | 'date-desc' | 'status-asc' | 'status-desc' | 'access-asc' | 'access-desc'
+type GroupByOption = 'none' | 'status' | 'access_type' | 'created_at'
+
+interface Program {
+  id: string
+  title: string
+}
+
+interface CourseWithPrograms extends Course {
+  programs?: Program[]
+}
 
 export function AdminCoursesContent() {
   const { user } = useAuth()
   const [courses, setCourses] = useState<Course[]>([])
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([])
+  const [coursePrograms, setCoursePrograms] = useState<Record<string, Program[]>>({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'draft'>('all')
   const [accessFilter, setAccessFilter] = useState<'all' | 'free' | 'paid' | 'invite'>('all')
+  const [sortBy, setSortBy] = useState<SortOption>(() => {
+    const saved = localStorage.getItem('admin-courses-content-sort')
+    return (saved as SortOption) || 'date-desc'
+  })
+  const [groupBy, setGroupBy] = useState<GroupByOption>(() => {
+    const saved = localStorage.getItem('admin-courses-content-group')
+    return (saved as GroupByOption) || 'none'
+  })
   const [openMenuId, setOpenMenuId] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>(() => {
     const saved = localStorage.getItem('admin-courses-view-mode')
@@ -38,6 +59,43 @@ export function AdminCoursesContent() {
       if (error) throw error
       setCourses(data || [])
       setFilteredCourses(data || [])
+
+      // Récupérer les programmes associés à chaque formation
+      if (data && data.length > 0) {
+        const courseIds = data.map(c => c.id)
+        
+        const { data: programCoursesData, error: programCoursesError } = await supabase
+          .from('program_courses')
+          .select(`
+            course_id,
+            programs (
+              id,
+              title
+            )
+          `)
+          .in('course_id', courseIds)
+
+        if (programCoursesError) {
+          console.error('Error fetching program courses:', programCoursesError)
+        } else {
+          // Organiser les programmes par cours
+          const programsByCourse: Record<string, Program[]> = {}
+          
+          programCoursesData?.forEach((pc: any) => {
+            if (pc.course_id && pc.programs) {
+              if (!programsByCourse[pc.course_id]) {
+                programsByCourse[pc.course_id] = []
+              }
+              programsByCourse[pc.course_id].push({
+                id: pc.programs.id,
+                title: pc.programs.title
+              })
+            }
+          })
+          
+          setCoursePrograms(programsByCourse)
+        }
+      }
     } catch (error) {
       console.error('Error fetching courses:', error)
       setError('Erreur lors du chargement des formations.')
@@ -46,9 +104,88 @@ export function AdminCoursesContent() {
     }
   }
 
+  // Fonction de tri
+  const sortCourses = (coursesToSort: Course[]): Course[] => {
+    const sorted = [...coursesToSort]
+    
+    switch (sortBy) {
+      case 'title-asc':
+        return sorted.sort((a, b) => (a.title || '').localeCompare(b.title || '', 'fr'))
+      case 'title-desc':
+        return sorted.sort((a, b) => (b.title || '').localeCompare(a.title || '', 'fr'))
+      case 'date-asc':
+        return sorted.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+      case 'date-desc':
+        return sorted.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      case 'status-asc':
+        return sorted.sort((a, b) => a.status.localeCompare(b.status))
+      case 'status-desc':
+        return sorted.sort((a, b) => b.status.localeCompare(a.status))
+      case 'access-asc':
+        return sorted.sort((a, b) => a.access_type.localeCompare(b.access_type))
+      case 'access-desc':
+        return sorted.sort((a, b) => b.access_type.localeCompare(a.access_type))
+      default:
+        return sorted
+    }
+  }
+
+  // Fonction de groupement
+  const groupCourses = (coursesToGroup: Course[]): Record<string, Course[]> => {
+    if (groupBy === 'none') {
+      return { 'Toutes les formations': coursesToGroup }
+    }
+
+    const grouped: Record<string, Course[]> = {}
+
+    coursesToGroup.forEach(course => {
+      let key = ''
+      
+      switch (groupBy) {
+        case 'status':
+          key = course.status === 'published' ? 'Publiées' : 'Brouillons'
+          break
+        case 'access_type':
+          key = course.access_type === 'free' ? 'Gratuites' 
+            : course.access_type === 'paid' ? 'Payantes' 
+            : 'Sur invitation'
+          break
+        case 'created_at':
+          const date = new Date(course.created_at)
+          const month = date.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })
+          key = month.charAt(0).toUpperCase() + month.slice(1)
+          break
+        default:
+          key = 'Autres'
+      }
+
+      if (!grouped[key]) {
+        grouped[key] = []
+      }
+      grouped[key].push(course)
+    })
+
+    // Trier les clés pour un affichage cohérent
+    const sortedKeys = Object.keys(grouped).sort((a, b) => {
+      if (groupBy === 'created_at') {
+        return new Date(b).getTime() - new Date(a).getTime()
+      }
+      return a.localeCompare(b, 'fr')
+    })
+
+    const sortedGrouped: Record<string, Course[]> = {}
+    sortedKeys.forEach(key => {
+      sortedGrouped[key] = grouped[key]
+    })
+
+    return sortedGrouped
+  }
+
+  // Filtrer, trier et grouper les formations
   useEffect(() => {
     let filtered = [...courses]
 
+    // Filtre par recherche
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase()
       filtered = filtered.filter(course =>
@@ -57,16 +194,30 @@ export function AdminCoursesContent() {
       )
     }
 
+    // Filtre par statut
     if (statusFilter !== 'all') {
       filtered = filtered.filter(course => course.status === statusFilter)
     }
 
+    // Filtre par type d'accès
     if (accessFilter !== 'all') {
       filtered = filtered.filter(course => course.access_type === accessFilter)
     }
 
+    // Trier
+    filtered = sortCourses(filtered)
+
     setFilteredCourses(filtered)
-  }, [courses, searchQuery, statusFilter, accessFilter])
+  }, [courses, searchQuery, statusFilter, accessFilter, sortBy])
+
+  // Sauvegarder les préférences de tri et groupement
+  useEffect(() => {
+    localStorage.setItem('admin-courses-content-sort', sortBy)
+  }, [sortBy])
+
+  useEffect(() => {
+    localStorage.setItem('admin-courses-content-group', groupBy)
+  }, [groupBy])
 
   const stats = {
     total: courses.length,
@@ -166,13 +317,22 @@ export function AdminCoursesContent() {
           <h2 className="text-xl font-bold text-gray-900">Formations</h2>
           <p className="text-sm text-gray-500 mt-0.5">Gérez vos formations et leur contenu</p>
         </div>
-        <Link
-          to="/admin/courses/new/json"
-          className="btn-primary inline-flex items-center gap-2 text-sm"
-        >
-          <Plus className="w-4 h-4" />
-          Nouvelle formation
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            to="/admin/courses/ai-generator"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
+          >
+            <Sparkles className="w-4 h-4" />
+            Générer avec IA
+          </Link>
+          <Link
+            to="/admin/courses/new/json"
+            className="btn-primary inline-flex items-center gap-2 text-sm"
+          >
+            <Plus className="w-4 h-4" />
+            Nouvelle formation
+          </Link>
+        </div>
       </div>
 
       {error && (
@@ -210,65 +370,113 @@ export function AdminCoursesContent() {
       {/* Barre de recherche et filtres */}
       {courses.length > 0 && (
         <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Rechercher une formation..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
+          <div className="flex flex-col gap-4">
+            {/* Première ligne : Recherche et vue */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Rechercher une formation..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+              
+              <div className="flex items-center bg-gray-100 rounded-lg border border-gray-200 p-1">
+                <button
+                  onClick={() => handleViewModeChange('grid')}
+                  className={`p-2 rounded-md transition-colors ${
+                    viewMode === 'grid'
+                      ? 'bg-white text-blue-600 shadow-sm'
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                  title="Vue grille"
+                >
+                  <LayoutGrid className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => handleViewModeChange('list')}
+                  className={`p-2 rounded-md transition-colors ${
+                    viewMode === 'list'
+                      ? 'bg-white text-blue-600 shadow-sm'
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                  title="Vue liste"
+                >
+                  <List className="w-4 h-4" />
+                </button>
+              </div>
             </div>
-            
-            <div className="flex items-center gap-2">
-              <Filter className="w-4 h-4 text-gray-400" />
+
+            {/* Deuxième ligne : Filtres, Tri et Groupement */}
+            <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
+              <div className="flex items-center gap-2">
+                <Filter className="w-4 h-4 text-gray-400" />
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value as any)}
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                >
+                  <option value="all">Tous les statuts</option>
+                  <option value="published">Publiées</option>
+                  <option value="draft">Brouillons</option>
+                </select>
+              </div>
+
               <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as any)}
+                value={accessFilter}
+                onChange={(e) => setAccessFilter(e.target.value as any)}
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
               >
-                <option value="all">Tous les statuts</option>
-                <option value="published">Publiées</option>
-                <option value="draft">Brouillons</option>
+                <option value="all">Tous les types</option>
+                <option value="free">Gratuit</option>
+                <option value="paid">Payant</option>
+                <option value="invite">Sur invitation</option>
               </select>
-            </div>
 
-            <select
-              value={accessFilter}
-              onChange={(e) => setAccessFilter(e.target.value as any)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-            >
-              <option value="all">Tous les types</option>
-              <option value="free">Gratuit</option>
-              <option value="paid">Payant</option>
-              <option value="invite">Sur invitation</option>
-            </select>
+              {/* Tri */}
+              <div className="flex items-center gap-2">
+                <ArrowUpDown className="w-4 h-4 text-gray-400" />
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as SortOption)}
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                >
+                  <optgroup label="Titre">
+                    <option value="title-asc">Titre (A-Z)</option>
+                    <option value="title-desc">Titre (Z-A)</option>
+                  </optgroup>
+                  <optgroup label="Date">
+                    <option value="date-desc">Plus récent</option>
+                    <option value="date-asc">Plus ancien</option>
+                  </optgroup>
+                  <optgroup label="Statut">
+                    <option value="status-asc">Statut (A-Z)</option>
+                    <option value="status-desc">Statut (Z-A)</option>
+                  </optgroup>
+                  <optgroup label="Type d'accès">
+                    <option value="access-asc">Type (A-Z)</option>
+                    <option value="access-desc">Type (Z-A)</option>
+                  </optgroup>
+                </select>
+              </div>
 
-            <div className="flex items-center bg-gray-100 rounded-lg border border-gray-200 p-1">
-              <button
-                onClick={() => handleViewModeChange('grid')}
-                className={`p-2 rounded-md transition-colors ${
-                  viewMode === 'grid'
-                    ? 'bg-white text-blue-600 shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
-                title="Vue grille"
-              >
-                <LayoutGrid className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => handleViewModeChange('list')}
-                className={`p-2 rounded-md transition-colors ${
-                  viewMode === 'list'
-                    ? 'bg-white text-blue-600 shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
-                title="Vue liste"
-              >
-                <List className="w-4 h-4" />
-              </button>
+              {/* Groupement */}
+              <div className="flex items-center gap-2">
+                <Filter className="w-4 h-4 text-gray-400" />
+                <select
+                  value={groupBy}
+                  onChange={(e) => setGroupBy(e.target.value as GroupByOption)}
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                >
+                  <option value="none">Aucun groupement</option>
+                  <option value="status">Grouper par statut</option>
+                  <option value="access_type">Grouper par type d'accès</option>
+                  <option value="created_at">Grouper par mois</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -306,9 +514,31 @@ export function AdminCoursesContent() {
             Réinitialiser les filtres
           </button>
         </div>
-      ) : viewMode === 'grid' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredCourses.map((course) => (
+      ) : (() => {
+        const groupedCourses = groupCourses(filteredCourses)
+        const groups = Object.keys(groupedCourses)
+
+        return (
+          <div className="space-y-6">
+            {groups.map((groupKey) => {
+              const coursesInGroup = groupedCourses[groupKey]
+              
+              return (
+                <div key={groupKey} className="space-y-4">
+                  {groupBy !== 'none' && (
+                    <div className="flex items-center gap-2 px-2">
+                      <h2 className="text-lg font-semibold text-gray-900">
+                        {groupKey}
+                      </h2>
+                      <span className="text-sm text-gray-500">
+                        ({coursesInGroup.length} {coursesInGroup.length > 1 ? 'formations' : 'formation'})
+                      </span>
+                    </div>
+                  )}
+                  
+                  {viewMode === 'grid' ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {coursesInGroup.map((course) => (
             <div key={course.id} className="bg-white rounded-lg border border-gray-200 hover:shadow-md transition-shadow overflow-hidden flex flex-col">
               <div className="p-5 flex-1 flex flex-col">
                 <div className="flex items-start justify-between mb-3">
@@ -341,6 +571,28 @@ export function AdminCoursesContent() {
                 <p className="text-sm text-gray-600 line-clamp-2 mb-4 flex-1">
                   {course.description || 'Aucune description'}
                 </p>
+
+                {/* Programmes associés */}
+                {coursePrograms[course.id] && coursePrograms[course.id].length > 0 && (
+                  <div className="mb-4">
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <Layers className="w-3.5 h-3.5 text-gray-400" />
+                      <span className="text-xs font-medium text-gray-500">Programmes :</span>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {coursePrograms[course.id].map((program) => (
+                        <Link
+                          key={program.id}
+                          to={`/admin/programs/${program.id}`}
+                          className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-colors"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {program.title}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div className="space-y-2 mb-4 text-xs text-gray-500">
                   <div className="flex items-center gap-2">
@@ -446,157 +698,184 @@ export function AdminCoursesContent() {
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      ) : (
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-          <div className="divide-y divide-gray-200">
-            {filteredCourses.map((course) => (
-              <div 
-                key={course.id} 
-                className="p-4 sm:p-6 hover:bg-gray-50 transition-colors"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <div className="flex items-start gap-4 flex-1 min-w-0">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
-                      <BookOpen className="w-6 h-6 text-white" />
+                      ))}
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap mb-2">
-                        <h3 className="text-base font-semibold text-gray-900 truncate">
-                          {course.title}
-                        </h3>
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                          course.status === 'published'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-yellow-100 text-yellow-700'
-                        }`}>
-                          {course.status === 'published' ? 'Publié' : 'Brouillon'}
-                        </span>
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                          course.access_type === 'free'
-                            ? 'bg-blue-100 text-blue-700'
-                            : course.access_type === 'paid'
-                              ? 'bg-purple-100 text-purple-700'
-                              : 'bg-gray-100 text-gray-700'
-                        }`}>
-                          {course.access_type === 'free' ? 'Gratuit' :
-                           course.access_type === 'paid' ? 'Payant' : 'Invitation'}
-                        </span>
-                        {course.price_cents && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700">
-                            <DollarSign className="w-3 h-3 mr-1" />
-                            {(course.price_cents / 100).toFixed(2)}€
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-sm text-gray-600 line-clamp-2 mb-2">
-                        {course.description || 'Aucune description disponible.'}
-                      </p>
-                      <div className="flex items-center gap-4 text-xs text-gray-500">
-                        <span className="flex items-center gap-1.5">
-                          <Calendar className="w-3.5 h-3.5" />
-                          Créé le {new Date(course.created_at).toLocaleDateString('fr-FR', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric'
-                          })}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                  ) : (
+                    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                      <div className="divide-y divide-gray-200">
+                        {coursesInGroup.map((course) => (
+                          <div 
+                            key={course.id} 
+                            className="p-4 sm:p-6 hover:bg-gray-50 transition-colors"
+                          >
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                              <div className="flex items-start gap-4 flex-1 min-w-0">
+                                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                                  <BookOpen className="w-6 h-6 text-white" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2 flex-wrap mb-2">
+                                    <h3 className="text-base font-semibold text-gray-900 truncate">
+                                      {course.title}
+                                    </h3>
+                                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                                      course.status === 'published'
+                                        ? 'bg-green-100 text-green-700'
+                                        : 'bg-yellow-100 text-yellow-700'
+                                    }`}>
+                                      {course.status === 'published' ? 'Publié' : 'Brouillon'}
+                                    </span>
+                                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                                      course.access_type === 'free'
+                                        ? 'bg-blue-100 text-blue-700'
+                                        : course.access_type === 'paid'
+                                          ? 'bg-purple-100 text-purple-700'
+                                          : 'bg-gray-100 text-gray-700'
+                                    }`}>
+                                      {course.access_type === 'free' ? 'Gratuit' :
+                                       course.access_type === 'paid' ? 'Payant' : 'Invitation'}
+                                    </span>
+                                    {course.price_cents && (
+                                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700">
+                                        <DollarSign className="w-3 h-3 mr-1" />
+                                        {(course.price_cents / 100).toFixed(2)}€
+                                      </span>
+                                    )}
+                                  </div>
+                                  <p className="text-sm text-gray-600 line-clamp-2 mb-2">
+                                    {course.description || 'Aucune description disponible.'}
+                                  </p>
+                                  {/* Programmes associés */}
+                                  {coursePrograms[course.id] && coursePrograms[course.id].length > 0 && (
+                                    <div className="mb-2">
+                                      <div className="flex items-center gap-1.5 mb-1">
+                                        <Layers className="w-3.5 h-3.5 text-gray-400" />
+                                        <span className="text-xs font-medium text-gray-500">Programmes :</span>
+                                      </div>
+                                      <div className="flex flex-wrap gap-1.5">
+                                        {coursePrograms[course.id].map((program) => (
+                                          <Link
+                                            key={program.id}
+                                            to={`/admin/programs/${program.id}`}
+                                            className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-colors"
+                                            onClick={(e) => e.stopPropagation()}
+                                          >
+                                            {program.title}
+                                          </Link>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )}
+                                  <div className="flex items-center gap-4 text-xs text-gray-500">
+                                    <span className="flex items-center gap-1.5">
+                                      <Calendar className="w-3.5 h-3.5" />
+                                      Créé le {new Date(course.created_at).toLocaleDateString('fr-FR', {
+                                        day: 'numeric',
+                                        month: 'short',
+                                        year: 'numeric'
+                                      })}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
 
-                  <div className="flex items-center gap-2 flex-shrink-0 sm:ml-4">
-                    <Link
-                      to={`/admin/courses/${course.id}`}
-                      className="btn-primary text-sm inline-flex items-center gap-1.5"
-                    >
-                      <Edit className="w-3.5 h-3.5" />
-                      Modifier
-                    </Link>
-                    <Link
-                      to={`/courses/${course.id}`}
-                      className="btn-secondary text-sm inline-flex items-center gap-1.5"
-                      title="Voir"
-                    >
-                      <Eye className="w-3.5 h-3.5" />
-                    </Link>
-                    <Link
-                      to={`/admin/courses/${course.id}/enrollments`}
-                      className="btn-secondary text-sm inline-flex items-center gap-1.5"
-                      title="Inscriptions"
-                    >
-                      <Users className="w-3.5 h-3.5" />
-                    </Link>
-                    <Link
-                      to={`/admin/courses/${course.id}/submissions`}
-                      className="btn-secondary text-sm inline-flex items-center gap-1.5"
-                      title="Soumissions"
-                    >
-                      <FileText className="w-3.5 h-3.5" />
-                    </Link>
-                    <button
-                      onClick={() => handleOpenPresentation(course.id)}
-                      className="btn-secondary text-sm inline-flex items-center gap-1.5"
-                      title="Ouvrir la présentation de tous les chapitres du cours"
-                    >
-                      <Presentation className="w-3.5 h-3.5" />
-                      Présentation
-                    </button>
-                    <div className="relative">
-                      <button
-                        onClick={() => setOpenMenuId(openMenuId === course.id ? null : course.id)}
-                        className="btn-secondary text-sm inline-flex items-center gap-1.5"
-                        title="Plus d'options"
-                      >
-                        <MoreVertical className="w-3.5 h-3.5" />
-                      </button>
-                      {openMenuId === course.id && (
-                        <>
-                          <div
-                            className="fixed inset-0 z-10"
-                            onClick={() => setOpenMenuId(null)}
-                          />
-                          <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20">
-                            <Link
-                              to={`/admin/courses/${course.id}/json`}
-                              onClick={() => setOpenMenuId(null)}
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
-                            >
-                              <Code className="w-4 h-4" />
-                              Éditer en JSON
-                            </Link>
-                            <button
-                              onClick={() => {
-                                handleDuplicateCourse(course)
-                                setOpenMenuId(null)
-                              }}
-                              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
-                            >
-                              <Copy className="w-4 h-4" />
-                              Dupliquer
-                            </button>
-                            <button
-                              onClick={() => {
-                                handleDeleteCourse(course.id)
-                                setOpenMenuId(null)
-                              }}
-                              className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                              Supprimer
-                            </button>
+                              <div className="flex items-center gap-2 flex-shrink-0 sm:ml-4">
+                                <Link
+                                  to={`/admin/courses/${course.id}`}
+                                  className="btn-primary text-sm inline-flex items-center gap-1.5"
+                                >
+                                  <Edit className="w-3.5 h-3.5" />
+                                  Modifier
+                                </Link>
+                                <Link
+                                  to={`/courses/${course.id}`}
+                                  className="btn-secondary text-sm inline-flex items-center gap-1.5"
+                                  title="Voir"
+                                >
+                                  <Eye className="w-3.5 h-3.5" />
+                                </Link>
+                                <Link
+                                  to={`/admin/courses/${course.id}/enrollments`}
+                                  className="btn-secondary text-sm inline-flex items-center gap-1.5"
+                                  title="Inscriptions"
+                                >
+                                  <Users className="w-3.5 h-3.5" />
+                                </Link>
+                                <Link
+                                  to={`/admin/courses/${course.id}/submissions`}
+                                  className="btn-secondary text-sm inline-flex items-center gap-1.5"
+                                  title="Soumissions"
+                                >
+                                  <FileText className="w-3.5 h-3.5" />
+                                </Link>
+                                <button
+                                  onClick={() => handleOpenPresentation(course.id)}
+                                  className="btn-secondary text-sm inline-flex items-center gap-1.5"
+                                  title="Ouvrir la présentation de tous les chapitres du cours"
+                                >
+                                  <Presentation className="w-3.5 h-3.5" />
+                                  Présentation
+                                </button>
+                                <div className="relative">
+                                  <button
+                                    onClick={() => setOpenMenuId(openMenuId === course.id ? null : course.id)}
+                                    className="btn-secondary text-sm inline-flex items-center gap-1.5"
+                                    title="Plus d'options"
+                                  >
+                                    <MoreVertical className="w-3.5 h-3.5" />
+                                  </button>
+                                  {openMenuId === course.id && (
+                                    <>
+                                      <div
+                                        className="fixed inset-0 z-10"
+                                        onClick={() => setOpenMenuId(null)}
+                                      />
+                                      <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20">
+                                        <Link
+                                          to={`/admin/courses/${course.id}/json`}
+                                          onClick={() => setOpenMenuId(null)}
+                                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                                        >
+                                          <Code className="w-4 h-4" />
+                                          Éditer en JSON
+                                        </Link>
+                                        <button
+                                          onClick={() => {
+                                            handleDuplicateCourse(course)
+                                            setOpenMenuId(null)
+                                          }}
+                                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                                        >
+                                          <Copy className="w-4 h-4" />
+                                          Dupliquer
+                                        </button>
+                                        <button
+                                          onClick={() => {
+                                            handleDeleteCourse(course.id)
+                                            setOpenMenuId(null)
+                                          }}
+                                          className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                                        >
+                                          <Trash2 className="w-4 h-4" />
+                                          Supprimer
+                                        </button>
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                        </>
-                      )}
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
-        </div>
-      )}
+        )
+      })()}
     </div>
   )
 }

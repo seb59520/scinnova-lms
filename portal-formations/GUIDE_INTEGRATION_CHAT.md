@@ -235,3 +235,4 @@ LIMIT 50;
 - [Row Level Security](https://supabase.com/docs/guides/auth/row-level-security)
 - [React Hooks](https://react.dev/reference/react)
 
+

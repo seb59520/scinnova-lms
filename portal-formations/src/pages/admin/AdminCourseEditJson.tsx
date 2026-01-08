@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Course } from '../../types/database'
@@ -8,15 +8,17 @@ import { ReactRenderer } from '../../components/ReactRenderer'
 import { CourseJson } from '../../types/courseJson'
 import { generateAndUploadSlide } from '../../lib/slideGenerator'
 import { generateSlideWithExternalAPI } from '../../lib/slideGeneratorAdvanced'
+import { LinkedInPostModal } from '../../components/LinkedInPostModal'
 
 export function AdminCourseEditJson() {
   const { courseId } = useParams<{ courseId: string }>()
   const { user } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
   // isNew est true si courseId est 'new', undefined, ou null
   const isNew = !courseId || courseId === 'new'
 
-  const [, setCourse] = useState<Course | null>(null)
+  const [course, setCourse] = useState<Course | null>(null)
   const [jsonContent, setJsonContent] = useState<string>('')
   const [parsedJson, setParsedJson] = useState<CourseJson | null>(null)
   const [error, setError] = useState('')
@@ -26,29 +28,42 @@ export function AdminCourseEditJson() {
   const [generatingSlides, setGeneratingSlides] = useState(false)
   const [generationProgress, setGenerationProgress] = useState({ current: 0, total: 0 })
   const [useAdvancedGeneration, setUseAdvancedGeneration] = useState(false)
+  const [isPublic, setIsPublic] = useState(false)
+  const [showLinkedInModal, setShowLinkedInModal] = useState(false)
+  const [wasPublicBeforeSave, setWasPublicBeforeSave] = useState(false)
 
   useEffect(() => {
     if (!isNew && courseId) {
       fetchCourse()
     } else {
-      // Template JSON par défaut
-      const defaultJson: CourseJson = {
-        title: 'Nouveau cours',
-        description: 'Description du cours',
-        status: 'draft',
-        access_type: 'free',
-        theme: {
-          primaryColor: '#3B82F6',
-          secondaryColor: '#8B5CF6',
-          fontFamily: 'Inter'
-        },
-        modules: [] // Toujours initialiser modules comme un tableau vide
+      // Vérifier si un JSON initial a été passé depuis le générateur IA
+      const initialJson = (location.state as any)?.initialJson as CourseJson | undefined
+      
+      if (initialJson) {
+        // Utiliser le JSON fourni par le générateur IA
+        setJsonContent(JSON.stringify(initialJson, null, 2))
+        setParsedJson(initialJson)
+        setLoading(false)
+      } else {
+        // Template JSON par défaut
+        const defaultJson: CourseJson = {
+          title: 'Nouveau cours',
+          description: 'Description du cours',
+          status: 'draft',
+          access_type: 'free',
+          theme: {
+            primaryColor: '#3B82F6',
+            secondaryColor: '#8B5CF6',
+            fontFamily: 'Inter'
+          },
+          modules: [] // Toujours initialiser modules comme un tableau vide
+        }
+        setJsonContent(JSON.stringify(defaultJson, null, 2))
+        setParsedJson(defaultJson)
+        setLoading(false)
       }
-      setJsonContent(JSON.stringify(defaultJson, null, 2))
-      setParsedJson(defaultJson)
-      setLoading(false)
     }
-  }, [courseId, isNew])
+  }, [courseId, isNew, location.state])
 
   const fetchCourse = async () => {
     try {
@@ -61,6 +76,8 @@ export function AdminCourseEditJson() {
 
       if (courseError) throw courseError
       setCourse(courseData)
+      setIsPublic(courseData.is_public || false)
+      setWasPublicBeforeSave(courseData.is_public || false)
 
       // Récupérer les modules avec items
       const { data: modulesData, error: modulesError } = await supabase
@@ -135,9 +152,84 @@ export function AdminCourseEditJson() {
 
   // Fonction pour convertir le format slides en format modules/items
   const convertSlidesFormatToCourseJson = (input: any): CourseJson => {
-    // Si c'est déjà au bon format, retourner tel quel
+    // Si c'est déjà au bon format, valider et nettoyer les items
     if (input.modules && Array.isArray(input.modules)) {
-      return input as CourseJson
+      // Valider et nettoyer les items pour s'assurer qu'ils ont tous un type valide
+      const validTypes = ['resource', 'slide', 'exercise', 'activity', 'tp', 'game']
+      const cleanedModules = input.modules.map((module: any) => {
+        if (module.items && Array.isArray(module.items)) {
+          const cleanedItems = module.items
+            .filter((item: any) => {
+              // Filtrer les items null/undefined
+              if (!item) return false
+              // Filtrer les items sans type ou avec type invalide (y compris la chaîne "undefined")
+              if (!item.type || 
+                  item.type === undefined || 
+                  item.type === null || 
+                  item.type === 'undefined' || 
+                  item.type === 'null' ||
+                  (typeof item.type === 'string' && item.type.trim() === '') ||
+                  !validTypes.includes(item.type)) {
+                console.warn(`Item filtré (type invalide): "${item.title || 'Sans titre'}" - type: "${item.type}"`)
+                return false
+              }
+              return true
+            })
+            .map((item: any) => {
+              // S'assurer que l'item a toujours un type valide
+              let finalType: string = item.type
+              
+              // Normaliser le type (minuscules, sans espaces)
+              if (typeof item.type === 'string') {
+                finalType = item.type.toLowerCase().trim()
+              } else if (item.type === undefined || item.type === null || item.type === 'undefined' || item.type === 'null') {
+                // Si le type est invalide, essayer de deviner le type par défaut basé sur le contenu
+                if (item.title && (item.title.toLowerCase().includes('tp') || item.title.toLowerCase().includes('travaux'))) {
+                  finalType = 'tp'
+                } else if (item.content?.instructions) {
+                  finalType = 'tp'
+                } else if (item.content?.question) {
+                  finalType = 'exercise'
+                } else {
+                  finalType = 'resource'
+                }
+                console.warn(`Item "${item.title || 'Sans titre'}" sans type valide, utilisation de "${finalType}" par défaut`)
+              }
+              
+              // Vérifier que le type final est valide
+              if (!validTypes.includes(finalType)) {
+                // Essayer de mapper vers un type valide
+                const typeMap: Record<string, string> = {
+                  'resources': 'resource',
+                  'slides': 'slide',
+                  'exercises': 'exercise',
+                  'exercice': 'exercise',
+                  'travaux-pratiques': 'tp',
+                  'travaux pratiques': 'tp',
+                  'games': 'game',
+                  'jeu': 'game',
+                  'jeux': 'game'
+                }
+                if (typeMap[finalType]) {
+                  finalType = typeMap[finalType]
+                } else {
+                  // Type par défaut si aucun mapping trouvé
+                  finalType = 'resource'
+                }
+                console.warn(`Item "${item.title || 'Sans titre'}" type "${item.type}" mappé vers "${finalType}"`)
+              }
+              
+              // Retourner l'item avec le type garanti valide
+              return { 
+                ...item, 
+                type: finalType as 'resource' | 'slide' | 'exercise' | 'activity' | 'tp' | 'game'
+              }
+            })
+          return { ...module, items: cleanedItems }
+        }
+        return module
+      })
+      return { ...input, modules: cleanedModules } as CourseJson
     }
 
     // Détecter le format avec slides
@@ -311,6 +403,41 @@ export function AdminCourseEditJson() {
         converted.modules = []
       }
       
+      // Valider que tous les items ont un type valide
+      const validTypes = ['resource', 'slide', 'exercise', 'activity', 'tp', 'game']
+      const validationErrors: string[] = []
+      
+      converted.modules.forEach((module: any, moduleIndex: number) => {
+        if (module.items && Array.isArray(module.items)) {
+          module.items.forEach((item: any, itemIndex: number) => {
+            if (!item) {
+              validationErrors.push(`Module ${moduleIndex + 1}, Item ${itemIndex + 1}: item est null ou undefined`)
+              return
+            }
+            
+            // Vérifier si le type est manquant, null, undefined, ou la chaîne "undefined"/"null"
+            if (!item.hasOwnProperty('type') || 
+                item.type === undefined || 
+                item.type === null || 
+                item.type === 'undefined' || 
+                item.type === 'null' ||
+                (typeof item.type === 'string' && item.type.trim() === '')) {
+              validationErrors.push(`Module ${moduleIndex + 1}, Item ${itemIndex + 1} ("${item.title || 'Sans titre'}"): le champ "type" est manquant ou invalide`)
+            } else if (typeof item.type !== 'string') {
+              validationErrors.push(`Module ${moduleIndex + 1}, Item ${itemIndex + 1} ("${item.title || 'Sans titre'}"): le champ "type" doit être une chaîne de caractères, reçu: ${typeof item.type}`)
+            } else if (!validTypes.includes(item.type)) {
+              validationErrors.push(`Module ${moduleIndex + 1}, Item ${itemIndex + 1} ("${item.title || 'Sans titre'}"): type invalide "${item.type}". Types valides: ${validTypes.join(', ')}`)
+            }
+          })
+        }
+      })
+      
+      if (validationErrors.length > 0) {
+        setError(`Erreurs de validation:\n${validationErrors.join('\n')}`)
+        setParsedJson(null)
+        return
+      }
+      
       setParsedJson(converted)
       setError('')
     } catch (e) {
@@ -371,6 +498,9 @@ export function AdminCourseEditJson() {
     setError('')
 
     try {
+      // Vérifier si is_public passe de false à true
+      const isBecomingPublic = isPublic && !wasPublicBeforeSave
+
       const courseData = {
         title: title, // Utiliser la version trimée et validée
         description: jsonToSave.description || null,
@@ -379,6 +509,7 @@ export function AdminCourseEditJson() {
         price_cents: jsonToSave.price_cents || null,
         currency: jsonToSave.currency || 'EUR',
         is_paid: jsonToSave.access_type === 'paid',
+        is_public: isPublic,
         created_by: user.id,
         updated_at: new Date().toISOString()
       }
@@ -426,6 +557,26 @@ export function AdminCourseEditJson() {
         finalCourseId = courseId
       }
 
+      // Si la formation devient publique, proposer le post LinkedIn
+      if (isBecomingPublic && finalCourseId) {
+        // Récupérer la formation mise à jour avec publication_date
+        const { data: updatedCourse, error: fetchError } = await supabase
+          .from('courses')
+          .select('*')
+          .eq('id', finalCourseId)
+          .single()
+        
+        if (fetchError) {
+          console.error('Error fetching updated course:', fetchError)
+        } else if (updatedCourse) {
+          setCourse(updatedCourse)
+          setShowLinkedInModal(true)
+        }
+      }
+
+      // Mettre à jour wasPublicBeforeSave
+      setWasPublicBeforeSave(isPublic)
+
       // Vérifier que finalCourseId est défini avant de continuer
       if (!finalCourseId) {
         throw new Error('ID du cours non défini. Impossible de continuer la sauvegarde.')
@@ -467,11 +618,25 @@ export function AdminCourseEditJson() {
         if (module.items && module.items.length > 0) {
           // Fonction pour valider et normaliser le type d'item
           const validateItemType = (type: string | undefined | null): 'resource' | 'slide' | 'exercise' | 'activity' | 'tp' | 'game' => {
-            if (!type) {
-              throw new Error('Le type d\'item est requis.')
+            // Vérifier explicitement si le type est undefined, null, ou la chaîne "undefined"/"null"
+            if (type === undefined || 
+                type === null || 
+                type === 'undefined' || 
+                type === 'null' ||
+                (typeof type === 'string' && type.trim() === '')) {
+              throw new Error('Le type d\'item est requis (undefined, null ou vide détecté).')
+            }
+            
+            if (typeof type !== 'string') {
+              throw new Error(`Le type d'item doit être une chaîne de caractères, reçu: ${typeof type}`)
             }
             
             const normalizedType = type.toLowerCase().trim()
+            
+            // Vérifier à nouveau après normalisation
+            if (normalizedType === '' || normalizedType === 'undefined' || normalizedType === 'null') {
+              throw new Error('Le type d\'item est requis (vide ou "undefined" après normalisation).')
+            }
             
             // Mapping des variantes possibles vers les types valides
             const typeMap: Record<string, 'resource' | 'slide' | 'exercise' | 'activity' | 'tp' | 'game'> = {
@@ -513,8 +678,27 @@ export function AdminCourseEditJson() {
             return validType
           }
 
-          const itemsData = module.items.map((item, index) => {
+          // Filtrer les items invalides et valider
+          const validItems = module.items.filter((item, index) => {
+            if (!item) {
+              console.warn(`Module "${module.title}", Item ${index + 1}: item est null ou undefined, ignoré`)
+              return false
+            }
+            return true
+          })
+
+          const itemsData = validItems.map((item, index) => {
             try {
+              // Vérification explicite du type avant validation (y compris la chaîne "undefined")
+              if (!item.hasOwnProperty('type') || 
+                  item.type === undefined || 
+                  item.type === null || 
+                  item.type === 'undefined' || 
+                  item.type === 'null' ||
+                  (typeof item.type === 'string' && item.type.trim() === '')) {
+                throw new Error(`Le champ "type" est manquant, undefined, null ou invalide pour l'item "${item.title || `à la position ${index + 1}`}"`)
+              }
+              
               const validatedType = validateItemType(item.type)
               
               return {
@@ -917,6 +1101,28 @@ export function AdminCourseEditJson() {
             </div>
           )}
 
+          {/* Toggle Rendre publique */}
+          {!isNew && (
+            <div className="mb-6 bg-white shadow rounded-lg p-4">
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={isPublic}
+                  onChange={(e) => setIsPublic(e.target.checked)}
+                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                />
+                <span className="text-sm font-medium text-gray-700">
+                  Rendre publique (afficher sur la landing page)
+                </span>
+              </label>
+              <p className="text-xs text-gray-500 mt-1 ml-6">
+                {isPublic 
+                  ? '✅ Cette formation sera visible sur la landing page et apparaîtra dans les nouvelles formations'
+                  : '⚠️ Cette formation ne sera pas visible sur la landing page'}
+              </p>
+            </div>
+          )}
+
           {/* Debug info */}
           {process.env.NODE_ENV === 'development' && (
             <div className="mb-4 bg-gray-100 border border-gray-300 text-gray-700 px-4 py-2 rounded text-xs">
@@ -1013,6 +1219,15 @@ export function AdminCourseEditJson() {
           )}
         </div>
       </main>
+
+      {/* Modal LinkedIn */}
+      {course && (
+        <LinkedInPostModal
+          course={course}
+          isOpen={showLinkedInModal}
+          onClose={() => setShowLinkedInModal(false)}
+        />
+      )}
     </div>
   )
 }

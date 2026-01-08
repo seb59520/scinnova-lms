@@ -4,6 +4,7 @@ export interface Profile {
   id: string;
   role: UserRole;
   full_name: string | null;
+  is_active?: boolean;
   created_at: string;
 }
 
@@ -20,6 +21,8 @@ export interface Course {
   currency: string | null;
   is_paid: boolean;
   allow_pdf_download?: boolean;
+  is_public?: boolean;
+  publication_date?: string | null;
   created_by: string;
   created_at: string;
   updated_at: string;
@@ -286,4 +289,18 @@ export interface ProgramEnrollment {
   status: EnrollmentStatus;
   source: EnrollmentSource;
   enrolled_at: string;
+}
+
+export interface CourseLead {
+  id: string;
+  email: string;
+  course_id: string;
+  source: 'landing_page' | 'course_page' | 'other';
+  metadata: Record<string, any> | null;
+  subscribed: boolean;
+  created_at: string;
+}
+
+export interface CourseLeadWithCourse extends CourseLead {
+  courses: Course;
 }

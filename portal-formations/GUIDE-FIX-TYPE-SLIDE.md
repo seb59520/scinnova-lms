@@ -161,3 +161,4 @@ Puis vérifiez qu'il s'affiche correctement dans l'interface.
 4. Testez avec un autre type (ex: `"type": "resource"`) pour voir si le problème est spécifique aux slides
 
 
+

@@ -20,3 +20,4 @@ echo "3. Redémarrez le serveur backend"
 echo ""
 echo "Pour plus d'informations, consultez GUIDE-TELECHARGEMENT-PDF.md"
 
+

@@ -72,3 +72,4 @@ Le code détecte maintenant spécifiquement :
 - Les politiques RLS utilisent maintenant des fonctions au lieu de sous-requêtes complexes
 
 
+

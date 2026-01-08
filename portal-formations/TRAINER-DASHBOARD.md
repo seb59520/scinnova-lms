@@ -255,3 +255,4 @@ const { data, error } = await supabase
 Pour toute question ou problème, consultez la documentation Supabase ou ouvrez une issue.
 
 
+

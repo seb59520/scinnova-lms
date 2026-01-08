@@ -7,8 +7,10 @@ import { FileUpload } from './FileUpload'
 import { RichTextEditor } from './RichTextEditor'
 import { GameRenderer } from './GameRenderer'
 import { ItemDocuments } from './ItemDocuments'
-import { Presentation, Eye, Columns, Sparkles } from 'lucide-react'
+import { Presentation, Eye, Columns, Sparkles, FileJson } from 'lucide-react'
 import { correctAnswer, CorrectionResult } from '../lib/answerCorrector'
+import { TitanicJsonUploader } from './TitanicJsonUploader'
+import './TitanicJsonUploader.css'
 
 interface ItemRendererProps {
   item: Item
@@ -1332,11 +1334,65 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate }: ItemRende
   const renderTp = () => {
     const isSubmitted = submission?.status === 'submitted'
     const isGraded = submission?.status === 'graded'
+    
+    // Détecter si c'est un TP Titanic (par le titre ou un champ dans content)
+    const isTitanicTp = item.title?.toLowerCase().includes('titanic') || 
+                       item.title?.toLowerCase().includes('big data') ||
+                       item.title?.toLowerCase().includes('data science') ||
+                       item.title?.toLowerCase().includes('machine learning') ||
+                       item.content?.titanicModule
+
+    // Détecter le type de module
+    const getTitanicModuleType = (): 'big-data' | 'data-science' | 'machine-learning' | undefined => {
+      if (item.title?.toLowerCase().includes('big data')) return 'big-data'
+      if (item.title?.toLowerCase().includes('data science')) return 'data-science'
+      if (item.title?.toLowerCase().includes('machine learning')) return 'machine-learning'
+      return item.content?.titanicModule
+    }
+
+    const handleTitanicUploadSuccess = () => {
+      // Recharger les données de soumission
+      if (onSubmissionUpdate) {
+        // La soumission sera mise à jour automatiquement
+        window.location.reload() // Solution simple pour recharger
+      }
+    }
 
     return (
       <div className="space-y-6">
         {/* Documents disponibles pour le TP */}
         <ItemDocuments itemId={item.id} />
+
+        {/* Uploader JSON Titanic si c'est un TP Titanic */}
+        {isTitanicTp && !isSubmitted && (
+          <TitanicJsonUploader
+            itemId={item.id}
+            onUploadSuccess={handleTitanicUploadSuccess}
+            moduleType={getTitanicModuleType()}
+          />
+        )}
+
+        {/* Afficher les données importées si soumises */}
+        {isTitanicTp && submission?.answer_json?.titanicData && (
+          <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+            <h4 className="font-semibold text-blue-900 mb-2 flex items-center">
+              <FileJson className="w-5 h-5 mr-2" />
+              Réponses importées depuis l'application Titanic
+            </h4>
+            <p className="text-sm text-blue-700">
+              Module: {submission.answer_json.moduleType || 'Non spécifié'} | 
+              Importé le: {new Date(submission.answer_json.uploadedAt || submission.submitted_at).toLocaleDateString('fr-FR')}
+            </p>
+            <details className="mt-2">
+              <summary className="text-sm text-blue-600 cursor-pointer hover:underline">
+                Voir les données importées
+              </summary>
+              <pre className="mt-2 text-xs bg-white p-3 rounded border border-blue-300 overflow-auto max-h-96">
+                {JSON.stringify(submission.answer_json.titanicData, null, 2)}
+              </pre>
+            </details>
+          </div>
+        )}
 
         {item.content?.instructions && (
           <div className="bg-purple-50 p-4 rounded-lg">

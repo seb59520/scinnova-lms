@@ -97,3 +97,4 @@ Exécuter `diagnose-user-role.sql` pour diagnostiquer les incohérences de rôle
   - `org_members.role: 'admin'` → `UnifiedRole: 'admin'` (mais moins prioritaire que `profiles.role === 'admin'`)
 
 
+

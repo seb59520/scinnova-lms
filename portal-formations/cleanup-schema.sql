@@ -69,3 +69,4 @@ DROP INDEX IF EXISTS idx_submissions_user_id;
 DROP INDEX IF EXISTS idx_submissions_item_id;
 DROP INDEX IF EXISTS idx_game_scores_user_course;
 
+

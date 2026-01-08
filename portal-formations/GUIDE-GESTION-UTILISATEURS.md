@@ -120,3 +120,4 @@ Si vous obtenez des erreurs de permissions :
 - [Documentation RLS (Row Level Security)](https://supabase.com/docs/guides/auth/row-level-security)
 
 
+

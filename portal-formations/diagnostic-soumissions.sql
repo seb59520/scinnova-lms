@@ -99,3 +99,4 @@ AND m.title = 'Module 5 : Exercices pratiques'
 GROUP BY p.id, p.full_name, m.id, m.title, e.session_id;
 
 
+

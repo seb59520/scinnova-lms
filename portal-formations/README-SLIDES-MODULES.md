@@ -176,3 +176,4 @@ Après création, vous pouvez :
 - Le format TipTap permet d'ajouter du formatage riche (gras, italique, liens, etc.)
 
 
+

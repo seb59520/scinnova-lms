@@ -235,3 +235,4 @@ Le fichier `solutions-websocket-chat.json` contient les solutions complètes ave
 - [ ] Test de l'affichage du TP réussi
 - [ ] Checklist visible et fonctionnelle
 
+

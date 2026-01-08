@@ -150,3 +150,4 @@ if (profile?.role !== 'admin' && user?.id) {
 - Les admins n'ont pas besoin d'être inscrits pour accéder aux formations
 
 
+

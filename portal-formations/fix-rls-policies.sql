@@ -147,3 +147,4 @@ CREATE POLICY "Admins can view all game scores" ON game_scores
     )
   );
 
+

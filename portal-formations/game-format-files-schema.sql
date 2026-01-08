@@ -133,3 +133,4 @@ COMMENT ON COLUMN game_progress.best_score IS 'Meilleur score obtenu pour ce niv
 COMMENT ON COLUMN game_progress.last_score IS 'Dernier score obtenu pour ce niveau';
 
 
+

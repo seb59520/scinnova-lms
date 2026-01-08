@@ -199,3 +199,4 @@ Ouvrez la console du navigateur (F12) et regardez les logs. Vous devriez voir :
 Ces logs vous indiqueront exactement ce qui ne va pas.
 
 
+

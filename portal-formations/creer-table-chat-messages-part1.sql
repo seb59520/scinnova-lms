@@ -23,3 +23,4 @@ CREATE INDEX IF NOT EXISTS idx_chat_messages_recipient ON chat_messages(recipien
 CREATE INDEX IF NOT EXISTS idx_chat_messages_created_at ON chat_messages(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_chat_messages_unread ON chat_messages(recipient_id, read_at) WHERE read_at IS NULL;
 
+

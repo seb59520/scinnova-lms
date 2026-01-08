@@ -26,3 +26,4 @@ console.log('=== Test du registre de jeux ===')
 // Vérifiez qu'il n'y a pas d'erreurs de syntaxe
 
 
+

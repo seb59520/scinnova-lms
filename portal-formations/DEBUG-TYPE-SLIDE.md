@@ -129,3 +129,4 @@ RETURNING id, type;
 Puis vérifier qu'il s'affiche correctement dans l'interface.
 
 
+

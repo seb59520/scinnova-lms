@@ -121,3 +121,4 @@ Puis accédez à cet item via `/app/items/{id}` et vérifiez s'il s'affiche corr
 4. Rechargez la page en forçant le rafraîchissement (Ctrl+F5)
 
 
+

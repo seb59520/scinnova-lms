@@ -104,3 +104,4 @@ LEFT JOIN sessions ses ON ses.id = s.session_id;
 - **Le statut de la session** : Seules les sessions avec `status = 'active'` sont utilisées pour l'attribution automatique
 
 
+

@@ -49,3 +49,4 @@ export function setupSwagger(app: Express): void {
   console.log('📄 OpenAPI spec disponible sur http://localhost:3001/openapi');
 }
 
+

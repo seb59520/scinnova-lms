@@ -111,3 +111,4 @@ WHERE tablename = 'chapters' AND policyname = 'Chapters viewable with item acces
 -- ANALYZE program_enrollments;
 
 
+

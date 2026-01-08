@@ -147,3 +147,4 @@ Une fois que vous voyez les slides s'afficher correctement :
 3. Testez différents formats de contexte (texte simple vs TipTap JSON)
 4. Vérifiez l'affichage sur différents appareils
 
+

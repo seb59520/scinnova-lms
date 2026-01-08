@@ -744,3 +744,4 @@ ALTER TABLE user_settings ENABLE ROW LEVEL SECURITY;
 -- ============================================================================
 
 
+

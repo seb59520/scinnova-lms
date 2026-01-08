@@ -164,3 +164,4 @@ VALUES (
 Ensuite, allez sur la page de l'item et vérifiez si le jeu apparaît.
 
 
+

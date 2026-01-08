@@ -145,3 +145,4 @@ FROM chat_messages cm
 LEFT JOIN profiles sender ON sender.id = cm.sender_id
 LEFT JOIN profiles recipient ON recipient.id = cm.recipient_id;
 
+

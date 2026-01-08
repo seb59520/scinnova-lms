@@ -39,7 +39,7 @@ export function ProtectedRoute({
   // Éviter les boucles : ne pas rediriger si on est déjà sur la bonne page
   const isOnLoginPage = location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/reset-password'
   const isOnAppPage = location.pathname === '/app'
-  const isOnLandingPage = location.pathname === '/landing'
+  const isOnLandingPage = location.pathname === '/landing' || location.pathname === '/'
   const isOnPublicPage = isOnLoginPage || isOnLandingPage
 
   // Afficher un message si hors ligne

@@ -127,3 +127,4 @@ Pour tester si le jeu fonctionne, créez un chapitre avec ce JSON minimal :
 4. Videz le cache du navigateur (Ctrl+Shift+R ou Cmd+Shift+R)
 
 
+

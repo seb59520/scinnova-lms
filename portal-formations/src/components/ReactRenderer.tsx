@@ -15,18 +15,28 @@ import { QuizGame } from './QuizGame'
 import { IntroductionQuiz } from './IntroductionQuiz'
 import { SlideBlock } from './SlideBlock'
 import { ContextBlock } from './ContextBlock'
+import { TitanicJsonUploader } from './TitanicJsonUploader'
 import { supabase } from '../lib/supabaseClient'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ChevronDown, ChevronUp, ChevronRight, Gamepad2, FileText, Presentation, PenTool, Code, ArrowRight } from 'lucide-react'
+import { ChevronDown, ChevronUp, ChevronRight, Gamepad2, FileText, Presentation, PenTool, Code, ArrowRight, ExternalLink } from 'lucide-react'
 
 interface ReactRendererProps {
   courseJson: CourseJson
 }
 
 export function ReactRenderer({ courseJson }: ReactRendererProps) {
-  // État pour gérer l'expansion des modules (repliés par défaut)
-  const [expandedModules, setExpandedModules] = useState<Set<number>>(new Set())
+  // État pour gérer l'expansion des modules (dépliés par défaut pour voir le contenu)
+  // Initialiser avec tous les modules dépliés
+  const [expandedModules, setExpandedModules] = useState<Set<number>>(() => {
+    const allModules = new Set<number>()
+    if (courseJson.modules) {
+      courseJson.modules.forEach((_, index) => {
+        allModules.add(index)
+      })
+    }
+    return allModules
+  })
 
   const toggleModule = (moduleIndex: number) => {
     const newExpanded = new Set(expandedModules)
@@ -1046,8 +1056,98 @@ function renderTp(item: CourseJson['modules'][0]['items'][0], theme: any) {
   // Accepter "instruction" (singulier) ou "instructions" (pluriel)
   const instructionText = content.instruction || content.instructions
   
+  // Détecter si c'est un TP Titanic
+  // Vérifier dans le titre, la description, et le champ titanicModule
+  const titleLower = item.title?.toLowerCase() || ''
+  const descriptionLower = (typeof content.description === 'string' ? content.description : '').toLowerCase()
+  const fullText = `${titleLower} ${descriptionLower}`.toLowerCase()
+  
+  const isTitanicTp = !!(
+    titleLower.includes('titanic') || 
+    titleLower.includes('big data') ||
+    titleLower.includes('data science') ||
+    titleLower.includes('machine learning') ||
+    fullText.includes('titanic') ||
+    fullText.includes('big data') ||
+    fullText.includes('data science') ||
+    fullText.includes('machine learning') ||
+    fullText.includes('titaniclearning.netlify.app') ||
+    content.titanicModule
+  )
+
+  // Debug: log pour vérifier la détection
+  if (item.type === 'tp') {
+    console.log('🔍 renderTp - Item:', item.title)
+    console.log('🔍 renderTp - Item ID:', item.id)
+    console.log('🔍 renderTp - titleLower:', titleLower)
+    console.log('🔍 renderTp - descriptionLower:', descriptionLower.substring(0, 100))
+    console.log('🔍 renderTp - isTitanicTp:', isTitanicTp)
+    console.log('🔍 renderTp - content.titanicModule:', content.titanicModule)
+  }
+
+  // Détecter le type de module
+  const getTitanicModuleType = (): 'big-data' | 'data-science' | 'machine-learning' | undefined => {
+    if (item.title?.toLowerCase().includes('big data')) return 'big-data'
+    if (item.title?.toLowerCase().includes('data science')) return 'data-science'
+    if (item.title?.toLowerCase().includes('machine learning')) return 'machine-learning'
+    return content.titanicModule
+  }
+  
   return (
     <div className="space-y-6">
+      {/* Lien vers l'application Titanic si c'est un TP Titanic */}
+      {isTitanicTp && (
+        <div className="bg-blue-50 p-4 rounded-lg border-2 border-blue-300">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex-1 min-w-[200px]">
+              <h4 className="font-semibold text-blue-900 mb-2 flex items-center">
+                <FileText className="w-5 h-5 mr-2" />
+                Application Titanic Learning
+              </h4>
+              <p className="text-sm text-blue-700 mb-3">
+                Accédez à l'application interactive pour compléter ce TP et exporter vos réponses.
+              </p>
+            </div>
+            <a
+              href="https://titaniclearning.netlify.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary inline-flex items-center space-x-2 whitespace-nowrap px-4 py-2 rounded-md font-medium text-white hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: theme.primaryColor || '#3B82F6' }}
+            >
+              <ExternalLink className="w-4 h-4" />
+              <span>Ouvrir l'application</span>
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* Composant d'upload JSON si c'est un TP Titanic et que l'item a un ID */}
+      {isTitanicTp && item.id && (
+        <div className="bg-white border-2 border-dashed border-blue-300 rounded-lg p-4">
+          <TitanicJsonUploader
+            itemId={item.id}
+            onUploadSuccess={() => {
+              // Recharger la page après upload réussi
+              window.location.reload()
+            }}
+            moduleType={getTitanicModuleType()}
+          />
+        </div>
+      )}
+
+      {/* Message si c'est un TP Titanic mais sans ID - avec lien direct vers ItemView */}
+      {isTitanicTp && !item.id && (
+        <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-300">
+          <p className="text-sm text-yellow-800 mb-2">
+            ⚠️ Pour uploader votre JSON, veuillez accéder à la page complète du TP.
+          </p>
+          <p className="text-xs text-yellow-700">
+            Le composant d'upload est disponible sur la page individuelle de l'item. Cliquez sur le titre du TP ci-dessus pour y accéder.
+          </p>
+        </div>
+      )}
+
       {instructionText && (
         <div 
           className="p-4 rounded-lg"

@@ -52,3 +52,4 @@ CREATE POLICY "Admins and instructors can manage chapters" ON chapters
   );
 
 
+

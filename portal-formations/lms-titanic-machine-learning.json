@@ -1,0 +1,740 @@
+{
+  "title": "TP 3 : Machine Learning - Prédictions et biais",
+  "description": "Travaux pratiques sur les prédictions et la détection de biais avec le dataset Titanic. Les étudiants apprennent à faire des prédictions basées sur des patterns, évaluer la performance d'un modèle, identifier les biais et comprendre les risques éthiques du machine learning.\n\n**Application interactive :** https://titaniclearning.netlify.app\n\n**Durée estimée :** 2h\n**Niveau :** Avancé\n**Prérequis :** TP 1 et TP 2 terminés",
+  "status": "published",
+  "access_type": "free",
+  "price_cents": 0,
+  "currency": "EUR",
+  "theme": {
+    "primaryColor": "#F59E0B",
+    "secondaryColor": "#EF4444",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 3 : Machine Learning - Prédictions et biais",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#F59E0B",
+        "secondaryColor": "#EF4444"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Introduction au TP",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Présentation des objectifs et du contexte du TP",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "TP 3 : Machine Learning - Prédictions et biais"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dans ce TP, vous allez jouer le rôle d'un \"modèle humain\" : vous allez prédire la survie de 8 passagers en vous basant sur les patterns que vous avez observés dans les modules précédents. Ensuite, vous comparerez vos prédictions avec la réalité et analyserez vos biais potentiels."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Objectifs pédagogiques"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Faire des prédictions basées sur des patterns observés"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Évaluer la performance d'un modèle de prédiction"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifier les biais dans les prédictions"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comprendre les risques éthiques du machine learning"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Réfléchir aux limites des modèles prédictifs"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "🌐 ",
+                      "marks": [{ "type": "bold" }]
+                    },
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "Application interactive :"
+                    },
+                    {
+                      "type": "text",
+                      "text": " https://titaniclearning.netlify.app"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "tp",
+          "title": "TP 3 : Prédictions et biais",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Travaux pratiques interactifs sur les prédictions et la détection de biais avec le dataset Titanic",
+            "instructions": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Instructions du TP"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exercice 1 : Prédictions manuelles (40 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Accédez au module Machine Learning dans l'application. Pour chaque passager (8 au total), vous devez :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": { "start": 1 },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Examiner ses caractéristiques (sexe, âge, classe, prix, embarquement)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Faire une prédiction : survivra-t-il ou non ?"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Justifier votre prédiction"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "Méthodologie recommandée :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Analysez les caractéristiques : sexe (les femmes survivent plus), classe (1 > 2 > 3), âge (les enfants ont-ils plus de chances ?), prix (corrélé avec la classe), embarquement"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Appliquez vos connaissances : utilisez les patterns observés dans le TP 2, combinez plusieurs facteurs, pesez l'importance de chaque facteur"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Faites votre prédiction : choisissez \"Oui\" ou \"Non\" dans le dropdown, rédigez une justification claire"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "Exemple de justification :"
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Je prédits 'Oui' car c'est une femme de classe 1, et d'après les graphiques du module 2, les femmes de classe 1 ont un très haut taux de survie."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "⚠️ Important :"
+                    },
+                    {
+                      "type": "text",
+                      "text": " Ne trichez pas ! Faites vos prédictions avant de révéler les résultats. Justifiez chaque prédiction. Notez vos doutes et incertitudes."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exercice 2 : Évaluation de performance (20 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": { "start": 1 },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Cliquez sur \"Révéler la vérité\" une fois toutes vos prédictions faites"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Observez vos résultats : combien de prédictions correctes ? combien d'erreurs ? quel est votre score en pourcentage ?"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Analysez vos erreurs : pour chaque erreur, examinez pourquoi vous avez prédit cela, qu'est-ce qui vous a trompé, y a-t-il un pattern dans vos erreurs ?"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "Question à répondre dans l'application :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Le modèle comprend-il le contexte humain ? (Oui / Non) - Justification : Expliquez si vos prédictions reflètent une compréhension nuancée ou des règles simplistes"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exercice 3 : Détection des biais (25 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Analysez vos prédictions pour détecter des biais :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Examinez vos prédictions par sexe : avez-vous prédit \"non\" pour tous les hommes ? \"oui\" pour toutes les femmes ? y a-t-il un pattern systématique ?"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Examinez vos prédictions par classe : avez-vous systématiquement favorisé la classe 1 ? défavorisé la classe 3 ?"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Observez l'alerte de biais si elle apparaît"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "Question à répondre dans l'application :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Quel risque principal ? (Biais / Surconfiance / Mauvaise donnée / Tous) - Justification : Décrivez le risque que vous avez identifié et pourquoi il est problématique"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exercice 4 : Risques en contexte réel (25 min)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Imaginez maintenant que votre modèle de prédiction est utilisé dans un contexte réel. Considérez les scénarios suivants :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [{ "type": "bold" }],
+                              "text": "Crédit bancaire :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Un modèle prédit qui peut obtenir un prêt. Quels sont les risques ?"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [{ "type": "bold" }],
+                              "text": "Recrutement :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Un modèle prédit qui sera embauché. Quels sont les risques ?"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "marks": [{ "type": "bold" }],
+                              "text": "Santé :"
+                            },
+                            {
+                              "type": "text",
+                              "text": " Un modèle prédit qui recevra un traitement prioritaire. Quels sont les risques ?"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [{ "type": "bold" }],
+                      "text": "Question à répondre dans l'application :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dans quel domaine c'est dangereux ? (Crédit / Recrutement / Santé / Tous) - Justification : Expliquez pourquoi l'utilisation de modèles prédictifs est risquée dans ce(s) domaine(s)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Validation"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Fait des prédictions pour les 8 passagers"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Justifié chaque prédiction"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Révélé les résultats et calculé votre score"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Analysé vos erreurs"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifié vos biais potentiels"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Répondu aux 3 questions dans l'application"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Exporté vos réponses"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "checklist": [
+              "Ouvrir l'application et accéder au module Machine Learning",
+              "Faire une prédiction pour le passager 1 avec justification",
+              "Faire une prédiction pour le passager 2 avec justification",
+              "Faire une prédiction pour le passager 3 avec justification",
+              "Faire une prédiction pour le passager 4 avec justification",
+              "Faire une prédiction pour le passager 5 avec justification",
+              "Faire une prédiction pour le passager 6 avec justification",
+              "Faire une prédiction pour le passager 7 avec justification",
+              "Faire une prédiction pour le passager 8 avec justification",
+              "Cliquer sur 'Révéler la vérité'",
+              "Analyser les résultats et calculer le score",
+              "Répondre à la question 1 : Le modèle comprend-il le contexte humain ?",
+              "Répondre à la question 2 : Quel risque principal ?",
+              "Répondre à la question 3 : Dans quel domaine c'est dangereux ?",
+              "Exporter les réponses en JSON"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

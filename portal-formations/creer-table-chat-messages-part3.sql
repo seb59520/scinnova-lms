@@ -52,3 +52,4 @@ CREATE POLICY "Recipients can mark messages as read"
   USING (auth.uid() = recipient_id)
   WITH CHECK (auth.uid() = recipient_id);
 
+

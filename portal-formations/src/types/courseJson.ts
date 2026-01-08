@@ -5,6 +5,7 @@ export interface CourseJson {
   access_type: 'free' | 'paid' | 'invite'
   price_cents?: number
   currency?: string
+  is_public?: boolean
   theme?: {
     primaryColor?: string
     secondaryColor?: string

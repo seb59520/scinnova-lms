@@ -174,3 +174,4 @@ COMMENT ON COLUMN chat_messages.recipient_id IS 'NULL signifie que le message es
 COMMENT ON COLUMN chat_messages.read_at IS 'Timestamp de lecture du message (NULL = non lu)';
 COMMENT ON FUNCTION get_chat_conversations IS 'Retourne la liste des conversations avec le dernier message et le nombre de messages non lus';
 
+

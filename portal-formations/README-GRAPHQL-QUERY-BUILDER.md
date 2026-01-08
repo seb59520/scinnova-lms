@@ -325,3 +325,4 @@ Vous pouvez étendre l'exercice en ajoutant :
 4. **Contexte métier** : Utilisez des exemples concrets (e-commerce, blog, etc.)
 
 
+

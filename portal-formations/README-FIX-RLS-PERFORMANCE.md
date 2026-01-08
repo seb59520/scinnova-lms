@@ -87,3 +87,4 @@ CREATE POLICY "Users can view their own profile" ON profiles
 
 Cette correction devrait améliorer significativement les performances des requêtes sur les tables avec beaucoup de lignes, car `auth.uid()` ne sera plus réévalué pour chaque ligne mais une seule fois par requête.
 
+

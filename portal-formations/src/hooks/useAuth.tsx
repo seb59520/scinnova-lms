@@ -12,6 +12,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>
   signUp: (email: string, password: string, fullName?: string) => Promise<{ error: AuthError | null }>
   signInWithGoogle: () => Promise<{ error: AuthError | null }>
+  signInAsGhost: (accessCode: string) => Promise<{ error: AuthError | Error | null }>
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<{ error: AuthError | null }>
   refreshProfile: () => Promise<void>
@@ -194,6 +195,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           }, 500)
         } else {
           await fetchProfile(session.user.id)
+          
+          // Si l'utilisateur vient d'un magic link avec course_id, créer l'inscription
+          // Note: Cette logique est maintenant gérée dans CourseView via le paramètre auto_enroll
+          // pour éviter les problèmes de timing avec la création du profil
         }
         
         // Démarrer un intervalle pour vérifier et rafraîchir le token si nécessaire
@@ -264,12 +269,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.log('🔍 [useAuth] Fetching profile for user:', userId)
       
       // Utiliser retry et timeout optimisé
+      // Note: On filtre pour exclure uniquement les utilisateurs explicitement désactivés (is_active = false)
+      // Les utilisateurs avec is_active = NULL sont considérés comme actifs (rétrocompatibilité)
       const result = await withRetry(
         () => withTimeout(
           supabase
             .from('profiles')
             .select('*')
             .eq('id', userId)
+            .or('is_active.is.null,is_active.eq.true') // Actif si NULL ou true
             .maybeSingle(),
           5000, // Réduit à 5 secondes pour une réponse plus rapide
           'Profile fetch timeout'
@@ -322,10 +330,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               console.warn('Could not create profile (may need admin action or trigger):', createError.message)
               // Le trigger SQL devrait créer le profil automatiquement, attendre un peu et réessayer
               setTimeout(async () => {
+                // Retry sans filtre is_active pour permettre la récupération même si is_active est NULL
                 const { data: retryProfile } = await supabase
                   .from('profiles')
                   .select('*')
                   .eq('id', userId)
+                  .or('is_active.is.null,is_active.eq.true')
                   .maybeSingle()
                 if (retryProfile) {
                   console.log('Profile found after retry:', retryProfile)
@@ -434,8 +444,86 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error }
   }
 
+  // Fonction pour générer un nom cartoon aléatoire
+  const generateCartoonName = (): string => {
+    const adjectives = ['Curieux', 'Agile', 'Rusé', 'Sage', 'Malin', 'Solitaire', 'Savant', 'Joyeux', 'Brave', 'Astucieux']
+    const animals = ['Panda', 'Lapin', 'Renard', 'Ours', 'Chat', 'Loup', 'Hibou', 'Dauphin', 'Lion', 'Aigle']
+    const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)]
+    const randomAnimal = animals[Math.floor(Math.random() * animals.length)]
+    const randomSuffix = Math.random().toString(36).substr(2, 4).toUpperCase()
+    return `${randomAnimal} ${randomAdjective}-${randomSuffix}`
+  }
+
+  const signInAsGhost = async (accessCode: string) => {
+    try {
+      // 1. Vérifier que le code existe et est valide
+      const { data: codeData, error: codeError } = await supabase
+        .rpc('use_ghost_code', { code_to_check: accessCode })
+
+      if (codeError || !codeData || codeData.length === 0 || !codeData[0]?.is_valid) {
+        return { 
+          error: new Error(codeData?.[0]?.message || 'Code invalide ou déjà utilisé') 
+        }
+      }
+
+      const codeInfo = codeData[0]
+
+      // 2. Générer un nom cartoon aléatoire
+      const cartoonName = generateCartoonName()
+
+      // 3. Créer un utilisateur anonyme
+      const { data: authData, error: authError } = await supabase.auth.signInAnonymously({
+        options: {
+          data: {
+            full_name: cartoonName,
+            access_code: accessCode,
+            is_ghost: true,
+            created_via: 'ghost_code'
+          }
+        }
+      })
+
+      if (authError) {
+        return { error: authError }
+      }
+
+      if (!authData.user) {
+        return { error: new Error('Échec de la création de l\'utilisateur anonyme') }
+      }
+
+      // 4. Marquer le code comme utilisé
+      const { error: markError } = await supabase
+        .rpc('mark_ghost_code_used', {
+          code_to_mark: accessCode,
+          user_id: authData.user.id
+        })
+
+      if (markError) {
+        console.warn('Erreur lors du marquage du code comme utilisé:', markError)
+        // Essayer une mise à jour directe en fallback
+        await supabase
+          .from('ghost_codes')
+          .update({ 
+            is_used: true, 
+            used_at: new Date().toISOString(),
+            used_by: authData.user.id 
+          })
+          .eq('code', accessCode)
+          .catch(() => {})
+      }
+
+      return { error: null }
+    } catch (error: any) {
+      console.error('Error in signInAsGhost:', error)
+      return { error: error instanceof Error ? error : new Error('Erreur inconnue lors de la connexion ghost') }
+    }
+  }
+
   const signOut = async () => {
     try {
+      const isGhost = user?.user_metadata?.is_ghost || user?.app_metadata?.is_ghost
+      const userId = user?.id
+
       // Réinitialiser l'état local d'abord
       setUser(null)
       setProfile(null)
@@ -446,6 +534,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (error) {
         console.error('Error signing out:', error)
         // Même en cas d'erreur, on continue car l'état local est déjà réinitialisé
+      }
+
+      // Si c'est un utilisateur ghost, le supprimer via une Edge Function ou API
+      // Note: La suppression directe dans auth.users nécessite l'Admin API
+      // On peut appeler une Edge Function ou laisser un job de nettoyage s'en charger
+      if (isGhost && userId) {
+        try {
+          // Option 1: Appeler une Edge Function (si disponible)
+          await fetch('/api/admin/delete-ghost-user', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId })
+          }).catch(() => {
+            // Si l'endpoint n'existe pas, on log juste
+            console.log('Ghost user will be cleaned up by scheduled job')
+          })
+        } catch (cleanupError) {
+          console.warn('Could not delete ghost user immediately:', cleanupError)
+          // Le nettoyage sera fait par un job programmé
+        }
       }
     } catch (error) {
       console.error('Error during sign out:', error)
@@ -477,6 +585,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signIn,
     signUp,
     signInWithGoogle,
+    signInAsGhost,
     signOut,
     resetPassword,
     refreshProfile,

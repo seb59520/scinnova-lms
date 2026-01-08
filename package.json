@@ -1,5 +1,14 @@
 {
-  "dependencies": {
-    "@google/generative-ai": "^0.24.1"
+  "name": "project-studies",
+  "version": "1.0.0",
+  "description": "Projet d'études - Portal Formations + Big Data Impacts App",
+  "scripts": {
+    "start:all": "./start-all-servers.sh",
+    "start:backend": "cd portal-formations/server && npm run dev:server",
+    "start:frontend": "cd big-data-impacts-app && npm run dev",
+    "install:all": "cd portal-formations/server && npm install && cd ../../big-data-impacts-app && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }

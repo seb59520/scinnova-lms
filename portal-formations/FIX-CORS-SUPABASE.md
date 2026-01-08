@@ -122,3 +122,4 @@ Si vous êtes en production :
 
 Supabase autorise par défaut les requêtes depuis `localhost` en développement, mais si vous avez modifié les paramètres CORS ou si vous utilisez un domaine personnalisé, vous devez explicitement ajouter les origines.
 
+

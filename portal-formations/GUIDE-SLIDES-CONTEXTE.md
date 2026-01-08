@@ -262,3 +262,4 @@ Voir le fichier `exemple-slide-avec-contexte.json` pour un exemple complet de co
 - Support pour des annotations interactives
 - Export du contexte pédagogique séparément
 
+

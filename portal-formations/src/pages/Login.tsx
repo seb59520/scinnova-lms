@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import { Ghost } from 'lucide-react'
 import logoScinnova from '../../Logo SCINNOVA avec cerveau et fusée.png'
 
 export function Login() {
@@ -121,6 +122,15 @@ export function Login() {
               </svg>
               Continuer avec Google
             </button>
+            
+            {/* Lien vers la connexion anonyme - Toujours visible */}
+            <Link
+              to="/ghost-login"
+              className="w-full flex justify-center items-center px-4 py-2.5 border-2 border-indigo-400 rounded-md shadow-md text-sm font-semibold text-indigo-800 bg-indigo-100 hover:bg-indigo-200 hover:border-indigo-500 transition-all duration-200"
+            >
+              <Ghost className="w-5 h-5 mr-2" />
+              Connexion anonyme (Ghost)
+            </Link>
           </div>
 
           <div className="text-center">

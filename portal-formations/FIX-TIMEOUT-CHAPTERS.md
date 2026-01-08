@@ -118,3 +118,4 @@ Cette approche est beaucoup plus performante car :
 - La vérification est faite une seule fois par chapitre au lieu de multiples jointures imbriquées
 
 
+

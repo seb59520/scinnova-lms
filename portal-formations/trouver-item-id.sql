@@ -51,3 +51,4 @@ WHERE m.title ILIKE '%nom du module%'  -- Remplacez par le nom de votre module
 ORDER BY i.position;
 
 
+

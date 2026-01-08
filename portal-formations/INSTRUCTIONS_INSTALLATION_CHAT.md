@@ -127,3 +127,4 @@ Une fois la table créée, n'oubliez pas de :
    - Cliquez sur le bouton de chat
    - Envoyez un message de test
 
+

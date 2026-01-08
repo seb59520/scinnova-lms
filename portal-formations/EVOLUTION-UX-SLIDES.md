@@ -339,3 +339,4 @@ Dans votre JSON de cours :
 ✅ **Avertissements clairs** pour les slides manquantes
 ✅ **Aide permanente** avec le lexique accessible
 
+

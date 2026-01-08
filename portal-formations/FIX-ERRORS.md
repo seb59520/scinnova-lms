@@ -79,3 +79,4 @@ Link.configure({
 - Si le problème persiste, vérifier les logs Supabase pour plus de détails
 
 
+

@@ -137,3 +137,4 @@ window.location.href = '/login'
 - Les redirections utilisent `replace` pour éviter l'historique
 
 
+

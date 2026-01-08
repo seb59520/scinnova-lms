@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Program, ProgramCourse, ProgramCourseWithCourse, Course } from '../../types/database'
-import { Save, Plus, Trash2, ChevronUp, ChevronDown, X } from 'lucide-react'
+import { Save, Plus, Trash2, ChevronUp, ChevronDown, X, GripVertical } from 'lucide-react'
 
 export function AdminProgramEdit() {
   const { programId } = useParams<{ programId: string }>()
@@ -27,6 +27,8 @@ export function AdminProgramEdit() {
   const [error, setError] = useState('')
   const [showAddModal, setShowAddModal] = useState(false)
   const [selectedCourseIds, setSelectedCourseIds] = useState<string[]>([])
+  const [draggedCourseId, setDraggedCourseId] = useState<string | null>(null)
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
 
   useEffect(() => {
     if (!isNew && programId) {
@@ -259,6 +261,55 @@ export function AdminProgramEdit() {
     setProgramCourses(updated)
   }
 
+  // Fonctions pour le drag & drop
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedCourseId(programCourses[index].id)
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/plain', index.toString())
+  }
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    if (draggedCourseId && dragOverIndex !== index) {
+      setDragOverIndex(index)
+    }
+  }
+
+  const handleDragLeave = () => {
+    setDragOverIndex(null)
+  }
+
+  const handleDrop = (e: React.DragEvent, targetIndex: number) => {
+    e.preventDefault()
+    setDragOverIndex(null)
+
+    if (!draggedCourseId) return
+
+    const sourceIndex = programCourses.findIndex(pc => pc.id === draggedCourseId)
+    if (sourceIndex === -1 || sourceIndex === targetIndex) {
+      setDraggedCourseId(null)
+      return
+    }
+
+    const updated = [...programCourses]
+    const [movedItem] = updated.splice(sourceIndex, 1)
+    updated.splice(targetIndex, 0, movedItem)
+
+    // Réorganiser les positions
+    updated.forEach((pc, idx) => {
+      pc.position = idx
+    })
+
+    setProgramCourses(updated)
+    setDraggedCourseId(null)
+  }
+
+  const handleDragEnd = () => {
+    setDraggedCourseId(null)
+    setDragOverIndex(null)
+  }
+
   const enrolledCourseIds = programCourses.map(pc => pc.course_id)
   const availableCoursesFiltered = availableCourses.filter(c => !enrolledCourseIds.includes(c.id))
 
@@ -411,13 +462,33 @@ export function AdminProgramEdit() {
             ) : (
               <ul className="divide-y divide-gray-200">
                 {programCourses.map((pc, index) => (
-                  <li key={pc.id} className="py-4 flex items-center justify-between">
+                  <li
+                    key={pc.id}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, index)}
+                    onDragOver={(e) => handleDragOver(e, index)}
+                    onDragLeave={handleDragLeave}
+                    onDrop={(e) => handleDrop(e, index)}
+                    onDragEnd={handleDragEnd}
+                    className={`py-4 flex items-center justify-between transition-colors ${
+                      dragOverIndex === index ? 'bg-blue-50 border-l-4 border-blue-500' : ''
+                    } ${draggedCourseId === pc.id ? 'opacity-50' : 'hover:bg-gray-50'}`}
+                  >
                     <div className="flex items-center space-x-4 flex-1">
+                      {/* Poignée de drag & drop */}
+                      <div className="flex flex-col items-center space-y-1 cursor-move">
+                        <GripVertical className="w-5 h-5 text-gray-400 hover:text-gray-600" />
+                        <span className="text-xs text-gray-400 font-medium">
+                          {index + 1}
+                        </span>
+                      </div>
+                      
+                      {/* Boutons de déplacement (alternative) */}
                       <div className="flex flex-col space-y-1">
                         <button
                           onClick={() => handleMoveCourse(index, 'up')}
                           disabled={index === 0}
-                          className="text-gray-400 hover:text-gray-600 disabled:opacity-30"
+                          className="text-gray-400 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed p-1"
                           title="Déplacer vers le haut"
                         >
                           <ChevronUp className="w-4 h-4" />
@@ -425,17 +496,15 @@ export function AdminProgramEdit() {
                         <button
                           onClick={() => handleMoveCourse(index, 'down')}
                           disabled={index === programCourses.length - 1}
-                          className="text-gray-400 hover:text-gray-600 disabled:opacity-30"
+                          className="text-gray-400 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed p-1"
                           title="Déplacer vers le bas"
                         >
                           <ChevronDown className="w-4 h-4" />
                         </button>
                       </div>
+                      
                       <div className="flex-1">
                         <div className="flex items-center space-x-2">
-                          <span className="text-sm font-medium text-gray-500">
-                            {index + 1}.
-                          </span>
                           <h3 className="text-lg font-medium text-gray-900">
                             {pc.courses?.title || 'Formation inconnue'}
                           </h3>
@@ -449,7 +518,7 @@ export function AdminProgramEdit() {
                     </div>
                     <button
                       onClick={() => handleRemoveCourse(pc.id)}
-                      className="text-red-400 hover:text-red-600 p-2 rounded"
+                      className="text-red-400 hover:text-red-600 p-2 rounded transition-colors"
                       title="Retirer"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -544,5 +613,6 @@ export function AdminProgramEdit() {
     </div>
   )
 }
+
 
 

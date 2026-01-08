@@ -88,3 +88,4 @@ Les requêtes sont automatiquement filtrées selon le rôle de l'utilisateur :
 - ✅ Les chapitres de type "game" peuvent aussi être activés/désactivés
 
 
+

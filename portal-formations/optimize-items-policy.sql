@@ -59,3 +59,4 @@ WHERE tablename = 'items' AND policyname = 'Items viewable with course access';
 -- ANALYZE courses;
 
 
+

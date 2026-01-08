@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Profile, UserRole } from '../../types/database'
-import { Trash2, UserPlus, Search, X, Shield, BookOpen, GraduationCap } from 'lucide-react'
+import { Trash2, UserPlus, Search, X, Shield, BookOpen, GraduationCap, UserX, UserCheck, Ghost, Key } from 'lucide-react'
 import { AppHeader } from '../../components/AppHeader'
 import { Link } from 'react-router-dom'
 
@@ -39,6 +39,7 @@ export function AdminUsers() {
   const fetchUsers = async () => {
     try {
       setLoading(true)
+      // Les admins peuvent voir tous les utilisateurs, même désactivés
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -173,6 +174,26 @@ export function AdminUsers() {
     setEditingRole(null)
   }
 
+  const handleToggleActive = async (userId: string, currentStatus: boolean) => {
+    const action = currentStatus ? 'désactiver' : 'réactiver'
+    if (!confirm(`Êtes-vous sûr de vouloir ${action} cet utilisateur ?`)) return
+
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ is_active: !currentStatus })
+        .eq('id', userId)
+
+      if (error) throw error
+
+      setSuccess(`Utilisateur ${currentStatus ? 'désactivé' : 'réactivé'} avec succès`)
+      await fetchUsers()
+    } catch (error: any) {
+      console.error('Error toggling user status:', error)
+      setError(error.message || `Erreur lors de la ${action}.`)
+    }
+  }
+
   const handleDeleteUser = async (userId: string) => {
     if (!confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.')) return
 
@@ -234,13 +255,24 @@ export function AdminUsers() {
                 <h2 className="text-xl font-bold text-gray-900">Gestion des utilisateurs</h2>
                 <p className="text-sm text-gray-500 mt-0.5">Gérez les utilisateurs et leurs rôles</p>
               </div>
-              <button
-                onClick={() => setShowCreateForm(!showCreateForm)}
-                className="btn-primary flex items-center gap-2"
-              >
-                <UserPlus className="w-5 h-5" />
-                Créer un utilisateur
-              </button>
+              <div className="flex gap-2">
+                <Link
+                  to="/admin/ghost-codes"
+                  className="btn-secondary flex items-center gap-2"
+                  title="Gérer les codes d'accès pour utilisateurs anonymes"
+                >
+                  <Ghost className="w-5 h-5" />
+                  <span className="hidden sm:inline">Codes Ghost</span>
+                  <Key className="w-4 h-4 sm:hidden" />
+                </Link>
+                <button
+                  onClick={() => setShowCreateForm(!showCreateForm)}
+                  className="btn-primary flex items-center gap-2"
+                >
+                  <UserPlus className="w-5 h-5" />
+                  Créer un utilisateur
+                </button>
+              </div>
             </div>
 
           {/* Messages de succès/erreur */}
@@ -396,6 +428,9 @@ export function AdminUsers() {
                     Rôle
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Statut
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Date de création
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -406,84 +441,116 @@ export function AdminUsers() {
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredUsers.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
                       {searchTerm ? 'Aucun utilisateur trouvé' : 'Aucun utilisateur'}
                     </td>
                   </tr>
                 ) : (
-                  filteredUsers.map((user) => (
-                    <tr key={user.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
-                          {user.full_name || 'Sans nom'}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500 font-mono text-xs">
-                          {user.id.substring(0, 8)}...
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {editingRole === user.id ? (
-                          <div className="flex items-center gap-2">
-                            <select
-                              defaultValue={user.role}
-                              onChange={(e) => {
-                                handleUpdateRole(user.id, e.target.value as UserRole)
-                              }}
-                              className={`text-xs font-semibold px-2 py-1 rounded ${getRoleBadgeColor(user.role)} border border-gray-300 cursor-pointer`}
-                              autoFocus
-                            >
-                              <option value="student">Étudiant</option>
-                              <option value="instructor">Formateur</option>
-                              <option value="admin">Administrateur</option>
-                            </select>
-                            <button
-                              onClick={handleCancelEditRole}
-                              className="text-gray-500 hover:text-gray-700"
-                              title="Annuler"
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
+                  filteredUsers.map((user) => {
+                    const isActive = user.is_active !== false // Par défaut true si non défini
+                    return (
+                      <tr 
+                        key={user.id} 
+                        className={`hover:bg-gray-50 ${!isActive ? 'opacity-60 bg-gray-50' : ''}`}
+                      >
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-medium text-gray-900">
+                            {user.full_name || 'Sans nom'}
                           </div>
-                        ) : (
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm text-gray-500 font-mono text-xs">
+                            {user.id.substring(0, 8)}...
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {editingRole === user.id ? (
+                            <div className="flex items-center gap-2">
+                              <select
+                                defaultValue={user.role}
+                                onChange={(e) => {
+                                  handleUpdateRole(user.id, e.target.value as UserRole)
+                                }}
+                                className={`text-xs font-semibold px-2 py-1 rounded ${getRoleBadgeColor(user.role)} border border-gray-300 cursor-pointer`}
+                                autoFocus
+                              >
+                                <option value="student">Étudiant</option>
+                                <option value="instructor">Formateur</option>
+                                <option value="admin">Administrateur</option>
+                              </select>
+                              <button
+                                onClick={handleCancelEditRole}
+                                className="text-gray-500 hover:text-gray-700"
+                                title="Annuler"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <span className={`text-xs font-semibold px-2 py-1 rounded ${getRoleBadgeColor(user.role)}`}>
+                                {user.role === 'admin' ? 'Administrateur' : user.role === 'instructor' ? 'Formateur' : 'Étudiant'}
+                              </span>
+                              <button
+                                onClick={() => handleEditRole(user.id)}
+                                className="text-blue-600 hover:text-blue-800"
+                                title="Modifier le rôle"
+                              >
+                                <Shield className="w-4 h-4" />
+                              </button>
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center gap-2">
-                            <span className={`text-xs font-semibold px-2 py-1 rounded ${getRoleBadgeColor(user.role)}`}>
-                              {user.role === 'admin' ? 'Administrateur' : user.role === 'instructor' ? 'Formateur' : 'Étudiant'}
+                            <span className={`text-xs font-semibold px-2 py-1 rounded ${
+                              isActive 
+                                ? 'bg-green-100 text-green-800' 
+                                : 'bg-red-100 text-red-800'
+                            }`}>
+                              {isActive ? 'Actif' : 'Désactivé'}
                             </span>
                             <button
-                              onClick={() => handleEditRole(user.id)}
-                              className="text-blue-600 hover:text-blue-800"
-                              title="Modifier le rôle"
+                              onClick={() => handleToggleActive(user.id, isActive)}
+                              className={`${
+                                isActive 
+                                  ? 'text-red-600 hover:text-red-900' 
+                                  : 'text-green-600 hover:text-green-900'
+                              }`}
+                              title={isActive ? 'Désactiver' : 'Réactiver'}
                             >
-                              <Shield className="w-4 h-4" />
+                              {isActive ? (
+                                <UserX className="w-4 h-4" />
+                              ) : (
+                                <UserCheck className="w-4 h-4" />
+                              )}
                             </button>
                           </div>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(user.created_at).toLocaleDateString('fr-FR')}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div className="flex items-center justify-end gap-2">
-                          <Link
-                            to={`/admin/users/${user.id}/enrollments`}
-                            className="text-blue-600 hover:text-blue-800"
-                            title="Gérer les inscriptions"
-                          >
-                            <BookOpen className="w-5 h-5" />
-                          </Link>
-                          <button
-                            onClick={() => handleDeleteUser(user.id)}
-                            className="text-red-600 hover:text-red-900"
-                            title="Supprimer"
-                          >
-                            <Trash2 className="w-5 h-5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {new Date(user.created_at).toLocaleDateString('fr-FR')}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          <div className="flex items-center justify-end gap-2">
+                            <Link
+                              to={`/admin/users/${user.id}/enrollments`}
+                              className="text-blue-600 hover:text-blue-800"
+                              title="Gérer les inscriptions"
+                            >
+                              <BookOpen className="w-5 h-5" />
+                            </Link>
+                            <button
+                              onClick={() => handleDeleteUser(user.id)}
+                              className="text-red-600 hover:text-red-900"
+                              title="Supprimer"
+                            >
+                              <Trash2 className="w-5 h-5" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })
                 )}
               </tbody>
             </table>

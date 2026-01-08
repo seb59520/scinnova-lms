@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Course } from '../../types/database'
-import { Plus, Edit, Eye, Trash2, Users, Code, UserCog, BookOpen, Search, Filter, MoreVertical, Copy, Calendar, DollarSign, LayoutGrid, List, FileText, Building2 } from 'lucide-react'
+import { Plus, Edit, Eye, Trash2, Users, Code, UserCog, BookOpen, Search, Filter, MoreVertical, Copy, Calendar, DollarSign, LayoutGrid, List, FileText, Building2, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react'
+
+type SortOption = 'title-asc' | 'title-desc' | 'date-asc' | 'date-desc' | 'status-asc' | 'status-desc' | 'access-asc' | 'access-desc'
+type GroupByOption = 'none' | 'status' | 'access_type' | 'created_at'
 
 export function AdminCourses() {
   const { user } = useAuth()
@@ -14,6 +17,14 @@ export function AdminCourses() {
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'draft'>('all')
   const [accessFilter, setAccessFilter] = useState<'all' | 'free' | 'paid' | 'invite'>('all')
+  const [sortBy, setSortBy] = useState<SortOption>(() => {
+    const saved = localStorage.getItem('admin-courses-sort')
+    return (saved as SortOption) || 'date-desc'
+  })
+  const [groupBy, setGroupBy] = useState<GroupByOption>(() => {
+    const saved = localStorage.getItem('admin-courses-group')
+    return (saved as GroupByOption) || 'none'
+  })
   const [openMenuId, setOpenMenuId] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>(() => {
     const saved = localStorage.getItem('admin-courses-view-mode')
@@ -42,7 +53,84 @@ export function AdminCourses() {
     }
   }
 
-  // Filtrer les formations
+  // Fonction de tri
+  const sortCourses = (coursesToSort: Course[]): Course[] => {
+    const sorted = [...coursesToSort]
+    
+    switch (sortBy) {
+      case 'title-asc':
+        return sorted.sort((a, b) => (a.title || '').localeCompare(b.title || '', 'fr'))
+      case 'title-desc':
+        return sorted.sort((a, b) => (b.title || '').localeCompare(a.title || '', 'fr'))
+      case 'date-asc':
+        return sorted.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+      case 'date-desc':
+        return sorted.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      case 'status-asc':
+        return sorted.sort((a, b) => a.status.localeCompare(b.status))
+      case 'status-desc':
+        return sorted.sort((a, b) => b.status.localeCompare(a.status))
+      case 'access-asc':
+        return sorted.sort((a, b) => a.access_type.localeCompare(b.access_type))
+      case 'access-desc':
+        return sorted.sort((a, b) => b.access_type.localeCompare(a.access_type))
+      default:
+        return sorted
+    }
+  }
+
+  // Fonction de groupement
+  const groupCourses = (coursesToGroup: Course[]): Record<string, Course[]> => {
+    if (groupBy === 'none') {
+      return { 'Toutes les formations': coursesToGroup }
+    }
+
+    const grouped: Record<string, Course[]> = {}
+
+    coursesToGroup.forEach(course => {
+      let key = ''
+      
+      switch (groupBy) {
+        case 'status':
+          key = course.status === 'published' ? 'Publiées' : 'Brouillons'
+          break
+        case 'access_type':
+          key = course.access_type === 'free' ? 'Gratuites' 
+            : course.access_type === 'paid' ? 'Payantes' 
+            : 'Sur invitation'
+          break
+        case 'created_at':
+          const date = new Date(course.created_at)
+          const month = date.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })
+          key = month.charAt(0).toUpperCase() + month.slice(1)
+          break
+        default:
+          key = 'Autres'
+      }
+
+      if (!grouped[key]) {
+        grouped[key] = []
+      }
+      grouped[key].push(course)
+    })
+
+    // Trier les clés pour un affichage cohérent
+    const sortedKeys = Object.keys(grouped).sort((a, b) => {
+      if (groupBy === 'created_at') {
+        return new Date(b).getTime() - new Date(a).getTime()
+      }
+      return a.localeCompare(b, 'fr')
+    })
+
+    const sortedGrouped: Record<string, Course[]> = {}
+    sortedKeys.forEach(key => {
+      sortedGrouped[key] = grouped[key]
+    })
+
+    return sortedGrouped
+  }
+
+  // Filtrer, trier et grouper les formations
   useEffect(() => {
     let filtered = [...courses]
 
@@ -65,8 +153,20 @@ export function AdminCourses() {
       filtered = filtered.filter(course => course.access_type === accessFilter)
     }
 
+    // Trier
+    filtered = sortCourses(filtered)
+
     setFilteredCourses(filtered)
-  }, [courses, searchQuery, statusFilter, accessFilter])
+  }, [courses, searchQuery, statusFilter, accessFilter, sortBy])
+
+  // Sauvegarder les préférences de tri et groupement
+  useEffect(() => {
+    localStorage.setItem('admin-courses-sort', sortBy)
+  }, [sortBy])
+
+  useEffect(() => {
+    localStorage.setItem('admin-courses-group', groupBy)
+  }, [groupBy])
 
   // Statistiques
   const stats = {
@@ -230,69 +330,117 @@ export function AdminCourses() {
         {/* Barre de recherche et filtres */}
         {courses.length > 0 && (
           <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
-            <div className="flex flex-col sm:flex-row gap-4">
-              {/* Recherche */}
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  type="text"
-                  placeholder="Rechercher une formation..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
+            <div className="flex flex-col gap-4">
+              {/* Première ligne : Recherche et vue */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                {/* Recherche */}
+                <div className="flex-1 relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <input
+                    type="text"
+                    placeholder="Rechercher une formation..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+                
+                {/* Toggle vue grille / liste */}
+                <div className="flex items-center bg-gray-100 rounded-lg border border-gray-200 p-1">
+                  <button
+                    onClick={() => handleViewModeChange('grid')}
+                    className={`p-2 rounded-md transition-colors ${
+                      viewMode === 'grid'
+                        ? 'bg-white text-blue-600 shadow-sm'
+                        : 'text-gray-500 hover:text-gray-700'
+                    }`}
+                    title="Vue grille"
+                  >
+                    <LayoutGrid className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleViewModeChange('list')}
+                    className={`p-2 rounded-md transition-colors ${
+                      viewMode === 'list'
+                        ? 'bg-white text-blue-600 shadow-sm'
+                        : 'text-gray-500 hover:text-gray-700'
+                    }`}
+                    title="Vue liste"
+                  >
+                    <List className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
-              
-              {/* Filtre statut */}
-              <div className="flex items-center gap-2">
-                <Filter className="w-4 h-4 text-gray-400" />
+
+              {/* Deuxième ligne : Filtres, Tri et Groupement */}
+              <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
+                {/* Filtre statut */}
+                <div className="flex items-center gap-2">
+                  <Filter className="w-4 h-4 text-gray-400" />
+                  <select
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value as any)}
+                    className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                  >
+                    <option value="all">Tous les statuts</option>
+                    <option value="published">Publiées</option>
+                    <option value="draft">Brouillons</option>
+                  </select>
+                </div>
+
+                {/* Filtre accès */}
                 <select
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value as any)}
+                  value={accessFilter}
+                  onChange={(e) => setAccessFilter(e.target.value as any)}
                   className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                 >
-                  <option value="all">Tous les statuts</option>
-                  <option value="published">Publiées</option>
-                  <option value="draft">Brouillons</option>
+                  <option value="all">Tous les types</option>
+                  <option value="free">Gratuit</option>
+                  <option value="paid">Payant</option>
+                  <option value="invite">Sur invitation</option>
                 </select>
-              </div>
 
-              {/* Filtre accès */}
-              <select
-                value={accessFilter}
-                onChange={(e) => setAccessFilter(e.target.value as any)}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-              >
-                <option value="all">Tous les types</option>
-                <option value="free">Gratuit</option>
-                <option value="paid">Payant</option>
-                <option value="invite">Sur invitation</option>
-              </select>
+                {/* Tri */}
+                <div className="flex items-center gap-2">
+                  <ArrowUpDown className="w-4 h-4 text-gray-400" />
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value as SortOption)}
+                    className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                  >
+                    <optgroup label="Titre">
+                      <option value="title-asc">Titre (A-Z)</option>
+                      <option value="title-desc">Titre (Z-A)</option>
+                    </optgroup>
+                    <optgroup label="Date">
+                      <option value="date-desc">Plus récent</option>
+                      <option value="date-asc">Plus ancien</option>
+                    </optgroup>
+                    <optgroup label="Statut">
+                      <option value="status-asc">Statut (A-Z)</option>
+                      <option value="status-desc">Statut (Z-A)</option>
+                    </optgroup>
+                    <optgroup label="Type d'accès">
+                      <option value="access-asc">Type (A-Z)</option>
+                      <option value="access-desc">Type (Z-A)</option>
+                    </optgroup>
+                  </select>
+                </div>
 
-              {/* Toggle vue grille / liste */}
-              <div className="flex items-center bg-gray-100 rounded-lg border border-gray-200 p-1">
-                <button
-                  onClick={() => handleViewModeChange('grid')}
-                  className={`p-2 rounded-md transition-colors ${
-                    viewMode === 'grid'
-                      ? 'bg-white text-blue-600 shadow-sm'
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                  title="Vue grille"
-                >
-                  <LayoutGrid className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => handleViewModeChange('list')}
-                  className={`p-2 rounded-md transition-colors ${
-                    viewMode === 'list'
-                      ? 'bg-white text-blue-600 shadow-sm'
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                  title="Vue liste"
-                >
-                  <List className="w-4 h-4" />
-                </button>
+                {/* Groupement */}
+                <div className="flex items-center gap-2">
+                  <Filter className="w-4 h-4 text-gray-400" />
+                  <select
+                    value={groupBy}
+                    onChange={(e) => setGroupBy(e.target.value as GroupByOption)}
+                    className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                  >
+                    <option value="none">Aucun groupement</option>
+                    <option value="status">Grouper par statut</option>
+                    <option value="access_type">Grouper par type d'accès</option>
+                    <option value="created_at">Grouper par mois</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -330,10 +478,32 @@ export function AdminCourses() {
               Réinitialiser les filtres
             </button>
           </div>
-        ) : viewMode === 'grid' ? (
-          /* Vue Grille */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredCourses.map((course) => (
+        ) : (() => {
+          const groupedCourses = groupCourses(filteredCourses)
+          const groups = Object.keys(groupedCourses)
+
+          return (
+            <div className="space-y-6">
+              {groups.map((groupKey) => {
+                const coursesInGroup = groupedCourses[groupKey]
+                
+                return (
+                  <div key={groupKey} className="space-y-4">
+                    {groupBy !== 'none' && (
+                      <div className="flex items-center gap-2 px-2">
+                        <h2 className="text-lg font-semibold text-gray-900">
+                          {groupKey}
+                        </h2>
+                        <span className="text-sm text-gray-500">
+                          ({coursesInGroup.length} {coursesInGroup.length > 1 ? 'formations' : 'formation'})
+                        </span>
+                      </div>
+                    )}
+                    
+                    {viewMode === 'grid' ? (
+                      /* Vue Grille */
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {coursesInGroup.map((course) => (
               <div key={course.id} className="bg-white rounded-lg border border-gray-200 hover:shadow-md transition-shadow overflow-hidden flex flex-col">
                 <div className="p-5 flex-1 flex flex-col">
                   {/* En-tête avec badges */}
@@ -468,12 +638,12 @@ export function AdminCourses() {
                 </div>
               </div>
             ))}
-          </div>
-        ) : (
-          /* Vue Liste */
-          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-            <div className="divide-y divide-gray-200">
-              {filteredCourses.map((course) => (
+                      </div>
+                    ) : (
+                      /* Vue Liste */
+                      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                        <div className="divide-y divide-gray-200">
+                          {coursesInGroup.map((course) => (
                 <div 
                   key={course.id} 
                   className="p-4 sm:p-6 hover:bg-gray-50 transition-colors"
@@ -609,10 +779,16 @@ export function AdminCourses() {
                     </div>
                   </div>
                 </div>
-              ))}
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
             </div>
-          </div>
-        )}
+          )
+        })()}
       </main>
     </div>
   )
