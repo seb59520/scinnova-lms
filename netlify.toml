@@ -1,7 +1,7 @@
 [build]
   base = "portal-formations"
   publish = "portal-formations/dist"
-  command = "npm install && npm run build"
+  command = "cd portal-formations && npm install && npm run build"
 
 [[redirects]]
   from = "/*"
@@ -41,5 +41,6 @@
     Cache-Control = "no-cache, no-store, must-revalidate"
     Pragma = "no-cache"
     Expires = "0"
+
 
 
