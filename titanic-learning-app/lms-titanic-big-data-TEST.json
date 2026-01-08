@@ -1,0 +1,86 @@
+{
+  "title": "TP 1 : Big Data - Exploration des données brutes",
+  "description": "Travaux pratiques sur l'exploration de données brutes avec le dataset Titanic.",
+  "status": "published",
+  "access_type": "free",
+  "price_cents": 0,
+  "currency": "EUR",
+  "theme": {
+    "primaryColor": "#3B82F6",
+    "secondaryColor": "#8B5CF6",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Big Data - Exploration des données",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#059669"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Introduction au TP",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Présentation des objectifs et du contexte du TP",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dans ce TP, vous allez explorer un dataset contenant 25 passagers du Titanic."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "tp",
+          "title": "TP 1 : Exploration des données brutes",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Travaux pratiques interactifs sur l'exploration de données avec le dataset Titanic",
+            "instructions": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Instructions du TP"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ouvrez l'application https://titaniclearning.netlify.app et accédez au module \"Big Data\""
+                    }
+                  ]
+                }
+              ]
+            },
+            "checklist": [
+              "Ouvrir l'application et accéder au module Big Data",
+              "Répondre aux questions dans l'application",
+              "Exporter les réponses en JSON"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

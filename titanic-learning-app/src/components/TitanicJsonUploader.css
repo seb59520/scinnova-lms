@@ -1,0 +1,133 @@
+.titanic-json-uploader {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.upload-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.upload-icon {
+  width: 32px;
+  height: 32px;
+  color: #1976d2;
+}
+
+.upload-header h3 {
+  font-size: 1.25rem;
+  color: #333;
+  margin: 0;
+}
+
+.upload-instructions {
+  background: #f5f5f5;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.upload-instructions p {
+  margin: 0.5rem 0;
+}
+
+.upload-instructions a {
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.upload-instructions a:hover {
+  text-decoration: underline;
+}
+
+.upload-area {
+  margin-bottom: 1rem;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 2px dashed #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fafafa;
+}
+
+.file-label:hover {
+  border-color: #1976d2;
+  background: #f0f7ff;
+}
+
+.upload-icon-small {
+  width: 20px;
+  height: 20px;
+  color: #1976d2;
+}
+
+.error-message,
+.success-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.error-message {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef5350;
+}
+
+.success-message {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #4caf50;
+}
+
+.error-icon,
+.success-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.upload-button {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.upload-button:hover:not(:disabled) {
+  background: #1565c0;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.upload-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
