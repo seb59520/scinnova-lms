@@ -7,7 +7,7 @@ import { AdminUsersContent } from './AdminUsersContent';
 import { AdminOrgsContent } from './AdminOrgsContent';
 import { AdminItemsContent } from './AdminItemsContent';
 import { AdminTrainerContent } from './AdminTrainerContent';
-import { BookOpen, Layers, Users, Building2, FileText, GraduationCap, ChevronDown, MessageSquare, Clock, Sparkles } from 'lucide-react';
+import { BookOpen, Layers, Users, Building2, FileText, GraduationCap, ChevronDown, MessageSquare, Clock, Sparkles, Database } from 'lucide-react';
 import '../../styles/admin-unified.css';
 
 type AdminTab = 'courses' | 'programs' | 'users' | 'orgs' | 'items' | 'trainer';
@@ -46,6 +46,8 @@ export function AdminUnified() {
         { id: 'quiz', label: 'Quiz', icon: MessageSquare, path: '/trainer/quiz-responses' },
         { id: 'analyses', label: 'Analyses IA', icon: Sparkles, path: '/trainer/use-case-analyses' },
         { id: 'data-science', label: 'Exercices Data Science', icon: BookOpen, path: '/trainer/data-science-exercises' },
+        { id: 'titanic', label: 'TP Titanic', icon: Database, path: '/admin/titanic-submissions' },
+        { id: 'titanic-actions', label: 'Actions Titanic', icon: FileText, path: '/admin/titanic-actions' },
         { id: 'time', label: 'Temps d\'écran', icon: Clock, path: '/trainer/time-tracking' },
       ]
     },

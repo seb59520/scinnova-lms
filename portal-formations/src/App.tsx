@@ -13,14 +13,19 @@ import { Help } from './pages/Help'
 import { AdminCourses } from './pages/admin/AdminCourses'
 import { AdminCourseEdit } from './pages/admin/AdminCourseEdit'
 import { AdminCourseEditJson } from './pages/admin/AdminCourseEditJson'
+import { AdminAICourseGenerator } from './pages/admin/AdminAICourseGenerator'
 import { AdminCourseEnrollments } from './pages/admin/AdminCourseEnrollments'
 import { AdminCourseSubmissions } from './pages/admin/AdminCourseSubmissions'
+import { AdminTitanicSubmissions } from './pages/admin/AdminTitanicSubmissions'
+import { AdminTitanicActions } from './pages/admin/AdminTitanicActions'
 import { AdminItemEdit } from './pages/admin/AdminItemEdit'
 import { AdminItemEditJson } from './pages/admin/AdminItemEditJson'
 import { AdminChapterEditJson } from './pages/admin/AdminChapterEditJson'
 import { AdminItems } from './pages/admin/AdminItems'
 import { AdminUsers } from './pages/admin/AdminUsers'
 import { AdminUserEnrollments } from './pages/admin/AdminUserEnrollments'
+import { AdminGhostCodes } from './pages/admin/AdminGhostCodes'
+import { GhostLogin } from './pages/GhostLogin'
 import { AdminOrgs } from './pages/admin/AdminOrgs'
 import { AdminUnified } from './pages/admin/AdminUnified'
 import { AdminPrograms } from './pages/admin/AdminPrograms'
@@ -78,6 +83,14 @@ function App() {
             element={
               <ProtectedRoute requireAuth={false}>
                 <ResetPassword />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ghost-login"
+            element={
+              <ProtectedRoute requireAuth={false}>
+                <GhostLogin />
               </ProtectedRoute>
             }
           />
@@ -222,6 +235,14 @@ function App() {
             }
           />
           <Route
+            path="/admin/courses/ai-generator"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminAICourseGenerator />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/admin/courses/:courseId/enrollments"
             element={
               <ProtectedRoute requiredRole="admin">
@@ -250,6 +271,22 @@ function App() {
             element={
               <ProtectedRoute requiredRole="admin">
                 <AdminQuizResponses />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/titanic-submissions"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminTitanicSubmissions />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/titanic-actions"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminTitanicActions />
               </ProtectedRoute>
             }
           />
@@ -314,6 +351,14 @@ function App() {
             element={
               <ProtectedRoute requiredRole="admin">
                 <AdminUserEnrollments />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/ghost-codes"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminGhostCodes />
               </ProtectedRoute>
             }
           />
@@ -488,8 +533,8 @@ function App() {
             }
           />
 
-          {/* Route par défaut */}
-          <Route path="/" element={<ProtectedRoute requireAuth={false}><Login /></ProtectedRoute>} />
+          {/* Route par défaut - Landing Page */}
+          <Route path="/" element={<ProtectedRoute requireAuth={false}><LandingPage /></ProtectedRoute>} />
         </Routes>
         {/* Widget de chat disponible partout */}
         <ChatWidget />
