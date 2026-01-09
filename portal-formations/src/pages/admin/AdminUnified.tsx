@@ -7,7 +7,7 @@ import { AdminUsersContent } from './AdminUsersContent';
 import { AdminOrgsContent } from './AdminOrgsContent';
 import { AdminItemsContent } from './AdminItemsContent';
 import { AdminTrainerContent } from './AdminTrainerContent';
-import { BookOpen, Layers, Users, Building2, FileText, GraduationCap, ChevronDown, MessageSquare, Clock, Sparkles, Database } from 'lucide-react';
+import { BookOpen, Layers, Users, Building2, FileText, GraduationCap, ChevronDown, MessageSquare, Clock, Sparkles, Database, Package } from 'lucide-react';
 import '../../styles/admin-unified.css';
 
 type AdminTab = 'courses' | 'programs' | 'users' | 'orgs' | 'items' | 'trainer';
@@ -33,7 +33,14 @@ export function AdminUnified() {
   const subMenuRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   const tabs: TabWithSubMenu[] = [
-    { id: 'courses' as AdminTab, label: 'Formations', icon: BookOpen },
+    { 
+      id: 'courses' as AdminTab, 
+      label: 'Formations', 
+      icon: BookOpen,
+      subMenus: [
+        { id: 'tp-batches', label: 'Lots de TP', icon: Package, path: '/admin/tp-batches' },
+      ]
+    },
     { id: 'programs' as AdminTab, label: 'Programmes', icon: Layers },
     { id: 'users' as AdminTab, label: 'Utilisateurs', icon: Users },
     { id: 'orgs' as AdminTab, label: 'Organisations', icon: Building2 },

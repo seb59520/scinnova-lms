@@ -32,6 +32,9 @@ import { AdminPrograms } from './pages/admin/AdminPrograms'
 import { AdminProgramEdit } from './pages/admin/AdminProgramEdit'
 import { AdminProgramEnrollments } from './pages/admin/AdminProgramEnrollments'
 import { AdminQuizResponses } from './pages/admin/AdminQuizResponses'
+import { AdminTpBatchesList } from './pages/admin/AdminTpBatchesList'
+import { AdminTpBatches } from './pages/admin/AdminTpBatches'
+import { AdminCourseTpAssociations } from './pages/admin/AdminCourseTpAssociations'
 import { TrainerDashboard } from './pages/trainer/TrainerDashboard'
 import { SessionLearners } from './pages/trainer/SessionLearners'
 import { SessionAnalytics } from './pages/trainer/SessionAnalytics'
@@ -391,6 +394,30 @@ function App() {
             element={
               <ProtectedRoute requiredRole="admin">
                 <AdminProgramEnrollments />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/tp-batches"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminTpBatchesList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/tp-batches/:batchId"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminTpBatches />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/courses/:courseId/tp-associations"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminCourseTpAssociations />
               </ProtectedRoute>
             }
           />

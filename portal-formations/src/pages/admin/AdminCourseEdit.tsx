@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Course, Module, Item } from '../../types/database'
-import { Save, Plus, Edit, Trash2, GripVertical, ChevronUp, ChevronDown, Code, Presentation } from 'lucide-react'
+import { Save, Plus, Edit, Trash2, GripVertical, ChevronUp, ChevronDown, Code, Presentation, Link as LinkIcon } from 'lucide-react'
 import { LinkedInPostModal } from '../../components/LinkedInPostModal'
 
 interface ModuleWithItems extends Module {
@@ -891,14 +891,25 @@ export function AdminCourseEdit() {
                 {isNew ? 'Nouvelle formation' : 'Modifier la formation'}
               </h1>
             </div>
-            <button
-              onClick={handleSave}
-              disabled={saving}
-              className="btn-primary inline-flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <Save className="w-4 h-4" />
-              <span>{saving ? 'Sauvegarde en cours...' : 'Sauvegarder'}</span>
-            </button>
+            <div className="flex items-center space-x-3">
+              {!isNew && courseId && (
+                <Link
+                  to={`/admin/courses/${courseId}/tp-associations`}
+                  className="inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                >
+                  <LinkIcon className="w-4 h-4" />
+                  <span>Associations TP</span>
+                </Link>
+              )}
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="btn-primary inline-flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Save className="w-4 h-4" />
+                <span>{saving ? 'Sauvegarde en cours...' : 'Sauvegarder'}</span>
+              </button>
+            </div>
           </div>
         </div>
       </header>

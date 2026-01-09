@@ -304,3 +304,79 @@ export interface CourseLead {
 export interface CourseLeadWithCourse extends CourseLead {
   courses: Course;
 }
+
+// Types pour les associations TP ↔ Cours
+export interface CourseTp {
+  id: string;
+  course_id: string;
+  item_id: string;
+  position: number;
+  is_required: boolean;
+  is_visible: boolean;
+  metadata: Record<string, any> | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CourseTpWithItem extends CourseTp {
+  items: Item;
+}
+
+// Types pour les lots de TP
+export interface TpBatch {
+  id: string;
+  title: string;
+  description: string | null;
+  course_id: string | null;
+  position: number;
+  is_published: boolean;
+  sequential_order: boolean;
+  metadata: Record<string, any> | null;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TpBatchWithCourse extends TpBatch {
+  courses: Course | null;
+}
+
+export interface TpBatchItem {
+  id: string;
+  tp_batch_id: string;
+  item_id: string;
+  position: number;
+  is_required: boolean;
+  prerequisite_item_id: string | null;
+  metadata: Record<string, any> | null;
+  created_at: string;
+}
+
+export interface TpBatchItemWithItem extends TpBatchItem {
+  items: Item;
+  prerequisite_items: Item | null;
+}
+
+export interface TpBatchWithItems extends TpBatch {
+  tp_batch_items: TpBatchItemWithItem[];
+}
+
+// Vue unifiée des TP d'un cours
+export interface CourseAllTp {
+  course_id: string;
+  course_title: string;
+  tp_id: string;
+  tp_title: string;
+  type: string;
+  source_type: 'module' | 'direct' | 'batch';
+  module_id: string | null;
+  module_title: string | null;
+  tp_batch_id: string | null;
+  tp_batch_title: string | null;
+  position_in_module: number | null;
+  position_in_course: number | null;
+  is_required: boolean | null;
+  is_visible: boolean | null;
+  created_at: string;
+  updated_at: string;
+}

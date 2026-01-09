@@ -3,14 +3,14 @@ import { useParams, Link, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabaseClient'
 import { withRetry, withTimeout, isAuthError } from '../lib/supabaseHelpers'
-import { Course, Module, Item } from '../types/database'
+import { Course, Module, Item, CourseAllTp, TpBatchWithItems } from '../types/database'
 import { CourseFeaturesTiles } from '../components/CourseFeaturesTiles'
 import { Progress } from '../components/Progress'
 import { ReactRenderer } from '../components/ReactRenderer'
 import { CourseSidebar } from '../components/CourseSidebar'
 import { ResizableSidebar } from '../components/ResizableSidebar'
 import { CourseJson } from '../types/courseJson'
-import { Eye, EyeOff, X, BookOpen, FileText, Download } from 'lucide-react'
+import { Eye, EyeOff, X, BookOpen, FileText, Download, Menu, List } from 'lucide-react'
 import { Lexique } from './Lexique'
 import { getCurrentUserRole } from '../lib/queries/userRole'
 
@@ -26,14 +26,19 @@ export function CourseView() {
   const [modules, setModules] = useState<ModuleWithItems[]>([])
   const [allItems, setAllItems] = useState<Item[]>([])
   const [courseJson, setCourseJson] = useState<CourseJson | null>(null)
+  const [directTps, setDirectTps] = useState<CourseAllTp[]>([])
+  const [tpBatches, setTpBatches] = useState<TpBatchWithItems[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [showHeaderContent, setShowHeaderContent] = useState(true)
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(false) // Par défaut fermée
   // Le lexique est ouvert par défaut en mode desktop, fermé en mode mobile
   const [lexiqueDrawerOpen, setLexiqueDrawerOpen] = useState(true)
   const [isDesktop, setIsDesktop] = useState(false)
   const [isTrainer, setIsTrainer] = useState(false)
+  const [sidebarWidth, setSidebarWidth] = useState(256)
+  const [courseViewMode, setCourseViewMode] = useState<'all' | 'module'>('all') // 'all' = tout à la suite, 'module' = un module à la fois
+  const [currentModuleIndex, setCurrentModuleIndex] = useState<number | null>(null)
   const viewMode = searchParams.get('view')
 
   // Détecter si on est sur desktop
@@ -50,6 +55,56 @@ export function CourseView() {
   const hasLexique = courseJson?.modules
     ?.flatMap(m => m.items || [])
     ?.some(item => item.title?.toLowerCase().includes('lexique') || item.content?.isLexique) || false
+
+  // Obtenir la couleur dominante d'un module basée sur les types d'items
+  const getModuleColor = (module: any) => {
+    if (!module || !module.items) return 'bg-gray-500'
+    const items = module.items || []
+    if (items.length === 0) return 'bg-gray-200'
+    
+    // Compter les types d'items
+    const typeCounts: Record<string, number> = {}
+    items.forEach((item: any) => {
+      const type = item.type || 'resource'
+      typeCounts[type] = (typeCounts[type] || 0) + 1
+    })
+    
+    // Trouver le type le plus fréquent
+    const dominantType = Object.entries(typeCounts).reduce((a, b) => 
+      typeCounts[a[0]] > typeCounts[b[0]] ? a : b
+    )[0]
+    
+    // Retourner la couleur correspondante
+    switch (dominantType) {
+      case 'resource':
+        return 'bg-blue-500'
+      case 'slide':
+        return 'bg-green-500'
+      case 'exercise':
+        return 'bg-yellow-500'
+      case 'tp':
+        return 'bg-purple-500'
+      case 'game':
+        return 'bg-pink-500'
+      default:
+        return 'bg-gray-500'
+    }
+  }
+
+  // Filtrer les modules pour exclure ceux sans items publiés
+  const visibleModules = courseJson?.modules?.filter((module, index) => {
+    const lexiqueItem = courseJson.modules
+      ?.flatMap(m => m.items || [])
+      ?.find(item => item.title?.toLowerCase().includes('lexique') || item.content?.isLexique)
+    
+    const moduleItems = lexiqueItem 
+      ? (module.items || []).filter(item => 
+          !(item.title?.toLowerCase().includes('lexique') || item.content?.isLexique) && item.published !== false
+        )
+      : (module.items || []).filter(item => item.published !== false)
+    
+    return moduleItems.length > 0
+  }) || []
 
   // Debug: log pour vérifier la détection du lexique
   useEffect(() => {
@@ -640,6 +695,9 @@ export function CourseView() {
       })))
 
       setCourseJson(courseJsonData)
+
+      // Récupérer les TP associés directement et les lots de TP
+      await fetchCourseTpsAndBatches()
     } catch (error: any) {
       console.error('Error fetching course:', error)
       if (isAuthError(error)) {
@@ -651,6 +709,51 @@ export function CourseView() {
       }
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchCourseTpsAndBatches = async () => {
+    if (!courseId) return
+
+    try {
+      // Récupérer tous les TP du cours (vue unifiée)
+      const { data: allTpsData, error: tpsError } = await supabase
+        .from('course_all_tps')
+        .select('*')
+        .eq('course_id', courseId)
+        .eq('is_visible', true)
+        .order('position_in_course', { ascending: true })
+
+      if (tpsError) {
+        console.error('Error fetching course TPs:', tpsError)
+      } else {
+        // Filtrer les TP associés directement
+        const direct = (allTpsData || []).filter(tp => tp.source_type === 'direct')
+        setDirectTps(direct)
+      }
+
+      // Récupérer les lots de TP du cours
+      const { data: batchesData, error: batchesError } = await supabase
+        .from('tp_batches')
+        .select(`
+          *,
+          tp_batch_items (
+            *,
+            items (*),
+            prerequisite_items:items!tp_batch_items_prerequisite_item_id_fkey (*)
+          )
+        `)
+        .eq('course_id', courseId)
+        .eq('is_published', true)
+        .order('position', { ascending: true })
+
+      if (batchesError) {
+        console.error('Error fetching TP batches:', batchesError)
+      } else {
+        setTpBatches((batchesData || []) as TpBatchWithItems[])
+      }
+    } catch (error) {
+      console.error('Error fetching course TPs and batches:', error)
     }
   }
 
@@ -680,14 +783,19 @@ export function CourseView() {
   return (
     <div className="min-h-screen bg-gray-50 course-view-container" style={{ width: '100%', maxWidth: '100%' }}>
       {/* Header */}
-      <header className="bg-white shadow">
+      <header className="bg-white shadow" style={{ zIndex: 40 }}>
         <div className="w-full">
           <div 
             className="flex justify-between items-center py-4 px-4 transition-all duration-300"
             style={{
-              marginLeft: viewMode !== 'progress' && courseJson && sidebarOpen && !isDesktop
-                ? 'var(--sidebar-width, 256px)' 
-                : '0'
+              marginLeft: viewMode !== 'progress' && courseJson && sidebarOpen && isDesktop
+                ? 'var(--sidebar-width, 256px)'
+                : viewMode !== 'progress' && courseJson && sidebarOpen && !isDesktop
+                  ? 'var(--sidebar-width, 256px)' 
+                  : '0',
+              width: viewMode !== 'progress' && courseJson && sidebarOpen && isDesktop
+                ? `calc(100% - var(--sidebar-width, 256px))`
+                : '100%'
             }}
           >
             <div className="flex items-center space-x-4 flex-1">
@@ -701,9 +809,78 @@ export function CourseView() {
             <div className="flex-1 flex justify-center min-w-0">
               <h1 className="text-2xl font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">{course.title}</h1>
             </div>
-            <div className="flex items-center space-x-3 flex-1 justify-end">
+            <div className="flex items-center space-x-2 flex-1 justify-end flex-wrap gap-2">
+              {/* Boutons d'action principaux - rangée horizontale */}
+              <div className="flex items-center space-x-2">
+                {/* Voir la progression */}
+                {viewMode !== 'progress' ? (
+                  <Link
+                    to={`/courses/${courseId}?view=progress`}
+                    className="flex items-center space-x-2 px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                  >
+                    <span>Voir la progression</span>
+                  </Link>
+                ) : (
+                  <Link
+                    to={`/courses/${courseId}`}
+                    className="flex items-center space-x-2 px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                  >
+                    <span>Retour au contenu</span>
+                  </Link>
+                )}
+
+                {/* Script (formateurs uniquement) */}
+                {isTrainer && viewMode !== 'progress' && (
+                  <Link
+                    to={`/trainer/courses/${course.id}/script`}
+                    className="flex items-center space-x-2 px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                    title="Voir le script pédagogique seul"
+                  >
+                    <FileText className="w-4 h-4" />
+                    <span>Script</span>
+                  </Link>
+                )}
+
+                {/* Script + Cours (formateurs uniquement) */}
+                {isTrainer && viewMode !== 'progress' && (
+                  <Link
+                    to={`/trainer/courses/${course.id}/script?split=true`}
+                    className="flex items-center space-x-2 px-3 py-1.5 text-sm text-white bg-purple-600 hover:bg-purple-700 rounded-md transition-colors"
+                    title="Voir le cours et le script côte à côte"
+                  >
+                    <FileText className="w-4 h-4" />
+                    <span>Script + Cours</span>
+                  </Link>
+                )}
+
+                {/* Modifier (admins uniquement) */}
+                {profile?.role === 'admin' && (
+                  <Link
+                    to={`/admin/courses/${course.id}`}
+                    className="flex items-center space-x-2 px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                  >
+                    <span>Modifier</span>
+                  </Link>
+                )}
+
+                {/* Masquer/Afficher */}
+                <button
+                  onClick={() => setShowHeaderContent(!showHeaderContent)}
+                  className="flex items-center space-x-2 px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                  title={showHeaderContent ? 'Masquer le contenu' : 'Afficher le contenu'}
+                >
+                  {showHeaderContent ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                  <span>{showHeaderContent ? 'Masquer' : 'Afficher'}</span>
+                </button>
+              </div>
+
+              {/* Boutons secondaires (PDF, Lexique) */}
               {viewMode !== 'progress' && (
-                <>
+                <div className="flex items-center space-x-2">
                   {course.allow_pdf_download && (
                     <button
                       onClick={handleDownloadPdf}
@@ -734,67 +911,8 @@ export function CourseView() {
                       <span>Lexique</span>
                     </button>
                   )}
-                  <Link
-                    to={`/courses/${courseId}?view=progress`}
-                    className="btn-secondary text-sm"
-                  >
-                    Voir la progression
-                  </Link>
-                </>
+                </div>
               )}
-              {viewMode === 'progress' && (
-                <Link
-                  to={`/courses/${courseId}`}
-                  className="btn-secondary text-sm"
-                >
-                  Retour au contenu
-                </Link>
-              )}
-              {isTrainer && (
-                <>
-                  <Link
-                    to={`/trainer/courses/${course.id}/script`}
-                    className="flex items-center space-x-2 px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
-                    title="Voir le script pédagogique seul"
-                  >
-                    <FileText className="w-4 h-4" />
-                    <span>Script</span>
-                  </Link>
-                  <Link
-                    to={`/trainer/courses/${course.id}/script?split=true`}
-                    className="flex items-center space-x-2 px-3 py-1.5 text-sm text-white bg-purple-600 hover:bg-purple-700 rounded-md transition-colors"
-                    title="Voir le cours et le script côte à côte"
-                  >
-                    <FileText className="w-4 h-4" />
-                    <span>Script + Cours</span>
-                  </Link>
-                </>
-              )}
-              {profile?.role === 'admin' && (
-                <Link
-                  to={`/admin/courses/${course.id}`}
-                  className="btn-secondary text-sm"
-                >
-                  Modifier
-                </Link>
-              )}
-              <button
-                onClick={() => setShowHeaderContent(!showHeaderContent)}
-                className="flex items-center space-x-2 px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
-                title={showHeaderContent ? 'Masquer le contenu' : 'Afficher le contenu'}
-              >
-                {showHeaderContent ? (
-                  <>
-                    <EyeOff className="w-4 h-4" />
-                    <span>Masquer</span>
-                  </>
-                ) : (
-                  <>
-                    <Eye className="w-4 h-4" />
-                    <span>Afficher</span>
-                  </>
-                )}
-              </button>
             </div>
           </div>
         </div>
@@ -802,6 +920,35 @@ export function CourseView() {
 
       {/* Main content avec sidebar */}
       <main className="w-full flex relative">
+        {/* Bouton pour ouvrir/fermer la sidebar */}
+        {viewMode !== 'progress' && courseJson && (
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              console.log('Bouton sidebar cliqué, sidebarOpen:', sidebarOpen)
+              setSidebarOpen(!sidebarOpen)
+            }}
+            className="fixed z-[60] p-2.5 bg-white rounded-md shadow-lg border border-gray-200 hover:bg-gray-50 transition-all cursor-pointer"
+            style={{
+              left: sidebarOpen && isDesktop 
+                ? `calc(var(--sidebar-width, 300px) + 1rem)` 
+                : '1rem',
+              top: '5.5rem',
+              pointerEvents: 'auto'
+            }}
+            title={sidebarOpen ? 'Fermer la table des matières' : 'Ouvrir la table des matières'}
+            type="button"
+            aria-label={sidebarOpen ? 'Fermer la table des matières' : 'Ouvrir la table des matières'}
+          >
+            {sidebarOpen ? (
+              <X className="w-5 h-5 text-gray-600" />
+            ) : (
+              <List className="w-5 h-5 text-gray-600" />
+            )}
+          </button>
+        )}
+
         {/* Sidebar avec table des matières */}
         {viewMode !== 'progress' && courseJson && (
           <>
@@ -815,19 +962,29 @@ export function CourseView() {
             {/* Sidebar redimensionnable et fixe */}
             <div className={`
               fixed lg:sticky top-0 left-0 z-50 h-screen transition-transform duration-300 ease-in-out
-              ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-            `}>
+              ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+            `} style={{ height: '100vh', zIndex: 50 }}>
               <ResizableSidebar
                 storageKey="course-sidebar-width"
                 minWidth={200}
-                maxWidth={500}
-                defaultWidth={256}
+                maxWidth={800}
+                defaultWidth={300}
                 side="left"
+                onWidthChange={setSidebarWidth}
               >
-                <div className="h-full flex flex-col">
+                <div className="h-full flex flex-col" style={{ height: '100vh' }}>
                   <CourseSidebar 
                     courseJson={courseJson}
                     onClose={() => setSidebarOpen(false)}
+                    sidebarWidth={sidebarWidth}
+                    minWidth={200}
+                    onModuleSelect={(moduleIndex) => {
+                      setCourseViewMode('module')
+                      setCurrentModuleIndex(moduleIndex)
+                    }}
+                    selectedModuleIndex={courseViewMode === 'module' ? currentModuleIndex : null}
+                    directTps={directTps}
+                    tpBatches={tpBatches}
                   />
                 </div>
               </ResizableSidebar>
@@ -846,12 +1003,15 @@ export function CourseView() {
               ? '384px' // w-96 = 384px
               : hasLexique 
                 ? '0' // Le drawer est présent mais caché
-                : '0'
+                : '0',
+            width: viewMode !== 'progress' && courseJson && sidebarOpen && isDesktop
+              ? `calc(100% - var(--sidebar-width, 300px))`
+              : '100%'
           }}
         >
-          <div className="max-w-7xl mx-auto" style={{
-            paddingLeft: viewMode !== 'progress' && courseJson && sidebarOpen 
-              ? '0' 
+          <div className="w-full" style={{
+            paddingLeft: viewMode !== 'progress' && courseJson && sidebarOpen && isDesktop
+              ? '1rem' 
               : '1rem',
             paddingRight: '1rem'
           }}>
@@ -871,10 +1031,67 @@ export function CourseView() {
                   </div>
                 )}
 
+                {/* Navigation par module - étiquettes colorées */}
+                {courseJson && visibleModules.length > 0 && (
+                  <div className="mb-4 flex items-center gap-3 flex-wrap">
+                    <span className="text-sm font-medium text-gray-700">Affichage :</span>
+                    <button
+                      onClick={() => {
+                        setCourseViewMode('all')
+                        setCurrentModuleIndex(null)
+                      }}
+                      className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                        courseViewMode === 'all'
+                          ? 'bg-blue-600 text-white shadow-md'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      Tout le cours
+                    </button>
+                    <span className="text-gray-400">|</span>
+                    <div className="flex flex-wrap gap-2">
+                      {visibleModules.map((module, index) => {
+                        const originalIndex = courseJson.modules.findIndex(m => m.title === module.title)
+                        const isActive = courseViewMode === 'module' && currentModuleIndex === originalIndex
+                        const moduleColor = getModuleColor(module)
+                        
+                        return (
+                          <button
+                            key={originalIndex}
+                            onClick={() => {
+                              setCourseViewMode('module')
+                              setCurrentModuleIndex(originalIndex)
+                            }}
+                            className={`px-3 py-1.5 rounded-md text-xs font-medium text-white transition-all ${
+                              isActive 
+                                ? `${moduleColor} shadow-md ring-2 ring-offset-2 ring-gray-300` 
+                                : `${moduleColor} opacity-70 hover:opacity-100`
+                            }`}
+                            title={module.title}
+                          >
+                            Module {originalIndex + 1}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+
                 {/* Contenu du cours avec ReactRenderer */}
                 {courseJson ? (
                   <div className="bg-white shadow rounded-lg p-6">
-                    <ReactRenderer courseJson={courseJson} />
+                    {courseViewMode === 'all' ? (
+                      <ReactRenderer courseJson={courseJson} />
+                    ) : currentModuleIndex !== null ? (
+                      <ReactRenderer 
+                        courseJson={{
+                          ...courseJson,
+                          modules: [courseJson.modules[currentModuleIndex]]
+                        }} 
+                      />
+                    ) : (
+                      <ReactRenderer courseJson={courseJson} />
+                    )}
                   </div>
                 ) : modules.length === 0 ? (
                   <div className="text-center py-12 bg-white rounded-lg shadow">
