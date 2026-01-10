@@ -19,6 +19,7 @@ export function Profile() {
   const [org, setOrg] = useState<Org | null>(null);
   const [loadingOrg, setLoadingOrg] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [showDebug, setShowDebug] = useState(false);
 
   useEffect(() => {
     if (profile?.full_name) {
@@ -303,6 +304,56 @@ export function Profile() {
                   </div>
                 </div>
               )}
+
+              {/* Panneau de debug */}
+              <div className="border-t pt-6 mt-6">
+                <button
+                  onClick={() => setShowDebug(!showDebug)}
+                  className="text-sm text-gray-500 hover:text-gray-700"
+                >
+                  {showDebug ? 'Masquer' : 'Afficher'} les informations de debug
+                </button>
+                {showDebug && (
+                  <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <h3 className="text-sm font-semibold text-gray-700 mb-3">Informations de debug</h3>
+                    <div className="space-y-2 text-xs font-mono">
+                      <div>
+                        <span className="font-semibold">User ID:</span> {user?.id || 'N/A'}
+                      </div>
+                      <div>
+                        <span className="font-semibold">Profile ID:</span> {profile?.id || 'N/A'}
+                      </div>
+                      <div>
+                        <span className="font-semibold">Profile Role:</span> {profile?.role || 'N/A'}
+                      </div>
+                      <div>
+                        <span className="font-semibold">Profile is_active:</span> {profile?.is_active !== undefined ? String(profile.is_active) : 'NULL'}
+                      </div>
+                      <div>
+                        <span className="font-semibold">Role from useUserRole:</span> {roleLabel}
+                      </div>
+                      <div>
+                        <span className="font-semibold">Has Session:</span> {user ? 'Oui' : 'Non'}
+                      </div>
+                      <div className="pt-2 border-t">
+                        <button
+                          onClick={async () => {
+                            console.log('🔍 [Profile] Debug: Forcing profile refresh...');
+                            console.log('🔍 [Profile] Current user:', user);
+                            console.log('🔍 [Profile] Current profile:', profile);
+                            await handleRefresh();
+                            console.log('🔍 [Profile] After refresh - user:', user);
+                            console.log('🔍 [Profile] After refresh - profile:', profile);
+                          }}
+                          className="px-3 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700"
+                        >
+                          Forcer le rafraîchissement (voir console)
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

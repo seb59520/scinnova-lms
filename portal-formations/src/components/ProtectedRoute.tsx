@@ -70,11 +70,28 @@ export function ProtectedRoute({
 
   // Si authentification requise mais utilisateur non connecté
   if (requireAuth && !user) {
+    // Vérifier si on est en train de traiter un callback OAuth
+    const isOAuthCallback = location.search.includes('code=') || 
+                           location.search.includes('access_token=') ||
+                           location.search.includes('error=')
+    
+    // Si c'est un callback OAuth, attendre un peu avant de rediriger
+    if (isOAuthCallback && loading) {
+      return (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-sm text-gray-600">Finalisation de la connexion...</p>
+          </div>
+        </div>
+      )
+    }
+    
     // Ne pas rediriger si on est déjà sur une page publique
-    if (!isOnPublicPage) {
+    if (!isOnPublicPage && !isOAuthCallback) {
       return <Navigate to="/login" state={{ from: location }} replace />
     }
-    // Si on est déjà sur une page publique, laisser passer (pour éviter les boucles)
+    // Si on est déjà sur une page publique ou en callback OAuth, laisser passer (pour éviter les boucles)
     return <>{children}</>
   }
 

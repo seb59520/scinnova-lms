@@ -2,7 +2,7 @@ import { useEffect, useState, useLayoutEffect } from 'react'
 import { useParams, Link, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabaseClient'
-import { withRetry, withTimeout, isAuthError } from '../lib/supabaseHelpers'
+import { isAuthError } from '../lib/supabaseHelpers'
 import { Course, Module, Item, CourseAllTp, TpBatchWithItems } from '../types/database'
 import { CourseFeaturesTiles } from '../components/CourseFeaturesTiles'
 import { Progress } from '../components/Progress'
@@ -329,19 +329,12 @@ export function CourseView() {
     try {
       setError('')
 
-      // Récupérer les détails de la formation d'abord avec retry optimisé
-      const { data: courseData, error: courseError } = await withRetry(
-        () => withTimeout(
-          supabase
-            .from('courses')
-            .select('*')
-            .eq('id', courseId)
-            .single(),
-          5000, // Réduit à 5 secondes
-          'Course fetch timeout'
-        ),
-        { maxRetries: 1, initialDelay: 500 } // Réduire les retries
-      )
+      // Récupérer les détails de la formation
+      const { data: courseData, error: courseError } = await supabase
+        .from('courses')
+        .select('*')
+        .eq('id', courseId)
+        .single()
 
       if (courseError) {
         if (isAuthError(courseError)) {
@@ -441,19 +434,12 @@ export function CourseView() {
         return
       }
 
-      // Récupérer les modules avec un timeout plus long
-      const { data: modulesData, error: modulesError } = await withRetry(
-        () => withTimeout(
-          supabase
-            .from('modules')
-            .select('*')
-            .eq('course_id', courseId)
-            .order('position', { ascending: true }),
-          10000, // Augmenter le timeout à 10 secondes
-          'Modules fetch timeout'
-        ),
-        { maxRetries: 2, initialDelay: 1000 } // Plus de retries avec délai plus long
-      )
+      // Récupérer les modules
+      const { data: modulesData, error: modulesError } = await supabase
+        .from('modules')
+        .select('*')
+        .eq('course_id', courseId)
+        .order('position', { ascending: true })
 
       if (modulesError) {
         if (isAuthError(modulesError)) {
@@ -469,18 +455,11 @@ export function CourseView() {
       if (modulesData && modulesData.length > 0) {
         const moduleIds = modulesData.map(m => m.id)
         
-        const { data: itemsData, error: itemsError } = await withRetry(
-          () => withTimeout(
-            supabase
-              .from('items')
-              .select('*')
-              .in('module_id', moduleIds)
-              .order('position', { ascending: true }),
-            15000, // Augmenter le timeout à 15 secondes pour les items
-            'Items fetch timeout'
-          ),
-          { maxRetries: 2, initialDelay: 1000, maxDelay: 3000 } // Plus de retries avec délai plus long
-        )
+        const { data: itemsData, error: itemsError } = await supabase
+          .from('items')
+          .select('*')
+          .in('module_id', moduleIds)
+          .order('position', { ascending: true })
 
         if (itemsError) {
           console.error('Error fetching items:', itemsError)
@@ -739,7 +718,7 @@ export function CourseView() {
           *,
           tp_batch_items (
             *,
-            items (*),
+            items!tp_batch_items_item_id_fkey (*),
             prerequisite_items:items!tp_batch_items_prerequisite_item_id_fkey (*)
           )
         `)

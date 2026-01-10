@@ -417,15 +417,19 @@ export function CourseSidebar({ courseJson, onClose, sidebarWidth = 256, minWidt
         </div>
 
         {/* TP associés directement */}
-        {!isMinimized && directTps.length > 0 && (
-          <div className="mt-6">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
-              TP Associés
-            </h3>
-            <div className="space-y-1">
-              {directTps.map((tp) => {
-                const isActive = currentItemId === tp.tp_id
-                return (
+        {!isMinimized && directTps.length > 0 && (() => {
+          // Filtrer le TP actuel pour éviter l'auto-association
+          const filteredTps = directTps.filter(tp => tp.tp_id !== currentItemId)
+          
+          if (filteredTps.length === 0) return null
+          
+          return (
+            <div className="mt-6">
+              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+                TP Associés
+              </h3>
+              <div className="space-y-1">
+                {filteredTps.map((tp) => (
                   <Link
                     key={tp.tp_id}
                     to={`/items/${tp.tp_id}`}
@@ -434,11 +438,7 @@ export function CourseSidebar({ courseJson, onClose, sidebarWidth = 256, minWidt
                         setTimeout(() => onClose(), 300)
                       }
                     }}
-                    className={`flex items-center space-x-2 p-2 rounded text-sm transition-colors ${
-                      isActive
-                        ? 'bg-blue-50 text-blue-700 font-medium'
-                        : 'text-gray-700 hover:bg-gray-50'
-                    }`}
+                    className="flex items-center space-x-2 p-2 rounded text-sm transition-colors text-gray-700 hover:bg-gray-50"
                   >
                     <FileText className="w-4 h-4 text-purple-600 flex-shrink-0" />
                     <span className="truncate">{tp.tp_title}</span>
@@ -446,11 +446,11 @@ export function CourseSidebar({ courseJson, onClose, sidebarWidth = 256, minWidt
                       <span className="text-xs text-blue-600">*</span>
                     )}
                   </Link>
-                )
-              })}
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )
+        })()}
 
         {/* Lots de TP */}
         {!isMinimized && tpBatches.length > 0 && (
@@ -496,25 +496,22 @@ export function CourseSidebar({ courseJson, onClose, sidebarWidth = 256, minWidt
                     </button>
                     {isExpanded && (
                       <div className="p-2 space-y-1 border-t border-gray-200">
-                        {sortedItems.map((batchItem) => {
-                          const isActive = currentItemId === batchItem.item_id
-                          const item = batchItem.items
-                          if (!item) return null
-                          
-                          return (
-                            <Link
-                              key={batchItem.id}
-                              to={`/items/${batchItem.item_id}`}
-                              onClick={() => {
-                                if (onClose && window.innerWidth < 1024) {
-                                  setTimeout(() => onClose(), 300)
-                                }
-                              }}
-                              className={`flex items-center space-x-2 p-1.5 rounded text-sm transition-colors ${
-                                isActive
-                                  ? 'bg-blue-50 text-blue-700 font-medium'
-                                  : 'text-gray-700 hover:bg-gray-50'
-                              }`}
+                        {sortedItems
+                          .filter(batchItem => batchItem.item_id !== currentItemId) // Filtrer le TP actuel
+                          .map((batchItem) => {
+                            const item = batchItem.items
+                            if (!item) return null
+                            
+                            return (
+                              <Link
+                                key={batchItem.id}
+                                to={`/items/${batchItem.item_id}`}
+                                onClick={() => {
+                                  if (onClose && window.innerWidth < 1024) {
+                                    setTimeout(() => onClose(), 300)
+                                  }
+                                }}
+                                className="flex items-center space-x-2 p-1.5 rounded text-sm transition-colors text-gray-700 hover:bg-gray-50"
                             >
                               <FileText className="w-3 h-3 text-purple-600 flex-shrink-0" />
                               <span className="truncate text-xs">{item.title}</span>

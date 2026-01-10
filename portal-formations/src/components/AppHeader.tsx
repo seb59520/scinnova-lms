@@ -24,7 +24,7 @@ export function AppHeader({
   children 
 }: AppHeaderProps) {
   const { user, profile, signOut } = useAuth();
-  const { roleLabel, isAdmin, isTrainer } = useUserRole();
+  const { roleLabel, isAdmin } = useUserRole();
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
@@ -152,13 +152,15 @@ export function AppHeader({
                 </span>
               )}
             </Link>
-            <Link
-              to="/help"
-              className="text-sm text-gray-600 hover:text-gray-900 hidden md:block"
-              title="Aide"
-            >
-              Aide
-            </Link>
+            {isAdmin && (
+              <Link
+                to="/admin/documentation"
+                className="text-sm text-gray-600 hover:text-gray-900 hidden md:block"
+                title="Documentation (Admin)"
+              >
+                Documentation
+              </Link>
+            )}
 
             {/* User menu dropdown */}
             <div className="relative">

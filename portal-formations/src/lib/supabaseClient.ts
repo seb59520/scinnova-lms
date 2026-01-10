@@ -24,7 +24,11 @@ if (supabaseAnonKey === 'your-anon-key-here' || supabaseAnonKey.includes('your-'
   throw new Error(error)
 }
 
-console.log('Supabase client initialized with URL:', supabaseUrl)
+console.log('✅ Supabase client initialized')
+console.log('🔍 Supabase URL:', supabaseUrl)
+console.log('🔍 Supabase URL valid:', supabaseUrl?.startsWith('http'))
+console.log('🔍 Anon key present:', !!supabaseAnonKey && supabaseAnonKey.length > 0)
+console.log('🔍 Anon key length:', supabaseAnonKey?.length || 0)
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
@@ -42,32 +46,8 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     headers: {
       'apikey': supabaseAnonKey,
     },
-    // Timeout pour les requêtes (optimisé pour performance)
-    fetch: (url, options = {}) => {
-      // Si un signal existe déjà dans les options, l'utiliser
-      // Sinon, créer un nouveau AbortController pour le timeout
-      const existingSignal = options.signal
-      const controller = existingSignal ? null : new AbortController()
-      const signal = existingSignal || controller?.signal
-      
-      // Timeout réduit à 10 secondes pour une réponse plus rapide
-      // Seulement si on a créé notre propre controller
-      let timeoutId: NodeJS.Timeout | null = null
-      if (controller) {
-        timeoutId = setTimeout(() => {
-          controller.abort('Request timeout after 10 seconds')
-        }, 10000)
-      }
-      
-      return fetch(url, {
-        ...options,
-        signal,
-      }).finally(() => {
-        if (timeoutId) {
-          clearTimeout(timeoutId)
-        }
-      })
-    },
+    // NOTE: Pas de fetch override custom - laisser Supabase gérer les timeouts
+    // Cela évite les plantages et conflits avec le mécanisme interne
   },
   db: {
     schema: 'public',

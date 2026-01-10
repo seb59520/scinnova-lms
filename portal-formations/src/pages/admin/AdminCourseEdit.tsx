@@ -3,8 +3,9 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Course, Module, Item } from '../../types/database'
-import { Save, Plus, Edit, Trash2, GripVertical, ChevronUp, ChevronDown, Code, Presentation, Link as LinkIcon } from 'lucide-react'
+import { Save, Plus, Edit, Trash2, GripVertical, ChevronUp, ChevronDown, Code, Presentation, Link as LinkIcon, Image, X } from 'lucide-react'
 import { LinkedInPostModal } from '../../components/LinkedInPostModal'
+import { ImageUploadCarousel } from '../../components/ImageUploadCarousel'
 
 interface ModuleWithItems extends Module {
   items: Item[]
@@ -24,8 +25,10 @@ export function AdminCourseEdit() {
     price_cents: null,
     currency: 'EUR',
     is_paid: false,
+    thumbnail_image_path: null,
     created_by: user?.id
   })
+  const [uploadingThumbnail, setUploadingThumbnail] = useState(false)
   const [modules, setModules] = useState<ModuleWithItems[]>([])
   const [loading, setLoading] = useState(!isNew)
   const [saving, setSaving] = useState(false)
@@ -39,12 +42,20 @@ export function AdminCourseEdit() {
   const [wasPublicBeforeSave, setWasPublicBeforeSave] = useState(false)
 
   useEffect(() => {
+    let isMounted = true
+    
     if (!isNew && courseId) {
-      fetchCourse()
+      fetchCourse(isMounted)
+    } else {
+      setLoading(false)
+    }
+    
+    return () => {
+      isMounted = false
     }
   }, [courseId, isNew])
 
-  const fetchCourse = async () => {
+  const fetchCourse = async (isMounted: boolean = true) => {
     try {
       // Récupérer la formation
       const { data: courseData, error: courseError } = await supabase
@@ -53,7 +64,17 @@ export function AdminCourseEdit() {
         .eq('id', courseId)
         .single()
 
-      if (courseError) throw courseError
+      if (!isMounted) return
+
+      if (courseError) {
+        // Ignorer les erreurs d'abort
+        if (courseError.message?.includes('aborted') || courseError.message?.includes('AbortError')) {
+          console.log('⚠️ Requête annulée (composant démonté)')
+          return
+        }
+        throw courseError
+      }
+      
       setCourse(courseData)
       setWasPublicBeforeSave(courseData.is_public || false)
 
@@ -67,20 +88,146 @@ export function AdminCourseEdit() {
         .eq('course_id', courseId)
         .order('position', { ascending: true })
 
-      if (modulesError) throw modulesError
+      if (!isMounted) return
+
+      if (modulesError) {
+        // Ignorer les erreurs d'abort
+        if (modulesError.message?.includes('aborted') || modulesError.message?.includes('AbortError')) {
+          console.log('⚠️ Requête annulée (composant démonté)')
+          return
+        }
+        throw modulesError
+      }
 
       const sortedModules = modulesData?.map(module => ({
         ...module,
         items: module.items?.sort((a: Item, b: Item) => a.position - b.position) || []
       })) || []
 
-      setModules(sortedModules)
-    } catch (error) {
+      if (isMounted) {
+        setModules(sortedModules)
+      }
+    } catch (error: any) {
+      if (!isMounted) return
+      
+      // Ignorer les erreurs d'abort
+      if (error?.message?.includes('aborted') || error?.name === 'AbortError') {
+        console.log('⚠️ Requête annulée (composant démonté)')
+        return
+      }
+      
       console.error('Error fetching course:', error)
       setError('Erreur lors du chargement.')
     } finally {
-      setLoading(false)
+      if (isMounted) {
+        setLoading(false)
+      }
     }
+  }
+
+  const handleThumbnailUpload = async (imageUrl: string) => {
+    if (!courseId || isNew) {
+      setError('Veuillez d\'abord sauvegarder la formation avant d\'uploader une vignette.')
+      return
+    }
+
+    setUploadingThumbnail(true)
+    setError('')
+
+    try {
+      // Extraire le chemin depuis l'URL publique
+      // L'URL est de la forme: https://xxx.supabase.co/storage/v1/object/public/course-assets/path/to/image.jpg
+      // Ou: https://xxx.supabase.co/storage/v1/object/sign/course-assets/...
+      let imagePath = imageUrl
+      
+      // Si c'est une URL complète, extraire le chemin
+      if (imageUrl.includes('/course-assets/')) {
+        const urlParts = imageUrl.split('/course-assets/')
+        if (urlParts.length === 2) {
+          imagePath = `course-assets/${urlParts[1].split('?')[0]}` // Enlever les query params
+        }
+      } else if (imageUrl.includes('carousel/')) {
+        // Si c'est un chemin carousel, le garder tel quel
+        imagePath = imageUrl
+      }
+
+      console.log('💾 Sauvegarde du chemin de la vignette:', imagePath)
+
+      // Mettre à jour le cours avec le nouveau chemin
+      const { error: updateError } = await supabase
+        .from('courses')
+        .update({ thumbnail_image_path: imagePath })
+        .eq('id', courseId)
+
+      if (updateError) {
+        // Ignorer les erreurs d'abort
+        if (updateError.message?.includes('aborted') || updateError.message?.includes('AbortError')) {
+          throw new Error('La sauvegarde a été interrompue. Réessayez.')
+        }
+        throw updateError
+      }
+
+      setCourse({ ...course, thumbnail_image_path: imagePath })
+      console.log('✅ Vignette sauvegardée avec succès')
+    } catch (error: any) {
+      console.error('❌ Error saving thumbnail path:', error)
+      setError(error.message || 'Erreur lors de la sauvegarde de la vignette')
+    } finally {
+      setUploadingThumbnail(false)
+    }
+  }
+
+  const handleDeleteThumbnail = async () => {
+    if (!course.thumbnail_image_path || !courseId) return
+
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cette vignette ?')) return
+
+    try {
+      // Extraire le chemin pour la suppression (enlever le préfixe course-assets/ si présent)
+      const pathToDelete = course.thumbnail_image_path.replace(/^course-assets\//, '')
+      
+      // Supprimer le fichier du storage
+      const { error: deleteError } = await supabase.storage
+        .from('course-assets')
+        .remove([pathToDelete])
+
+      if (deleteError) {
+        // Ignorer les erreurs si le fichier n'existe pas déjà
+        if (!deleteError.message?.includes('not found') && !deleteError.message?.includes('does not exist')) {
+          throw deleteError
+        }
+      }
+
+      // Mettre à jour le cours
+      const { error: updateError } = await supabase
+        .from('courses')
+        .update({ thumbnail_image_path: null })
+        .eq('id', courseId)
+
+      if (updateError) throw updateError
+
+      setCourse({ ...course, thumbnail_image_path: null })
+    } catch (error: any) {
+      console.error('Error deleting thumbnail:', error)
+      setError(error.message || 'Erreur lors de la suppression de la vignette')
+    }
+  }
+
+  const getThumbnailUrl = (): string | null => {
+    if (!course.thumbnail_image_path) return null
+    
+    // Si c'est déjà une URL complète, la retourner
+    if (course.thumbnail_image_path.startsWith('http')) {
+      return course.thumbnail_image_path
+    }
+    
+    // Sinon, construire l'URL depuis le chemin (enlever le préfixe course-assets/ si présent)
+    const path = course.thumbnail_image_path.replace(/^course-assets\//, '')
+    const { data } = supabase.storage
+      .from('course-assets')
+      .getPublicUrl(path)
+    
+    return data.publicUrl
   }
 
   const handleSave = async () => {
@@ -875,10 +1022,10 @@ export function AdminCourseEdit() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 w-full">
       {/* Header */}
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header className="bg-white shadow w-full">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center space-x-4">
               <Link
@@ -915,8 +1062,8 @@ export function AdminCourseEdit() {
       </header>
 
       {/* Main content */}
-      <main className="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0 space-y-8">
+      <main className="w-full py-6 sm:px-6 lg:px-8">
+        <div className="w-full px-4 py-6 sm:px-0 space-y-8">
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
               {error}
@@ -957,6 +1104,69 @@ export function AdminCourseEdit() {
                 <p className="text-xs text-gray-500 mt-1">
                   💡 Astuce : Utilisez des sauts de ligne pour créer des paragraphes. Utilisez <strong>**texte**</strong> pour mettre en gras.
                 </p>
+              </div>
+
+              {/* Vignette de la formation */}
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Vignette de la formation
+                </label>
+                <p className="text-xs text-gray-500 mb-3">
+                  Ajoutez une image de prévisualisation pour cette formation. Cette image sera visible dans les listes de formations.
+                </p>
+                
+                {course.thumbnail_image_path ? (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <Image className="w-8 h-8 text-blue-600" />
+                        <div>
+                          <p className="text-sm font-medium text-blue-900">
+                            Vignette disponible
+                          </p>
+                          <p className="text-xs text-blue-700">
+                            {course.thumbnail_image_path.split('/').pop()}
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={handleDeleteThumbnail}
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors text-sm"
+                      >
+                        <X className="w-4 h-4" />
+                        Supprimer
+                      </button>
+                    </div>
+                    <div className="mt-3">
+                      <img
+                        src={getThumbnailUrl() || ''}
+                        alt="Vignette de la formation"
+                        className="w-full max-w-md h-48 object-cover rounded-lg border-2 border-blue-200 shadow-sm"
+                        onError={(e) => {
+                          console.error('Erreur de chargement de l\'image:', e)
+                        }}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
+                    <ImageUploadCarousel
+                      onImageUploaded={handleThumbnailUpload}
+                      currentImageUrl={getThumbnailUrl() || undefined}
+                      disabled={uploadingThumbnail || isNew}
+                    />
+                    {isNew && (
+                      <p className="text-xs text-gray-500 mt-2 text-center">
+                        ⚠️ Sauvegardez d'abord la formation pour pouvoir uploader une vignette
+                      </p>
+                    )}
+                    {uploadingThumbnail && (
+                      <p className="text-sm text-blue-600 mt-2 text-center">
+                        Sauvegarde de la vignette...
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-4">

@@ -1,0 +1,87 @@
+{
+  "metadata": {
+    "source": "DataLogis - Entreprise fictive de logistique e-commerce",
+    "description": "Données opérationnelles des 3 entrepôts",
+    "periode": "Décembre 2024",
+    "total_entrepots": 3
+  },
+  "entrepots": [
+    {
+      "id": "ENT001",
+      "nom": "Paris-Nord",
+      "region": "Île-de-France",
+      "capacite_colis_jour": 5000,
+      "effectif": 120,
+      "surface_m2": 15000,
+      "taux_occupation_stock": 0.78,
+      "couts_mensuels": {
+        "personnel": 280000,
+        "energie": 45000,
+        "maintenance": 12000,
+        "transport": 85000
+      },
+      "performance_decembre": {
+        "colis_expedies": 142500,
+        "taux_erreur_preparation": 0.012,
+        "delai_moyen_expedition_heures": 4.2,
+        "taux_casse": 0.003,
+        "productivite_colis_employe_jour": 45
+      }
+    },
+    {
+      "id": "ENT002",
+      "nom": "Lyon-Est",
+      "region": "Auvergne-Rhône-Alpes",
+      "capacite_colis_jour": 3500,
+      "effectif": 85,
+      "surface_m2": 10000,
+      "taux_occupation_stock": 0.82,
+      "couts_mensuels": {
+        "personnel": 195000,
+        "energie": 32000,
+        "maintenance": 8500,
+        "transport": 62000
+      },
+      "performance_decembre": {
+        "colis_expedies": 98000,
+        "taux_erreur_preparation": 0.018,
+        "delai_moyen_expedition_heures": 5.1,
+        "taux_casse": 0.005,
+        "productivite_colis_employe_jour": 42
+      }
+    },
+    {
+      "id": "ENT003",
+      "nom": "Marseille-Sud",
+      "region": "Provence-Alpes-Côte d'Azur",
+      "capacite_colis_jour": 2500,
+      "effectif": 65,
+      "surface_m2": 7500,
+      "taux_occupation_stock": 0.91,
+      "couts_mensuels": {
+        "personnel": 148000,
+        "energie": 28000,
+        "maintenance": 7000,
+        "transport": 48000
+      },
+      "performance_decembre": {
+        "colis_expedies": 68000,
+        "taux_erreur_preparation": 0.025,
+        "delai_moyen_expedition_heures": 6.8,
+        "taux_casse": 0.008,
+        "productivite_colis_employe_jour": 38
+      }
+    }
+  ],
+  "alertes_operationnelles": [
+    {"entrepot": "Marseille-Sud", "type": "Saturation stock", "niveau": "Critique", "description": "Taux occupation 91% - risque de rupture capacité"},
+    {"entrepot": "Marseille-Sud", "type": "Performance", "niveau": "Attention", "description": "Taux erreur 2.5% supérieur à l'objectif de 1.5%"},
+    {"entrepot": "Lyon-Est", "type": "Performance", "niveau": "Information", "description": "Délai expédition légèrement au-dessus de la cible (5.1h vs 5h)"}
+  ],
+  "comparaison_objectifs": {
+    "taux_erreur_cible": 0.015,
+    "delai_expedition_cible_heures": 5.0,
+    "taux_occupation_optimal": "70-85%",
+    "productivite_cible": 50
+  }
+}

@@ -1,0 +1,4 @@
+entrepot_id,nom,region,capacite_colis_jour,effectif,surface_m2,taux_occupation_stock,cout_personnel,cout_energie,cout_maintenance,cout_transport,colis_expedies_dec,taux_erreur,delai_expedition_heures,taux_casse,productivite
+ENT001,Paris-Nord,Île-de-France,5000,120,15000,0.78,280000,45000,12000,85000,142500,0.012,4.2,0.003,45
+ENT002,Lyon-Est,Auvergne-Rhône-Alpes,3500,85,10000,0.82,195000,32000,8500,62000,98000,0.018,5.1,0.005,42
+ENT003,Marseille-Sud,Provence-Alpes-Côte d'Azur,2500,65,7500,0.91,148000,28000,7000,48000,68000,0.025,6.8,0.008,38

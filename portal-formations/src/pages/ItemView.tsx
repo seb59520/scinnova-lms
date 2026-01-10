@@ -10,6 +10,33 @@ import { ResizableContainer } from '../components/ResizableContainer'
 import { Lexique } from './Lexique'
 import { FileText, ChevronDown, ChevronUp, Target, Lightbulb, BookOpen, MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react'
 
+// Vérifie si le body TipTap contient du contenu substantiel
+// (plus qu'un simple paragraphe de description courte)
+function hasSubstantialBody(body: any): boolean {
+  if (!body || typeof body !== 'object') return false
+  
+  const content = body.content
+  if (!content || !Array.isArray(content)) return false
+  
+  // Si plus d'un élément, c'est substantiel
+  if (content.length > 1) return true
+  
+  // Si un seul élément, vérifier la longueur du texte
+  const firstElement = content[0]
+  if (!firstElement) return false
+  
+  // Compter le texte total
+  let textLength = 0
+  const countText = (node: any) => {
+    if (node.text) textLength += node.text.length
+    if (node.content) node.content.forEach(countText)
+  }
+  countText(firstElement)
+  
+  // Moins de 200 caractères = probablement juste une description
+  return textLength > 200
+}
+
 interface ScriptSection {
   title: string
   type: 'introduction' | 'content' | 'exercise' | 'transition' | 'summary'
@@ -624,8 +651,8 @@ export function ItemView() {
             </div>
           ) : (
             <>
-              {/* Contenu principal de l'item - seulement si ce n'est pas un jeu ET pas une slide (les slides sont gérées par ItemRenderer) */}
-              {item.content?.body && item.type !== 'game' && item.type !== 'slide' && (
+              {/* Contenu principal de l'item - seulement si le body est substantiel (pas juste une description courte) */}
+              {item.content?.body && item.type !== 'game' && item.type !== 'slide' && hasSubstantialBody(item.content.body) && (
                 <div className="bg-white rounded-lg shadow p-6 lg:p-8">
                   <h2 className="text-2xl font-bold text-gray-900 mb-4">Contenu</h2>
                   <RichTextEditor

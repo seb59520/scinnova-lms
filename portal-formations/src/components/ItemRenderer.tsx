@@ -628,8 +628,8 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate }: ItemRende
               </div>
             )}
 
-            {/* Boutons de vue si correction disponible */}
-            {item.content?.correction && isGraded && (
+            {/* Boutons de vue si correction disponible - visible après soumission */}
+            {item.content?.correction && isSubmitted && (
               <div className="flex items-center space-x-2 mb-4">
                 <button
                   onClick={() => setViewMode('comparison')}
@@ -667,8 +667,8 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate }: ItemRende
               </div>
             )}
 
-            {/* Affichage selon le mode */}
-            {item.content?.correction && isGraded && (
+            {/* Affichage selon le mode - visible après soumission */}
+            {item.content?.correction && isSubmitted && (
               <>
                 {viewMode === 'comparison' ? (
                   // Vue côte à côte : Soumission | Correction

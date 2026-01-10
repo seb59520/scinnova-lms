@@ -12,3 +12,14 @@
   display: block !important;
 }
 
+/* Utiliser toute la largeur de l'écran */
+.admin-unified {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.admin-unified > * {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+

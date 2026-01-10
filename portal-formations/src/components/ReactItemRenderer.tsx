@@ -7,6 +7,23 @@ import { supabase } from '../lib/supabaseClient'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp, Gamepad2 } from 'lucide-react'
 import { CardMatchingGame } from './CardMatchingGame'
+
+// Vérifie si le body TipTap contient du contenu substantiel
+function hasSubstantialBody(body: any): boolean {
+  if (!body || typeof body !== 'object') return false
+  const content = body.content
+  if (!content || !Array.isArray(content)) return false
+  if (content.length > 1) return true
+  const firstElement = content[0]
+  if (!firstElement) return false
+  let textLength = 0
+  const countText = (node: any) => {
+    if (node.text) textLength += node.text.length
+    if (node.content) node.content.forEach(countText)
+  }
+  countText(firstElement)
+  return textLength > 200
+}
 import { ColumnMatchingGame } from './ColumnMatchingGame'
 import { ApiTypesGame } from './ApiTypesGame'
 import { FormatFilesGame } from './FormatFilesGame'
@@ -16,7 +33,10 @@ interface ReactItemRendererProps {
 }
 
 export function ReactItemRenderer({ itemJson }: ReactItemRendererProps) {
-  const [expandedChapters, setExpandedChapters] = useState<Set<number>>(new Set())
+  // Déplier tous les chapitres par défaut
+  const [expandedChapters, setExpandedChapters] = useState<Set<number>>(() => 
+    new Set(itemJson.chapters?.map((_, i) => i) || [])
+  )
 
   // Récupérer le thème de l'item ou utiliser les valeurs par défaut
   const itemTheme = itemJson.theme || {
@@ -233,7 +253,9 @@ function renderResource(item: ItemJson, theme: any) {
     )
   }
 
-  if (item.content.body) {
+  // Afficher le body seulement s'il est substantiel OU s'il n'y a pas de chapitres
+  const hasChapters = item.chapters && item.chapters.length > 0
+  if (item.content.body && (hasSubstantialBody(item.content.body) || !hasChapters)) {
     return (
       <div className="prose max-w-none">
         <RichTextEditor
@@ -245,7 +267,19 @@ function renderResource(item: ItemJson, theme: any) {
     )
   }
 
-  return <p className="text-gray-600">Contenu non disponible.</p>
+  // Si le body est minimal et qu'il y a des chapitres, afficher juste la description
+  if (hasChapters && item.content.description) {
+    return (
+      <div 
+        className="p-4 rounded-lg mb-4"
+        style={{ backgroundColor: `${theme.primaryColor}10` }}
+      >
+        <p className="text-gray-700">{item.content.description}</p>
+      </div>
+    )
+  }
+
+  return null // Le contenu est dans les chapitres
 }
 
 function renderSlide(item: ItemJson, theme: any) {

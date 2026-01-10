@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Connectivité Supabase</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Test de Connectivité Supabase</h1>
+    <p>Ouvrez la console (F12) pour voir les détails</p>
+    
+    <div id="results"></div>
+    
+    <script type="module">
+        (async function() {
+            const resultsDiv = document.getElementById('results');
+            
+            function addResult(title, content, type = 'info') {
+                const div = document.createElement('div');
+                div.className = `test ${type}`;
+                div.innerHTML = `<h3>${title}</h3><pre>${content}</pre>`;
+                resultsDiv.appendChild(div);
+            }
+            
+            // Récupérer les variables d'environnement depuis localStorage ou prompt
+            let supabaseUrl = localStorage.getItem('test_supabase_url') || prompt('Entrez votre URL Supabase (ex: https://xxx.supabase.co):');
+            let supabaseKey = localStorage.getItem('test_supabase_key') || prompt('Entrez votre clé anon Supabase:');
+            
+            if (supabaseUrl) localStorage.setItem('test_supabase_url', supabaseUrl);
+            if (supabaseKey) localStorage.setItem('test_supabase_key', supabaseKey);
+            
+            if (!supabaseUrl || !supabaseKey) {
+                addResult('❌ Configuration manquante', 'URL ou clé Supabase manquante', 'error');
+                return;
+            }
+        
+        addResult('✅ Configuration', `URL: ${supabaseUrl}\nClé: ${supabaseKey.substring(0, 20)}...`, 'info');
+        
+        // Test 1: Connectivité de base
+        addResult('🔄 Test 1: Connectivité de base', 'Test en cours...', 'info');
+        fetch(`${supabaseUrl}/rest/v1/`, {
+            method: 'GET',
+            headers: {
+                'apikey': supabaseKey,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            const status = response.status;
+            const statusText = response.statusText;
+            addResult('✅ Test 1: Connectivité de base', `Status: ${status} ${statusText}\nLa connexion à Supabase fonctionne!`, 'success');
+            return response.text();
+        })
+        .catch(error => {
+            addResult('❌ Test 1: Connectivité de base', `Erreur: ${error.message}\n\nVérifiez:\n- Que l'URL Supabase est correcte\n- Que vous êtes connecté à Internet\n- Qu'il n'y a pas de firewall qui bloque`, 'error');
+        })
+        .then(() => {
+            // Test 2: Endpoint auth
+            addResult('🔄 Test 2: Endpoint Auth', 'Test en cours...', 'info');
+            return fetch(`${supabaseUrl}/auth/v1/health`, {
+                method: 'GET',
+                headers: {
+                    'apikey': supabaseKey
+                }
+            });
+        })
+        .then(response => {
+            const status = response.status;
+            addResult('✅ Test 2: Endpoint Auth', `Status: ${status}\nL'endpoint auth est accessible!`, 'success');
+            
+            // Test 3: Requête profiles (sans auth)
+            addResult('🔄 Test 3: Requête Profiles (sans auth)', 'Test en cours...', 'info');
+            return fetch(`${supabaseUrl}/rest/v1/profiles?select=id&limit=1`, {
+                method: 'GET',
+                headers: {
+                    'apikey': supabaseKey,
+                    'Content-Type': 'application/json'
+                }
+            });
+        })
+        .then(response => {
+            const status = response.status;
+            const statusText = response.statusText;
+            if (status === 401 || status === 403) {
+                addResult('⚠️ Test 3: Requête Profiles', `Status: ${status} ${statusText}\nC'est normal - RLS bloque l'accès sans authentification`, 'info');
+            } else {
+                addResult('✅ Test 3: Requête Profiles', `Status: ${status} ${statusText}\nLa table profiles est accessible!`, 'success');
+            }
+            
+            // Test 4: Timeout test
+            addResult('🔄 Test 4: Test de Timeout', 'Test en cours (attente 5 secondes)...', 'info');
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
+            
+            return fetch(`${supabaseUrl}/rest/v1/`, {
+                method: 'GET',
+                headers: {
+                    'apikey': supabaseKey
+                },
+                signal: controller.signal
+            }).finally(() => clearTimeout(timeoutId));
+        })
+        .then(response => {
+            addResult('✅ Test 4: Test de Timeout', 'La requête a réussi en moins de 5 secondes!', 'success');
+        })
+        .catch(error => {
+            if (error.name === 'AbortError' || error.message.includes('timeout') || error.message.includes('aborted')) {
+                addResult('❌ Test 4: Test de Timeout', 'La requête timeout après 5 secondes!\n\nCela indique un problème de réseau ou de configuration.', 'error');
+            } else if (error.message) {
+                addResult('⚠️ Test 2/3/4', `Erreur: ${error.message}`, 'error');
+            }
+        });
+        
+            console.log('Tests de connectivité Supabase lancés');
+            console.log('URL:', supabaseUrl);
+            console.log('Clé:', supabaseKey.substring(0, 20) + '...');
+        })();
+    </script>
+</body>
+</html>

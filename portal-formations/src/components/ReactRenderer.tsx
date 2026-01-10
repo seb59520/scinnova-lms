@@ -21,6 +21,23 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronDown, ChevronUp, ChevronRight, Gamepad2, FileText, Presentation, PenTool, Code, ArrowRight, ExternalLink } from 'lucide-react'
 
+// Vérifie si le body TipTap contient du contenu substantiel
+function hasSubstantialBody(body: any): boolean {
+  if (!body || typeof body !== 'object') return false
+  const content = body.content
+  if (!content || !Array.isArray(content)) return false
+  if (content.length > 1) return true
+  const firstElement = content[0]
+  if (!firstElement) return false
+  let textLength = 0
+  const countText = (node: any) => {
+    if (node.text) textLength += node.text.length
+    if (node.content) node.content.forEach(countText)
+  }
+  countText(firstElement)
+  return textLength > 200
+}
+
 interface ReactRendererProps {
   courseJson: CourseJson
 }
@@ -286,28 +303,10 @@ export function ReactRenderer({ courseJson }: ReactRendererProps) {
                         )}
                       </div>
                       
-                      {/* Afficher les titres des chapitres si disponibles (pour navigation) */}
-                      {item.chapters && item.chapters.length > 0 && (
-                        <div className="mt-4 ml-7 space-y-1">
-                          <p className="text-xs font-medium text-gray-500 mb-2">Chapitres :</p>
-                          {item.chapters
-                            .sort((a, b) => (a.position || 0) - (b.position || 0))
-                            .map((chapter, chapterIndex) => {
-                              const isGame = chapter.type === 'game' || (!!chapter.game_content && typeof chapter.game_content === 'object')
-                              return (
-                                <div 
-                                  key={chapterIndex}
-                                  className="flex items-center space-x-2 py-1 px-2 text-xs text-gray-600"
-                                >
-                                  {isGame ? (
-                                    <Gamepad2 className="w-3 h-3 text-red-500" />
-                                  ) : (
-                                    <span className="text-gray-400">•</span>
-                                  )}
-                                  <span className="truncate">{chapter.title}</span>
-                                </div>
-                              )
-                            })}
+                      {/* Afficher les chapitres avec leur contenu complet */}
+                      {item.chapters && item.chapters.length > 0 && item.type !== 'slide' && (
+                        <div className="mt-6">
+                          <ChapterList chapters={item.chapters} theme={moduleTheme} />
                         </div>
                       )}
                     </div>
@@ -324,7 +323,8 @@ export function ReactRenderer({ courseJson }: ReactRendererProps) {
 }
 
 function ChapterList({ chapters, theme }: { chapters: Array<{ title: string; position: number; content?: any; type?: 'content' | 'game'; game_content?: any }>, theme: any }) {
-  const [expandedChapters, setExpandedChapters] = useState<Set<number>>(new Set())
+  // Déplier tous les chapitres par défaut
+  const [expandedChapters, setExpandedChapters] = useState<Set<number>>(() => new Set(chapters.map((_, i) => i)))
 
   const toggleChapter = (index: number) => {
     const newExpanded = new Set(expandedChapters)
@@ -498,7 +498,9 @@ function renderResource(item: CourseJson['modules'][0]['items'][0], theme: any) 
     )
   }
 
-  if (item.content.body) {
+  // Afficher le body seulement s'il est substantiel OU s'il n'y a pas de chapitres
+  const hasChapters = item.chapters && item.chapters.length > 0
+  if (item.content.body && (hasSubstantialBody(item.content.body) || !hasChapters)) {
     return (
       <div className="prose max-w-none">
         <RichTextEditor
@@ -508,6 +510,23 @@ function renderResource(item: CourseJson['modules'][0]['items'][0], theme: any) 
         />
       </div>
     )
+  }
+
+  // Si le body est minimal et qu'il y a des chapitres, afficher juste la description
+  if (hasChapters && item.content.description) {
+    return (
+      <div 
+        className="p-4 rounded-lg"
+        style={{ backgroundColor: `${theme.primaryColor}10` }}
+      >
+        <p className="text-gray-700">{item.content.description}</p>
+      </div>
+    )
+  }
+
+  // Si chapitres existent, pas besoin d'afficher "Contenu non disponible"
+  if (hasChapters) {
+    return null
   }
 
   return <p className="text-gray-600">Contenu non disponible.</p>

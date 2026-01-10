@@ -225,7 +225,7 @@ export function AdminOrgs() {
     <div className="min-h-screen bg-gray-50">
       {/* Header - masqué dans AdminUnified */}
       <header className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 py-4">
             <div className="flex items-center gap-4">
               <Link
@@ -251,7 +251,7 @@ export function AdminOrgs() {
       </header>
       
       {/* Header simplifié pour AdminUnified */}
-      <div className="admin-unified-header max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 hidden">
+      <div className="admin-unified-header w-full px-4 sm:px-6 lg:px-8 py-6 hidden">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold text-gray-900">Organisations</h2>
@@ -269,7 +269,7 @@ export function AdminOrgs() {
 
       {/* Messages */}
       {error && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div className="w-full px-4 sm:px-6 lg:px-8 mt-4">
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative" role="alert">
             <span className="block sm:inline">{error}</span>
             <button
@@ -283,7 +283,7 @@ export function AdminOrgs() {
       )}
 
       {success && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div className="w-full px-4 sm:px-6 lg:px-8 mt-4">
           <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded relative" role="alert">
             <span className="block sm:inline">{success}</span>
             <button
@@ -297,7 +297,7 @@ export function AdminOrgs() {
       )}
 
       {/* Main content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="w-full px-4 sm:px-6 lg:px-8 py-8">
         {/* Search */}
         <div className="mb-6">
           <div className="relative">

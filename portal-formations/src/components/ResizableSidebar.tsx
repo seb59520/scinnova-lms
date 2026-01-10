@@ -9,6 +9,7 @@ interface ResizableSidebarProps {
   maxWidth?: number
   defaultWidth?: number
   side?: 'left' | 'right'
+  onWidthChange?: (width: number) => void
 }
 
 export function ResizableSidebar({ 
@@ -17,7 +18,8 @@ export function ResizableSidebar({
   minWidth = 200,
   maxWidth = 500,
   defaultWidth = 256,
-  side = 'left'
+  side = 'left',
+  onWidthChange
 }: ResizableSidebarProps) {
   const { settings, updateLayoutPreferences } = useUserSettings()
   const [width, setWidth] = useState<number>(defaultWidth)
@@ -88,10 +90,14 @@ export function ResizableSidebar({
   // Mettre à jour la variable CSS pour que le contenu principal s'adapte
   useEffect(() => {
     document.documentElement.style.setProperty('--sidebar-width', `${width}px`)
+    // Notifier le parent du changement de largeur
+    if (onWidthChange) {
+      onWidthChange(width)
+    }
     return () => {
       document.documentElement.style.removeProperty('--sidebar-width')
     }
-  }, [width])
+  }, [width, onWidthChange])
 
   return (
     <div 

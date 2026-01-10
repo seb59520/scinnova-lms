@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabaseClient'
-import { withRetry, withTimeout, isAuthError } from '../lib/supabaseHelpers'
+import { isAuthError } from '../lib/supabaseHelpers'
 import { getUserOrg } from '../lib/queries/userQueries'
 import { Course, Enrollment, Program, ProgramEnrollment, Org } from '../types/database'
 import { AppHeader } from '../components/AppHeader'
@@ -34,6 +34,7 @@ export function Dashboard() {
     const saved = localStorage.getItem('dashboard-view-mode')
     return (saved as ViewMode) || 'grid'
   })
+  const [showTPOnly, setShowTPOnly] = useState(false)
 
   // Sauvegarder le mode de vue dans localStorage
   const handleViewModeChange = (mode: ViewMode) => {
@@ -66,21 +67,14 @@ export function Dashboard() {
       const allItems: LibraryItem[] = []
 
       // Récupérer les formations où l'utilisateur est inscrit
-      const { data: enrollments, error: enrollmentsError } = await withRetry(
-        () => withTimeout(
-          supabase
-            .from('enrollments')
-            .select(`
-              *,
-              courses (*)
-            `)
-            .eq('user_id', user.id)
-            .eq('status', 'active'),
-          5000,
-          'Enrollments fetch timeout'
-        ),
-        { maxRetries: 1, initialDelay: 500 }
-      )
+      const { data: enrollments, error: enrollmentsError } = await supabase
+        .from('enrollments')
+        .select(`
+          *,
+          courses (*)
+        `)
+        .eq('user_id', user.id)
+        .eq('status', 'active')
 
       if (enrollmentsError && enrollmentsError.code !== 'PGRST116') {
         console.error('Error fetching enrollments:', enrollmentsError)
@@ -99,21 +93,14 @@ export function Dashboard() {
       allItems.push(...enrolledCourses)
 
       // Récupérer les programmes où l'utilisateur est inscrit
-      const { data: programEnrollments, error: programEnrollmentsError } = await withRetry(
-        () => withTimeout(
-          supabase
-            .from('program_enrollments')
-            .select(`
-              *,
-              programs (*)
-            `)
-            .eq('user_id', user.id)
-            .eq('status', 'active'),
-          5000,
-          'Program enrollments fetch timeout'
-        ),
-        { maxRetries: 1, initialDelay: 500 }
-      )
+      const { data: programEnrollments, error: programEnrollmentsError } = await supabase
+        .from('program_enrollments')
+        .select(`
+          *,
+          programs (*)
+        `)
+        .eq('user_id', user.id)
+        .eq('status', 'active')
 
       if (programEnrollmentsError && programEnrollmentsError.code !== 'PGRST116') {
         console.error('Error fetching program enrollments:', programEnrollmentsError)
@@ -133,28 +120,14 @@ export function Dashboard() {
       // Si admin, récupérer aussi toutes les formations et programmes (pour gestion)
       if (profile?.role === 'admin') {
         const [coursesResult, programsResult] = await Promise.all([
-          withRetry(
-            () => withTimeout(
-              supabase
-                .from('courses')
-                .select('*')
-                .order('created_at', { ascending: false }),
-              5000,
-              'Courses fetch timeout'
-            ),
-            { maxRetries: 1, initialDelay: 500 }
-          ),
-          withRetry(
-            () => withTimeout(
-              supabase
-                .from('programs')
-                .select('*')
-                .order('created_at', { ascending: false }),
-              5000,
-              'Programs fetch timeout'
-            ),
-            { maxRetries: 1, initialDelay: 500 }
-          )
+          supabase
+            .from('courses')
+            .select('*')
+            .order('created_at', { ascending: false }),
+          supabase
+            .from('programs')
+            .select('*')
+            .order('created_at', { ascending: false })
         ])
 
         // Créer des maps pour éviter les doublons
@@ -291,34 +264,66 @@ export function Dashboard() {
                 )}
               </div>
               {courses.length > 0 && (
-                <div className="flex items-center bg-white rounded-lg border border-gray-200 p-1">
-                  <button
-                    onClick={() => handleViewModeChange('grid')}
-                    className={`p-2 rounded-md transition-colors ${
-                      viewMode === 'grid'
-                        ? 'bg-blue-100 text-blue-600'
-                        : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
-                    }`}
-                    title="Vue grille"
-                  >
-                    <LayoutGrid className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => handleViewModeChange('list')}
-                    className={`p-2 rounded-md transition-colors ${
-                      viewMode === 'list'
-                        ? 'bg-blue-100 text-blue-600'
-                        : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
-                    }`}
-                    title="Vue liste"
-                  >
-                    <List className="w-5 h-5" />
-                  </button>
+                <div className="flex items-center gap-3">
+                  {/* Toggle pour filtrer les TP */}
+                  <div className="flex items-center gap-2 bg-white rounded-lg border border-gray-200 px-3 py-2">
+                    <label htmlFor="tp-filter" className="text-sm font-medium text-gray-700 cursor-pointer">
+                      Afficher les TP
+                    </label>
+                    <button
+                      id="tp-filter"
+                      type="button"
+                      role="switch"
+                      aria-checked={showTPOnly}
+                      onClick={() => setShowTPOnly(!showTPOnly)}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                        showTPOnly ? 'bg-blue-600' : 'bg-gray-300'
+                      }`}
+                    >
+                      <span
+                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                          showTPOnly ? 'translate-x-6' : 'translate-x-1'
+                        }`}
+                      />
+                    </button>
+                  </div>
+                  {/* Boutons de vue */}
+                  <div className="flex items-center bg-white rounded-lg border border-gray-200 p-1">
+                    <button
+                      onClick={() => handleViewModeChange('grid')}
+                      className={`p-2 rounded-md transition-colors ${
+                        viewMode === 'grid'
+                          ? 'bg-blue-100 text-blue-600'
+                          : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                      }`}
+                      title="Vue grille"
+                    >
+                      <LayoutGrid className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() => handleViewModeChange('list')}
+                      className={`p-2 rounded-md transition-colors ${
+                        viewMode === 'list'
+                          ? 'bg-blue-100 text-blue-600'
+                          : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                      }`}
+                      title="Vue liste"
+                    >
+                      <List className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
 
-            {courses.length === 0 ? (
+            {(() => {
+              // Séparer les cours en TP et non-TP si le toggle est activé
+              const tpCourses = courses.filter(course => course.title?.startsWith('TP'))
+              const otherCourses = courses.filter(course => !course.title?.startsWith('TP'))
+              
+              const displayCourses = showTPOnly ? courses : courses
+              
+              return displayCourses.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-lg shadow-sm border border-gray-200">
               <div className="max-w-md mx-auto">
                 <BookOpen className="mx-auto h-12 w-12 text-gray-400 mb-4" />
@@ -339,126 +344,405 @@ export function Dashboard() {
             </div>
             ) : viewMode === 'grid' ? (
               /* Vue Grille - Formations */
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {courses.map((course) => (
-                  <div key={course.id} className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border border-gray-200 flex flex-col">
-                    <div className="p-5 flex-1 flex flex-col">
-                      <div className="flex justify-between items-start mb-3">
-                        <h3 className="text-base font-semibold text-gray-900 break-words flex-1 pr-2 line-clamp-2">
-                          {course.title}
+              <div className={showTPOnly ? "grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-4" : ""}>
+                {showTPOnly ? (
+                  <>
+                    {/* Section TP */}
+                    {tpCourses.length > 0 && (
+                      <div className="flex flex-col">
+                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 pb-2 border-b-2 border-purple-500">
+                          Travaux Pratiques ({tpCourses.length})
                         </h3>
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium flex-shrink-0 ${
-                          course.status === 'published'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-yellow-100 text-yellow-700'
-                        }`}>
-                          {course.status === 'published' ? 'Publié' : 'Brouillon'}
-                        </span>
-                      </div>
+                        <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
+                          {tpCourses.map((course) => (
+                            <div key={course.id} className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border border-gray-200 flex flex-col">
+                              <div className="p-3 sm:p-4 lg:p-5 flex-1 flex flex-col">
+                                <div className="flex justify-between items-start mb-2 sm:mb-3">
+                                  <h3 className="text-sm sm:text-base font-semibold text-gray-900 break-words flex-1 pr-2 line-clamp-2">
+                                    {course.title}
+                                  </h3>
+                                  <span className={`inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium flex-shrink-0 ${
+                                    course.status === 'published'
+                                      ? 'bg-green-100 text-green-700'
+                                      : 'bg-yellow-100 text-yellow-700'
+                                  }`}>
+                                    {course.status === 'published' ? 'Publié' : 'Brouillon'}
+                                  </span>
+                                </div>
 
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-1">
-                        {course.description || 'Aucune description disponible.'}
-                      </p>
+                                <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2 flex-1">
+                                  {course.description || 'Aucune description disponible.'}
+                                </p>
 
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {course.access_type === 'paid' && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700">
-                            💰 {course.price_cents ? `${course.price_cents / 100}€` : 'Prix à définir'}
-                          </span>
-                        )}
-                        {course.access_type === 'free' && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">
-                            Gratuit
-                          </span>
-                        )}
-                      </div>
+                                <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+                                  {course.access_type === 'paid' && (
+                                    <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium bg-blue-100 text-blue-700">
+                                      💰 {course.price_cents ? `${course.price_cents / 100}€` : 'Prix à définir'}
+                                    </span>
+                                  )}
+                                  {course.access_type === 'free' && (
+                                    <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium bg-green-100 text-green-700">
+                                      Gratuit
+                                    </span>
+                                  )}
+                                </div>
 
-                      <div className="mt-auto">
-                        {profile?.role === 'admin' ? (
-                          <Link
-                            to={`/admin/courses/${course.id}`}
-                            className="btn-primary text-sm w-full text-center block"
-                          >
-                            Gérer la formation
-                          </Link>
-                        ) : (
-                          <Link
-                            to={`/courses/${course.id}`}
-                            className="btn-primary text-sm w-full text-center block"
-                          >
-                            Accéder à la formation
-                          </Link>
-                        )}
+                                <div className="mt-auto">
+                                  {profile?.role === 'admin' ? (
+                                    <Link
+                                      to={`/admin/courses/${course.id}`}
+                                      className="btn-primary text-xs sm:text-sm w-full text-center block py-1.5 sm:py-2"
+                                    >
+                                      Gérer la formation
+                                    </Link>
+                                  ) : (
+                                    <Link
+                                      to={`/courses/${course.id}`}
+                                      className="btn-primary text-xs sm:text-sm w-full text-center block py-1.5 sm:py-2"
+                                    >
+                                      Accéder à la formation
+                                    </Link>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
+                    {/* Section Cours */}
+                    {otherCourses.length > 0 && (
+                      <div className="flex flex-col">
+                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 pb-2 border-b-2 border-blue-500">
+                          Cours ({otherCourses.length})
+                        </h3>
+                        <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
+                          {otherCourses.map((course) => (
+                            <div key={course.id} className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border border-gray-200 flex flex-col">
+                              <div className="p-3 sm:p-4 lg:p-5 flex-1 flex flex-col">
+                                <div className="flex justify-between items-start mb-2 sm:mb-3">
+                                  <h3 className="text-sm sm:text-base font-semibold text-gray-900 break-words flex-1 pr-2 line-clamp-2">
+                                    {course.title}
+                                  </h3>
+                                  <span className={`inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium flex-shrink-0 ${
+                                    course.status === 'published'
+                                      ? 'bg-green-100 text-green-700'
+                                      : 'bg-yellow-100 text-yellow-700'
+                                  }`}>
+                                    {course.status === 'published' ? 'Publié' : 'Brouillon'}
+                                  </span>
+                                </div>
+
+                                <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2 flex-1">
+                                  {course.description || 'Aucune description disponible.'}
+                                </p>
+
+                                <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+                                  {course.access_type === 'paid' && (
+                                    <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium bg-blue-100 text-blue-700">
+                                      💰 {course.price_cents ? `${course.price_cents / 100}€` : 'Prix à définir'}
+                                    </span>
+                                  )}
+                                  {course.access_type === 'free' && (
+                                    <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium bg-green-100 text-green-700">
+                                      Gratuit
+                                    </span>
+                                  )}
+                                </div>
+
+                                <div className="mt-auto">
+                                  {profile?.role === 'admin' ? (
+                                    <Link
+                                      to={`/admin/courses/${course.id}`}
+                                      className="btn-primary text-xs sm:text-sm w-full text-center block py-1.5 sm:py-2"
+                                    >
+                                      Gérer la formation
+                                    </Link>
+                                  ) : (
+                                    <Link
+                                      to={`/courses/${course.id}`}
+                                      className="btn-primary text-xs sm:text-sm w-full text-center block py-1.5 sm:py-2"
+                                    >
+                                      Accéder à la formation
+                                    </Link>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {courses.map((course) => (
+                      <div key={course.id} className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border border-gray-200 flex flex-col">
+                        <div className="p-5 flex-1 flex flex-col">
+                          <div className="flex justify-between items-start mb-3">
+                            <h3 className="text-base font-semibold text-gray-900 break-words flex-1 pr-2 line-clamp-2">
+                              {course.title}
+                            </h3>
+                            <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium flex-shrink-0 ${
+                              course.status === 'published'
+                                ? 'bg-green-100 text-green-700'
+                                : 'bg-yellow-100 text-yellow-700'
+                            }`}>
+                              {course.status === 'published' ? 'Publié' : 'Brouillon'}
+                            </span>
+                          </div>
+
+                          <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-1">
+                            {course.description || 'Aucune description disponible.'}
+                          </p>
+
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {course.access_type === 'paid' && (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700">
+                                💰 {course.price_cents ? `${course.price_cents / 100}€` : 'Prix à définir'}
+                              </span>
+                            )}
+                            {course.access_type === 'free' && (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">
+                                Gratuit
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="mt-auto">
+                            {profile?.role === 'admin' ? (
+                              <Link
+                                to={`/admin/courses/${course.id}`}
+                                className="btn-primary text-sm w-full text-center block"
+                              >
+                                Gérer la formation
+                              </Link>
+                            ) : (
+                              <Link
+                                to={`/courses/${course.id}`}
+                                className="btn-primary text-sm w-full text-center block"
+                              >
+                                Accéder à la formation
+                              </Link>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
             ) : (
               /* Vue Liste - Formations */
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                <div className="divide-y divide-gray-200">
-                  {courses.map((course) => (
-                    <div 
-                      key={course.id} 
-                      className="p-4 sm:p-5 hover:bg-gray-50 transition-colors"
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                        <div className="flex items-start gap-4 flex-1 min-w-0">
-                          <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
-                            <BookOpen className="w-6 h-6 text-white" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <h3 className="text-base font-semibold text-gray-900 truncate">
-                                {course.title}
-                              </h3>
-                              <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                                course.status === 'published'
-                                  ? 'bg-green-100 text-green-700'
-                                  : 'bg-yellow-100 text-yellow-700'
-                              }`}>
-                                {course.status === 'published' ? 'Publié' : 'Brouillon'}
-                              </span>
-                              {course.access_type === 'paid' && (
-                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700">
-                                  💰 {course.price_cents ? `${course.price_cents / 100}€` : 'Prix à définir'}
-                                </span>
-                              )}
-                              {course.access_type === 'free' && (
-                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">
-                                  Gratuit
-                                </span>
-                              )}
-                            </div>
-                            <p className="text-gray-600 text-sm mt-1 line-clamp-2">
-                              {course.description || 'Aucune description disponible.'}
-                            </p>
-                          </div>
+              <div className={showTPOnly ? "grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6" : ""}>
+                {showTPOnly ? (
+                  <>
+                    {tpCourses.length > 0 && (
+                      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                        <div className="px-4 sm:px-6 py-2 sm:py-3 bg-purple-50 border-b border-purple-200">
+                          <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+                            Travaux Pratiques ({tpCourses.length})
+                          </h3>
                         </div>
-                        <div className="flex-shrink-0 sm:ml-4">
-                          {profile?.role === 'admin' ? (
-                            <Link
-                              to={`/admin/courses/${course.id}`}
-                              className="btn-primary text-sm inline-flex items-center"
+                      <div className="divide-y divide-gray-200">
+                        {tpCourses.map((course) => (
+                            <div 
+                              key={course.id} 
+                              className="p-3 sm:p-4 lg:p-5 hover:bg-gray-50 transition-colors"
                             >
-                              Gérer
-                            </Link>
-                          ) : (
-                            <Link
-                              to={`/courses/${course.id}`}
-                              className="btn-primary text-sm inline-flex items-center"
-                            >
-                              Accéder
-                            </Link>
-                          )}
+                              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                                <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
+                                  <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                                    <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                                      <h3 className="text-sm sm:text-base font-semibold text-gray-900 truncate">
+                                        {course.title}
+                                      </h3>
+                                      <span className={`inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium ${
+                                        course.status === 'published'
+                                          ? 'bg-green-100 text-green-700'
+                                          : 'bg-yellow-100 text-yellow-700'
+                                      }`}>
+                                        {course.status === 'published' ? 'Publié' : 'Brouillon'}
+                                      </span>
+                                      {course.access_type === 'paid' && (
+                                        <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium bg-blue-100 text-blue-700">
+                                          💰 {course.price_cents ? `${course.price_cents / 100}€` : 'Prix à définir'}
+                                        </span>
+                                      )}
+                                      {course.access_type === 'free' && (
+                                        <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium bg-green-100 text-green-700">
+                                          Gratuit
+                                        </span>
+                                      )}
+                                    </div>
+                                    <p className="text-gray-600 text-xs sm:text-sm mt-1 line-clamp-2">
+                                      {course.description || 'Aucune description disponible.'}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="flex-shrink-0 sm:ml-4">
+                                  {profile?.role === 'admin' ? (
+                                    <Link
+                                      to={`/admin/courses/${course.id}`}
+                                      className="btn-primary text-xs sm:text-sm inline-flex items-center py-1.5 sm:py-2"
+                                    >
+                                      Gérer
+                                    </Link>
+                                  ) : (
+                                    <Link
+                                      to={`/courses/${course.id}`}
+                                      className="btn-primary text-xs sm:text-sm inline-flex items-center py-1.5 sm:py-2"
+                                    >
+                                      Accéder
+                                    </Link>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
+                    )}
+                    {otherCourses.length > 0 && (
+                      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                        <div className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-50 border-b border-blue-200">
+                          <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+                            Cours ({otherCourses.length})
+                          </h3>
+                        </div>
+                        <div className="divide-y divide-gray-200">
+                          {otherCourses.map((course) => (
+                            <div 
+                              key={course.id} 
+                              className="p-3 sm:p-4 lg:p-5 hover:bg-gray-50 transition-colors"
+                            >
+                              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                                <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
+                                  <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                                    <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                                      <h3 className="text-sm sm:text-base font-semibold text-gray-900 truncate">
+                                        {course.title}
+                                      </h3>
+                                      <span className={`inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium ${
+                                        course.status === 'published'
+                                          ? 'bg-green-100 text-green-700'
+                                          : 'bg-yellow-100 text-yellow-700'
+                                      }`}>
+                                        {course.status === 'published' ? 'Publié' : 'Brouillon'}
+                                      </span>
+                                      {course.access_type === 'paid' && (
+                                        <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium bg-blue-100 text-blue-700">
+                                          💰 {course.price_cents ? `${course.price_cents / 100}€` : 'Prix à définir'}
+                                        </span>
+                                      )}
+                                      {course.access_type === 'free' && (
+                                        <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium bg-green-100 text-green-700">
+                                          Gratuit
+                                        </span>
+                                      )}
+                                    </div>
+                                    <p className="text-gray-600 text-xs sm:text-sm mt-1 line-clamp-2">
+                                      {course.description || 'Aucune description disponible.'}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="flex-shrink-0 sm:ml-4">
+                                  {profile?.role === 'admin' ? (
+                                    <Link
+                                      to={`/admin/courses/${course.id}`}
+                                      className="btn-primary text-xs sm:text-sm inline-flex items-center py-1.5 sm:py-2"
+                                    >
+                                      Gérer
+                                    </Link>
+                                  ) : (
+                                    <Link
+                                      to={`/courses/${course.id}`}
+                                      className="btn-primary text-xs sm:text-sm inline-flex items-center py-1.5 sm:py-2"
+                                    >
+                                      Accéder
+                                    </Link>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                    <div className="divide-y divide-gray-200">
+                      {courses.map((course) => (
+                        <div 
+                          key={course.id} 
+                          className="p-3 sm:p-4 lg:p-5 hover:bg-gray-50 transition-colors"
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                            <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
+                              <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                                <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                                  <h3 className="text-sm sm:text-base font-semibold text-gray-900 truncate">
+                                    {course.title}
+                                  </h3>
+                                  <span className={`inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium ${
+                                    course.status === 'published'
+                                      ? 'bg-green-100 text-green-700'
+                                      : 'bg-yellow-100 text-yellow-700'
+                                  }`}>
+                                    {course.status === 'published' ? 'Publié' : 'Brouillon'}
+                                  </span>
+                                  {course.access_type === 'paid' && (
+                                    <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium bg-blue-100 text-blue-700">
+                                      💰 {course.price_cents ? `${course.price_cents / 100}€` : 'Prix à définir'}
+                                    </span>
+                                  )}
+                                  {course.access_type === 'free' && (
+                                    <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium bg-green-100 text-green-700">
+                                      Gratuit
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-gray-600 text-xs sm:text-sm mt-1 line-clamp-2">
+                                  {course.description || 'Aucune description disponible.'}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex-shrink-0 sm:ml-4">
+                              {profile?.role === 'admin' ? (
+                                <Link
+                                  to={`/admin/courses/${course.id}`}
+                                  className="btn-primary text-xs sm:text-sm inline-flex items-center py-1.5 sm:py-2"
+                                >
+                                  Gérer
+                                </Link>
+                              ) : (
+                                <Link
+                                  to={`/courses/${course.id}`}
+                                  className="btn-primary text-xs sm:text-sm inline-flex items-center py-1.5 sm:py-2"
+                                >
+                                  Accéder
+                                </Link>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                )}
               </div>
-            )}
+            )
+            })()}
           </section>
 
           {/* Section Programmes */}

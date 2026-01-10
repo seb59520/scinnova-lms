@@ -33,17 +33,37 @@ export function AdminTpBatches() {
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
 
   useEffect(() => {
-    if (!isNew && batchId) {
+    if (!isNew && batchId && batchId !== 'new') {
       fetchBatch()
+    } else if (isNew) {
+      setLoading(false)
     }
     fetchAvailableTps()
     fetchAvailableCourses()
   }, [batchId, isNew])
 
   const fetchBatch = async () => {
+    if (!batchId || isNew) {
+      console.warn('⚠️ fetchBatch appelé sans batchId valide ou pour un nouveau lot')
+      return
+    }
+
     try {
       setLoading(true)
       setError('')
+
+      console.log('📦 Récupération du lot:', batchId)
+
+      // Vérifier d'abord si la table existe en testant une requête simple
+      const { error: tableCheckError } = await supabase
+        .from('tp_batches')
+        .select('id')
+        .limit(1)
+
+      if (tableCheckError) {
+        console.error('❌ La table tp_batches n\'existe pas ou n\'est pas accessible:', tableCheckError)
+        throw new Error(`La table tp_batches n'existe pas dans la base de données. Veuillez exécuter le script SQL add-tp-batches-and-course-associations.sql`)
+      }
 
       // Récupérer le lot
       const { data: batchData, error: batchError } = await supabase
@@ -52,25 +72,61 @@ export function AdminTpBatches() {
         .eq('id', batchId)
         .single()
 
-      if (batchError) throw batchError
+      if (batchError) {
+        console.error('❌ Erreur lors de la récupération du lot:', batchError)
+        console.error('   Code:', batchError.code)
+        console.error('   Message:', batchError.message)
+        console.error('   Details:', batchError.details)
+        console.error('   Hint:', batchError.hint)
+        
+        // Messages d'erreur plus explicites
+        if (batchError.code === 'PGRST116') {
+          throw new Error('La table tp_batches n\'existe pas. Veuillez exécuter le script SQL add-tp-batches-and-course-associations.sql dans Supabase.')
+        } else if (batchError.code === '42501' || batchError.message?.includes('permission')) {
+          throw new Error('Vous n\'avez pas les permissions nécessaires pour accéder à la table tp_batches. Vérifiez les politiques RLS dans Supabase.')
+        } else if (batchError.code === 'PGRST301') {
+          throw new Error(`Le lot avec l'ID ${batchId} n'existe pas.`)
+        }
+        
+        throw batchError
+      }
+
+      if (!batchData) {
+        throw new Error('Lot non trouvé')
+      }
+
+      console.log('✅ Lot récupéré:', batchData)
       setBatch(batchData)
 
       // Récupérer les TP du lot
+      // Utiliser la syntaxe explicite pour éviter l'ambiguïté entre item_id et prerequisite_item_id
       const { data: itemsData, error: itemsError } = await supabase
         .from('tp_batch_items')
         .select(`
           *,
-          items (*),
-          prerequisite_items:items!tp_batch_items_prerequisite_item_id_fkey (*)
+          items!item_id (*),
+          prerequisite_items:items!prerequisite_item_id (*)
         `)
         .eq('tp_batch_id', batchId)
         .order('position', { ascending: true })
 
-      if (itemsError) throw itemsError
-      setBatchItems(itemsData || [])
+      if (itemsError) {
+        console.error('❌ Erreur lors de la récupération des items du lot:', itemsError)
+        // Ne pas bloquer si les items ne peuvent pas être récupérés
+        setBatchItems([])
+      } else {
+        console.log('✅ Items du lot récupérés:', itemsData?.length || 0)
+        setBatchItems(itemsData || [])
+      }
     } catch (err: any) {
-      console.error('Error fetching batch:', err)
-      setError(err.message || 'Erreur lors du chargement du lot')
+      console.error('❌ Error fetching batch:', err)
+      const errorMessage = err.message || err.details || 'Erreur lors du chargement du lot'
+      setError(errorMessage)
+      
+      // Si c'est une erreur 400, c'est probablement que la table n'existe pas ou que les permissions RLS bloquent
+      if (err.code === 'PGRST116' || err.status === 400) {
+        setError('La table tp_batches n\'existe pas ou vous n\'avez pas les permissions nécessaires. Vérifiez la configuration de la base de données.')
+      }
     } finally {
       setLoading(false)
     }

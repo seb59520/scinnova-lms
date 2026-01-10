@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Course, Chapter } from '../../types/database'
-import { Plus, Edit, Eye, Trash2, Users, Code, BookOpen, Search, Filter, MoreVertical, Copy, Calendar, DollarSign, LayoutGrid, List, FileText, Presentation, Sparkles, ArrowUpDown, Layers } from 'lucide-react'
+import { Plus, Edit, Eye, Trash2, Users, Code, BookOpen, Search, Filter, MoreVertical, Copy, Calendar, DollarSign, LayoutGrid, List, FileText, Presentation, Sparkles, ArrowUpDown, Layers, PenTool, ChevronRight, ChevronDown, Image as ImageIcon } from 'lucide-react'
 
 type SortOption = 'title-asc' | 'title-desc' | 'date-asc' | 'date-desc' | 'status-asc' | 'status-desc' | 'access-asc' | 'access-desc'
 type GroupByOption = 'none' | 'status' | 'access_type' | 'created_at'
@@ -17,11 +17,26 @@ interface CourseWithPrograms extends Course {
   programs?: Program[]
 }
 
+interface CourseItem {
+  id: string
+  title: string
+  type: 'tp' | 'exercise'
+  module_id: string
+  module_title?: string
+  isDirectAssociation?: boolean // Indique si c'est une association directe via course_tps
+}
+
 export function AdminCoursesContent() {
   const { user } = useAuth()
   const [courses, setCourses] = useState<Course[]>([])
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([])
   const [coursePrograms, setCoursePrograms] = useState<Record<string, Program[]>>({})
+  const [courseItems, setCourseItems] = useState<Record<string, CourseItem[]>>({})
+  const [expandedCourses, setExpandedCourses] = useState<Set<string>>(new Set())
+  const [showTpInMainList, setShowTpInMainList] = useState<boolean>(() => {
+    const saved = localStorage.getItem('admin-courses-show-tp-main-list')
+    return saved === 'true'
+  })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
@@ -56,7 +71,15 @@ export function AdminCoursesContent() {
         .select('*')
         .order('created_at', { ascending: false })
 
-      if (error) throw error
+      if (error) {
+        // Ignorer les erreurs d'abort
+        if (error.message?.includes('aborted') || error.message?.includes('AbortError')) {
+          console.log('⚠️ Requête annulée (composant démonté)')
+          return
+        }
+        throw error
+      }
+      
       setCourses(data || [])
       setFilteredCourses(data || [])
 
@@ -76,7 +99,10 @@ export function AdminCoursesContent() {
           .in('course_id', courseIds)
 
         if (programCoursesError) {
-          console.error('Error fetching program courses:', programCoursesError)
+          // Ignorer les erreurs d'abort
+          if (!programCoursesError.message?.includes('aborted') && !programCoursesError.message?.includes('AbortError')) {
+            console.error('Error fetching program courses:', programCoursesError)
+          }
         } else {
           // Organiser les programmes par cours
           const programsByCourse: Record<string, Program[]> = {}
@@ -95,8 +121,169 @@ export function AdminCoursesContent() {
           
           setCoursePrograms(programsByCourse)
         }
+
+        // Récupérer les modules et items (TP et exercices) pour chaque formation
+        const itemsByCourse: Record<string, CourseItem[]> = {}
+        
+        for (const courseId of courseIds) {
+          const courseItems: CourseItem[] = []
+          
+          // 1. Récupérer les TP/exercices dans les modules
+          const { data: modulesData } = await supabase
+            .from('modules')
+            .select('id, title')
+            .eq('course_id', courseId)
+            .order('position', { ascending: true })
+
+          if (modulesData && modulesData.length > 0) {
+            const moduleIds = modulesData.map(m => m.id)
+            const moduleTitles = new Map(modulesData.map(m => [m.id, m.title]))
+
+            // Récupérer les items TP et exercices de ces modules
+            const { data: itemsData, error: itemsError } = await supabase
+              .from('items')
+              .select('id, title, type, module_id')
+              .in('module_id', moduleIds)
+              .in('type', ['tp', 'exercise'])
+              .order('position', { ascending: true })
+
+            if (itemsError) {
+              // Ignorer les erreurs d'abort
+              if (!itemsError.message?.includes('aborted') && !itemsError.message?.includes('AbortError')) {
+                console.error(`Erreur lors du chargement des items pour le cours ${courseId}:`, itemsError)
+              }
+            }
+
+            if (itemsData && itemsData.length > 0) {
+              // Vérifier si certains items sont des cours complets (titre commence par "TP")
+              const itemIds = itemsData.map(item => item.id)
+              const { data: coursesData } = await supabase
+                .from('courses')
+                .select('id, title')
+                .in('id', itemIds)
+
+              const tpCourseIds = new Set(
+                coursesData
+                  ?.filter(c => c.title?.trim().toUpperCase().startsWith('TP'))
+                  .map(c => c.id) || []
+              )
+
+              const filteredItems = itemsData.filter(item => {
+                // Exclure les items qui sont des cours complets (TP)
+                if (tpCourseIds.has(item.id)) {
+                  console.log(`⚠️ Item ${item.id} "${item.title}" est un cours complet (TP), exclu de la liste des items`)
+                  return false
+                }
+                return true
+              })
+
+              courseItems.push(...filteredItems.map(item => ({
+                id: item.id,
+                title: item.title,
+                type: item.type as 'tp' | 'exercise',
+                module_id: item.module_id,
+                module_title: moduleTitles.get(item.module_id)
+              })))
+              console.log(`✅ Cours ${courseId}: ${filteredItems.length} TP/exercices trouvés dans les modules (cours TP exclus)`, filteredItems)
+            }
+          }
+
+          // 2. Récupérer les TP associés directement via course_tps
+          // Mais exclure les cours qui sont des TP complets (titre commence par "TP")
+          const { data: directTpsData, error: directTpsError } = await supabase
+            .from('course_tps')
+            .select(`
+              item_id,
+              position,
+              is_required,
+              is_visible,
+              items (
+                id,
+                title,
+                type
+              )
+            `)
+            .eq('course_id', courseId)
+            .eq('is_visible', true)
+            .order('position', { ascending: true })
+
+          if (directTpsError) {
+            // Ignorer les erreurs d'abort
+            if (!directTpsError.message?.includes('aborted') && !directTpsError.message?.includes('AbortError')) {
+              console.error(`Erreur lors du chargement des TP associés pour le cours ${courseId}:`, directTpsError)
+            }
+          } else if (directTpsData && directTpsData.length > 0) {
+            // Vérifier si l'item est un cours complet (titre commence par "TP")
+            // Si c'est le cas, vérifier dans la table courses
+            const itemIds = directTpsData
+              .filter(ct => ct.items && (ct.items as any).type === 'tp')
+              .map(ct => (ct.items as any).id)
+
+            // Vérifier si ces items correspondent à des cours complets
+            const { data: coursesData } = await supabase
+              .from('courses')
+              .select('id, title')
+              .in('id', itemIds)
+
+            const courseIdsSet = new Set(coursesData?.map(c => c.id) || [])
+            const tpCourseTitles = new Set(
+              coursesData
+                ?.filter(c => c.title?.trim().toUpperCase().startsWith('TP'))
+                .map(c => c.id) || []
+            )
+
+            const directTps = directTpsData
+              .filter(ct => {
+                if (!ct.items || (ct.items as any).type !== 'tp') return false
+                const itemId = (ct.items as any).id
+                // Exclure si c'est un cours complet qui commence par "TP"
+                if (tpCourseTitles.has(itemId)) {
+                  console.log(`⚠️ Item ${itemId} est un cours complet (TP), exclu de la liste des items`)
+                  return false
+                }
+                return true
+              })
+              .map(ct => ({
+                id: (ct.items as any).id,
+                title: (ct.items as any).title,
+                type: 'tp' as const,
+                module_id: '', // Pas de module pour les TP associés directement
+                module_title: 'TP associé directement',
+                isDirectAssociation: true
+              }))
+            
+            courseItems.push(...directTps)
+            console.log(`✅ Cours ${courseId}: ${directTps.length} TP associés directement trouvés (cours TP exclus)`, directTps)
+          }
+
+          if (courseItems.length > 0) {
+            itemsByCourse[courseId] = courseItems
+          } else {
+            console.log(`ℹ️ Cours ${courseId}: Aucun TP/exercice trouvé`)
+          }
+        }
+
+        setCourseItems(itemsByCourse)
+        const totalItems = Object.values(itemsByCourse).reduce((sum, items) => sum + items.length, 0)
+        console.log(`📚 ${totalItems} TP/exercices chargés au total pour ${Object.keys(itemsByCourse).length} formations:`, itemsByCourse)
+        
+        // Log spécifique pour le cours "Big Data, Data Science, Machine Learning"
+        const bigDataCourse = data.find(c => c.title?.includes('Big Data') || c.title?.includes('Machine Learning'))
+        if (bigDataCourse) {
+          const bigDataItems = itemsByCourse[bigDataCourse.id] || []
+          console.log(`🔍 Cours "${bigDataCourse.title}" (ID: ${bigDataCourse.id}):`, {
+            itemsCount: bigDataItems.length,
+            items: bigDataItems
+          })
+        }
       }
-    } catch (error) {
+    } catch (error: any) {
+      // Ignorer les erreurs d'abort
+      if (error?.message?.includes('aborted') || error?.name === 'AbortError') {
+        console.log('⚠️ Requête annulée (composant démonté)')
+        return
+      }
+      
       console.error('Error fetching courses:', error)
       setError('Erreur lors du chargement des formations.')
     } finally {
@@ -219,6 +406,10 @@ export function AdminCoursesContent() {
     localStorage.setItem('admin-courses-content-group', groupBy)
   }, [groupBy])
 
+  useEffect(() => {
+    localStorage.setItem('admin-courses-show-tp-main-list', showTpInMainList.toString())
+  }, [showTpInMainList])
+
   const stats = {
     total: courses.length,
     published: courses.filter(c => c.status === 'published').length,
@@ -230,6 +421,35 @@ export function AdminCoursesContent() {
   const handleViewModeChange = (mode: 'grid' | 'list') => {
     setViewMode(mode)
     localStorage.setItem('admin-courses-view-mode', mode)
+  }
+
+  const toggleCourseExpansion = (courseId: string) => {
+    setExpandedCourses(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(courseId)) {
+        newSet.delete(courseId)
+      } else {
+        newSet.add(courseId)
+      }
+      return newSet
+    })
+  }
+
+  const getCourseThumbnailUrl = (course: Course): string | null => {
+    if (!course.thumbnail_image_path) return null
+    
+    // Si c'est déjà une URL complète, la retourner
+    if (course.thumbnail_image_path.startsWith('http')) {
+      return course.thumbnail_image_path
+    }
+    
+    // Sinon, construire l'URL depuis le chemin
+    const path = course.thumbnail_image_path.replace('course-assets/', '')
+    const { data } = supabase.storage
+      .from('course-assets')
+      .getPublicUrl(path)
+    
+    return data.publicUrl
   }
 
   const handleDeleteCourse = async (courseId: string) => {
@@ -309,13 +529,23 @@ export function AdminCoursesContent() {
     )
   }
 
+  // Debug: Afficher le nombre total d'items chargés
+  const totalItemsLoaded = Object.values(courseItems).reduce((sum, items) => sum + items.length, 0)
+  
   return (
-    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <div className="w-full py-6 px-4 sm:px-6 lg:px-8">
       {/* Header avec bouton créer */}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-xl font-bold text-gray-900">Formations</h2>
-          <p className="text-sm text-gray-500 mt-0.5">Gérez vos formations et leur contenu</p>
+          <p className="text-sm text-gray-500 mt-0.5">
+            Gérez vos formations et leur contenu
+            {totalItemsLoaded > 0 && (
+              <span className="ml-2 text-blue-600 font-medium">
+                ({totalItemsLoaded} TP/exercices disponibles)
+              </span>
+            )}
+          </p>
         </div>
         <div className="flex items-center gap-3">
           <Link
@@ -384,29 +614,44 @@ export function AdminCoursesContent() {
                 />
               </div>
               
-              <div className="flex items-center bg-gray-100 rounded-lg border border-gray-200 p-1">
-                <button
-                  onClick={() => handleViewModeChange('grid')}
-                  className={`p-2 rounded-md transition-colors ${
-                    viewMode === 'grid'
-                      ? 'bg-white text-blue-600 shadow-sm'
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                  title="Vue grille"
-                >
-                  <LayoutGrid className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => handleViewModeChange('list')}
-                  className={`p-2 rounded-md transition-colors ${
-                    viewMode === 'list'
-                      ? 'bg-white text-blue-600 shadow-sm'
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                  title="Vue liste"
-                >
-                  <List className="w-4 h-4" />
-                </button>
+              <div className="flex items-center gap-2">
+                <div className="flex items-center bg-gray-100 rounded-lg border border-gray-200 p-1">
+                  <button
+                    onClick={() => handleViewModeChange('grid')}
+                    className={`p-2 rounded-md transition-colors ${
+                      viewMode === 'grid'
+                        ? 'bg-white text-blue-600 shadow-sm'
+                        : 'text-gray-500 hover:text-gray-700'
+                    }`}
+                    title="Vue grille"
+                  >
+                    <LayoutGrid className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleViewModeChange('list')}
+                    className={`p-2 rounded-md transition-colors ${
+                      viewMode === 'list'
+                        ? 'bg-white text-blue-600 shadow-sm'
+                        : 'text-gray-500 hover:text-gray-700'
+                    }`}
+                    title="Vue liste"
+                  >
+                    <List className="w-4 h-4" />
+                  </button>
+                </div>
+                
+                {/* Toggle pour afficher/masquer les TP dans la liste principale */}
+                <label className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                  <input
+                    type="checkbox"
+                    checked={showTpInMainList}
+                    onChange={(e) => setShowTpInMainList(e.target.checked)}
+                    className="rounded text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className="text-sm text-gray-700 font-medium">
+                    Afficher les TP
+                  </span>
+                </label>
               </div>
             </div>
 
@@ -538,14 +783,65 @@ export function AdminCoursesContent() {
                   
                   {viewMode === 'grid' ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {coursesInGroup.map((course) => (
-            <div key={course.id} className="bg-white rounded-lg border border-gray-200 hover:shadow-md transition-shadow overflow-hidden flex flex-col">
-              <div className="p-5 flex-1 flex flex-col">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-semibold text-gray-900 break-words line-clamp-2 mb-2">
-                      {course.title}
-                    </h3>
+                      {coursesInGroup.map((course) => {
+                        // Filtrer les TP si le toggle est désactivé
+                        const allItems = courseItems[course.id] || []
+                        const items = showTpInMainList 
+                          ? allItems 
+                          : allItems.filter(item => item.type !== 'tp')
+                        const hasItems = items.length > 0
+                        const isExpanded = expandedCourses.has(course.id)
+                        
+                        const thumbnailUrl = getCourseThumbnailUrl(course)
+                        
+                        return (
+                          <div key={course.id} className="bg-white rounded-lg border border-gray-200 hover:shadow-md transition-shadow overflow-hidden flex flex-col">
+                            {/* Vignette de la formation */}
+                            {thumbnailUrl ? (
+                              <div className="w-full h-48 bg-gray-100 overflow-hidden">
+                                <img
+                                  src={thumbnailUrl}
+                                  alt={course.title}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    // Si l'image ne charge pas, cacher l'élément
+                                    e.currentTarget.style.display = 'none'
+                                  }}
+                                />
+                              </div>
+                            ) : (
+                              <div className="w-full h-48 bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+                                <BookOpen className="w-16 h-16 text-gray-400" />
+                              </div>
+                            )}
+                            
+                            <div className="p-5 flex-1 flex flex-col">
+                              <div className="flex items-start justify-between mb-3">
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <h3 className="text-lg font-semibold text-gray-900 break-words line-clamp-2 flex-1">
+                                      {course.title}
+                                    </h3>
+                                    {hasItems && (
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation()
+                                          toggleCourseExpansion(course.id)
+                                        }}
+                                        className="flex-shrink-0 flex items-center gap-1.5 px-2.5 py-1.5 text-gray-700 hover:text-gray-900 hover:bg-blue-50 rounded-md transition-colors text-xs font-medium border border-blue-300 bg-blue-50 shadow-sm"
+                                        title={`${isExpanded ? 'Masquer' : 'Afficher'} les TP/exercices`}
+                                      >
+                                        {isExpanded ? (
+                                          <ChevronDown className="w-4 h-4 text-blue-600" />
+                                        ) : (
+                                          <ChevronRight className="w-4 h-4 text-blue-600" />
+                                        )}
+                                        <span className="bg-blue-600 text-white px-2 py-0.5 rounded text-xs font-semibold">
+                                          {items.length} {items.length > 1 ? 'items' : 'item'}
+                                        </span>
+                                      </button>
+                                    )}
+                                  </div>
                     <div className="flex flex-wrap gap-2">
                       <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
                         course.status === 'published'
@@ -696,28 +992,124 @@ export function AdminCoursesContent() {
                     )}
                   </div>
                 </div>
+
+                {/* TP et Exercices associés */}
+                {hasItems && isExpanded && (
+                  <div className="mt-4 pt-4 border-t border-gray-200">
+                    <div className="space-y-2">
+                      {items.map((item) => (
+                        <Link
+                          key={item.id}
+                          to={`/items/${item.id}`}
+                          className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-50 transition-colors group"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <div className="flex-shrink-0">
+                            {item.type === 'tp' ? (
+                              <Code className="w-4 h-4 text-purple-600" />
+                            ) : (
+                              <PenTool className="w-4 h-4 text-blue-600" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm font-medium text-gray-900 group-hover:text-blue-600 truncate">
+                              {item.title}
+                            </div>
+                            {item.module_title && (
+                              <div className="text-xs text-gray-500 truncate">
+                                {item.isDirectAssociation ? (
+                                  <span className="text-blue-600 font-medium">🔗 {item.module_title}</span>
+                                ) : (
+                                  `Module: ${item.module_title}`
+                                )}
+                              </div>
+                            )}
+                          </div>
+                          <span className={`text-xs px-2 py-0.5 rounded ${
+                            item.type === 'tp'
+                              ? 'bg-purple-100 text-purple-700'
+                              : 'bg-blue-100 text-blue-700'
+                          }`}>
+                            {item.type === 'tp' ? 'TP' : 'Exercice'}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-                      ))}
+                        )
+                      })}
                     </div>
                   ) : (
                     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
                       <div className="divide-y divide-gray-200">
-                        {coursesInGroup.map((course) => (
-                          <div 
-                            key={course.id} 
-                            className="p-4 sm:p-6 hover:bg-gray-50 transition-colors"
-                          >
-                            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                              <div className="flex items-start gap-4 flex-1 min-w-0">
-                                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
-                                  <BookOpen className="w-6 h-6 text-white" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center gap-2 flex-wrap mb-2">
-                                    <h3 className="text-base font-semibold text-gray-900 truncate">
-                                      {course.title}
-                                    </h3>
+                        {coursesInGroup.map((course) => {
+                          // Filtrer les TP si le toggle est désactivé
+                          const allItems = courseItems[course.id] || []
+                          const items = showTpInMainList 
+                            ? allItems 
+                            : allItems.filter(item => item.type !== 'tp')
+                          const hasItems = items.length > 0
+                          const isExpanded = expandedCourses.has(course.id)
+                          
+                          const thumbnailUrl = getCourseThumbnailUrl(course)
+                          
+                          return (
+                            <div 
+                              key={course.id} 
+                              className="p-4 sm:p-6 hover:bg-gray-50 transition-colors"
+                            >
+                              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                                <div className="flex items-start gap-4 flex-1 min-w-0">
+                                  {thumbnailUrl ? (
+                                    <div className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 border-gray-200 shadow-sm">
+                                      <img
+                                        src={thumbnailUrl}
+                                        alt={course.title}
+                                        className="w-full h-full object-cover"
+                                        onError={(e) => {
+                                          // Si l'image ne charge pas, afficher l'icône par défaut
+                                          e.currentTarget.style.display = 'none'
+                                          const parent = e.currentTarget.parentElement
+                                          if (parent) {
+                                            parent.innerHTML = `<div class="w-full h-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center"><svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg></div>`
+                                          }
+                                        }}
+                                      />
+                                    </div>
+                                  ) : (
+                                    <div className="flex-shrink-0 w-20 h-20 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-sm">
+                                      <BookOpen className="w-8 h-8 text-white" />
+                                    </div>
+                                  )}
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 flex-wrap mb-2">
+                                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                                        <h3 className="text-base font-semibold text-gray-900 truncate">
+                                          {course.title}
+                                        </h3>
+                                        {hasItems && (
+                                          <button
+                                            onClick={(e) => {
+                                              e.stopPropagation()
+                                              toggleCourseExpansion(course.id)
+                                            }}
+                                            className="flex-shrink-0 flex items-center gap-1.5 px-2.5 py-1.5 text-gray-700 hover:text-gray-900 hover:bg-blue-50 rounded-md transition-colors text-xs font-medium border border-blue-300 bg-blue-50 shadow-sm"
+                                            title={`${isExpanded ? 'Masquer' : 'Afficher'} les TP/exercices`}
+                                          >
+                                            {isExpanded ? (
+                                              <ChevronDown className="w-4 h-4 text-blue-600" />
+                                            ) : (
+                                              <ChevronRight className="w-4 h-4 text-blue-600" />
+                                            )}
+                                            <span className="bg-blue-600 text-white px-2 py-0.5 rounded text-xs font-semibold">
+                                              {items.length} {items.length > 1 ? 'items' : 'item'}
+                                            </span>
+                                          </button>
+                                        )}
+                                      </div>
                                     <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
                                       course.status === 'published'
                                         ? 'bg-green-100 text-green-700'
@@ -864,9 +1256,55 @@ export function AdminCoursesContent() {
                                   )}
                                 </div>
                               </div>
+
+                              {/* TP et Exercices associés */}
+                              {hasItems && isExpanded && (
+                                <div className="mt-4 pt-4 border-t border-gray-200">
+                                  <div className="space-y-2">
+                                    {items.map((item) => (
+                                      <Link
+                                        key={item.id}
+                                        to={`/items/${item.id}`}
+                                        className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-50 transition-colors group ml-16"
+                                        onClick={(e) => e.stopPropagation()}
+                                      >
+                                        <div className="flex-shrink-0">
+                                          {item.type === 'tp' ? (
+                                            <Code className="w-4 h-4 text-purple-600" />
+                                          ) : (
+                                            <PenTool className="w-4 h-4 text-blue-600" />
+                                          )}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                          <div className="text-sm font-medium text-gray-900 group-hover:text-blue-600 truncate">
+                                            {item.title}
+                                          </div>
+                                        {item.module_title && (
+                                          <div className="text-xs text-gray-500 truncate">
+                                            {item.isDirectAssociation ? (
+                                              <span className="text-blue-600 font-medium">🔗 {item.module_title}</span>
+                                            ) : (
+                                              `Module: ${item.module_title}`
+                                            )}
+                                          </div>
+                                        )}
+                                        </div>
+                                        <span className={`text-xs px-2 py-0.5 rounded ${
+                                          item.type === 'tp'
+                                            ? 'bg-purple-100 text-purple-700'
+                                            : 'bg-blue-100 text-blue-700'
+                                        }`}>
+                                          {item.type === 'tp' ? 'TP' : 'Exercice'}
+                                        </span>
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           </div>
-                        ))}
+                        )
+                        })}
                       </div>
                     </div>
                   )}

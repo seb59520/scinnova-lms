@@ -83,7 +83,7 @@ export function AdminUnified() {
       
       {/* Tabs Navigation */}
       <div className="bg-white border-b border-gray-200 pt-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <nav className="flex space-x-8 items-center relative" aria-label="Tabs">
             {tabs.map((tab) => {
               const Icon = tab.icon;

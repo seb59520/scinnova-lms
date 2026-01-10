@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode, useRef } fro
 import { User, Session, AuthError } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabaseClient'
 import { Profile } from '../types/database'
-import { withRetry, withTimeout, isAuthError } from '../lib/supabaseHelpers'
+import { isAuthError } from '../lib/supabaseHelpers'
 
 interface AuthContextType {
   user: User | null
@@ -63,88 +63,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     }, 8000) // 8 secondes max (optimisé)
 
-    // Récupérer la session initiale avec timeout optimisé
-    withRetry(
-      () => withTimeout(
-        supabase.auth.getSession(),
-        5000, // Réduit à 5 secondes
-        'Session fetch timeout'
-      ),
-      { maxRetries: 1, initialDelay: 500, maxDelay: 1000 } // Réduire les retries
-    )
-      .then((result: any) => {
+    // Récupérer la session initiale
+    // NOTE: Supabase stocke automatiquement la session dans localStorage
+    // onAuthStateChange détecte SIGNED_IN immédiatement depuis localStorage
+    // On s'appuie donc sur onAuthStateChange qui fonctionne déjà et évite les appels réseau
+    console.log('🔍 [useAuth] Début de la récupération de session')
+    
+    // Essayer getSession() en arrière-plan (sans bloquer)
+    // Supabase lit automatiquement depuis localStorage, donc c'est rapide
+    // Si ça timeout, onAuthStateChange prendra le relais (il détecte déjà SIGNED_IN depuis localStorage)
+    supabase.auth.getSession()
+      .then(({ data: { session }, error }) => {
         if (!mounted) return
-
-        const { data: { session }, error } = result
-
         if (error) {
-          console.error('Error getting session:', error)
-          // Si erreur d'auth, nettoyer la session
-          if (isAuthError(error)) {
-            supabase.auth.signOut().catch(() => {})
-            setSession(null)
-            setUser(null)
-            setProfile(null)
-          }
-          setLoading(false)
-          if (timeoutId) clearTimeout(timeoutId)
+          console.warn('⚠️ [useAuth] getSession() erreur (non bloquant):', error.message)
           return
         }
-
-        setSession(session)
-        setUser(session?.user ?? null)
-
-        if (session?.user) {
-          fetchProfile(session.user.id).finally(() => {
-            if (mounted && timeoutId) {
-              clearTimeout(timeoutId)
-            }
-          })
-        } else {
+        if (session) {
+          console.log('✅ [useAuth] Session récupérée via getSession() (depuis localStorage)')
+          setSession(session)
+          setUser(session.user ?? null)
+          if (session.user) {
+            fetchProfile(session.user.id)
+          }
           setLoading(false)
           if (timeoutId) clearTimeout(timeoutId)
         }
       })
       .catch((error) => {
-        console.error('Error in getSession:', error)
-        if (mounted) {
-          // Si timeout ou erreur réseau, essayer de récupérer depuis localStorage
-          if (error.message?.includes('timeout') || error.message?.includes('network') || error.message?.includes('aborted')) {
-            console.warn('Session fetch timeout/network error, trying localStorage fallback')
-            // Essayer de récupérer la session depuis le localStorage directement
-            try {
-              const storedSession = localStorage.getItem('sb-auth-token')
-              if (storedSession) {
-                const parsed = JSON.parse(storedSession)
-                if (parsed?.currentSession) {
-                  console.log('Found session in localStorage, using it as fallback')
-                  const session = parsed.currentSession
-                  setSession(session)
-                  setUser(session?.user ?? null)
-                  if (session?.user) {
-                    fetchProfile(session.user.id).finally(() => {
-                      setLoading(false)
-                      if (timeoutId) clearTimeout(timeoutId)
-                    })
-                    return // Ne pas continuer, on attend le profil
-                  }
-                }
-              }
-            } catch (e) {
-              console.warn('Could not parse stored session:', e)
-            }
-            // Si pas de session dans localStorage, continuer sans session
-            console.warn('No session found in localStorage, continuing without session')
-            setLoading(false)
-          } else {
-            // Autre type d'erreur
-            setUser(null)
-            setSession(null)
-            setProfile(null)
-            setLoading(false)
-          }
-          if (timeoutId) clearTimeout(timeoutId)
-        }
+        // Ignorer les erreurs de getSession() - onAuthStateChange prendra le relais
+        // onAuthStateChange lit aussi depuis localStorage, donc pas d'appel réseau
+        console.warn('⚠️ [useAuth] getSession() timeout (non bloquant, onAuthStateChange prendra le relais depuis localStorage):', error.message)
       })
 
     // Écouter les changements d'authentification
@@ -185,12 +134,83 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Le trigger SQL devrait le faire automatiquement, mais on attend un peu si nécessaire
         if (event === 'SIGNED_IN' && session.user.app_metadata?.provider === 'google') {
           console.log('Google OAuth sign-in detected, fetching profile...')
+          
+          // Détecter si on vient d'un callback OAuth
+          const isOAuthCallback = window.location.pathname === '/' || 
+                                  window.location.pathname === '/app' ||
+                                  window.location.search.includes('code=') ||
+                                  window.location.search.includes('access_token=')
+          
           // Attendre un court délai pour que le trigger SQL crée le profil
           setTimeout(async () => {
-            await fetchProfile(session.user.id)
-            // Rediriger vers /app après connexion OAuth si on est sur la page de callback
-            if (window.location.pathname === '/' || window.location.pathname.includes('code=')) {
-              window.location.replace('/app')
+            // Essayer de récupérer le profil plusieurs fois si nécessaire
+            let profileFound = false
+            let attempts = 0
+            
+            while (!profileFound && attempts < 5) {
+              await fetchProfile(session.user.id)
+              
+              // Vérifier si le profil existe maintenant
+              const { data: profileData } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', session.user.id)
+                .maybeSingle()
+              
+              if (profileData) {
+                profileFound = true
+                setProfile(profileData)
+                break
+              }
+              
+              // Si le profil n'existe pas après 2 tentatives, essayer de le créer
+              if (attempts === 2) {
+                const userMetadata = session.user.user_metadata || {}
+                const fullName = userMetadata.full_name || 
+                               userMetadata.name || 
+                               session.user.email?.split('@')[0] || 
+                               'Utilisateur'
+                
+                const { data: newProfile } = await supabase
+                  .from('profiles')
+                  .upsert({
+                    id: session.user.id,
+                    role: 'student',
+                    full_name: fullName,
+                    is_active: true
+                  }, {
+                    onConflict: 'id'
+                  })
+                  .select()
+                  .single()
+                
+                if (newProfile) {
+                  profileFound = true
+                  setProfile(newProfile)
+                  break
+                }
+              }
+              
+              attempts++
+              if (attempts < 5) {
+                await new Promise(resolve => setTimeout(resolve, 300))
+              }
+            }
+            
+            // Rediriger après connexion OAuth si on est sur la page de callback
+            if (isOAuthCallback) {
+              // Déterminer où rediriger : si on était sur la landing page, y retourner
+              // Sinon, aller vers /app
+              const currentPath = window.location.pathname
+              const redirectPath = (currentPath === '/' || currentPath === '/landing') ? '/' : '/app'
+              
+              // Nettoyer l'URL des paramètres OAuth
+              const cleanUrl = window.location.origin + redirectPath
+              
+              // Attendre un peu pour s'assurer que tout est prêt
+              setTimeout(() => {
+                window.location.replace(cleanUrl)
+              }, 300)
             }
           }, 500)
         } else {
@@ -268,22 +288,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       console.log('🔍 [useAuth] Fetching profile for user:', userId)
       
-      // Utiliser retry et timeout optimisé
-      // Note: On filtre pour exclure uniquement les utilisateurs explicitement désactivés (is_active = false)
-      // Les utilisateurs avec is_active = NULL sont considérés comme actifs (rétrocompatibilité)
-      const result = await withRetry(
-        () => withTimeout(
-          supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', userId)
-            .or('is_active.is.null,is_active.eq.true') // Actif si NULL ou true
-            .maybeSingle(),
-          5000, // Réduit à 5 secondes pour une réponse plus rapide
-          'Profile fetch timeout'
-        ),
-        { maxRetries: 0, initialDelay: 0 } // Pas de retry pour éviter les attentes
-      )
+      // Requête simple sans retry complexe - RLS désactivé donc devrait être rapide
+      const result = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .maybeSingle()
       
       const { data, error } = result || { data: null, error: null }
       
@@ -292,8 +302,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         hasError: !!error,
         errorCode: error?.code,
         errorMessage: error?.message,
-        profileRole: data?.role
+        errorDetails: error?.details,
+        errorHint: error?.hint,
+        profileRole: data?.role,
+        profileId: data?.id,
+        fullProfile: data
       })
+      
+      // Log détaillé de l'erreur si elle existe
+      if (error) {
+        console.error('❌ [useAuth] Erreur complète:', JSON.stringify(error, null, 2))
+        console.error('❌ [useAuth] Code:', error.code)
+        console.error('❌ [useAuth] Message:', error.message)
+        console.error('❌ [useAuth] Details:', error.details)
+        console.error('❌ [useAuth] Hint:', error.hint)
+      }
 
       if (error) {
         // Si le profil n'existe pas, ce n'est pas forcément une erreur critique
@@ -304,7 +327,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             // Récupérer l'utilisateur depuis l'état ou la session
             const currentUser = user || session?.user
             // Pour OAuth Google, récupérer le nom depuis les métadonnées
-            const userMetadata = currentUser?.user_metadata || currentUser?.raw_user_meta_data || {}
+            const userMetadata = currentUser?.user_metadata || {}
             const userName = userMetadata.full_name || 
                            userMetadata.name || 
                            userMetadata.display_name || 
@@ -431,10 +454,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const signInWithGoogle = async () => {
+    // Déterminer où rediriger après OAuth
+    // Si on est sur la landing page, y retourner, sinon aller vers /app
+    const currentPath = window.location.pathname
+    const redirectPath = currentPath === '/' || currentPath === '/landing' ? '/' : '/app'
+    
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/app`,
+        redirectTo: `${window.location.origin}${redirectPath}`,
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',
@@ -466,7 +494,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       }
 
-      const codeInfo = codeData[0]
+      // codeInfo contient les informations du code (is_valid, message, etc.)
 
       // 2. Générer un nom cartoon aléatoire
       const cartoonName = generateCartoonName()
@@ -501,15 +529,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (markError) {
         console.warn('Erreur lors du marquage du code comme utilisé:', markError)
         // Essayer une mise à jour directe en fallback
-        await supabase
-          .from('ghost_codes')
-          .update({ 
-            is_used: true, 
-            used_at: new Date().toISOString(),
-            used_by: authData.user.id 
-          })
-          .eq('code', accessCode)
-          .catch(() => {})
+        try {
+          await supabase
+            .from('ghost_codes')
+            .update({ 
+              is_used: true, 
+              used_at: new Date().toISOString(),
+              used_by: authData.user.id 
+            })
+            .eq('code', accessCode)
+        } catch {
+          // Ignorer les erreurs de mise à jour
+        }
       }
 
       return { error: null }
@@ -573,7 +604,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const refreshProfile = async () => {
     if (user?.id) {
+      console.log('🔄 [useAuth] Forcing profile refresh for user:', user.id)
+      // Réinitialiser le profil avant de le recharger pour forcer le rafraîchissement
+      setProfile(null)
       await fetchProfile(user.id)
+    } else {
+      console.warn('⚠️ [useAuth] Cannot refresh profile: no user ID')
     }
   }
 

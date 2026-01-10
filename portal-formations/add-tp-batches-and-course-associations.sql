@@ -25,10 +25,38 @@ CREATE TABLE IF NOT EXISTS course_tps (
   -- Métadonnées supplémentaires (JSONB pour flexibilité)
   metadata JSONB DEFAULT '{}'::jsonb,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  -- Un TP ne peut être associé qu'une seule fois à un cours
-  UNIQUE(course_id, item_id)
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Supprimer les doublons avant de créer la contrainte unique
+-- Garde seulement le premier enregistrement pour chaque combinaison (course_id, item_id)
+DO $$
+BEGIN
+  -- Supprimer les doublons en gardant l'enregistrement avec le plus petit id
+  DELETE FROM course_tps t1
+  WHERE EXISTS (
+    SELECT 1 FROM course_tps t2
+    WHERE t2.course_id = t1.course_id
+      AND t2.item_id = t1.item_id
+      AND t2.id < t1.id
+  );
+END $$;
+
+-- Créer la contrainte unique (supprimer d'abord si elle existe)
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM pg_constraint 
+    WHERE conname = 'course_tps_course_id_item_id_key'
+  ) THEN
+    ALTER TABLE course_tps 
+    DROP CONSTRAINT course_tps_course_id_item_id_key;
+  END IF;
+END $$;
+
+ALTER TABLE course_tps 
+ADD CONSTRAINT course_tps_course_id_item_id_key 
+UNIQUE(course_id, item_id);
 
 -- Index pour améliorer les performances
 CREATE INDEX IF NOT EXISTS idx_course_tps_course_id ON course_tps(course_id);
@@ -74,10 +102,38 @@ CREATE TABLE IF NOT EXISTS tp_batch_items (
   prerequisite_item_id UUID REFERENCES items(id) ON DELETE SET NULL,
   -- Métadonnées spécifiques à ce TP dans ce lot
   metadata JSONB DEFAULT '{}'::jsonb,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  -- Un TP ne peut apparaître qu'une seule fois dans un lot
-  UNIQUE(tp_batch_id, item_id)
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Supprimer les doublons avant de créer la contrainte unique
+-- Garde seulement le premier enregistrement pour chaque combinaison (tp_batch_id, item_id)
+DO $$
+BEGIN
+  -- Supprimer les doublons en gardant l'enregistrement avec le plus petit id
+  DELETE FROM tp_batch_items t1
+  WHERE EXISTS (
+    SELECT 1 FROM tp_batch_items t2
+    WHERE t2.tp_batch_id = t1.tp_batch_id
+      AND t2.item_id = t1.item_id
+      AND t2.id < t1.id
+  );
+END $$;
+
+-- Créer la contrainte unique (supprimer d'abord si elle existe)
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM pg_constraint 
+    WHERE conname = 'tp_batch_items_tp_batch_id_item_id_key'
+  ) THEN
+    ALTER TABLE tp_batch_items 
+    DROP CONSTRAINT tp_batch_items_tp_batch_id_item_id_key;
+  END IF;
+END $$;
+
+ALTER TABLE tp_batch_items 
+ADD CONSTRAINT tp_batch_items_tp_batch_id_item_id_key 
+UNIQUE(tp_batch_id, item_id);
 
 -- Index pour améliorer les performances
 CREATE INDEX IF NOT EXISTS idx_tp_batches_course_id ON tp_batches(course_id);
@@ -148,28 +204,33 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Triggers pour updated_at
+-- Triggers pour updated_at (supprimer d'abord s'ils existent)
+DROP TRIGGER IF EXISTS course_tps_updated_at ON course_tps;
 CREATE TRIGGER course_tps_updated_at
   BEFORE UPDATE ON course_tps
   FOR EACH ROW
   EXECUTE FUNCTION update_tp_tables_updated_at();
 
+DROP TRIGGER IF EXISTS tp_batches_updated_at ON tp_batches;
 CREATE TRIGGER tp_batches_updated_at
   BEFORE UPDATE ON tp_batches
   FOR EACH ROW
   EXECUTE FUNCTION update_tp_tables_updated_at();
 
--- Triggers pour valider les contraintes métier
+-- Triggers pour valider les contraintes métier (supprimer d'abord s'ils existent)
+DROP TRIGGER IF EXISTS validate_course_tp_item_type_trigger ON course_tps;
 CREATE TRIGGER validate_course_tp_item_type_trigger
   BEFORE INSERT OR UPDATE ON course_tps
   FOR EACH ROW
   EXECUTE FUNCTION validate_course_tp_item_type();
 
+DROP TRIGGER IF EXISTS validate_tp_batch_item_type_trigger ON tp_batch_items;
 CREATE TRIGGER validate_tp_batch_item_type_trigger
   BEFORE INSERT OR UPDATE ON tp_batch_items
   FOR EACH ROW
   EXECUTE FUNCTION validate_tp_batch_item_type();
 
+DROP TRIGGER IF EXISTS validate_tp_batch_prerequisite_trigger ON tp_batch_items;
 CREATE TRIGGER validate_tp_batch_prerequisite_trigger
   BEFORE INSERT OR UPDATE ON tp_batch_items
   FOR EACH ROW

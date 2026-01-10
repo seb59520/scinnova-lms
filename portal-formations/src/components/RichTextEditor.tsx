@@ -35,6 +35,36 @@ interface RichTextEditorProps {
   editable?: boolean
 }
 
+// Transformer le contenu pour compatibilité TipTap
+// Remplace 'strong' par 'bold' et 'em' par 'italic' dans les marks
+function transformContentForTipTap(content: any): any {
+  if (!content || typeof content !== 'object') return content
+  
+  // Si c'est un tableau, transformer chaque élément
+  if (Array.isArray(content)) {
+    return content.map(transformContentForTipTap)
+  }
+  
+  // Créer une copie de l'objet
+  const transformed: any = { ...content }
+  
+  // Transformer les marks
+  if (transformed.marks && Array.isArray(transformed.marks)) {
+    transformed.marks = transformed.marks.map((mark: any) => {
+      if (mark.type === 'strong') return { ...mark, type: 'bold' }
+      if (mark.type === 'em') return { ...mark, type: 'italic' }
+      return mark
+    })
+  }
+  
+  // Transformer récursivement le contenu
+  if (transformed.content) {
+    transformed.content = transformContentForTipTap(transformed.content)
+  }
+  
+  return transformed
+}
+
 export function RichTextEditor({ 
   content, 
   onChange, 
@@ -56,7 +86,8 @@ export function RichTextEditor({
     return content.type === 'doc' || (content.type && Array.isArray(content.content))
   }
   
-  const safeContent = isValidTipTapContent(content) ? content : null
+  // Transformer le contenu pour compatibilité TipTap (strong -> bold, em -> italic)
+  const transformedContent = isValidTipTapContent(content) ? transformContentForTipTap(content) : null
   const [showTableMenu, setShowTableMenu] = useState(false)
   const [showLineHeightMenu, setShowLineHeightMenu] = useState(false)
   const [editingCarousel, setEditingCarousel] = useState<{ node: any; pos: number } | null>(null)
@@ -222,16 +253,17 @@ export function RichTextEditor({
         },
         // Désactiver Link dans StarterKit car on l'ajoute séparément avec configuration
         link: false,
-        // Désactiver underline dans StarterKit car on l'ajoute séparément
-        underline: false,
+        // Bold/Strong est inclus par défaut dans StarterKit
+        bold: {},
+        italic: {},
       }),
       Placeholder.configure({
         placeholder,
       }),
       Link.configure({
-        openOnClick: false,
+        openOnClick: !editable, // Activer les clics sur liens en mode lecture seule
         HTMLAttributes: {
-          class: 'text-blue-600 underline',
+          class: 'text-blue-600 underline cursor-pointer hover:text-blue-800',
         },
       }),
       Image.extend({
@@ -327,7 +359,7 @@ export function RichTextEditor({
         },
       }),
     ],
-    content: safeContent || '',
+    content: transformedContent || '',
     editable,
     onUpdate: ({ editor }) => {
       onChange(editor.getJSON())
@@ -424,23 +456,37 @@ export function RichTextEditor({
     }
   }, [])
 
-  // Rendre les blocs interactifs cliquables en mode lecture seule
+  // Rendre les blocs interactifs et les liens cliquables en mode lecture seule
   useEffect(() => {
     if (editable) return
     if (!editor) return
     if (!editor.view) return // Vérifier que la vue est disponible
 
-    const handleInteractiveBlockClick = (event: MouseEvent) => {
+    const handleReadOnlyClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement
-      const block = target.closest('[data-interactive-block="true"]')
       
+      // Gérer les clics sur les liens
+      const linkElement = target.closest('a[href]') as HTMLAnchorElement
+      if (linkElement) {
+        event.preventDefault()
+        event.stopPropagation()
+        const href = linkElement.getAttribute('href')
+        if (href) {
+          // Ouvrir dans un nouvel onglet
+          window.open(href, '_blank', 'noopener,noreferrer')
+        }
+        return
+      }
+      
+      // Gérer les blocs interactifs
+      const block = target.closest('[data-interactive-block="true"]')
       if (block) {
         event.preventDefault()
         event.stopPropagation()
-        
+
         const itemId = block.getAttribute('data-item-id')
         const type = block.getAttribute('data-type')
-        
+
         if (itemId) {
           // Utiliser React Router pour la navigation SPA (préserve la session)
           navigate(`/items/${itemId}`)
@@ -451,11 +497,11 @@ export function RichTextEditor({
     try {
       const editorElement = editor.view.dom
       if (editorElement) {
-        editorElement.addEventListener('click', handleInteractiveBlockClick)
-        
+        editorElement.addEventListener('click', handleReadOnlyClick)
+
         return () => {
           if (editorElement) {
-            editorElement.removeEventListener('click', handleInteractiveBlockClick)
+            editorElement.removeEventListener('click', handleReadOnlyClick)
           }
         }
       }

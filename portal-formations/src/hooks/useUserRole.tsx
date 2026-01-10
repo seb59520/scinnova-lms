@@ -19,19 +19,52 @@ export function useUserRole() {
       return;
     }
 
+    // Si on a déjà le profil en cache, l'utiliser directement sans requête
+    if (profile?.role) {
+      console.log('✅ useUserRole - Utilisation du profil en cache:', profile);
+      const roleFromProfile = profile.role === 'admin' ? 'admin' :
+                              profile.role === 'instructor' ? 'trainer' :
+                              profile.role === 'student' ? 'student' : 'student';
+      setRoleContext({
+        role: roleFromProfile as any,
+        source: profile.role === 'admin' ? 'profiles_admin' : 'profiles_default',
+        orgId: null,
+      });
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     try {
-      const context = await getUserRole(user.id);
+      // Passer le profil en cache pour éviter une requête supplémentaire
+      const context = await getUserRole(user.id, profile || undefined);
       console.log('🔍 useUserRole - Rôle déterminé:', context);
       console.log('🔍 useUserRole - Profil actuel:', profile);
       setRoleContext(context);
     } catch (error) {
       console.error('❌ Erreur dans useUserRole:', error);
-      setRoleContext(null);
+      // En cas d'erreur, utiliser le rôle du profil si disponible
+      if (profile?.role) {
+        const fallbackRole = profile.role === 'admin' ? 'admin' :
+                            profile.role === 'instructor' ? 'trainer' :
+                            profile.role === 'student' ? 'student' : 'student';
+        setRoleContext({
+          role: fallbackRole as any,
+          source: profile.role === 'admin' ? 'profiles_admin' : 'profiles_default',
+          orgId: null,
+        });
+      } else {
+        // Si pas de profil, retourner un rôle par défaut plutôt que null
+        setRoleContext({
+          role: 'student',
+          source: 'profiles_default',
+          orgId: null,
+        });
+      }
     } finally {
       setLoading(false);
     }
-  }, [user?.id, profile?.role]); // Re-fetch si l'utilisateur ou le rôle du profil change
+  }, [user?.id, profile]); // Re-fetch si l'utilisateur ou le profil change
 
   useEffect(() => {
     let mounted = true;

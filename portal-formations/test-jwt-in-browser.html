@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test JWT Transmission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Test de Transmission JWT</h1>
+    
+    <div class="test-section">
+        <h2>Configuration</h2>
+        <label>Supabase URL:</label>
+        <input type="text" id="supabaseUrl" placeholder="https://xxx.supabase.co" value="https://fsbeyfjzrhkozhlmssil.supabase.co">
+        
+        <label>Anon Key:</label>
+        <input type="text" id="anonKey" placeholder="eyJhbGciOiJIUzI1NiIs...">
+        
+        <label>JWT Token (depuis localStorage ou session):</label>
+        <input type="text" id="jwtToken" placeholder="eyJhbGciOiJIUzI1NiIs...">
+        
+        <button onclick="loadJWTFromStorage()">Charger JWT depuis localStorage</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 1: Requête Profiles avec JWT</h2>
+        <button onclick="testProfileWithJWT()">Tester</button>
+        <div id="result1" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: Requête Profiles sans JWT (devrait échouer)</h2>
+        <button onclick="testProfileWithoutJWT()">Tester</button>
+        <div id="result2" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: Vérifier le JWT dans localStorage</h2>
+        <button onclick="checkLocalStorage()">Vérifier</button>
+        <div id="result3" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 4: Décoder le JWT</h2>
+        <button onclick="decodeJWT()">Décoder</button>
+        <div id="result4" class="result"></div>
+    </div>
+
+    <script>
+        function loadJWTFromStorage() {
+            try {
+                const stored = localStorage.getItem('sb-auth-token');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (parsed?.currentSession?.access_token) {
+                        document.getElementById('jwtToken').value = parsed.currentSession.access_token;
+                        document.getElementById('result3').innerHTML = '✅ JWT chargé depuis localStorage';
+                        document.getElementById('result3').className = 'result success';
+                    } else {
+                        document.getElementById('result3').innerHTML = '❌ Pas de JWT dans localStorage';
+                        document.getElementById('result3').className = 'result error';
+                    }
+                } else {
+                    document.getElementById('result3').innerHTML = '❌ Aucune session dans localStorage';
+                    document.getElementById('result3').className = 'result error';
+                }
+            } catch (e) {
+                document.getElementById('result3').innerHTML = '❌ Erreur: ' + e.message;
+                document.getElementById('result3').className = 'result error';
+            }
+        }
+        
+        async function testProfileWithJWT() {
+            const url = document.getElementById('supabaseUrl').value;
+            const anonKey = document.getElementById('anonKey').value;
+            const jwt = document.getElementById('jwtToken').value;
+            const resultDiv = document.getElementById('result1');
+            
+            if (!url || !anonKey || !jwt) {
+                resultDiv.innerHTML = '❌ Veuillez remplir tous les champs';
+                resultDiv.className = 'result error';
+                return;
+            }
+            
+            resultDiv.innerHTML = '⏳ Test en cours...';
+            resultDiv.className = 'result info';
+            
+            try {
+                const startTime = Date.now();
+                const response = await fetch(`${url}/rest/v1/profiles?id=eq.25e68bd5-be89-4c93-ab84-b657a89f1070`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': anonKey,
+                        'Authorization': `Bearer ${jwt}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=representation'
+                    }
+                });
+                
+                const endTime = Date.now();
+                const duration = endTime - startTime;
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `✅ Succès!\n\nStatus: ${response.status}\nDurée: ${duration}ms\n\nDonnées:\n${JSON.stringify(data, null, 2)}`;
+                    resultDiv.className = 'result success';
+                } else {
+                    resultDiv.innerHTML = `❌ Erreur!\n\nStatus: ${response.status}\nDurée: ${duration}ms\n\nErreur:\n${JSON.stringify(data, null, 2)}`;
+                    resultDiv.className = 'result error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `❌ Exception: ${error.message}\n\n${error.stack}`;
+                resultDiv.className = 'result error';
+            }
+        }
+        
+        async function testProfileWithoutJWT() {
+            const url = document.getElementById('supabaseUrl').value;
+            const anonKey = document.getElementById('anonKey').value;
+            const resultDiv = document.getElementById('result2');
+            
+            if (!url || !anonKey) {
+                resultDiv.innerHTML = '❌ Veuillez remplir URL et Anon Key';
+                resultDiv.className = 'result error';
+                return;
+            }
+            
+            resultDiv.innerHTML = '⏳ Test en cours...';
+            resultDiv.className = 'result info';
+            
+            try {
+                const startTime = Date.now();
+                const response = await fetch(`${url}/rest/v1/profiles?id=eq.25e68bd5-be89-4c93-ab84-b657a89f1070`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': anonKey,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=representation'
+                    }
+                });
+                
+                const endTime = Date.now();
+                const duration = endTime - startTime;
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `⚠️ Requête réussie (RLS peut-être désactivé?)\n\nStatus: ${response.status}\nDurée: ${duration}ms\n\nDonnées:\n${JSON.stringify(data, null, 2)}`;
+                    resultDiv.className = 'result info';
+                } else {
+                    resultDiv.innerHTML = `✅ Erreur attendue (RLS fonctionne)\n\nStatus: ${response.status}\nDurée: ${duration}ms\n\nErreur:\n${JSON.stringify(data, null, 2)}`;
+                    resultDiv.className = 'result success';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `❌ Exception: ${error.message}\n\n${error.stack}`;
+                resultDiv.className = 'result error';
+            }
+        }
+        
+        function checkLocalStorage() {
+            const resultDiv = document.getElementById('result3');
+            try {
+                const stored = localStorage.getItem('sb-auth-token');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    resultDiv.innerHTML = `✅ Session trouvée dans localStorage:\n\n${JSON.stringify({
+                        hasCurrentSession: !!parsed.currentSession,
+                        hasAccessToken: !!parsed.currentSession?.access_token,
+                        userId: parsed.currentSession?.user?.id,
+                        tokenPreview: parsed.currentSession?.access_token ? parsed.currentSession.access_token.substring(0, 50) + '...' : 'missing'
+                    }, null, 2)}`;
+                    resultDiv.className = 'result success';
+                } else {
+                    resultDiv.innerHTML = '❌ Aucune session dans localStorage';
+                    resultDiv.className = 'result error';
+                }
+            } catch (e) {
+                resultDiv.innerHTML = `❌ Erreur: ${e.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+        
+        function decodeJWT() {
+            const jwt = document.getElementById('jwtToken').value;
+            const resultDiv = document.getElementById('result4');
+            
+            if (!jwt) {
+                resultDiv.innerHTML = '❌ Veuillez entrer un JWT';
+                resultDiv.className = 'result error';
+                return;
+            }
+            
+            try {
+                const parts = jwt.split('.');
+                if (parts.length !== 3) {
+                    throw new Error('JWT invalide (doit avoir 3 parties)');
+                }
+                
+                const header = JSON.parse(atob(parts[0]));
+                const payload = JSON.parse(atob(parts[1]));
+                
+                const now = Math.floor(Date.now() / 1000);
+                const isExpired = payload.exp && payload.exp < now;
+                const expiresIn = payload.exp ? (payload.exp - now) : null;
+                
+                resultDiv.innerHTML = `✅ JWT décodé:\n\nHeader:\n${JSON.stringify(header, null, 2)}\n\nPayload:\n${JSON.stringify(payload, null, 2)}\n\nStatut:\n- Expiré: ${isExpired ? '❌ Oui' : '✅ Non'}\n- Expire dans: ${expiresIn ? (expiresIn > 0 ? expiresIn + ' secondes' : 'déjà expiré') : 'inconnu'}\n- User ID: ${payload.sub || 'N/A'}`;
+                resultDiv.className = isExpired ? 'result error' : 'result success';
+            } catch (e) {
+                resultDiv.innerHTML = `❌ Erreur de décodage: ${e.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+    </script>
+</body>
+</html>

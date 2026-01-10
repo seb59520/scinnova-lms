@@ -23,6 +23,7 @@ export interface Course {
   allow_pdf_download?: boolean;
   is_public?: boolean;
   publication_date?: string | null;
+  thumbnail_image_path: string | null;
   created_by: string;
   created_at: string;
   updated_at: string;
@@ -265,6 +266,7 @@ export interface Program {
   access_type: AccessType;
   price_cents: number | null;
   currency: string | null;
+  summary_pdf_path: string | null;
   created_by: string;
   created_at: string;
   updated_at: string;

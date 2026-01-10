@@ -1,0 +1,35 @@
+{
+  "metadata": {
+    "source": "DataLogis - Entreprise fictive de logistique e-commerce",
+    "description": "Base clients avec segmentation et comportement d'achat",
+    "last_updated": "2024-01-15",
+    "total_records": 50
+  },
+  "clients": [
+    {"id": "C001", "nom": "Martin Sophie", "segment": "Premium", "anciennete_mois": 36, "nb_commandes": 45, "panier_moyen": 89.50, "taux_retour": 0.05, "satisfaction_nps": 9, "canal_prefere": "mobile", "region": "Île-de-France"},
+    {"id": "C002", "nom": "Dubois Jean", "segment": "Standard", "anciennete_mois": 18, "nb_commandes": 12, "panier_moyen": 52.30, "taux_retour": 0.12, "satisfaction_nps": 7, "canal_prefere": "web", "region": "Auvergne-Rhône-Alpes"},
+    {"id": "C003", "nom": "Bernard Marie", "segment": "Premium", "anciennete_mois": 48, "nb_commandes": 78, "panier_moyen": 125.00, "taux_retour": 0.03, "satisfaction_nps": 10, "canal_prefere": "mobile", "region": "Provence-Alpes-Côte d'Azur"},
+    {"id": "C004", "nom": "Petit Lucas", "segment": "Occasionnel", "anciennete_mois": 6, "nb_commandes": 3, "panier_moyen": 35.00, "taux_retour": 0.25, "satisfaction_nps": 5, "canal_prefere": "web", "region": "Nouvelle-Aquitaine"},
+    {"id": "C005", "nom": "Durand Emma", "segment": "Standard", "anciennete_mois": 24, "nb_commandes": 18, "panier_moyen": 67.80, "taux_retour": 0.08, "satisfaction_nps": 8, "canal_prefere": "mobile", "region": "Occitanie"},
+    {"id": "C006", "nom": "Leroy Thomas", "segment": "Premium", "anciennete_mois": 42, "nb_commandes": 52, "panier_moyen": 98.20, "taux_retour": 0.04, "satisfaction_nps": 9, "canal_prefere": "mobile", "region": "Île-de-France"},
+    {"id": "C007", "nom": "Moreau Julie", "segment": "Occasionnel", "anciennete_mois": 3, "nb_commandes": 2, "panier_moyen": 28.50, "taux_retour": 0.30, "satisfaction_nps": 4, "canal_prefere": "web", "region": "Bretagne"},
+    {"id": "C008", "nom": "Simon Pierre", "segment": "Standard", "anciennete_mois": 15, "nb_commandes": 9, "panier_moyen": 45.00, "taux_retour": 0.10, "satisfaction_nps": 6, "canal_prefere": "web", "region": "Grand Est"},
+    {"id": "C009", "nom": "Laurent Camille", "segment": "Premium", "anciennete_mois": 30, "nb_commandes": 38, "panier_moyen": 112.00, "taux_retour": 0.02, "satisfaction_nps": 10, "canal_prefere": "mobile", "region": "Hauts-de-France"},
+    {"id": "C010", "nom": "Michel Antoine", "segment": "Standard", "anciennete_mois": 20, "nb_commandes": 14, "panier_moyen": 58.90, "taux_retour": 0.09, "satisfaction_nps": 7, "canal_prefere": "mobile", "region": "Normandie"},
+    {"id": "C011", "nom": "Garcia Elena", "segment": "Occasionnel", "anciennete_mois": 4, "nb_commandes": 2, "panier_moyen": 32.00, "taux_retour": 0.20, "satisfaction_nps": 5, "canal_prefere": "web", "region": "Pays de la Loire"},
+    {"id": "C012", "nom": "David François", "segment": "Premium", "anciennete_mois": 60, "nb_commandes": 95, "panier_moyen": 145.00, "taux_retour": 0.01, "satisfaction_nps": 10, "canal_prefere": "mobile", "region": "Île-de-France"},
+    {"id": "C013", "nom": "Roux Chloé", "segment": "Standard", "anciennete_mois": 12, "nb_commandes": 8, "panier_moyen": 48.50, "taux_retour": 0.11, "satisfaction_nps": 6, "canal_prefere": "web", "region": "Centre-Val de Loire"},
+    {"id": "C014", "nom": "Vincent Hugo", "segment": "Standard", "anciennete_mois": 22, "nb_commandes": 16, "panier_moyen": 62.30, "taux_retour": 0.07, "satisfaction_nps": 8, "canal_prefere": "mobile", "region": "Bourgogne-Franche-Comté"},
+    {"id": "C015", "nom": "Muller Sarah", "segment": "Premium", "anciennete_mois": 38, "nb_commandes": 48, "panier_moyen": 105.00, "taux_retour": 0.03, "satisfaction_nps": 9, "canal_prefere": "mobile", "region": "Auvergne-Rhône-Alpes"},
+    {"id": "C016", "nom": "Fournier Maxime", "segment": "Occasionnel", "anciennete_mois": 2, "nb_commandes": 1, "panier_moyen": 25.00, "taux_retour": 0.40, "satisfaction_nps": 3, "canal_prefere": "web", "region": "Corse"},
+    {"id": "C017", "nom": "Lefevre Alice", "segment": "Standard", "anciennete_mois": 16, "nb_commandes": 11, "panier_moyen": 55.20, "taux_retour": 0.08, "satisfaction_nps": 7, "canal_prefere": "mobile", "region": "Provence-Alpes-Côte d'Azur"},
+    {"id": "C018", "nom": "Andre Nicolas", "segment": "Premium", "anciennete_mois": 45, "nb_commandes": 62, "panier_moyen": 118.50, "taux_retour": 0.02, "satisfaction_nps": 9, "canal_prefere": "mobile", "region": "Occitanie"},
+    {"id": "C019", "nom": "Mercier Léa", "segment": "Occasionnel", "anciennete_mois": 5, "nb_commandes": 3, "panier_moyen": 38.00, "taux_retour": 0.18, "satisfaction_nps": 5, "canal_prefere": "web", "region": "Nouvelle-Aquitaine"},
+    {"id": "C020", "nom": "Dupont Paul", "segment": "Standard", "anciennete_mois": 28, "nb_commandes": 22, "panier_moyen": 72.00, "taux_retour": 0.06, "satisfaction_nps": 8, "canal_prefere": "mobile", "region": "Île-de-France"}
+  ],
+  "segments_description": {
+    "Premium": "Clients fidèles avec forte valeur (panier > 80€, NPS > 8)",
+    "Standard": "Clients réguliers avec comportement stable",
+    "Occasionnel": "Clients récents ou peu engagés"
+  }
+}

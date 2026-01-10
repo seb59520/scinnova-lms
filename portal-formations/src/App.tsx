@@ -35,6 +35,7 @@ import { AdminQuizResponses } from './pages/admin/AdminQuizResponses'
 import { AdminTpBatchesList } from './pages/admin/AdminTpBatchesList'
 import { AdminTpBatches } from './pages/admin/AdminTpBatches'
 import { AdminCourseTpAssociations } from './pages/admin/AdminCourseTpAssociations'
+import { AdminDocumentation } from './pages/admin/AdminDocumentation'
 import { TrainerDashboard } from './pages/trainer/TrainerDashboard'
 import { SessionLearners } from './pages/trainer/SessionLearners'
 import { SessionAnalytics } from './pages/trainer/SessionAnalytics'
@@ -56,6 +57,7 @@ import { Chat } from './pages/Chat'
 import { UserDirectoryPage } from './pages/UserDirectoryPage'
 import { ChatWidget } from './components/ChatWidget'
 import { TimeTrackingProvider } from './components/TimeTrackingProvider'
+import DataExercisesPage from './pages/DataExercisesPage'
 
 function App() {
   return (
@@ -148,6 +150,14 @@ function App() {
             }
           />
           <Route
+            path="/exercises-data"
+            element={
+              <ProtectedRoute>
+                <DataExercisesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/chat"
             element={
               <ProtectedRoute>
@@ -210,6 +220,14 @@ function App() {
             element={
               <ProtectedRoute requiredRole="admin">
                 <AdminUnified />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/documentation"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminDocumentation />
               </ProtectedRoute>
             }
           />

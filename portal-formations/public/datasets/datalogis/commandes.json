@@ -1,0 +1,47 @@
+{
+  "metadata": {
+    "source": "DataLogis - Entreprise fictive de logistique e-commerce",
+    "description": "Historique des commandes sur 6 mois",
+    "periode": "Juillet 2024 - Décembre 2024",
+    "total_records": 30
+  },
+  "commandes": [
+    {"id": "CMD001", "client_id": "C001", "date": "2024-12-15", "montant": 95.50, "nb_articles": 3, "entrepot": "Paris-Nord", "statut": "Livrée", "delai_livraison_jours": 2, "mode_livraison": "Express"},
+    {"id": "CMD002", "client_id": "C003", "date": "2024-12-14", "montant": 142.00, "nb_articles": 5, "entrepot": "Lyon-Est", "statut": "Livrée", "delai_livraison_jours": 3, "mode_livraison": "Standard"},
+    {"id": "CMD003", "client_id": "C004", "date": "2024-12-13", "montant": 28.00, "nb_articles": 1, "entrepot": "Paris-Nord", "statut": "En cours", "delai_livraison_jours": null, "mode_livraison": "Économique"},
+    {"id": "CMD004", "client_id": "C002", "date": "2024-12-12", "montant": 67.30, "nb_articles": 2, "entrepot": "Marseille-Sud", "statut": "Livrée", "delai_livraison_jours": 4, "mode_livraison": "Standard"},
+    {"id": "CMD005", "client_id": "C006", "date": "2024-12-11", "montant": 189.00, "nb_articles": 6, "entrepot": "Paris-Nord", "statut": "Livrée", "delai_livraison_jours": 1, "mode_livraison": "Express"},
+    {"id": "CMD006", "client_id": "C009", "date": "2024-12-10", "montant": 78.50, "nb_articles": 3, "entrepot": "Lyon-Est", "statut": "Livrée", "delai_livraison_jours": 2, "mode_livraison": "Express"},
+    {"id": "CMD007", "client_id": "C012", "date": "2024-12-09", "montant": 215.00, "nb_articles": 8, "entrepot": "Paris-Nord", "statut": "Livrée", "delai_livraison_jours": 2, "mode_livraison": "Express"},
+    {"id": "CMD008", "client_id": "C005", "date": "2024-12-08", "montant": 45.20, "nb_articles": 2, "entrepot": "Marseille-Sud", "statut": "Retournée", "delai_livraison_jours": 5, "mode_livraison": "Économique"},
+    {"id": "CMD009", "client_id": "C015", "date": "2024-12-07", "montant": 132.00, "nb_articles": 4, "entrepot": "Lyon-Est", "statut": "Livrée", "delai_livraison_jours": 2, "mode_livraison": "Standard"},
+    {"id": "CMD010", "client_id": "C007", "date": "2024-12-06", "montant": 22.00, "nb_articles": 1, "entrepot": "Paris-Nord", "statut": "Annulée", "delai_livraison_jours": null, "mode_livraison": "Économique"},
+    {"id": "CMD011", "client_id": "C018", "date": "2024-12-05", "montant": 156.80, "nb_articles": 5, "entrepot": "Marseille-Sud", "statut": "Livrée", "delai_livraison_jours": 3, "mode_livraison": "Standard"},
+    {"id": "CMD012", "client_id": "C010", "date": "2024-12-04", "montant": 58.00, "nb_articles": 2, "entrepot": "Lyon-Est", "statut": "Livrée", "delai_livraison_jours": 4, "mode_livraison": "Économique"},
+    {"id": "CMD013", "client_id": "C001", "date": "2024-11-28", "montant": 87.00, "nb_articles": 3, "entrepot": "Paris-Nord", "statut": "Livrée", "delai_livraison_jours": 2, "mode_livraison": "Express"},
+    {"id": "CMD014", "client_id": "C003", "date": "2024-11-25", "montant": 198.50, "nb_articles": 7, "entrepot": "Lyon-Est", "statut": "Livrée", "delai_livraison_jours": 3, "mode_livraison": "Express"},
+    {"id": "CMD015", "client_id": "C016", "date": "2024-11-20", "montant": 25.00, "nb_articles": 1, "entrepot": "Marseille-Sud", "statut": "Retournée", "delai_livraison_jours": 6, "mode_livraison": "Économique"},
+    {"id": "CMD016", "client_id": "C014", "date": "2024-11-18", "montant": 72.30, "nb_articles": 3, "entrepot": "Paris-Nord", "statut": "Livrée", "delai_livraison_jours": 3, "mode_livraison": "Standard"},
+    {"id": "CMD017", "client_id": "C006", "date": "2024-11-15", "montant": 105.00, "nb_articles": 4, "entrepot": "Paris-Nord", "statut": "Livrée", "delai_livraison_jours": 1, "mode_livraison": "Express"},
+    {"id": "CMD018", "client_id": "C008", "date": "2024-11-12", "montant": 38.50, "nb_articles": 2, "entrepot": "Lyon-Est", "statut": "Livrée", "delai_livraison_jours": 4, "mode_livraison": "Économique"},
+    {"id": "CMD019", "client_id": "C012", "date": "2024-11-08", "montant": 178.00, "nb_articles": 6, "entrepot": "Paris-Nord", "statut": "Livrée", "delai_livraison_jours": 2, "mode_livraison": "Express"},
+    {"id": "CMD020", "client_id": "C019", "date": "2024-11-05", "montant": 42.00, "nb_articles": 2, "entrepot": "Marseille-Sud", "statut": "Livrée", "delai_livraison_jours": 5, "mode_livraison": "Standard"},
+    {"id": "CMD021", "client_id": "C009", "date": "2024-10-30", "montant": 95.00, "nb_articles": 3, "entrepot": "Lyon-Est", "statut": "Livrée", "delai_livraison_jours": 2, "mode_livraison": "Express"},
+    {"id": "CMD022", "client_id": "C015", "date": "2024-10-25", "montant": 118.50, "nb_articles": 4, "entrepot": "Lyon-Est", "statut": "Livrée", "delai_livraison_jours": 3, "mode_livraison": "Standard"},
+    {"id": "CMD023", "client_id": "C002", "date": "2024-10-20", "montant": 55.00, "nb_articles": 2, "entrepot": "Marseille-Sud", "statut": "Livrée", "delai_livraison_jours": 4, "mode_livraison": "Standard"},
+    {"id": "CMD024", "client_id": "C018", "date": "2024-10-15", "montant": 145.00, "nb_articles": 5, "entrepot": "Marseille-Sud", "statut": "Livrée", "delai_livraison_jours": 3, "mode_livraison": "Express"},
+    {"id": "CMD025", "client_id": "C020", "date": "2024-10-10", "montant": 82.00, "nb_articles": 3, "entrepot": "Paris-Nord", "statut": "Livrée", "delai_livraison_jours": 2, "mode_livraison": "Standard"},
+    {"id": "CMD026", "client_id": "C011", "date": "2024-10-05", "montant": 35.00, "nb_articles": 1, "entrepot": "Paris-Nord", "statut": "Retournée", "delai_livraison_jours": 3, "mode_livraison": "Économique"},
+    {"id": "CMD027", "client_id": "C013", "date": "2024-09-28", "montant": 48.50, "nb_articles": 2, "entrepot": "Lyon-Est", "statut": "Livrée", "delai_livraison_jours": 4, "mode_livraison": "Économique"},
+    {"id": "CMD028", "client_id": "C017", "date": "2024-09-22", "montant": 62.00, "nb_articles": 2, "entrepot": "Marseille-Sud", "statut": "Livrée", "delai_livraison_jours": 3, "mode_livraison": "Standard"},
+    {"id": "CMD029", "client_id": "C001", "date": "2024-09-15", "montant": 92.00, "nb_articles": 3, "entrepot": "Paris-Nord", "statut": "Livrée", "delai_livraison_jours": 2, "mode_livraison": "Express"},
+    {"id": "CMD030", "client_id": "C006", "date": "2024-09-10", "montant": 110.50, "nb_articles": 4, "entrepot": "Paris-Nord", "statut": "Livrée", "delai_livraison_jours": 1, "mode_livraison": "Express"}
+  ],
+  "kpis_globaux": {
+    "chiffre_affaires_periode": 2814.10,
+    "taux_livraison_a_temps": 0.85,
+    "taux_retour": 0.10,
+    "taux_annulation": 0.03,
+    "delai_moyen_jours": 2.8
+  }
+}
