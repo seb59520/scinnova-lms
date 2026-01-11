@@ -26,15 +26,23 @@ export function ProtectedRoute({
   const [forceRender, setForceRender] = useState(false)
   
   useEffect(() => {
+    // Surveiller les DEUX états de chargement
+    const isStillLoading = loading || roleLoading
+    
+    if (!isStillLoading) {
+      // Plus besoin du timeout, on peut continuer
+      return
+    }
+    
     const timeout = setTimeout(() => {
-      if (loading) {
-        console.warn('ProtectedRoute: Loading timeout, forcing render')
+      if (loading || roleLoading) {
+        console.warn('ProtectedRoute: Loading timeout (auth:', loading, 'role:', roleLoading, '), forcing render')
         setForceRender(true)
       }
     }, 3000) // 3 secondes max
 
     return () => clearTimeout(timeout)
-  }, [loading])
+  }, [loading, roleLoading])
 
   // Éviter les boucles : ne pas rediriger si on est déjà sur la bonne page
   const isOnLoginPage = location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/reset-password'
