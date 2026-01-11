@@ -1,0 +1,1193 @@
+{
+  "title": "Machine Learning et Deep Learning : concepts et applications",
+  "slug": "machine-learning-deep-learning",
+  "description": "Introduction aux technologies et algorithmes principaux. Applications : prédictions, recommandations, personnalisation. Cours orienté décideurs, sans dérive technique.",
+  "duration": "3 heures",
+  "level": "Décideurs / Directions",
+  "published": true,
+  "modules": [
+    {
+      "title": "Module 1 : Introduction — Le Machine Learning pour les décideurs",
+      "position": 0,
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Positionnement du module",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Contexte et objectifs du module Machine Learning."
+          },
+          "chapters": [
+            {
+              "title": "Après la gouvernance, l'automatisation",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎯 Positionnement du module" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Après avoir compris :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "pourquoi la donnée est un actif stratégique," }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "comment elle transforme la décision," }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "et pourquoi la gouvernance est indispensable," }] }] }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "une question naturelle se pose au niveau direction :" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [{ "type": "text", "text": "Que permet concrètement le Machine Learning, et dans quels cas crée-t-il réellement de la valeur ?", "marks": [{ "type": "bold" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Ce que ce module va vous apporter",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💡 Objectif du module" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Le Machine Learning n'est ni de la magie, ni une automatisation universelle." }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "C'est un " },
+                      { "type": "text", "text": "levier puissant", "marks": [{ "type": "bold" }] },
+                      { "type": "text", "text": ", mais conditionné par la nature des décisions à automatiser." }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [{ "type": "text", "text": "📌 Ce module vise à donner aux décideurs une compréhension claire, réaliste et exploitable du Machine Learning et du Deep Learning.", "marks": [{ "type": "bold" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : Ce qu'est réellement le Machine Learning",
+      "position": 1,
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Définition simple et opérationnelle",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Comprendre le Machine Learning sans jargon technique."
+          },
+          "chapters": [
+            {
+              "title": "Le ML en une phrase",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📋 Définition simple et opérationnelle" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Le Machine Learning est une approche qui permet à un système informatique :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "d'apprendre à partir de données passées," }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "d'identifier des régularités," }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "et de reproduire automatiquement des décisions fréquentes et répétitives." }] }] }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🔄 La différence avec un programme classique" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Contrairement à un programme classique, on ne décrit pas toutes les règles à l'avance : " },
+                      { "type": "text", "text": "on fournit des exemples, et le système apprend les règles implicites.", "marks": [{ "type": "bold" }] }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Ce que le Machine Learning n'est pas",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Éviter les malentendus sur les capacités du ML."
+          },
+          "chapters": [
+            {
+              "title": "Les limites fondamentales",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🚫 Ce que le Machine Learning n'est pas" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Pour éviter les malentendus, le Machine Learning :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ ne remplace pas la stratégie," }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ ne comprend pas le contexte humain ou politique," }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ ne prend pas de décisions rares ou exceptionnelles," }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ ne fonctionne pas sans données fiables et gouvernées." }] }] }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [{ "type": "text", "text": "👉 Le Machine Learning est pertinent uniquement pour des décisions fréquentes, répétitives et stables.", "marks": [{ "type": "bold" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : Les trois grands types d'applications",
+      "position": 2,
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Prédire : anticiper ce qui va se produire",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "La prédiction, première application du ML."
+          },
+          "chapters": [
+            {
+              "title": "Qu'est-ce que la prédiction ?",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔮 Prédire : anticiper ce qui va se produire" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "La prédiction consiste à " },
+                      { "type": "text", "text": "estimer un événement futur à partir de données passées.", "marks": [{ "type": "bold" }] }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "📊 Exemples" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Prévoir une demande future" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Anticiper un risque de défaillance" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Estimer une probabilité (churn, défaut, incident)" }] }] }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [{ "type": "text", "text": "👉 Pour la direction, l'intérêt est clair : agir avant que le problème ne survienne.", "marks": [{ "type": "bold" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Recommander : proposer la meilleure option",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Les systèmes de recommandation."
+          },
+          "chapters": [
+            {
+              "title": "Qu'est-ce que la recommandation ?",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎯 Recommander : proposer la meilleure option" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Les systèmes de recommandation cherchent à répondre à une question simple :" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [{ "type": "text", "text": "Parmi plusieurs options, laquelle est la plus pertinente pour ce contexte précis ?", "marks": [{ "type": "bold" }, { "type": "italic" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "📊 Exemples" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Proposer un produit ou service adapté" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Prioriser des actions ou des dossiers" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Recommander un contenu ou une offre" }] }] }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [{ "type": "text", "text": "📌 La recommandation permet de scaler une expertise humaine à grande échelle.", "marks": [{ "type": "bold" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.3 Personnaliser : adapter à chaque situation",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "La personnalisation par le ML."
+          },
+          "chapters": [
+            {
+              "title": "Qu'est-ce que la personnalisation ?",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "👤 Personnaliser : adapter à chaque situation" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "La personnalisation consiste à adapter :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "un message," }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "une offre," }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "un parcours," }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "ou un service," }] }] }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "en fonction du profil, du comportement ou du contexte." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "💡 Intérêt pour la direction" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Augmenter la valeur perçue" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Améliorer l'expérience client" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Sans augmenter proportionnellement les coûts" }] }] }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : Les grandes familles d'algorithmes",
+      "position": 3,
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Algorithmes de classification",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Répondre à : À quelle catégorie appartient cet élément ?"
+          },
+          "chapters": [
+            {
+              "title": "Qu'est-ce que la classification ?",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🏷️ Algorithmes de classification" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Ils répondent à la question :" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [{ "type": "text", "text": "À quelle catégorie appartient cet élément ?", "marks": [{ "type": "bold" }, { "type": "italic" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "📊 Exemples" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Client à risque / non à risque" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Dossier prioritaire / non prioritaire" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Email urgent / standard" }] }] }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [{ "type": "text", "text": "📌 Ce sont les algorithmes les plus utilisés en entreprise, car ils automatisent des décisions binaires très fréquentes.", "marks": [{ "type": "bold" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "4.2 Algorithmes de régression",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Estimer une valeur continue."
+          },
+          "chapters": [
+            {
+              "title": "Qu'est-ce que la régression ?",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📈 Algorithmes de régression" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Ils cherchent à " },
+                      { "type": "text", "text": "estimer une valeur continue.", "marks": [{ "type": "bold" }] }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "📊 Exemples" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Chiffre d'affaires prévisionnel" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Durée estimée" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Coût probable" }] }] }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [{ "type": "text", "text": "📌 Ils sont au cœur des outils de pilotage et de prévision.", "marks": [{ "type": "bold" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "4.3 Algorithmes de regroupement (clustering)",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Identifier des groupes similaires."
+          },
+          "chapters": [
+            {
+              "title": "Qu'est-ce que le clustering ?",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔍 Algorithmes de regroupement (clustering)" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Ils permettent d'" },
+                      { "type": "text", "text": "identifier des groupes similaires sans règle prédéfinie.", "marks": [{ "type": "bold" }] }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "📊 Exemples" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Segmentation clients" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Regroupement de comportements" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Détection de profils atypiques" }] }] }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [{ "type": "text", "text": "📌 Ces algorithmes sont souvent utilisés en amont de la stratégie, pour mieux comprendre une population.", "marks": [{ "type": "bold" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : Deep Learning — Quand et pourquoi ?",
+      "position": 4,
+      "items": [
+        {
+          "type": "resource",
+          "title": "5.1 Différence avec le Machine Learning classique",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Comprendre ce qui distingue le Deep Learning."
+          },
+          "chapters": [
+            {
+              "title": "Deep Learning vs ML classique",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🧠 Deep Learning : différence fondamentale" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Le Deep Learning est une " },
+                      { "type": "text", "text": "sous-catégorie du Machine Learning", "marks": [{ "type": "bold" }] },
+                      { "type": "text", "text": ", particulièrement adaptée aux données complexes et volumineuses :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "🖼️ Images" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "📝 Texte" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "🔊 Audio" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "🎬 Vidéo" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "📊 Signaux complexes" }] }] }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "⚠️ Il nécessite :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Beaucoup de données" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Plus de puissance de calcul" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Moins d'interprétabilité" }] }] }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "5.2 Quand le Deep Learning est pertinent",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Identifier les cas d'usage légitimes du Deep Learning."
+          },
+          "chapters": [
+            {
+              "title": "Critères de pertinence",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "✅ Quand le Deep Learning est pertinent" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Pour une direction, le Deep Learning est pertinent lorsque :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Les règles sont impossibles à formaliser" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "La donnée est riche mais non structurée" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "La performance prime sur l'explicabilité" }] }] }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [{ "type": "text", "text": "👉 Le Deep Learning ne remplace pas le Machine Learning classique, il le complète dans des cas spécifiques.", "marks": [{ "type": "bold" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 6 : Intégration dans le système d'information",
+      "position": 5,
+      "items": [
+        {
+          "type": "resource",
+          "title": "6.1 Le ML n'est jamais isolé",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Un modèle non utilisé est un modèle inutile."
+          },
+          "chapters": [
+            {
+              "title": "Intégration obligatoire",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔗 Le Machine Learning n'est jamais isolé" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [{ "type": "text", "text": "Un projet de Machine Learning n'a aucune valeur seul.", "marks": [{ "type": "bold" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Il doit être :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Intégré aux outils existants" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Connecté aux processus métiers" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Piloté par des indicateurs clairs" }] }] }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [{ "type": "text", "text": "📌 Un modèle non utilisé est un modèle inutile.", "marks": [{ "type": "bold" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "6.2 Le cycle réel d'un projet ML",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Les 6 étapes d'un projet ML vu de la direction."
+          },
+          "chapters": [
+            {
+              "title": "Les 6 étapes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔄 Le cycle réel dans un SI" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Du point de vue direction, un projet ML suit généralement ce cycle :" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Identification d'une décision répétitive" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Collecte et préparation des données" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Entraînement d'un modèle" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Intégration dans le SI" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Suivi des performances" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ajustements continus" }] }] }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [{ "type": "text", "text": "👉 Le plus coûteux n'est pas l'algorithme, mais l'intégration et la maintenance dans le temps.", "marks": [{ "type": "bold" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "6.3 Études de cas",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Cas concrets de prédiction, recommandation et personnalisation."
+          },
+          "chapters": [
+            {
+              "title": "Cas prédiction",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔮 Cas prédiction" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Une organisation anticipe :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "des pannes," }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "des retards," }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "des risques clients." }] }] }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "✅ Résultat" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Réduction des coûts" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Amélioration de la qualité" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Meilleure allocation des ressources" }] }] }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Cas recommandation",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎯 Cas recommandation" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Un système priorise automatiquement :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "des dossiers," }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "des actions commerciales," }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "des demandes clients." }] }] }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "✅ Résultat" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Gain de temps" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Homogénéité des décisions" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Montée en qualité globale" }] }] }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Cas personnalisation",
+              "position": 2,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "👤 Cas personnalisation" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "L'entreprise adapte :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "ses offres," }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "ses messages," }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "ses parcours utilisateurs." }] }] }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "✅ Résultat" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Meilleure conversion" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Fidélisation accrue" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Avantage concurrentiel durable" }] }] }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 7 : Exercices pratiques",
+      "position": 6,
+      "items": [
+        {
+          "type": "exercise",
+          "title": "7.1 Le ML est-il pertinent ici ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Savoir identifier les bons cas d'usage du ML.",
+            "question": {
+              "type": "doc",
+              "content": [
+                { "type": "heading", "attrs": { "level": 1 }, "content": [{ "type": "text", "text": "Exercice 1 — Le Machine Learning est-il pertinent ici ?" }] },
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "🎯 Objectif" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Savoir identifier les bons cas d'usage du Machine Learning." }] },
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "✅ Travail demandé" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Pour chaque décision, indiquez si le ML est : ", "marks": [{ "type": "bold" }] }, { "type": "text", "text": "pertinent / peu pertinent / non pertinent. Justifiez." }] },
+                { "type": "orderedList", "content": [
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Valider un licenciement pour faute grave" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Prioriser automatiquement des demandes clients" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Anticiper une rupture de stock" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Décider d'une fusion-acquisition" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Détecter des emails urgents" }] }] }
+                ]}
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "🔑 Corrigé" }] },
+                { "type": "bulletList", "content": [
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Licenciement → ❌ Non pertinent (décision rare, humaine, contextuelle)" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Priorisation demandes → ✅ Pertinent (décision fréquente et répétitive)" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Rupture de stock → ✅ Pertinent (historique + prévision)" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Fusion-acquisition → ❌ Non pertinent (décision stratégique unique)" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Emails urgents → ✅ Pertinent (classification répétitive)" }] }] }
+                ]},
+                { "type": "blockquote", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "📌 Le ML automatise des décisions fréquentes, pas des choix stratégiques uniques.", "marks": [{ "type": "bold" }] }] }] }
+              ]
+            },
+            "allow_file_upload": true,
+            "file_types": ["pdf", "docx"],
+            "max_file_size_mb": 10
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "7.2 Prédiction, recommandation ou personnalisation ?",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Comprendre les 3 grands types d'applications ML.",
+            "question": {
+              "type": "doc",
+              "content": [
+                { "type": "heading", "attrs": { "level": 1 }, "content": [{ "type": "text", "text": "Exercice 2 — Prédiction, recommandation ou personnalisation ?" }] },
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "🎯 Objectif" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Comprendre les 3 grands types d'applications ML." }] },
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "✅ Travail demandé" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Associez chaque situation au bon type : ", "marks": [{ "type": "bold" }] }, { "type": "text", "text": "Prédiction / Recommandation / Personnalisation" }] },
+                { "type": "orderedList", "content": [
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Estimer le risque de départ d'un client" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Proposer un produit complémentaire" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Adapter un parcours utilisateur" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Prévoir un délai de livraison" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Prioriser des actions commerciales" }] }] }
+                ]}
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "🔑 Corrigé" }] },
+                { "type": "bulletList", "content": [
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Risque de départ → Prédiction" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Produit complémentaire → Recommandation" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Parcours utilisateur → Personnalisation" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Délai livraison → Prédiction" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Actions commerciales → Recommandation" }] }] }
+                ]},
+                { "type": "blockquote", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "📌 Derrière des usages différents, il existe des logiques ML simples et identifiables.", "marks": [{ "type": "bold" }] }] }] }
+              ]
+            },
+            "allow_file_upload": true,
+            "file_types": ["pdf", "docx"],
+            "max_file_size_mb": 10
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "7.3 Choisir le bon type d'algorithme",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Identifier la famille d'algorithmes adaptée au problème.",
+            "question": {
+              "type": "doc",
+              "content": [
+                { "type": "heading", "attrs": { "level": 1 }, "content": [{ "type": "text", "text": "Exercice 3 — Choisir le bon type d'algorithme" }] },
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "🎯 Objectif" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Identifier la famille d'algorithmes adaptée au problème." }] },
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "✅ Travail demandé" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Pour chaque objectif, indiquez la famille : ", "marks": [{ "type": "bold" }] }, { "type": "text", "text": "Classification / Régression / Regroupement" }] },
+                { "type": "orderedList", "content": [
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Identifier les clients à risque" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Estimer un chiffre d'affaires futur" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Segmenter une base clients" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Classer des tickets support" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Estimer une durée moyenne" }] }] }
+                ]}
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "🔑 Corrigé" }] },
+                { "type": "bulletList", "content": [
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Clients à risque → Classification" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "CA futur → Régression" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Segmentation → Regroupement" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Tickets support → Classification" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Durée moyenne → Régression" }] }] }
+                ]},
+                { "type": "blockquote", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "📌 Le choix de l'algorithme dépend de la question métier, pas de la technologie.", "marks": [{ "type": "bold" }] }] }] }
+              ]
+            },
+            "allow_file_upload": true,
+            "file_types": ["pdf", "docx"],
+            "max_file_size_mb": 10
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "7.4 Machine Learning ou Deep Learning ?",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Comprendre quand le Deep Learning est justifié.",
+            "question": {
+              "type": "doc",
+              "content": [
+                { "type": "heading", "attrs": { "level": 1 }, "content": [{ "type": "text", "text": "Exercice 4 — Machine Learning ou Deep Learning ?" }] },
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "🎯 Objectif" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Comprendre quand le Deep Learning est justifié." }] },
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "✅ Travail demandé" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Pour chaque cas, indiquez : ", "marks": [{ "type": "bold" }] }, { "type": "text", "text": "Machine Learning classique ou Deep Learning" }] },
+                { "type": "orderedList", "content": [
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Analyse d'images médicales" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Scoring client basé sur données tabulaires" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Reconnaissance vocale" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Prévision de ventes" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Analyse automatique de documents texte" }] }] }
+                ]}
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "🔑 Corrigé" }] },
+                { "type": "bulletList", "content": [
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Images médicales → Deep Learning" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Scoring client → Machine Learning classique" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Reconnaissance vocale → Deep Learning" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Prévision ventes → Machine Learning classique" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Analyse de texte → Deep Learning" }] }] }
+                ]},
+                { "type": "blockquote", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "📌 Le Deep Learning est un outil spécialisé, pas une solution universelle.", "marks": [{ "type": "bold" }] }] }] }
+              ]
+            },
+            "allow_file_upload": true,
+            "file_types": ["pdf", "docx"],
+            "max_file_size_mb": 10
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "7.5 Intégration SI : où est la vraie difficulté ?",
+          "position": 4,
+          "published": true,
+          "content": {
+            "description": "Identifier les enjeux réels d'intégration.",
+            "question": {
+              "type": "doc",
+              "content": [
+                { "type": "heading", "attrs": { "level": 1 }, "content": [{ "type": "text", "text": "Exercice 5 — Intégration dans le SI : où est la vraie difficulté ?" }] },
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "🎯 Objectif" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Identifier les enjeux réels d'intégration d'un projet ML." }] },
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "✅ Travail demandé" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Classez par ordre de difficulté (du plus simple au plus complexe) :", "marks": [{ "type": "bold" }] }] },
+                { "type": "bulletList", "content": [
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Entraîner un modèle" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Collecter des données fiables" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Intégrer le modèle dans les processus métiers" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Suivre les performances dans le temps" }] }] }
+                ]}
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "🔑 Corrigé" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Ordre attendu (du plus simple au plus complexe) :" }] },
+                { "type": "orderedList", "content": [
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Entraîner un modèle" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Collecter des données fiables" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Intégrer dans les processus" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Suivre et maintenir dans le temps" }] }] }
+                ]},
+                { "type": "blockquote", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "📌 Le coût réel du ML est dans la durée, pas dans l'algorithme.", "marks": [{ "type": "bold" }] }] }] }
+              ]
+            },
+            "allow_file_upload": true,
+            "file_types": ["pdf", "docx"],
+            "max_file_size_mb": 10
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 8 : TP — Décider quoi automatiser",
+      "position": 7,
+      "items": [
+        {
+          "type": "tp",
+          "title": "8.1 TP — Identifier et qualifier des décisions automatisables",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "TP progressif SANS CODE pour raisonner en cas d'usage ML.",
+            "question": {
+              "type": "doc",
+              "content": [
+                { "type": "heading", "attrs": { "level": 1 }, "content": [{ "type": "text", "text": "TP — Décider quoi automatiser avec le Machine Learning" }] },
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "🎯 Objectif global" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Raisonner en cas d'usage ML, identifier les décisions automatisables, comprendre les impacts organisationnels — sans écrire une seule ligne de code." }] },
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "Étape 1 — Identifier une décision répétitive" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Listez 5 décisions prises régulièrement dans votre organisation." }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Critères : décisions fréquentes, règles stables, volume suffisant. Exclure les décisions rares ou politiques." }] },
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "Étape 2 — Qualifier la décision" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Pour chaque décision, répondez :" }] },
+                { "type": "bulletList", "content": [
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Est-elle fréquente ?" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Les règles sont-elles stables ?" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Dispose-t-on de données historiques ?" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "L'erreur est-elle acceptable ?" }] }] }
+                ]},
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "Étape 3 — Identifier le type de ML" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Pour chaque décision retenue, associez : Prédiction / Recommandation / Personnalisation" }] },
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "Étape 4 — Intégration dans le SI" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Décrivez où et comment la décision automatisée s'intègre :" }] },
+                { "type": "bulletList", "content": [
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Qui utilise le résultat ?" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "À quel moment ?" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Avec quel droit de validation humaine ?" }] }] }
+                ]},
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "Étape 5 — Gouvernance et risques" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Identifiez : 1 risque majeur + 1 règle de gouvernance associée" }] }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                { "type": "heading", "attrs": { "level": 2 }, "content": [{ "type": "text", "text": "🔑 Corrigé / Attendus" }] },
+                { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "Étape 1-2" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Seules les décisions avec 4 réponses \"oui\" sont de bonnes candidates ML." }] },
+                { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "Étape 3" }] },
+                { "type": "paragraph", "content": [{ "type": "text", "text": "Alignement clair entre objectif métier et type de ML." }] },
+                { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "Étape 4" }] },
+                { "type": "bulletList", "content": [
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Intégration dans un outil existant" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Décision assistée, pas aveugle" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Contrôle humain maintenu" }] }] }
+                ]},
+                { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "Étape 5 — Exemples" }] },
+                { "type": "bulletList", "content": [
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Biais → contrôle régulier" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Dérive du modèle → suivi des performances" }] }] },
+                  { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Surconfiance → explicitation des limites" }] }] }
+                ]},
+                { "type": "blockquote", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "📌 Le ML n'est pas une question de technologie, mais de choix organisationnels et stratégiques. Les entreprises performantes automatisent les bonnes décisions, au bon niveau.", "marks": [{ "type": "bold" }] }] }] }
+              ]
+            },
+            "allow_file_upload": true,
+            "file_types": ["pdf", "docx", "xlsx", "pptx"],
+            "max_file_size_mb": 20
+          }
+        }
+      ]
+    }
+  ]
+}

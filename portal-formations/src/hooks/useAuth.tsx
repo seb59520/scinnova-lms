@@ -32,6 +32,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let mounted = true
     let timeoutId: NodeJS.Timeout | null = null
 
+    // Nettoyer le localStorage potentiellement corrompu au démarrage
+    try {
+      const storedSession = localStorage.getItem('sb-auth-token')
+      if (storedSession) {
+        const parsed = JSON.parse(storedSession)
+        // Vérifier que la session est valide (a un access_token et un user)
+        if (!parsed?.access_token || !parsed?.user?.id) {
+          console.warn('⚠️ [useAuth] Session localStorage invalide, nettoyage...')
+          localStorage.removeItem('sb-auth-token')
+        }
+      }
+    } catch (e) {
+      console.warn('⚠️ [useAuth] Erreur de parsing localStorage, nettoyage...')
+      try {
+        localStorage.removeItem('sb-auth-token')
+      } catch {}
+    }
+
     // Timeout de sécurité pour éviter un blocage infini (optimisé)
     timeoutId = setTimeout(() => {
       if (mounted) {
@@ -42,21 +60,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           const storedSession = localStorage.getItem('sb-auth-token')
           if (storedSession) {
             const parsed = JSON.parse(storedSession)
-            if (parsed?.currentSession) {
-              console.log('Found session in localStorage after timeout, using it')
-              const session = parsed.currentSession
-              setSession(session)
-              setUser(session?.user ?? null)
-              if (session?.user) {
-                fetchProfile(session.user.id)
+            // Supabase stocke la session directement avec access_token, pas dans currentSession
+            if (parsed?.access_token && parsed?.user) {
+              console.log('Found valid session in localStorage after timeout, using it')
+              setSession(parsed)
+              setUser(parsed.user)
+              if (parsed.user?.id) {
+                fetchProfile(parsed.user.id)
               }
               return
             }
           }
         } catch (e) {
           console.warn('Could not parse stored session:', e)
+          // Nettoyer le localStorage corrompu
+          try {
+            localStorage.removeItem('sb-auth-token')
+          } catch {}
         }
-        // Si pas de session trouvée, forcer à null
+        // Si pas de session valide trouvée, forcer à null
         setProfile(null)
         setUser(null)
         setSession(null)

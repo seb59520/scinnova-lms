@@ -1,0 +1,1688 @@
+{
+  "title": "Rôle de la Data Science et gouvernance des informations",
+  "slug": "data-science-gouvernance",
+  "description": "Organisation, sécurité et valorisation des données pour décideurs et directions. Comprendre comment piloter la donnée, selon quelles règles, et dans quel objectif de création de valeur.",
+  "duration": "2 heures",
+  "level": "Décideurs / Directions",
+  "published": true,
+  "modules": [
+    {
+      "title": "Module 1 : Introduction — Pourquoi gouverner la donnée ?",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#6366F1",
+        "secondaryColor": "#4F46E5"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Les questions clés de la direction",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Trois questions fondamentales que toute direction doit se poser sur la donnée."
+          },
+          "chapters": [
+            {
+              "title": "Les enjeux de pilotage",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎯 Les questions clés de la direction" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Après avoir compris pourquoi la donnée est un actif stratégique et comment elle transforme la décision, une question centrale se pose au niveau direction :" }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "text": "Qui pilote la donnée ?", "marks": [{ "type": "bold" }] }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "text": "Selon quelles règles ?", "marks": [{ "type": "bold" }] }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "text": "Et dans quel objectif de création de valeur ?", "marks": [{ "type": "bold" }] }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "C'est précisément le rôle de la " },
+                      { "type": "text", "text": "Data Science", "marks": [{ "type": "bold" }] },
+                      { "type": "text", "text": " et de la " },
+                      { "type": "text", "text": "gouvernance des données", "marks": [{ "type": "bold" }] },
+                      { "type": "text", "text": "." }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Sans gouvernance, la donnée devient...",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "⚠️ Sans gouvernance, la donnée devient..." }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ Incontrôlable" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ Peu fiable" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ Risquée juridiquement" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ Et finalement inutilisable stratégiquement" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🎯 Objectif de ce module" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Donner aux directions une " },
+                      { "type": "text", "text": "grille de lecture claire", "marks": [{ "type": "bold" }] },
+                      { "type": "text", "text": " pour :" }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Encadrer les données" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Sécuriser les données" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Valoriser les données de l'organisation" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : Le rôle réel de la Data Science",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#8B5CF6",
+        "secondaryColor": "#7C3AED"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 La Data Science n'est pas une discipline isolée",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Comprendre ce qu'est réellement la Data Science au-delà des idées reçues."
+          },
+          "chapters": [
+            {
+              "title": "Ce que la Data Science n'est PAS",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🚫 Ce que la Data Science n'est PAS" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Contrairement à une idée répandue, la Data Science n'est pas :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ Un outil" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ Un logiciel" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ Un projet ponctuel" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Ce qu'est vraiment la Data Science",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "✅ Ce qu'est vraiment la Data Science" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "La Data Science est une " },
+                      { "type": "text", "text": "capacité organisationnelle", "marks": [{ "type": "bold" }] },
+                      { "type": "text", "text": " qui permet de :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Transformer des données brutes en informations exploitables" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Produire des analyses explicatives et prédictives" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Éclairer des décisions complexes à fort impact" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "text": "📌 Elle ne crée de valeur que si elle est alignée avec les enjeux métiers et stratégiques.", "marks": [{ "type": "bold" }] }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Le rôle de la Data Science pour la direction",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Les trois questions auxquelles la Data Science doit répondre."
+          },
+          "chapters": [
+            {
+              "title": "Trois questions simples",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎯 Trois questions pour la direction" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Du point de vue de la direction, la Data Science doit répondre à trois questions simples :" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "1️⃣ Que se passe-t-il réellement ?" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "→ Analyse factuelle, objectivée" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "2️⃣ Pourquoi cela se produit-il ?" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "→ Identification des causes, corrélations, leviers" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "3️⃣ Que va-t-il probablement se passer ?" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "→ Scénarios, projections, aide à l'arbitrage" }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Réduire l'incertitude, pas décider",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💡 Le vrai rôle de la Data Science" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "text": "La Data Science n'a pas vocation à décider à la place de la direction, mais à ", "marks": [{ "type": "bold" }] },
+                          { "type": "text", "text": "réduire l'incertitude", "marks": [{ "type": "bold" }, { "type": "italic" }] },
+                          { "type": "text", "text": " associée à la décision.", "marks": [{ "type": "bold" }] }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "La responsabilité de la décision reste humaine et stratégique." }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.3 Les limites sans gouvernance",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Pourquoi la Data Science devient contre-productive sans cadre clair."
+          },
+          "chapters": [
+            {
+              "title": "Quand la Data Science déraille",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "⚠️ Les dérives sans gouvernance" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Sans cadre clair, la Data Science devient rapidement contre-productive :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ Analyses contradictoires selon les équipes" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ Indicateurs non alignés avec la stratégie" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ Modèles incompris ou mal interprétés" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ Décisions prises \"parce que l'algorithme l'a dit\"" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "text": "👉 La valeur de la Data Science dépend directement de la qualité de la gouvernance des données.", "marks": [{ "type": "bold" }] }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : Gouvernance — Définition et organisation",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#EC4899",
+        "secondaryColor": "#DB2777"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Définition stratégique de la gouvernance",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Comprendre ce qu'est la gouvernance des données au niveau direction."
+          },
+          "chapters": [
+            {
+              "title": "De quoi parle-t-on ?",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📋 Définition stratégique" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "La gouvernance des données regroupe l'ensemble des " },
+                      { "type": "text", "text": "règles, rôles et processus", "marks": [{ "type": "bold" }] },
+                      { "type": "text", "text": " qui permettent de :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Définir quelles données sont stratégiques" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Garantir leur qualité et leur fiabilité" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Sécuriser leur accès et leur usage" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Organiser leur valorisation dans le temps" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "text": "📌 Il ne s'agit pas d'un sujet IT, mais d'un sujet de pilotage au plus haut niveau.", "marks": [{ "type": "bold" }] }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Gouverner ≠ Contrôler",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "⚖️ Gouverner, ce n'est pas tout contrôler" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Un malentendu fréquent consiste à penser que gouverner la donnée revient à :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ La restreindre" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ La bloquer" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ La centraliser excessivement" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "✅ En réalité, une bonne gouvernance vise à :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Fluidifier l'usage" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Tout en encadrant les risques" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "La gouvernance doit trouver un équilibre entre : " },
+                      { "type": "text", "text": "accessibilité", "marks": [{ "type": "bold" }] },
+                      { "type": "text", "text": ", " },
+                      { "type": "text", "text": "sécurité", "marks": [{ "type": "bold" }] },
+                      { "type": "text", "text": " et " },
+                      { "type": "text", "text": "création de valeur", "marks": [{ "type": "bold" }] },
+                      { "type": "text", "text": "." }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Clarifier les responsabilités",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Une donnée sans responsable est une donnée à risque."
+          },
+          "chapters": [
+            {
+              "title": "Qui est responsable de quoi ?",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "👤 Clarifier les responsabilités" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "text": "⚠️ Une donnée sans responsable est une donnée à risque.", "marks": [{ "type": "bold" }] }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "La direction doit s'assurer que :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Chaque domaine de données a un responsable clairement identifié" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Les règles de création, modification et usage sont connues" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Les indicateurs stratégiques ont une définition unique et partagée" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🔑 La question fondamentale" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "text": "Qui est responsable de quoi, et à quel niveau ?", "marks": [{ "type": "bold" }, { "type": "italic" }] }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.3 Aligner les données avec la stratégie",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Toutes les données ne se valent pas."
+          },
+          "chapters": [
+            {
+              "title": "Prioriser les données critiques",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎯 Aligner données et stratégie" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "text": "Toutes les données ne se valent pas.", "marks": [{ "type": "bold" }] }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "La gouvernance impose de :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Distinguer les données critiques des données secondaires" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Prioriser celles qui impactent directement la performance" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Éviter la dispersion dans des indicateurs non stratégiques" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🔑 La question à se poser" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "text": "👉 Quels sont les indicateurs qui pilotent réellement notre activité ?", "marks": [{ "type": "bold" }] }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : Gouvernance — Sécurité",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#EF4444",
+        "secondaryColor": "#DC2626"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 La sécurité comme condition de confiance",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Sans sécurité, il n'y a ni confiance interne, ni confiance externe."
+          },
+          "chapters": [
+            {
+              "title": "Encadrer les accès et usages",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔒 La sécurité, condition de confiance" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "text": "Sans sécurité, il n'y a ni confiance interne, ni confiance externe.", "marks": [{ "type": "bold" }] }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "La gouvernance doit encadrer :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "🔐 Les accès aux données sensibles" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Les usages autorisés et interdits" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "📋 La traçabilité des consultations et modifications" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "text": "📌 La sécurité n'est pas un frein à la valeur. Elle en est une condition préalable.", "marks": [{ "type": "bold" }] }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "4.2 Les risques pour la direction",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Les risques concrets d'une mauvaise gouvernance."
+          },
+          "chapters": [
+            {
+              "title": "Risques multiples et durables",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "⚠️ Les risques pour la direction" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Pour une direction, les risques liés à une mauvaise gouvernance sont multiples :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "⚖️ Risques juridiques et réglementaires" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "📰 Risques réputationnels" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "🤝 Perte de confiance des clients et partenaires" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "❌ Décisions prises sur des données compromises" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "text": "Ces risques sont souvent systémiques et durables.", "marks": [{ "type": "bold" }] }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : Gouvernance — Valorisation",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#059669"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "5.1 Transformer la donnée en actif",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Comment une donnée bien gouvernée devient un actif stratégique."
+          },
+          "chapters": [
+            {
+              "title": "La donnée comme actif",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💎 Transformer la donnée en actif" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Une donnée bien gouvernée devient :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "♻️ Réutilisable" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "📈 Cumulable" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "⏳ Exploitable sur le long terme" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "📊 Formes de valorisation" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Amélioration de la performance interne" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Création de nouveaux services" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Différenciation concurrentielle" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Appui à l'innovation et à l'IA" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "text": "📌 La gouvernance permet de passer d'une donnée subie à une donnée stratégique et exploitable.", "marks": [{ "type": "bold" }] }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "5.2 Création de valeur durable",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "La gouvernance comme investissement stratégique."
+          },
+          "chapters": [
+            {
+              "title": "Un investissement, pas une contrainte",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📈 Création de valeur durable" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Contrairement aux outils, la donnée :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Ne se déprécie pas si elle est bien entretenue" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Gagne en valeur avec le temps" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Constitue une barrière concurrentielle forte" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "text": "📌 La gouvernance est donc un investissement stratégique, et non une contrainte administrative.", "marks": [{ "type": "bold" }] }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "5.3 Discussion et auto-évaluation",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Questions de réflexion pour évaluer la maturité de gouvernance."
+          },
+          "chapters": [
+            {
+              "title": "Questions de réflexion",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💬 Discussion : évaluer vos pratiques" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Question 1 — État des lieux" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Disposez-vous aujourd'hui :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "d'indicateurs stratégiques clairement définis ?" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "d'une responsabilité explicite sur les données critiques ?" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "de règles de sécurité comprises par les équipes ?" }] }] }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Question 2 — Débat" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Vaut-il mieux :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Beaucoup de données accessibles à tous ?" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ou peu de données fiables, bien gouvernées et réellement utilisées ?" }] }] }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Question 3 — Projection" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Si vous deviez lancer un projet de Data Science demain :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Quelles données seraient réellement exploitables ?" }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Quels freins organisationnels apparaîtraient immédiatement ?" }] }] }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 6 : Exercices pratiques",
+      "position": 5,
+      "theme": {
+        "primaryColor": "#F59E0B",
+        "secondaryColor": "#D97706"
+      },
+      "items": [
+        {
+          "type": "exercise",
+          "title": "6.1 Exercice — À quoi sert vraiment la Data Science ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Clarifier le rôle stratégique de la Data Science, au-delà de la technique.",
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [{ "type": "text", "text": "Exercice 1 — À quoi sert vraiment la Data Science ?" }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 Objectif" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Clarifier le rôle stratégique de la Data Science, au-delà de la technique." }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "📋 Mise en situation" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "En tant que membre d'une direction, vous devez expliquer à un comité exécutif à quoi sert réellement la Data Science, sans utiliser de termes techniques." }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "✅ Travail demandé" }]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Complétez la phrase : \"La Data Science permet à la direction de...\"" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Citez 2 décisions stratégiques que la Data Science peut aider à éclairer" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Identifiez 1 limite de la Data Science sans gouvernance" }] }] }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🔑 Corrigé" }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "1. Définition attendue" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Réduire l'incertitude dans la prise de décision" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Objectiver des situations complexes" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Anticiper des évolutions probables" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Comparer des scénarios avant d'agir" }] }] }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "👉 Toute réponse orientée \"aide à la décision\" est valide." }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "2. Décisions stratégiques typiques" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Allocation des ressources" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Priorisation des investissements" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Anticipation des risques" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Adaptation de l'offre ou des services" }] }] }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "3. Limite clé sans gouvernance" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Analyses contradictoires" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Perte de confiance dans les chiffres" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Décisions prises sur des données biaisées" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Dépendance aveugle aux modèles" }] }] }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [{ "type": "text", "text": "📌 La Data Science n'a de valeur que si elle sert une décision stratégique claire.", "marks": [{ "type": "bold" }] }]
+                    }
+                  ]
+                }
+              ]
+            },
+            "allow_file_upload": true,
+            "file_types": ["pdf", "docx", "xlsx"],
+            "max_file_size_mb": 10
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "6.2 Exercice — Gouverner la donnée : qui fait quoi ?",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Comprendre que la gouvernance est avant tout organisationnelle.",
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [{ "type": "text", "text": "Exercice 2 — Gouverner la donnée : qui fait quoi ?" }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 Objectif" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Comprendre que la gouvernance est avant tout organisationnelle." }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "📋 Mise en situation" }]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [{ "type": "text", "text": "Une donnée sans responsable est une donnée à risque.", "marks": [{ "type": "bold" }] }]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Identifiez comment votre organisation devrait répartir les responsabilités." }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "✅ Travail demandé" }]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Listez 3 types de données critiques pour votre organisation" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Pour chacune, indiquez : qui devrait en être responsable + pourquoi ce rôle est stratégique" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Que se passe-t-il si ce rôle n'est pas clairement défini ?" }] }] }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🔑 Corrigé" }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Exemples de données critiques" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Données clients" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Données financières" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Données opérationnelles" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Données RH" }] }] }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Responsabilités attendues" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Un responsable métier, pas uniquement IT" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Garant de la qualité, de la définition et de l'usage" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Point de référence pour la direction" }] }] }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Conséquences d'absence de responsabilité" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Données incohérentes" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Conflits entre services" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Décisions basées sur des chiffres divergents" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Perte de crédibilité des indicateurs" }] }] }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [{ "type": "text", "text": "📌 Gouverner la donnée, c'est désigner des responsables, pas installer des outils.", "marks": [{ "type": "bold" }] }]
+                    }
+                  ]
+                }
+              ]
+            },
+            "allow_file_upload": true,
+            "file_types": ["pdf", "docx", "xlsx"],
+            "max_file_size_mb": 10
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "6.3 Exercice — Sécurité : contrainte ou condition de valeur ?",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Repositionner la sécurité comme levier de confiance, pas comme frein.",
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [{ "type": "text", "text": "Exercice 3 — Sécurité : contrainte ou condition de valeur ?" }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 Objectif" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Repositionner la sécurité comme levier de confiance, pas comme frein." }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "📋 Mise en situation" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "La sécurité des données est souvent perçue comme une contrainte. Analysez-la du point de vue d'une direction." }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "✅ Travail demandé" }]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Citez 2 risques majeurs liés à une mauvaise gouvernance de la sécurité" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Expliquez l'impact de ces risques pour la direction" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Indiquez une règle simple de gouvernance pour réduire ces risques" }] }] }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🔑 Corrigé" }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Risques majeurs" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Risque juridique et réglementaire" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Atteinte à la réputation" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Perte de confiance des clients" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Manipulation ou fuite de données sensibles" }] }] }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Impacts direction" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Décisions compromises" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Exposition médiatique négative" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Responsabilité juridique des dirigeants" }] }] }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Règles simples acceptées" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Accès par rôle et non par personne" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Traçabilité des accès" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Séparation données sensibles / non sensibles" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Règles d'usage explicites" }] }] }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [{ "type": "text", "text": "📌 Sans sécurité, il n'y a ni confiance, ni valeur durable.", "marks": [{ "type": "bold" }] }]
+                    }
+                  ]
+                }
+              ]
+            },
+            "allow_file_upload": true,
+            "file_types": ["pdf", "docx", "xlsx"],
+            "max_file_size_mb": 10
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "6.4 Exercice — Valorisation : quand la donnée devient un actif",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Comprendre comment la gouvernance permet la création de valeur durable.",
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [{ "type": "text", "text": "Exercice 4 — Valorisation : quand la donnée devient un actif" }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 Objectif" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Comprendre comment la gouvernance permet la création de valeur durable." }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "📋 Mise en situation" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Une donnée bien gouvernée peut devenir un actif stratégique. Identifiez comment et à quelles conditions." }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "✅ Travail demandé" }]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Donnez 2 exemples de valorisation interne de la donnée" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Donnez 1 exemple de valorisation externe" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Identifiez le principal risque si la gouvernance est absente" }] }] }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🔑 Corrigé" }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Valorisation interne" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Optimisation des processus" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Amélioration de la performance" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Aide à la décision" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Anticipation des risques" }] }] }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Valorisation externe" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Services à valeur ajoutée" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Offres personnalisées" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Abonnements basés sur l'usage" }] }] }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Risque sans gouvernance" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Exploitation non maîtrisée" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Incohérence des services" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Perte d'avantage concurrentiel" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Rejet par les clients ou partenaires" }] }] }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [{ "type": "text", "text": "📌 La donnée n'est un actif que si elle est fiable, sécurisée et gouvernée.", "marks": [{ "type": "bold" }] }]
+                    }
+                  ]
+                }
+              ]
+            },
+            "allow_file_upload": true,
+            "file_types": ["pdf", "docx", "xlsx", "pptx"],
+            "max_file_size_mb": 15
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "6.5 Exercice — Évaluer la maturité de gouvernance",
+          "position": 4,
+          "published": true,
+          "content": {
+            "description": "Amener la direction à une auto-évaluation lucide.",
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [{ "type": "text", "text": "Exercice 5 — Évaluer la maturité de gouvernance" }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 Objectif" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Amener la direction à une auto-évaluation lucide de la maturité de gouvernance." }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "✅ Travail demandé" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Pour chaque affirmation, indiquez : ", "marks": [{ "type": "bold" }] }, { "type": "text", "text": "Oui / Partiellement / Non" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Nos indicateurs stratégiques sont clairement définis" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Les responsabilités sur les données sont explicites" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Les règles de sécurité sont comprises et appliquées" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "La donnée est utilisée pour décider, pas seulement pour reporter" }] }] }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Puis répondez :" }]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [{ "type": "text", "text": "Quelle est la priorité absolue à traiter dans les 6 prochains mois ?", "marks": [{ "type": "bold" }] }]
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🔑 Corrigé" }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Lecture attendue" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Beaucoup de \"Partiellement\" est un signal classique de maturité intermédiaire" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "La priorité doit être organisationnelle, pas technologique" }] }] }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Priorités typiques" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Clarification des indicateurs clés" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Désignation des responsables de données" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Mise en cohérence des sources" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Acculturation managériale à la donnée" }] }] }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [{ "type": "text", "text": "📌 La gouvernance des données commence par une prise de conscience collective.", "marks": [{ "type": "bold" }] }]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎓 Conclusion pédagogique" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "La Data Science n'est efficace que dans un cadre gouverné.", "marks": [{ "type": "bold" }] }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "La gouvernance n'a de sens que si elle crée de la valeur.", "marks": [{ "type": "bold" }] }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Pour une direction, gouverner la donnée, c'est :" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Structurer la responsabilité" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Sécuriser la confiance" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Transformer l'information en décisions utiles et durables" }] }] }
+                  ]
+                }
+              ]
+            },
+            "allow_file_upload": true,
+            "file_types": ["pdf", "docx", "pptx"],
+            "max_file_size_mb": 10
+          }
+        }
+      ]
+    }
+  ]
+}
