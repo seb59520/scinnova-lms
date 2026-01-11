@@ -3,7 +3,7 @@
  * Utilise getUserRole() pour garantir une détermination cohérente du rôle
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from './useAuth';
 import { getUserRole, type UnifiedRole, type UserRoleContext } from '../lib/queries/userRole';
 
@@ -12,26 +12,16 @@ export function useUserRole() {
   const [roleContext, setRoleContext] = useState<UserRoleContext | null>(null);
   const [loading, setLoading] = useState(true);
   
-  // Utiliser des refs pour éviter les boucles de dépendances
-  const userIdRef = useRef<string | undefined>(user?.id);
-  const profileRoleRef = useRef<string | undefined>(profile?.role);
+  // Ref pour éviter les appels réseau multiples
   const hasLoadedRef = useRef(false);
+  const lastUserIdRef = useRef<string | undefined>(undefined);
 
-  // Mettre à jour les refs quand les valeurs changent
-  useEffect(() => {
-    userIdRef.current = user?.id;
-    profileRoleRef.current = profile?.role;
-  }, [user?.id, profile?.role]);
-
-  const fetchRole = useCallback(async () => {
-    const userId = userIdRef.current;
-    const profileRole = profileRoleRef.current;
-    
+  // Fonction pour charger le rôle à partir des valeurs actuelles
+  const loadRole = useCallback((userId: string | undefined, profileRole: string | undefined) => {
     // Pas d'utilisateur = pas de rôle, terminer immédiatement
     if (!userId) {
       setRoleContext(null);
       setLoading(false);
-      hasLoadedRef.current = false;
       return;
     }
 
@@ -76,17 +66,27 @@ export function useUserRole() {
         }
       });
     }
-  }, []); // Pas de dépendances - utilise les refs
+  }, []);
 
   // Effect pour charger le rôle quand user.id ou profile.role change
   useEffect(() => {
-    // Réinitialiser hasLoadedRef si l'utilisateur change
-    if (user?.id !== userIdRef.current) {
+    const userId = user?.id;
+    const profileRole = profile?.role;
+    
+    // Réinitialiser si l'utilisateur change
+    if (userId !== lastUserIdRef.current) {
       hasLoadedRef.current = false;
+      lastUserIdRef.current = userId;
     }
     
-    fetchRole();
-  }, [user?.id, profile?.role, fetchRole]); // Dépendances stables
+    loadRole(userId, profileRole);
+  }, [user?.id, profile?.role, loadRole]);
+
+  // Fonction pour forcer le rafraîchissement
+  const refreshRole = useCallback(() => {
+    hasLoadedRef.current = false;
+    loadRole(user?.id, profile?.role);
+  }, [user?.id, profile?.role, loadRole]);
 
   // Retourner le rôle unifié avec des helpers
   const role: UnifiedRole = roleContext?.role ?? null;
@@ -114,7 +114,7 @@ export function useUserRole() {
     // Fallback vers profile.role si roleContext n'est pas encore chargé
     effectiveRole: role ?? (profile?.role as UnifiedRole) ?? null,
     // Fonction pour forcer le rafraîchissement du rôle
-    refreshRole: fetchRole,
+    refreshRole,
   };
 }
 
