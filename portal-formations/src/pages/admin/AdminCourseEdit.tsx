@@ -43,8 +43,18 @@ export function AdminCourseEdit() {
 
   useEffect(() => {
     let isMounted = true
+    let timeoutId: NodeJS.Timeout | null = null
     
     if (!isNew && courseId) {
+      // Timeout de sécurité pour éviter un chargement infini
+      timeoutId = setTimeout(() => {
+        if (isMounted && loading) {
+          console.warn('AdminCourseEdit: Loading timeout, forcing render')
+          setLoading(false)
+          setError('Le chargement a pris trop de temps. Veuillez rafraîchir la page.')
+        }
+      }, 10000) // 10 secondes max
+      
       fetchCourse(isMounted)
     } else {
       setLoading(false)
@@ -52,6 +62,7 @@ export function AdminCourseEdit() {
     
     return () => {
       isMounted = false
+      if (timeoutId) clearTimeout(timeoutId)
     }
   }, [courseId, isNew])
 
