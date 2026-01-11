@@ -46,9 +46,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setUser(parsed.user)
           sessionFoundInStorage = true
           // Charger le profil immédiatement
+          // NOTE: fetchProfile mettra loading à false quand le profil sera chargé
+          // On ne met PAS loading à false ici pour attendre le profil
           fetchProfile(parsed.user.id)
-          // Mettre loading à false rapidement pour débloquer l'UI
-          setLoading(false)
         } else {
           console.warn('⚠️ [useAuth] Session localStorage invalide, nettoyage...')
           localStorage.removeItem('sb-auth-token')
@@ -98,9 +98,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setUser(session.user ?? null)
           if (session.user && !sessionFoundInStorage) {
             // Charger le profil seulement si pas déjà fait via localStorage
+            // fetchProfile mettra loading à false quand terminé
             fetchProfile(session.user.id)
           }
-          setLoading(false)
+          // Si session vient de localStorage, fetchProfile est déjà en cours
+          // et mettra loading à false quand le profil sera chargé
+          // Sinon (nouveau getSession), fetchProfile vient d'être appelé ci-dessus
+          // Dans les deux cas, on ne met PAS loading à false ici
         } else if (!sessionFoundInStorage) {
           // Pas de session ni dans localStorage ni via getSession()
           console.log('ℹ️ [useAuth] Aucune session trouvée')
