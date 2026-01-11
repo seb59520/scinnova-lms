@@ -65,17 +65,38 @@ export function Dashboard() {
       }
 
       const allItems: LibraryItem[] = []
+      const isAdmin = profile?.role === 'admin'
 
-      // Récupérer les formations où l'utilisateur est inscrit
-      const { data: enrollments, error: enrollmentsError } = await supabase
-        .from('enrollments')
-        .select(`
-          *,
-          courses (*)
-        `)
-        .eq('user_id', user.id)
-        .eq('status', 'active')
+      // Faire TOUTES les requêtes en parallèle pour optimiser le chargement
+      const promises: Promise<any>[] = [
+        // Inscriptions aux cours
+        supabase
+          .from('enrollments')
+          .select(`*, courses (*)`)
+          .eq('user_id', user.id)
+          .eq('status', 'active'),
+        // Inscriptions aux programmes
+        supabase
+          .from('program_enrollments')
+          .select(`*, programs (*)`)
+          .eq('user_id', user.id)
+          .eq('status', 'active'),
+      ]
 
+      // Si admin, ajouter les requêtes pour tous les cours et programmes
+      if (isAdmin) {
+        promises.push(
+          supabase.from('courses').select('*').order('created_at', { ascending: false }),
+          supabase.from('programs').select('*').order('created_at', { ascending: false })
+        )
+      }
+
+      const results = await Promise.all(promises)
+      
+      const [enrollmentsResult, programEnrollmentsResult, coursesResult, programsResult] = results
+
+      // Traiter les inscriptions aux cours
+      const { data: enrollments, error: enrollmentsError } = enrollmentsResult
       if (enrollmentsError && enrollmentsError.code !== 'PGRST116') {
         console.error('Error fetching enrollments:', enrollmentsError)
         if (isAuthError(enrollmentsError)) {
@@ -84,7 +105,7 @@ export function Dashboard() {
         }
       }
 
-      const enrolledCourses: CourseWithEnrollment[] = (enrollments?.map(e => ({
+      const enrolledCourses: CourseWithEnrollment[] = (enrollments?.map((e: any) => ({
         ...e.courses,
         enrollment: e,
         type: 'course' as const
@@ -92,23 +113,12 @@ export function Dashboard() {
 
       allItems.push(...enrolledCourses)
 
-      // Récupérer les programmes où l'utilisateur est inscrit
-      const { data: programEnrollments, error: programEnrollmentsError } = await supabase
-        .from('program_enrollments')
-        .select(`
-          *,
-          programs (*)
-        `)
-        .eq('user_id', user.id)
-        .eq('status', 'active')
-
+      // Traiter les inscriptions aux programmes
+      const { data: programEnrollments, error: programEnrollmentsError } = programEnrollmentsResult
       if (programEnrollmentsError && programEnrollmentsError.code !== 'PGRST116') {
         console.error('Error fetching program enrollments:', programEnrollmentsError)
-        if (isAuthError(programEnrollmentsError)) {
-          console.error('Auth error fetching programs')
-        }
       } else {
-        const enrolledPrograms: ProgramWithEnrollment[] = (programEnrollments?.map(e => ({
+        const enrolledPrograms: ProgramWithEnrollment[] = (programEnrollments?.map((e: any) => ({
           ...e.programs,
           enrollment: e,
           type: 'program' as const
@@ -117,18 +127,8 @@ export function Dashboard() {
         allItems.push(...enrolledPrograms)
       }
 
-      // Si admin, récupérer aussi toutes les formations et programmes (pour gestion)
-      if (profile?.role === 'admin') {
-        const [coursesResult, programsResult] = await Promise.all([
-          supabase
-            .from('courses')
-            .select('*')
-            .order('created_at', { ascending: false }),
-          supabase
-            .from('programs')
-            .select('*')
-            .order('created_at', { ascending: false })
-        ])
+      // Si admin, ajouter tous les cours et programmes
+      if (isAdmin && coursesResult && programsResult) {
 
         // Créer des maps pour éviter les doublons
         const courseMap = new Map<string, CourseWithEnrollment>()
