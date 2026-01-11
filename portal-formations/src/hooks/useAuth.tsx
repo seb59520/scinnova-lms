@@ -31,14 +31,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let mounted = true
     let timeoutId: NodeJS.Timeout | null = null
+    let sessionFoundInStorage = false
 
-    // Nettoyer le localStorage potentiellement corrompu au démarrage
+    // ÉTAPE 1: Vérifier IMMÉDIATEMENT le localStorage pour une session valide
+    // Cela évite d'attendre getSession() qui peut être lent
     try {
       const storedSession = localStorage.getItem('sb-auth-token')
       if (storedSession) {
         const parsed = JSON.parse(storedSession)
         // Vérifier que la session est valide (a un access_token et un user)
-        if (!parsed?.access_token || !parsed?.user?.id) {
+        if (parsed?.access_token && parsed?.user?.id) {
+          console.log('✅ [useAuth] Session valide trouvée dans localStorage, utilisation immédiate')
+          setSession(parsed)
+          setUser(parsed.user)
+          sessionFoundInStorage = true
+          // Charger le profil immédiatement
+          fetchProfile(parsed.user.id)
+          // Mettre loading à false rapidement pour débloquer l'UI
+          setLoading(false)
+        } else {
           console.warn('⚠️ [useAuth] Session localStorage invalide, nettoyage...')
           localStorage.removeItem('sb-auth-token')
         }
@@ -50,72 +61,61 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch {}
     }
 
-    // Timeout de sécurité pour éviter un blocage infini (optimisé)
-    timeoutId = setTimeout(() => {
-      if (mounted) {
-        console.warn('Auth loading timeout - forcing loading to false')
-        setLoading(false)
-        // Essayer de récupérer la session depuis le localStorage avant de forcer à null
-        try {
-          const storedSession = localStorage.getItem('sb-auth-token')
-          if (storedSession) {
-            const parsed = JSON.parse(storedSession)
-            // Supabase stocke la session directement avec access_token, pas dans currentSession
-            if (parsed?.access_token && parsed?.user) {
-              console.log('Found valid session in localStorage after timeout, using it')
-              setSession(parsed)
-              setUser(parsed.user)
-              if (parsed.user?.id) {
-                fetchProfile(parsed.user.id)
-              }
-              return
-            }
-          }
-        } catch (e) {
-          console.warn('Could not parse stored session:', e)
-          // Nettoyer le localStorage corrompu
-          try {
-            localStorage.removeItem('sb-auth-token')
-          } catch {}
+    // ÉTAPE 2: Timeout de sécurité (seulement si pas de session trouvée dans localStorage)
+    if (!sessionFoundInStorage) {
+      timeoutId = setTimeout(() => {
+        if (mounted && loading) {
+          console.warn('Auth loading timeout - forcing loading to false')
+          setLoading(false)
+          setProfile(null)
+          setUser(null)
+          setSession(null)
         }
-        // Si pas de session valide trouvée, forcer à null
-        setProfile(null)
-        setUser(null)
-        setSession(null)
-      }
-    }, 8000) // 8 secondes max (optimisé)
+      }, 3000) // Réduit à 3 secondes car le localStorage est déjà vérifié
+    }
 
-    // Récupérer la session initiale
-    // NOTE: Supabase stocke automatiquement la session dans localStorage
-    // onAuthStateChange détecte SIGNED_IN immédiatement depuis localStorage
-    // On s'appuie donc sur onAuthStateChange qui fonctionne déjà et évite les appels réseau
-    console.log('🔍 [useAuth] Début de la récupération de session')
+    // ÉTAPE 3: Récupérer la session via getSession() en arrière-plan
+    // Cela synchronise avec Supabase et valide le token
+    console.log('🔍 [useAuth] Début de la récupération de session via getSession()')
     
-    // Essayer getSession() en arrière-plan (sans bloquer)
-    // Supabase lit automatiquement depuis localStorage, donc c'est rapide
-    // Si ça timeout, onAuthStateChange prendra le relais (il détecte déjà SIGNED_IN depuis localStorage)
     supabase.auth.getSession()
       .then(({ data: { session }, error }) => {
         if (!mounted) return
+        if (timeoutId) clearTimeout(timeoutId)
+        
         if (error) {
-          console.warn('⚠️ [useAuth] getSession() erreur (non bloquant):', error.message)
+          console.warn('⚠️ [useAuth] getSession() erreur:', error.message)
+          // Si erreur et pas de session en storage, déconnecter
+          if (!sessionFoundInStorage) {
+            setLoading(false)
+          }
           return
         }
+        
         if (session) {
-          console.log('✅ [useAuth] Session récupérée via getSession() (depuis localStorage)')
+          console.log('✅ [useAuth] Session confirmée via getSession()')
           setSession(session)
           setUser(session.user ?? null)
-          if (session.user) {
+          if (session.user && !sessionFoundInStorage) {
+            // Charger le profil seulement si pas déjà fait via localStorage
             fetchProfile(session.user.id)
           }
           setLoading(false)
-          if (timeoutId) clearTimeout(timeoutId)
+        } else if (!sessionFoundInStorage) {
+          // Pas de session ni dans localStorage ni via getSession()
+          console.log('ℹ️ [useAuth] Aucune session trouvée')
+          setLoading(false)
+          setUser(null)
+          setSession(null)
         }
       })
       .catch((error) => {
-        // Ignorer les erreurs de getSession() - onAuthStateChange prendra le relais
-        // onAuthStateChange lit aussi depuis localStorage, donc pas d'appel réseau
-        console.warn('⚠️ [useAuth] getSession() timeout (non bloquant, onAuthStateChange prendra le relais depuis localStorage):', error.message)
+        if (!mounted) return
+        console.warn('⚠️ [useAuth] getSession() exception:', error?.message)
+        // En cas d'erreur réseau, utiliser la session du localStorage si disponible
+        if (!sessionFoundInStorage) {
+          setLoading(false)
+        }
       })
 
     // Écouter les changements d'authentification
