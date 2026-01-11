@@ -33,31 +33,51 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let timeoutId: NodeJS.Timeout | null = null
     let sessionFoundInStorage = false
 
-    // ÉTAPE 1: Vérifier IMMÉDIATEMENT le localStorage pour une session valide
-    // Cela évite d'attendre getSession() qui peut être lent
+    // ÉTAPE 1: Vérifier IMMÉDIATEMENT le localStorage pour une session ET un profil valides
+    // Cela évite d'attendre les appels réseau qui peuvent être lents
     try {
       const storedSession = localStorage.getItem('sb-auth-token')
+      const cachedProfile = localStorage.getItem('sb-profile-cache')
+      
       if (storedSession) {
         const parsed = JSON.parse(storedSession)
         // Vérifier que la session est valide (a un access_token et un user)
         if (parsed?.access_token && parsed?.user?.id) {
-          console.log('✅ [useAuth] Session valide trouvée dans localStorage, utilisation immédiate')
+          console.log('✅ [useAuth] Session valide trouvée dans localStorage')
           setSession(parsed)
           setUser(parsed.user)
           sessionFoundInStorage = true
-          // Charger le profil immédiatement
-          // NOTE: fetchProfile mettra loading à false quand le profil sera chargé
-          // On ne met PAS loading à false ici pour attendre le profil
+          
+          // Vérifier si on a un profil en cache pour cet utilisateur
+          if (cachedProfile) {
+            try {
+              const profileData = JSON.parse(cachedProfile)
+              // Vérifier que le profil correspond à l'utilisateur actuel
+              if (profileData?.id === parsed.user.id && profileData?.role) {
+                console.log('✅ [useAuth] Profil trouvé en cache, role:', profileData.role)
+                setProfile(profileData)
+                // On peut mettre loading à false car on a session + profil
+                setLoading(false)
+              }
+            } catch {
+              // Cache profil invalide, on le supprime
+              localStorage.removeItem('sb-profile-cache')
+            }
+          }
+          
+          // Charger/valider le profil depuis la base (en arrière-plan si déjà en cache)
           fetchProfile(parsed.user.id)
         } else {
           console.warn('⚠️ [useAuth] Session localStorage invalide, nettoyage...')
           localStorage.removeItem('sb-auth-token')
+          localStorage.removeItem('sb-profile-cache')
         }
       }
     } catch (e) {
       console.warn('⚠️ [useAuth] Erreur de parsing localStorage, nettoyage...')
       try {
         localStorage.removeItem('sb-auth-token')
+        localStorage.removeItem('sb-profile-cache')
       } catch {}
     }
 
@@ -427,6 +447,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
         console.log('✅ [useAuth] Setting profile state...')
         setProfile(data)
+        
+        // Sauvegarder le profil dans le cache localStorage pour un chargement instantané
+        try {
+          localStorage.setItem('sb-profile-cache', JSON.stringify(data))
+          console.log('✅ [useAuth] Profile saved to cache')
+        } catch (cacheError) {
+          console.warn('Could not cache profile:', cacheError)
+        }
+        
         console.log('✅ [useAuth] Profile state set to:', data)
       } else {
         // Pas de données mais pas d'erreur (maybeSingle retourne null si pas de résultat)
@@ -586,6 +615,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setProfile(null)
       setSession(null)
       
+      // Nettoyer le cache du profil
+      try {
+        localStorage.removeItem('sb-profile-cache')
+      } catch {}
+
       // Déconnecter de Supabase
       const { error } = await supabase.auth.signOut()
       if (error) {
