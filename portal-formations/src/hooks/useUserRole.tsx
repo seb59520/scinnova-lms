@@ -13,6 +13,7 @@ export function useUserRole() {
   const [loading, setLoading] = useState(true);
 
   const fetchRole = useCallback(async () => {
+    // Pas d'utilisateur = pas de rôle, terminer immédiatement
     if (!user?.id) {
       setRoleContext(null);
       setLoading(false);
@@ -34,35 +35,29 @@ export function useUserRole() {
       return;
     }
 
-    setLoading(true);
-    try {
-      // Passer le profil en cache pour éviter une requête supplémentaire
-      const context = await getUserRole(user.id, profile || undefined);
-      console.log('🔍 useUserRole - Rôle déterminé:', context);
-      console.log('🔍 useUserRole - Profil actuel:', profile);
-      setRoleContext(context);
-    } catch (error) {
-      console.error('❌ Erreur dans useUserRole:', error);
-      // En cas d'erreur, utiliser le rôle du profil si disponible
-      if (profile?.role) {
-        const fallbackRole = profile.role === 'admin' ? 'admin' :
-                            profile.role === 'instructor' ? 'trainer' :
-                            profile.role === 'student' ? 'student' : 'student';
-        setRoleContext({
-          role: fallbackRole as any,
-          source: profile.role === 'admin' ? 'profiles_admin' : 'profiles_default',
-          orgId: null,
-        });
-      } else {
-        // Si pas de profil, retourner un rôle par défaut plutôt que null
-        setRoleContext({
-          role: 'student',
-          source: 'profiles_default',
-          orgId: null,
-        });
-      }
-    } finally {
-      setLoading(false);
+    // IMPORTANT: Ne pas faire de requête supplémentaire si le profil n'est pas chargé
+    // Cela évite les blocages quand Supabase ne répond pas
+    // Utiliser un rôle par défaut et laisser l'application fonctionner
+    console.warn('⚠️ useUserRole - Profil non disponible, utilisation du rôle par défaut (student)');
+    setRoleContext({
+      role: 'student',
+      source: 'profiles_default',
+      orgId: null,
+    });
+    setLoading(false);
+    
+    // Optionnel: essayer de charger le rôle en arrière-plan avec timeout
+    // mais ne pas bloquer l'interface
+    if (user?.id) {
+      const timeoutPromise = new Promise<null>((resolve) => setTimeout(() => resolve(null), 3000));
+      const rolePromise = getUserRole(user.id, profile || undefined).catch(() => null);
+      
+      Promise.race([rolePromise, timeoutPromise]).then((context) => {
+        if (context && context.role) {
+          console.log('🔍 useUserRole - Rôle chargé en arrière-plan:', context);
+          setRoleContext(context);
+        }
+      });
     }
   }, [user?.id, profile]); // Re-fetch si l'utilisateur ou le profil change
 
