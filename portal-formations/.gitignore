@@ -52,4 +52,8 @@ jspm_packages/
 # Yarn Integrity file
 .yarn-integrity
 
-
+# Large data files
+*.csv
+*.csv.gz
+sales_*.csv
+sales_*.csv.gz
