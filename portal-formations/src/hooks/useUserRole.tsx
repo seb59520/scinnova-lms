@@ -3,7 +3,7 @@
  * Utilise getUserRole() pour garantir une détermination cohérente du rôle
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from './useAuth';
 import { getUserRole, type UnifiedRole, type UserRoleContext } from '../lib/queries/userRole';
 
@@ -11,27 +11,43 @@ export function useUserRole() {
   const { user, profile } = useAuth();
   const [roleContext, setRoleContext] = useState<UserRoleContext | null>(null);
   const [loading, setLoading] = useState(true);
+  
+  // Utiliser des refs pour éviter les boucles de dépendances
+  const userIdRef = useRef<string | undefined>(user?.id);
+  const profileRoleRef = useRef<string | undefined>(profile?.role);
+  const hasLoadedRef = useRef(false);
+
+  // Mettre à jour les refs quand les valeurs changent
+  useEffect(() => {
+    userIdRef.current = user?.id;
+    profileRoleRef.current = profile?.role;
+  }, [user?.id, profile?.role]);
 
   const fetchRole = useCallback(async () => {
+    const userId = userIdRef.current;
+    const profileRole = profileRoleRef.current;
+    
     // Pas d'utilisateur = pas de rôle, terminer immédiatement
-    if (!user?.id) {
+    if (!userId) {
       setRoleContext(null);
       setLoading(false);
+      hasLoadedRef.current = false;
       return;
     }
 
     // Si on a déjà le profil en cache, l'utiliser directement sans requête
-    if (profile?.role) {
-      console.log('✅ useUserRole - Utilisation du profil en cache:', profile);
-      const roleFromProfile = profile.role === 'admin' ? 'admin' :
-                              profile.role === 'instructor' ? 'trainer' :
-                              profile.role === 'student' ? 'student' : 'student';
+    if (profileRole) {
+      console.log('✅ useUserRole - Utilisation du profil en cache, role:', profileRole);
+      const roleFromProfile = profileRole === 'admin' ? 'admin' :
+                              profileRole === 'instructor' ? 'trainer' :
+                              profileRole === 'student' ? 'student' : 'student';
       setRoleContext({
-        role: roleFromProfile as any,
-        source: profile.role === 'admin' ? 'profiles_admin' : 'profiles_default',
+        role: roleFromProfile as UnifiedRole,
+        source: profileRole === 'admin' ? 'profiles_admin' : 'profiles_default',
         orgId: null,
       });
       setLoading(false);
+      hasLoadedRef.current = true;
       return;
     }
 
@@ -47,10 +63,11 @@ export function useUserRole() {
     setLoading(false);
     
     // Optionnel: essayer de charger le rôle en arrière-plan avec timeout
-    // mais ne pas bloquer l'interface
-    if (user?.id) {
+    // mais ne pas bloquer l'interface - et seulement si pas déjà fait
+    if (userId && !hasLoadedRef.current) {
+      hasLoadedRef.current = true;
       const timeoutPromise = new Promise<null>((resolve) => setTimeout(() => resolve(null), 3000));
-      const rolePromise = getUserRole(user.id, profile || undefined).catch(() => null);
+      const rolePromise = getUserRole(userId, undefined).catch(() => null);
       
       Promise.race([rolePromise, timeoutPromise]).then((context) => {
         if (context && context.role) {
@@ -59,21 +76,17 @@ export function useUserRole() {
         }
       });
     }
-  }, [user?.id, profile]); // Re-fetch si l'utilisateur ou le profil change
+  }, []); // Pas de dépendances - utilise les refs
 
+  // Effect pour charger le rôle quand user.id ou profile.role change
   useEffect(() => {
-    let mounted = true;
-
-    async function loadRole() {
-      await fetchRole();
+    // Réinitialiser hasLoadedRef si l'utilisateur change
+    if (user?.id !== userIdRef.current) {
+      hasLoadedRef.current = false;
     }
-
-    loadRole();
-
-    return () => {
-      mounted = false;
-    };
-  }, [fetchRole]); // Re-fetch quand fetchRole change (qui dépend de user?.id et profile?.role)
+    
+    fetchRole();
+  }, [user?.id, profile?.role, fetchRole]); // Dépendances stables
 
   // Retourner le rôle unifié avec des helpers
   const role: UnifiedRole = roleContext?.role ?? null;
