@@ -96,8 +96,6 @@ export function DataScience({ passengers }: DataScienceProps) {
   }, [passengers]);
 
   const handleAnswer = (questionId: string, dropdownValue: string, inputValue: string) => {
-    if (!dropdownValue || !inputValue) return;
-
     const answer: Answer = {
       questionId,
       dropdownValue,

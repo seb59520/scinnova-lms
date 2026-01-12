@@ -55,8 +55,6 @@ export function BigData({ passengers }: BigDataProps) {
   });
 
   const handleAnswer = (questionId: string, dropdownValue: string, inputValue: string) => {
-    if (!dropdownValue || !inputValue) return;
-
     const answer: Answer = {
       questionId,
       dropdownValue,
