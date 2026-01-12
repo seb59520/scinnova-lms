@@ -122,160 +122,134 @@ export function AdminCoursesContent() {
           setCoursePrograms(programsByCourse)
         }
 
-        // Récupérer les modules et items (TP et exercices) pour chaque formation
+        // Récupérer les modules et items (TP et exercices) pour TOUTES les formations en parallèle
+        // Optimisation: requêtes groupées au lieu de requêtes séquentielles
+        
+        // 1. Récupérer TOUS les modules de tous les cours en une seule requête
+        const { data: allModulesData } = await supabase
+          .from('modules')
+          .select('id, title, course_id')
+          .in('course_id', courseIds)
+          .order('position', { ascending: true })
+
+        // Créer un map course_id -> modules
+        const modulesByCourse = new Map<string, Array<{ id: string; title: string }>>()
+        const allModuleIds: string[] = []
+        
+        allModulesData?.forEach(m => {
+          if (!modulesByCourse.has(m.course_id)) {
+            modulesByCourse.set(m.course_id, [])
+          }
+          modulesByCourse.get(m.course_id)!.push({ id: m.id, title: m.title })
+          allModuleIds.push(m.id)
+        })
+
+        // 2. Récupérer TOUS les items TP/exercices de tous les modules en une seule requête
+        let allItemsData: any[] = []
+        if (allModuleIds.length > 0) {
+          const { data: itemsData } = await supabase
+            .from('items')
+            .select('id, title, type, module_id')
+            .in('module_id', allModuleIds)
+            .in('type', ['tp', 'exercise'])
+            .order('position', { ascending: true })
+          
+          allItemsData = itemsData || []
+        }
+
+        // 3. Récupérer TOUTES les associations course_tps en une seule requête
+        const { data: allDirectTpsData } = await supabase
+          .from('course_tps')
+          .select(`
+            course_id,
+            item_id,
+            items (
+              id,
+              title,
+              type
+            )
+          `)
+          .in('course_id', courseIds)
+          .eq('is_visible', true)
+          .order('position', { ascending: true })
+
+        // 4. Récupérer les cours qui sont des TP complets (pour exclusion)
+        const allItemIds = [
+          ...allItemsData.map(i => i.id),
+          ...(allDirectTpsData?.filter(ct => ct.items).map(ct => (ct.items as any).id) || [])
+        ]
+        
+        let tpCourseIdsToExclude = new Set<string>()
+        if (allItemIds.length > 0) {
+          const { data: coursesAsItems } = await supabase
+            .from('courses')
+            .select('id, title')
+            .in('id', allItemIds)
+          
+          tpCourseIdsToExclude = new Set(
+            coursesAsItems
+              ?.filter(c => c.title?.trim().toUpperCase().startsWith('TP'))
+              .map(c => c.id) || []
+          )
+        }
+
+        // 5. Assembler les données par cours
         const itemsByCourse: Record<string, CourseItem[]> = {}
         
-        for (const courseId of courseIds) {
-          const courseItems: CourseItem[] = []
+        // Créer un map module_id -> course_id
+        const moduleToCourse = new Map<string, string>()
+        const moduleTitles = new Map<string, string>()
+        allModulesData?.forEach(m => {
+          moduleToCourse.set(m.id, m.course_id)
+          moduleTitles.set(m.id, m.title)
+        })
+
+        // Traiter les items des modules
+        allItemsData.forEach(item => {
+          if (tpCourseIdsToExclude.has(item.id)) return // Exclure les cours TP
           
-          // 1. Récupérer les TP/exercices dans les modules
-          const { data: modulesData } = await supabase
-            .from('modules')
-            .select('id, title')
-            .eq('course_id', courseId)
-            .order('position', { ascending: true })
-
-          if (modulesData && modulesData.length > 0) {
-            const moduleIds = modulesData.map(m => m.id)
-            const moduleTitles = new Map(modulesData.map(m => [m.id, m.title]))
-
-            // Récupérer les items TP et exercices de ces modules
-            const { data: itemsData, error: itemsError } = await supabase
-              .from('items')
-              .select('id, title, type, module_id')
-              .in('module_id', moduleIds)
-              .in('type', ['tp', 'exercise'])
-              .order('position', { ascending: true })
-
-            if (itemsError) {
-              // Ignorer les erreurs d'abort
-              if (!itemsError.message?.includes('aborted') && !itemsError.message?.includes('AbortError')) {
-                console.error(`Erreur lors du chargement des items pour le cours ${courseId}:`, itemsError)
-              }
-            }
-
-            if (itemsData && itemsData.length > 0) {
-              // Vérifier si certains items sont des cours complets (titre commence par "TP")
-              const itemIds = itemsData.map(item => item.id)
-              const { data: coursesData } = await supabase
-                .from('courses')
-                .select('id, title')
-                .in('id', itemIds)
-
-              const tpCourseIds = new Set(
-                coursesData
-                  ?.filter(c => c.title?.trim().toUpperCase().startsWith('TP'))
-                  .map(c => c.id) || []
-              )
-
-              const filteredItems = itemsData.filter(item => {
-                // Exclure les items qui sont des cours complets (TP)
-                if (tpCourseIds.has(item.id)) {
-                  console.log(`⚠️ Item ${item.id} "${item.title}" est un cours complet (TP), exclu de la liste des items`)
-                  return false
-                }
-                return true
-              })
-
-              courseItems.push(...filteredItems.map(item => ({
-                id: item.id,
-                title: item.title,
-                type: item.type as 'tp' | 'exercise',
-                module_id: item.module_id,
-                module_title: moduleTitles.get(item.module_id)
-              })))
-              console.log(`✅ Cours ${courseId}: ${filteredItems.length} TP/exercices trouvés dans les modules (cours TP exclus)`, filteredItems)
-            }
+          const courseId = moduleToCourse.get(item.module_id)
+          if (!courseId) return
+          
+          if (!itemsByCourse[courseId]) {
+            itemsByCourse[courseId] = []
           }
+          
+          itemsByCourse[courseId].push({
+            id: item.id,
+            title: item.title,
+            type: item.type as 'tp' | 'exercise',
+            module_id: item.module_id,
+            module_title: moduleTitles.get(item.module_id)
+          })
+        })
 
-          // 2. Récupérer les TP associés directement via course_tps
-          // Mais exclure les cours qui sont des TP complets (titre commence par "TP")
-          const { data: directTpsData, error: directTpsError } = await supabase
-            .from('course_tps')
-            .select(`
-              item_id,
-              position,
-              is_required,
-              is_visible,
-              items (
-                id,
-                title,
-                type
-              )
-            `)
-            .eq('course_id', courseId)
-            .eq('is_visible', true)
-            .order('position', { ascending: true })
-
-          if (directTpsError) {
-            // Ignorer les erreurs d'abort
-            if (!directTpsError.message?.includes('aborted') && !directTpsError.message?.includes('AbortError')) {
-              console.error(`Erreur lors du chargement des TP associés pour le cours ${courseId}:`, directTpsError)
-            }
-          } else if (directTpsData && directTpsData.length > 0) {
-            // Vérifier si l'item est un cours complet (titre commence par "TP")
-            // Si c'est le cas, vérifier dans la table courses
-            const itemIds = directTpsData
-              .filter(ct => ct.items && (ct.items as any).type === 'tp')
-              .map(ct => (ct.items as any).id)
-
-            // Vérifier si ces items correspondent à des cours complets
-            const { data: coursesData } = await supabase
-              .from('courses')
-              .select('id, title')
-              .in('id', itemIds)
-
-            const courseIdsSet = new Set(coursesData?.map(c => c.id) || [])
-            const tpCourseTitles = new Set(
-              coursesData
-                ?.filter(c => c.title?.trim().toUpperCase().startsWith('TP'))
-                .map(c => c.id) || []
-            )
-
-            const directTps = directTpsData
-              .filter(ct => {
-                if (!ct.items || (ct.items as any).type !== 'tp') return false
-                const itemId = (ct.items as any).id
-                // Exclure si c'est un cours complet qui commence par "TP"
-                if (tpCourseTitles.has(itemId)) {
-                  console.log(`⚠️ Item ${itemId} est un cours complet (TP), exclu de la liste des items`)
-                  return false
-                }
-                return true
-              })
-              .map(ct => ({
-                id: (ct.items as any).id,
-                title: (ct.items as any).title,
-                type: 'tp' as const,
-                module_id: '', // Pas de module pour les TP associés directement
-                module_title: 'TP associé directement',
-                isDirectAssociation: true
-              }))
-            
-            courseItems.push(...directTps)
-            console.log(`✅ Cours ${courseId}: ${directTps.length} TP associés directement trouvés (cours TP exclus)`, directTps)
+        // Traiter les TP associés directement
+        allDirectTpsData?.forEach(ct => {
+          if (!ct.items || (ct.items as any).type !== 'tp') return
+          const itemId = (ct.items as any).id
+          if (tpCourseIdsToExclude.has(itemId)) return // Exclure les cours TP
+          
+          if (!itemsByCourse[ct.course_id]) {
+            itemsByCourse[ct.course_id] = []
           }
-
-          if (courseItems.length > 0) {
-            itemsByCourse[courseId] = courseItems
-          } else {
-            console.log(`ℹ️ Cours ${courseId}: Aucun TP/exercice trouvé`)
+          
+          // Éviter les doublons
+          if (!itemsByCourse[ct.course_id].some(i => i.id === itemId)) {
+            itemsByCourse[ct.course_id].push({
+              id: itemId,
+              title: (ct.items as any).title,
+              type: 'tp' as const,
+              module_id: '',
+              module_title: 'TP associé directement',
+              isDirectAssociation: true
+            })
           }
-        }
+        })
 
         setCourseItems(itemsByCourse)
         const totalItems = Object.values(itemsByCourse).reduce((sum, items) => sum + items.length, 0)
-        console.log(`📚 ${totalItems} TP/exercices chargés au total pour ${Object.keys(itemsByCourse).length} formations:`, itemsByCourse)
-        
-        // Log spécifique pour le cours "Big Data, Data Science, Machine Learning"
-        const bigDataCourse = data.find(c => c.title?.includes('Big Data') || c.title?.includes('Machine Learning'))
-        if (bigDataCourse) {
-          const bigDataItems = itemsByCourse[bigDataCourse.id] || []
-          console.log(`🔍 Cours "${bigDataCourse.title}" (ID: ${bigDataCourse.id}):`, {
-            itemsCount: bigDataItems.length,
-            items: bigDataItems
-          })
-        }
+        console.log(`📚 ${totalItems} TP/exercices chargés au total pour ${Object.keys(itemsByCourse).length} formations`)
       }
     } catch (error: any) {
       // Ignorer les erreurs d'abort
