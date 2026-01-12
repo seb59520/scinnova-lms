@@ -162,7 +162,6 @@
           "position": 1,
           "published": true,
           "content": {
-            "titanicModule": "data-science",
             "description": "Travaux pratiques interactifs sur l'analyse statistique et la visualisation avec le dataset Titanic",
             "instructions": {
               "type": "doc",

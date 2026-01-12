@@ -1,0 +1,1715 @@
+{
+  "title": "Fil Rouge Databricks : E-commerce",
+  "slug": "databricks-fil-rouge",
+  "description": "Parcours complet Big Data → Data Science → Machine Learning à travers l'analyse et la prédiction de la performance commerciale d'un e-commerce avec 2 millions de lignes.",
+  "duration": "3 heures",
+  "level": "Intermédiaire",
+  "published": true,
+  "modules": [
+    {
+      "title": "Module 0 : Introduction & Présentation",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#6366F1",
+        "secondaryColor": "#4F46E5"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "0.1 Présentation du Fil Rouge",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Vue d'ensemble du fil rouge, objectifs pédagogiques et présentation du dataset."
+          },
+          "chapters": [
+            {
+              "title": "Objectifs pédagogiques",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎯 Objectifs du Fil Rouge" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Ce fil rouge couvre le parcours complet " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Big Data → Data Science → Machine Learning" },
+                      { "type": "text", "text": " à travers un cas métier concret : l'analyse et la prédiction de la performance commerciale d'un e-commerce." }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "À l'issue de ce fil rouge, les participants sauront :" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Big Data" },
+                          { "type": "text", "text": " : Ingérer et traiter des données massives avec Spark" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Data Science" },
+                          { "type": "text", "text": " : Explorer, fiabiliser et préparer des données pour le ML" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Machine Learning" },
+                          { "type": "text", "text": " : Construire, évaluer et déployer un modèle de classification" }
+                        ]}]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Dataset : sales_2M.csv",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📊 Dataset : sales_2M.csv" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Le dataset contient 2 millions de commandes e-commerce sur 2 ans (2023-2024)." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Colonnes disponibles" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "order_id" },
+                        { "type": "text", "text": " (String) : Identifiant unique de commande" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "order_date" },
+                        { "type": "text", "text": " (Date) : Date de la commande" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "product" },
+                        { "type": "text", "text": " (String) : Nom du produit" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "category" },
+                        { "type": "text", "text": " (String) : Catégorie (Électronique, Informatique, Audio)" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "country" },
+                        { "type": "text", "text": " (String) : Pays du client" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "price" },
+                        { "type": "text", "text": " (Float) : Prix unitaire en €" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "quantity" },
+                        { "type": "text", "text": " (Integer) : Quantité commandée" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "channel" },
+                        { "type": "text", "text": " (String) : Canal de vente (Web, Mobile, Magasin)" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "payment" },
+                        { "type": "text", "text": " (String) : Moyen de paiement" }
+                      ]}]}
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Prérequis techniques",
+              "position": 2,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🚀 Prérequis Techniques" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Environnement Databricks" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Cluster avec Spark 3.x" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Runtime ML recommandé" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Au moins 4 workers pour le traitement des 2M lignes" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Upload du Dataset" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "text": "Aller dans " },
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Data" },
+                        { "type": "text", "text": " > " },
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Create Table" },
+                        { "type": "text", "text": " > " },
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Upload File" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "text": "Uploader " },
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "sales_2M.csv" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "text": "Noter le chemin (ex: " },
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "dbfs:/FileStore/tables/sales_2M.csv" },
+                        { "type": "text", "text": ")" }
+                      ]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 1 : TP Big Data — Ingestion & Delta Lake",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#059669"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Objectifs du TP Big Data",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Passer du CSV brut à une table Delta exploitable. Durée estimée : 45-60 minutes."
+          },
+          "chapters": [
+            {
+              "title": "Mission et objectifs",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎯 TP Big Data — Ingestion & Delta Lake" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Mission : " },
+                      { "type": "text", "text": "Passer du CSV brut à une table Delta exploitable" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "À la fin de ce notebook, vous saurez :" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Charger un fichier CSV avec Spark (inférence de schéma)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Normaliser les types de données (date, double, int)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Calculer des colonnes dérivées (revenue)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Persister en Delta Lake pour des analyses performantes" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Réaliser des agrégations BI classiques" }]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Exercice 1 : Lecture du CSV",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Charger le fichier CSV avec Spark en activant l'inférence de schéma."
+          },
+          "chapters": [
+            {
+              "title": "Consignes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📖 Exercice 1 : Lecture Spark du CSV" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Consigne : " },
+                      { "type": "text", "text": "Chargez le fichier CSV avec Spark en activant l'inférence de schéma et la détection des en-têtes." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Code à compléter" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Dans Databricks, exécutez le code suivant :" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "file_path = \"dbfs:/FileStore/tables/sales_2M.csv\"" }
+                      ]},
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "# TODO: Charger le CSV avec spark.read" }
+                      ]},
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "# Utiliser les options: header=True, inferSchema=True" }
+                      ]},
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "df_raw = spark.read... # Complétez" }
+                      ]},
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "display(df_raw.limit(5))" }
+                      ]},
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "df_raw.printSchema()" }
+                      ]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "💡 Indice" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Utilisez " },
+                      { "type": "text", "marks": [{ "type": "code" }], "text": "spark.read.option(\"header\", \"true\").option(\"inferSchema\", \"true\").csv(file_path)" }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.3 Exercice 2 : Normalisation des types",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Convertir les colonnes dans les bons types et calculer le revenue."
+          },
+          "chapters": [
+            {
+              "title": "Consignes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔧 Exercice 2 : Normalisation des types" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Consigne : " },
+                      { "type": "text", "text": "Convertissez les colonnes dans les bons types et calculez le revenue (price × quantity)." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "TODO" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "order_date" },
+                        { "type": "text", "text": " → " },
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "to_date()" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "price" },
+                        { "type": "text", "text": " → " },
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "cast(\"double\")" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "quantity" },
+                        { "type": "text", "text": " → " },
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "cast(\"int\")" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "revenue" },
+                        { "type": "text", "text": " = price × quantity" }
+                      ]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Code de départ" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "from pyspark.sql.functions import col, to_date" }
+                      ]},
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "df = df_raw.withColumn(\"order_date\", to_date(col(\"order_date\")))" }
+                      ]},
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "# Complétez les autres colonnes..." }
+                      ]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "✅ Résultat attendu" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "order_date" },
+                        { "type": "text", "text": " : date" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "price" },
+                        { "type": "text", "text": " : double" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "quantity" },
+                        { "type": "text", "text": " : int" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "revenue" },
+                        { "type": "text", "text": " : double (nouvelle colonne)" }
+                      ]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.4 Exercice 3 : Sauvegarde Delta Lake",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Persister le DataFrame dans une table Delta."
+          },
+          "chapters": [
+            {
+              "title": "Consignes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💾 Exercice 3 : Sauvegarde Delta Lake" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Consigne : " },
+                      { "type": "text", "text": "Persistez le DataFrame normalisé dans une table Delta pour des analyses performantes." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Code" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "df.write.mode(\"overwrite\").format(\"delta\").saveAsTable(\"sales_delta\")" }
+                      ]},
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "print(\"✅ Table sales_delta créée avec succès!\")" }
+                      ]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🤔 Question de réflexion" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [{ "type": "paragraph", "content": [
+                      { "type": "text", "text": "Pourquoi Delta Lake plutôt que rester en CSV ? Quels avantages ?" }
+                    ]}]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.5 Exercice 4 : Analyses BI",
+          "position": 4,
+          "published": true,
+          "content": {
+            "description": "Réaliser 5 agrégations BI sur la table Delta."
+          },
+          "chapters": [
+            {
+              "title": "Consignes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📊 Exercice 4 : Analyses BI" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Consigne : " },
+                      { "type": "text", "text": "Réalisez les 5 agrégations suivantes sur la table Delta :" }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "CA par pays" },
+                        { "type": "text", "text": " : groupBy(\"country\"), sum(\"revenue\"), orderBy desc" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Top 10 produits" },
+                        { "type": "text", "text": " : groupBy(\"product\"), sum(\"revenue\"), limit(10)" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "CA par jour" },
+                        { "type": "text", "text": " : groupBy(\"order_date\"), sum(\"revenue\")" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Performance par canal" },
+                        { "type": "text", "text": " : groupBy(\"channel\"), avg(\"revenue\"), count()" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Répartition paiements" },
+                        { "type": "text", "text": " : groupBy(\"payment\"), count()" }
+                      ]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Exemple de code" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "from pyspark.sql.functions import sum, avg, count" }
+                      ]},
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "df = spark.table(\"sales_delta\")" }
+                      ]},
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "ca_pays = df.groupBy(\"country\").agg(sum(\"revenue\").alias(\"total_ca\")).orderBy(col(\"total_ca\").desc())" }
+                      ]},
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "display(ca_pays)" }
+                      ]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.6 Synthèse TP1",
+          "position": 5,
+          "published": true,
+          "content": {
+            "description": "Récapitulatif des compétences acquises dans le TP Big Data."
+          },
+          "chapters": [
+            {
+              "title": "Ce que vous avez appris",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "✅ Synthèse du TP Big Data" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Vous avez appris à :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Charger un CSV avec Spark (2M lignes)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Normaliser les types de données" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Calculer des colonnes dérivées (revenue)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Persister en Delta Lake" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Réaliser des agrégations BI" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "➡️ Prochaine étape" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Passez au Module 2 — Data Science pour explorer la qualité des données et préparer les features ML." }]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : TP Data Science — Qualité & Features",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#8B5CF6",
+        "secondaryColor": "#7C3AED"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Objectifs du TP Data Science",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Rendre la donnée fiable et construire une cible ML. Durée estimée : 45-60 minutes."
+          },
+          "chapters": [
+            {
+              "title": "Mission et objectifs",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎯 TP Data Science — Qualité & Feature Engineering" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Mission : " },
+                      { "type": "text", "text": "Rendre la donnée fiable + construire une cible ML" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "À la fin de ce notebook, vous saurez :" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Contrôler la qualité des données (nulls, outliers, domaines)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Explorer les distributions et corrélations" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Créer des features temporelles (mois, jour de semaine, année)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Construire une cible binaire pour le ML (high_value_order)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Préparer un dataset propre pour l'entraînement" }]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Exercice 1 : Contrôle qualité",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Vérifier la qualité des données : valeurs nulles, outliers, domaines."
+          },
+          "chapters": [
+            {
+              "title": "Consignes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔍 Exercice 1 : Contrôle Qualité des Données" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Consigne : " },
+                      { "type": "text", "text": "Vérifiez la qualité des données : valeurs nulles, outliers, domaines catégoriels." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "TODO" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Compter les valeurs nulles par colonne" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Vérifier les domaines catégoriels (pays, produits, canaux uniques)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Détecter les outliers sur price et quantity avec describe()" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🤔 Questions de réflexion" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Y a-t-il des valeurs nulles ? Comment les traiter ?" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Les prix min/max sont-ils réalistes ?" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Le nombre de catégories est-il attendu ?" }]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.3 Exercice 2 : Analyse exploratoire (EDA)",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Explorer les distributions et identifier des patterns."
+          },
+          "chapters": [
+            {
+              "title": "Consignes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📈 Exercice 2 : Analyse Exploratoire (EDA)" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Consigne : " },
+                      { "type": "text", "text": "Explorez les distributions et identifiez des patterns dans les données." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Analyses à réaliser" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Distribution du revenue avec describe()" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Panier moyen par pays (groupBy + avg)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Panier moyen par canal" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "CA par catégorie" }]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.4 Exercice 3 : Feature Engineering",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Créer des features temporelles à partir de la date."
+          },
+          "chapters": [
+            {
+              "title": "Consignes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🛠️ Exercice 3 : Feature Engineering" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Consigne : " },
+                      { "type": "text", "text": "Créez des features temporelles à partir de la date de commande." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Features à créer" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "month" },
+                        { "type": "text", "text": " : mois (1-12)" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "dow" },
+                        { "type": "text", "text": " : jour de la semaine (1-7)" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "year" },
+                        { "type": "text", "text": " : année" }
+                      ]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Fonctions Spark utiles" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "from pyspark.sql.functions import month, dayofweek, year" }
+                      ]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🤔 Question de réflexion" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Quelles autres features temporelles pourrait-on créer ? (week_of_year, is_weekend, quarter...)" }]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.5 Exercice 4 : Création de la cible ML",
+          "position": 4,
+          "published": true,
+          "content": {
+            "description": "Créer une variable binaire high_value_order basée sur le 80e percentile."
+          },
+          "chapters": [
+            {
+              "title": "Consignes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎯 Exercice 4 : Création de la Cible ML" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Consigne : " },
+                      { "type": "text", "text": "Créez une variable binaire high_value_order basée sur le 80e percentile du revenue." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Étapes" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "text": "Calculer le seuil avec " },
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "approxQuantile(\"revenue\", [0.8], 0.01)[0]" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "text": "Créer la colonne binaire avec " },
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "when(col(\"revenue\") >= threshold, 1).otherwise(0)" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Vérifier la distribution de la cible (≈20% de 1)" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "⚠️ Attention au Data Leakage !" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [{ "type": "paragraph", "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Important : " },
+                      { "type": "text", "text": "La colonne revenue ne doit PAS être utilisée comme feature dans le modèle, car elle est directement liée à la cible." }
+                    ]}]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.6 Exercice 5 : Préparation du dataset ML",
+          "position": 5,
+          "published": true,
+          "content": {
+            "description": "Sélectionner les colonnes utiles et sauvegarder le dataset ML."
+          },
+          "chapters": [
+            {
+              "title": "Consignes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💾 Exercice 5 : Préparation du Dataset ML" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Consigne : " },
+                      { "type": "text", "text": "Sélectionnez les colonnes utiles et sauvegardez le dataset prêt pour le ML." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Colonnes à conserver" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "order_id, product, category, country, price, quantity, channel, payment" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "month, dow, year (features temporelles)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "high_value_order (cible)" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "⚠️ Attention" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Exclure " },
+                      { "type": "text", "marks": [{ "type": "code" }], "text": "revenue" },
+                      { "type": "text", "text": " pour éviter le data leakage !" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Sauvegarde" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "df_ml.write.mode(\"overwrite\").format(\"delta\").saveAsTable(\"sales_ml_ready\")" }
+                      ]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.7 Synthèse TP2",
+          "position": 6,
+          "published": true,
+          "content": {
+            "description": "Récapitulatif des compétences acquises dans le TP Data Science."
+          },
+          "chapters": [
+            {
+              "title": "Ce que vous avez appris",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "✅ Synthèse du TP Data Science" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Vous avez appris à :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Contrôler la qualité des données" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Explorer les distributions (EDA)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Créer des features temporelles" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Construire une cible binaire pertinente" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Éviter le data leakage" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "➡️ Prochaine étape" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Passez au Module 3 — Machine Learning pour entraîner et évaluer un modèle de classification." }]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : TP Machine Learning — Modèle & Évaluation",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#F59E0B",
+        "secondaryColor": "#D97706"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Objectifs du TP Machine Learning",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Entraîner, évaluer et scorer un modèle de classification. Durée estimée : 45-60 minutes."
+          },
+          "chapters": [
+            {
+              "title": "Mission et objectifs",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎯 TP Machine Learning — Modèle & Évaluation" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Mission : " },
+                      { "type": "text", "text": "Entraîner, évaluer et scorer un modèle de classification" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "À la fin de ce notebook, vous saurez :" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Séparer les données en train/test (80/20)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Construire un pipeline ML (StringIndexer, OneHotEncoder, VectorAssembler)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Entraîner un modèle LogisticRegression" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Évaluer avec AUC et matrice de confusion" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Scorer et interpréter les résultats" }]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Exercice 1 : Split Train/Test",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Séparer les données en 80% train et 20% test."
+          },
+          "chapters": [
+            {
+              "title": "Consignes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "✂️ Exercice 1 : Split Train/Test" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Consigne : " },
+                      { "type": "text", "text": "Séparez les données en 80% train et 20% test avec un seed fixe pour la reproductibilité." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Code" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "df = spark.table(\"sales_ml_ready\")" }
+                      ]},
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "train, test = df.randomSplit([0.8, 0.2], seed=42)" }
+                      ]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🤔 Questions de réflexion" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Pourquoi utiliser un seed fixe ?" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Pourquoi 80/20 et pas 70/30 ?" }]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.3 Exercice 2 : Construction du Pipeline ML",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Construire un pipeline pour encoder les variables et assembler les features."
+          },
+          "chapters": [
+            {
+              "title": "Consignes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔧 Exercice 2 : Construction du Pipeline ML" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Consigne : " },
+                      { "type": "text", "text": "Construisez un pipeline pour encoder les variables catégorielles et assembler les features." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Étapes du pipeline" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "StringIndexer" },
+                        { "type": "text", "text": " : encoder les colonnes catégorielles (product, category, country, channel, payment)" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "OneHotEncoder" },
+                        { "type": "text", "text": " : créer les vecteurs one-hot" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "VectorAssembler" },
+                        { "type": "text", "text": " : assembler toutes les features" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "LogisticRegression" },
+                        { "type": "text", "text": " : maxIter=100, regParam=0.01" }
+                      ]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "⚠️ Important" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Toujours ajouter " },
+                      { "type": "text", "marks": [{ "type": "code" }], "text": "handleInvalid=\"keep\"" },
+                      { "type": "text", "text": " dans StringIndexer pour gérer les valeurs inconnues en test." }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.4 Exercice 3 : Entraînement",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Entraîner le pipeline sur les données d'entraînement."
+          },
+          "chapters": [
+            {
+              "title": "Consignes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🚀 Exercice 3 : Entraînement du Modèle" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Consigne : " },
+                      { "type": "text", "text": "Entraînez le pipeline sur les données d'entraînement." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Code" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "model = pipeline.fit(train)" }
+                      ]},
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "code" }], "text": "predictions = model.transform(test)" }
+                      ]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Vérification" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Affichez quelques prédictions avec les colonnes : order_id, high_value_order, prediction, probability" }]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.5 Exercice 4 : Évaluation",
+          "position": 4,
+          "published": true,
+          "content": {
+            "description": "Évaluer le modèle avec l'AUC et la matrice de confusion."
+          },
+          "chapters": [
+            {
+              "title": "Consignes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📊 Exercice 4 : Évaluation du Modèle" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Consigne : " },
+                      { "type": "text", "text": "Évaluez le modèle avec l'AUC et calculez la matrice de confusion." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Métriques à calculer" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "AUC" },
+                        { "type": "text", "text": " : avec BinaryClassificationEvaluator (areaUnderROC)" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "PR-AUC" },
+                        { "type": "text", "text": " : areaUnderPR" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Matrice de confusion" },
+                        { "type": "text", "text": " : TP, TN, FP, FN" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Precision, Recall, F1, Accuracy" }
+                      ]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🤔 Interprétation" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Un AUC > 0.75 est considéré comme bon. Un AUC proche de 0.5 signifie que le modèle n'est pas meilleur qu'un tirage aléatoire." }]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.6 Exercice 5 : Scoring & Interprétation",
+          "position": 5,
+          "published": true,
+          "content": {
+            "description": "Appliquer le modèle et produire des recommandations métier."
+          },
+          "chapters": [
+            {
+              "title": "Consignes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📈 Exercice 5 : Scoring & Interprétation Métier" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Consigne : " },
+                      { "type": "text", "text": "Appliquez le modèle à toutes les données et produisez des recommandations métier." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Scoring" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Extraire la probabilité de la classe 1 avec " },
+                      { "type": "text", "marks": [{ "type": "code" }], "text": "p_high_value = probability[1]" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "💡 Recommandations métier" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Marketing ciblé" },
+                        { "type": "text", "text": " : Cibler les clients avec p_high_value > 0.7 pour des campagnes premium" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Upselling" },
+                        { "type": "text", "text": " : Proposer des produits complémentaires aux clients à fort potentiel" }
+                      ]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Stock" },
+                        { "type": "text", "text": " : Anticiper les produits favoris des clients haute valeur" }
+                      ]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.7 Extensions avancées (Optionnel)",
+          "position": 6,
+          "published": true,
+          "content": {
+            "description": "MLflow, Random Forest, Cross-Validation pour aller plus loin."
+          },
+          "chapters": [
+            {
+              "title": "Pour aller plus loin",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🚀 Extensions Avancées (Optionnel)" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "1. MLflow Tracking" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Logger les paramètres et métriques avec MLflow pour le suivi des expériences." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "2. Random Forest" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Remplacer LogisticRegression par " },
+                      { "type": "text", "marks": [{ "type": "code" }], "text": "RandomForestClassifier(numTrees=100, maxDepth=10)" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "3. Cross-Validation" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Utiliser " },
+                      { "type": "text", "marks": [{ "type": "code" }], "text": "CrossValidator" },
+                      { "type": "text", "text": " avec une grille de paramètres pour optimiser le modèle." }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.8 Synthèse TP3",
+          "position": 7,
+          "published": true,
+          "content": {
+            "description": "Récapitulatif des compétences acquises dans le TP Machine Learning."
+          },
+          "chapters": [
+            {
+              "title": "Compétences validées",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "✅ Synthèse du TP Machine Learning" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Vous avez appris à :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Séparer correctement train/test" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Construire un pipeline ML avec Spark" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Gérer les variables catégorielles (StringIndexer + OneHotEncoder)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Entraîner une régression logistique" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Évaluer avec AUC, matrice de confusion, F1" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Produire des recommandations métier" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🎓 Compétences validées du Fil Rouge" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Big Data : " },
+                        { "type": "text", "text": "\"Je sais ingérer et traiter des données à grande échelle avec Spark\"" }
+                      ]},
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Data Science : " },
+                        { "type": "text", "text": "\"Je sais explorer, nettoyer et préparer des données pour le ML\"" }
+                      ]},
+                      { "type": "paragraph", "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Machine Learning : " },
+                        { "type": "text", "text": "\"Je sais entraîner un modèle, l'évaluer et produire des recommandations actionnables\"" }
+                      ]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : Ressources & Guide Formateur",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#EF4444",
+        "secondaryColor": "#DC2626"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Pièges courants & Solutions",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Les erreurs fréquentes et comment les résoudre."
+          },
+          "chapters": [
+            {
+              "title": "Pièges courants",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "⚠️ Pièges Courants" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "1. Oubli du handleInvalid=\"keep\"" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Symptôme : " },
+                      { "type": "text", "text": "Erreur \"Unseen label\" lors du transform sur test" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Solution : " },
+                      { "type": "text", "text": "Toujours ajouter handleInvalid=\"keep\" dans StringIndexer" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "2. Colonnes non typées" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Symptôme : " },
+                      { "type": "text", "text": "Erreurs de type lors des calculs" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Solution : " },
+                      { "type": "text", "text": "Toujours caster explicitement après lecture CSV" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "3. Data Leakage" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Symptôme : " },
+                      { "type": "text", "text": "AUC très élevé (>0.99) — trop beau pour être vrai" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Solution : " },
+                      { "type": "text", "text": "Ne jamais inclure revenue comme feature si la cible en dépend" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "4. Overfitting" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Symptôme : " },
+                      { "type": "text", "text": "Excellentes métriques sur train, mauvaises sur test" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Solution : " },
+                      { "type": "text", "text": "Toujours évaluer sur test, utiliser la régularisation" }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "4.2 Questions formateur",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Questions à poser aux participants pendant les TP."
+          },
+          "chapters": [
+            {
+              "title": "Questions par module",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💬 Questions à Poser aux Participants" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "TP Big Data" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "\"Pourquoi Spark plutôt que Pandas pour 2M lignes ?\"" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "\"Quel avantage de Delta Lake vs CSV pour les analyses répétées ?\"" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "\"Comment interpréter les variations de CA par pays ?\"" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "TP Data Science" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "\"Quelles colonnes pourraient contenir des valeurs aberrantes ?\"" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "\"Pourquoi créer une cible binaire plutôt que prédire le revenue exact ?\"" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "\"Quelles autres features pourrait-on créer ?\"" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "TP Machine Learning" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "\"Pourquoi 80/20 pour le split ?\"" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "\"Que signifie un AUC de 0.85 ?\"" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "\"Comment utiliser ce modèle en production ?\"" }]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

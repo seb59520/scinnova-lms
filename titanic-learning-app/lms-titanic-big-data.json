@@ -290,7 +290,6 @@
           "position": 1,
           "published": true,
           "content": {
-            "titanicModule": "big-data",
             "description": "Travaux pratiques interactifs sur l'exploration de données avec le dataset Titanic",
             "instructions": {
               "type": "doc",
