@@ -1,39 +1,61 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
-import { Ghost } from 'lucide-react'
-import logoScinnova from '../../Logo SCINNOVA avec cerveau et fusée.png'
+import { Ghost, Loader2 } from 'lucide-react'
+
+// Logo accessible depuis le dossier public
+const logoScinnova = '/Logo SCINNOVA avec cerveau et fusée.png'
 
 export function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const { signIn, signInWithGoogle } = useAuth()
+  const { signIn, signInWithGoogle, user, loading: authLoading } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
   const from = location.state?.from?.pathname || '/app'
+
+  // Rediriger si déjà connecté
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate(from, { replace: true })
+    }
+  }, [user, authLoading, navigate, from])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
 
-    const { error } = await signIn(email, password)
+    const { error: signInError } = await signIn(email, password)
 
-    if (error) {
-      setError(error.message)
+    if (signInError) {
+      setError(signInError.message)
+      setLoading(false)
     } else {
-      navigate(from, { replace: true })
+      // La redirection sera gérée par le useEffect ci-dessus
+      // quand user sera mis à jour
     }
-
-    setLoading(false)
   }
 
   const handleGoogleSignIn = async () => {
-    const { error } = await signInWithGoogle()
-    if (error) setError(error.message)
+    setError('')
+    const { error: googleError } = await signInWithGoogle()
+    if (googleError) {
+      setError(googleError.message)
+    }
+    // La redirection OAuth est gérée par Supabase
+  }
+
+  // Afficher un loader si on vérifie l'auth ou si déjà connecté
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+      </div>
+    )
   }
 
   return (
@@ -86,16 +108,25 @@ export function Login() {
           </div>
 
           {error && (
-            <div className="text-red-600 text-sm text-center">{error}</div>
+            <div className="text-red-600 text-sm text-center bg-red-50 p-3 rounded-md">
+              {error}
+            </div>
           )}
 
           <div>
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full disabled:opacity-50"
+              className="btn-primary w-full disabled:opacity-50 flex items-center justify-center"
             >
-              {loading ? 'Connexion...' : 'Se connecter'}
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                  Connexion...
+                </>
+              ) : (
+                'Se connecter'
+              )}
             </button>
           </div>
 
@@ -123,7 +154,6 @@ export function Login() {
               Continuer avec Google
             </button>
             
-            {/* Lien vers la connexion anonyme - Toujours visible */}
             <Link
               to="/ghost-login"
               className="w-full flex justify-center items-center px-4 py-2.5 border-2 border-indigo-400 rounded-md shadow-md text-sm font-semibold text-indigo-800 bg-indigo-100 hover:bg-indigo-200 hover:border-indigo-500 transition-all duration-200"

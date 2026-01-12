@@ -1,14 +1,21 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth'
-import { useNavigate } from 'react-router-dom'
-import { Ghost, Lock, AlertCircle } from 'lucide-react'
+import { useNavigate, Link } from 'react-router-dom'
+import { Ghost, Lock, AlertCircle, ArrowLeft, Loader2 } from 'lucide-react'
 
 export function GhostLogin() {
-  const { signInAsGhost } = useAuth()
+  const { signInAsGhost, user, loading: authLoading } = useAuth()
   const navigate = useNavigate()
   const [accessCode, setAccessCode] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  // Rediriger si déjà connecté
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate('/app', { replace: true })
+    }
+  }, [user, authLoading, navigate])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -21,25 +28,35 @@ export function GhostLogin() {
       return
     }
 
-    try {
-      const { error: authError } = await signInAsGhost(accessCode.toUpperCase().trim())
-      
-      if (authError) {
-        setError(authError.message || 'Code invalide ou déjà utilisé')
-      } else {
-        // Rediriger vers le dashboard
-        navigate('/app')
-      }
-    } catch (err: any) {
-      setError(err.message || 'Erreur lors de la connexion')
-    } finally {
+    const { error: authError } = await signInAsGhost(accessCode.toUpperCase().trim())
+    
+    if (authError) {
+      setError(authError.message || 'Code invalide ou déjà utilisé')
       setLoading(false)
     }
+    // La redirection sera gérée par le useEffect quand user sera mis à jour
+  }
+
+  // Afficher un loader si on vérifie l'auth
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+        <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
+      </div>
+    )
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
+        <Link
+          to="/login"
+          className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 mb-6"
+        >
+          <ArrowLeft className="w-4 h-4 mr-1" />
+          Retour à la connexion
+        </Link>
+
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-100 rounded-full mb-4">
             <Ghost className="w-8 h-8 text-indigo-600" />
@@ -95,7 +112,7 @@ export function GhostLogin() {
           >
             {loading ? (
               <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <Loader2 className="w-4 h-4 animate-spin" />
                 Connexion en cours...
               </>
             ) : (
@@ -116,5 +133,3 @@ export function GhostLogin() {
     </div>
   )
 }
-
-

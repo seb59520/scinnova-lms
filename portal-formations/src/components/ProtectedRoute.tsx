@@ -1,10 +1,9 @@
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { useUserRole } from '../hooks/useUserRole'
-import { useNetworkStatus } from '../hooks/useNetworkStatus'
 import { UserRole } from '../types/database'
-import { WifiOff, Wifi } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 
 interface ProtectedRouteProps {
   children: ReactNode
@@ -12,140 +11,78 @@ interface ProtectedRouteProps {
   requireAuth?: boolean
 }
 
+/**
+ * Composant de protection des routes simplifié
+ * - Affiche un loader pendant le chargement
+ * - Redirige vers /login si non authentifié (et auth requise)
+ * - Redirige vers /app si authentifié sur une page publique
+ * - Vérifie les rôles si spécifiés
+ */
 export function ProtectedRoute({
   children,
   requiredRole,
   requireAuth = true
 }: ProtectedRouteProps) {
-  const { user, profile, loading } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const { isAdmin, loading: roleLoading } = useUserRole()
-  const { isOnline, wasOffline } = useNetworkStatus()
   const location = useLocation()
 
-  // Timeout de sécurité pour éviter un blocage infini
-  const [forceRender, setForceRender] = useState(false)
-  
-  useEffect(() => {
-    // Surveiller les DEUX états de chargement
-    const isStillLoading = loading || roleLoading
-    
-    if (!isStillLoading) {
-      // Plus besoin du timeout, on peut continuer
-      return
-    }
-    
-    const timeout = setTimeout(() => {
-      if (loading || roleLoading) {
-        console.warn('ProtectedRoute: Loading timeout (auth:', loading, 'role:', roleLoading, '), forcing render')
-        setForceRender(true)
-      }
-    }, 3000) // 3 secondes max
+  // Pages qui ne doivent jamais rediriger vers /app même si connecté
+  const publicPaths = ['/', '/landing', '/login', '/register', '/reset-password', '/ghost-login']
+  const isPublicPath = publicPaths.includes(location.pathname)
 
-    return () => clearTimeout(timeout)
-  }, [loading, roleLoading])
-
-  // Éviter les boucles : ne pas rediriger si on est déjà sur la bonne page
-  const isOnLoginPage = location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/reset-password'
-  const isOnAppPage = location.pathname === '/app'
-  const isOnLandingPage = location.pathname === '/landing' || location.pathname === '/'
-  const isOnPublicPage = isOnLoginPage || isOnLandingPage
-
-  // Afficher un message si hors ligne
-  if (!isOnline) {
+  // Afficher un loader pendant le chargement initial
+  if (authLoading || (requireAuth && roleLoading)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <WifiOff className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Connexion perdue</h2>
-          <p className="text-gray-600 mb-4">Vérifiez votre connexion Internet et réessayez.</p>
+          <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto" />
+          <p className="mt-4 text-gray-600">Chargement...</p>
         </div>
       </div>
     )
   }
 
-  if ((loading || roleLoading) && !forceRender) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          {wasOffline && (
-            <p className="text-sm text-gray-600">Reconnexion en cours...</p>
-          )}
-        </div>
-      </div>
-    )
-  }
-
-  // Si authentification requise mais utilisateur non connecté
+  // Cas 1: Authentification requise mais utilisateur non connecté
   if (requireAuth && !user) {
-    // Vérifier si on est en train de traiter un callback OAuth
+    // Éviter la redirection si on traite un callback OAuth
     const isOAuthCallback = location.search.includes('code=') || 
-                           location.search.includes('access_token=') ||
-                           location.search.includes('error=')
+                            location.search.includes('access_token=')
     
-    // Si c'est un callback OAuth, attendre un peu avant de rediriger
-    if (isOAuthCallback && loading) {
+    if (isOAuthCallback) {
       return (
-        <div className="min-h-screen flex items-center justify-center">
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-sm text-gray-600">Finalisation de la connexion...</p>
+            <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto" />
+            <p className="mt-4 text-gray-600">Finalisation de la connexion...</p>
           </div>
         </div>
       )
     }
     
-    // Ne pas rediriger si on est déjà sur une page publique
-    if (!isOnPublicPage && !isOAuthCallback) {
-      return <Navigate to="/login" state={{ from: location }} replace />
-    }
-    // Si on est déjà sur une page publique ou en callback OAuth, laisser passer (pour éviter les boucles)
-    return <>{children}</>
+    return <Navigate to="/login" state={{ from: location }} replace />
   }
 
-  // Si pas d'authentification requise mais utilisateur connecté, rediriger vers app
-  // SAUF pour la landing page qui doit être accessible même si connecté
-  if (!requireAuth && user && !isOnLandingPage) {
-    // Ne pas rediriger si on est déjà sur /app ou sur une page admin
-    if (!isOnAppPage && !location.pathname.startsWith('/admin')) {
-      return <Navigate to="/app" replace />
-    }
-    // Si on est déjà sur /app ou admin, laisser passer
-    return <>{children}</>
+  // Cas 2: Authentification non requise et utilisateur connecté (page publique)
+  if (!requireAuth && user && !isPublicPath) {
+    return <Navigate to="/app" replace />
   }
 
-  // Vérifier le rôle si spécifié (seulement si le rôle est chargé)
-  if (requiredRole && !roleLoading) {
-    // Si le rôle requis est 'admin', vérifier isAdmin
-    if (requiredRole === 'admin') {
-      if (!isAdmin) {
-        // Rediriger vers /app seulement si on n'y est pas déjà
-        if (!isOnAppPage) {
-          return <Navigate to="/app" replace />
-        }
-        return (
-          <div className="min-h-screen flex items-center justify-center bg-gray-50">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Accès refusé</h2>
-              <p className="text-gray-600 mb-4">
-                Vous devez être administrateur pour accéder à cette page.
-              </p>
-            </div>
-          </div>
-        )
-      }
-      // Si admin, autoriser l'accès
-      return <>{children}</>
-    }
-    
-    // Pour les autres rôles, utiliser le profil comme fallback
-    if (profile && profile.role !== requiredRole && profile.role !== 'admin') {
-      // Rediriger vers /app seulement si on n'y est pas déjà
-      if (!isOnAppPage) {
-        return <Navigate to="/app" replace />
-      }
-    }
+  // Cas 3: Rôle admin requis
+  if (requiredRole === 'admin' && !isAdmin) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center max-w-md p-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Accès refusé</h2>
+          <p className="text-gray-600 mb-4">
+            Vous devez être administrateur pour accéder à cette page.
+          </p>
+          <Navigate to="/app" replace />
+        </div>
+      </div>
+    )
   }
 
+  // Tout est OK, afficher le contenu
   return <>{children}</>
 }

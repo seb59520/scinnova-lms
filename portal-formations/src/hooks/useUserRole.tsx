@@ -1,106 +1,59 @@
 /**
  * Hook pour récupérer le rôle unifié d'un utilisateur
- * Utilise getUserRole() pour garantir une détermination cohérente du rôle
+ * Utilise le profil de useAuth pour éviter les appels réseau supplémentaires
  */
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { useAuth } from './useAuth';
-import { getUserRole, type UnifiedRole, type UserRoleContext } from '../lib/queries/userRole';
+import { useMemo } from 'react'
+import { useAuth } from './useAuth'
+
+export type UnifiedRole = 'admin' | 'trainer' | 'instructor' | 'student' | 'auditor' | null
+
+export interface UserRoleContext {
+  role: UnifiedRole
+  source: string
+  orgId: string | null
+}
 
 export function useUserRole() {
-  const { user, profile } = useAuth();
-  const [roleContext, setRoleContext] = useState<UserRoleContext | null>(null);
-  const [loading, setLoading] = useState(true);
-  
-  // Ref pour éviter les appels réseau multiples
-  const hasLoadedRef = useRef(false);
-  const lastUserIdRef = useRef<string | undefined>(undefined);
+  const { user, profile, loading: authLoading } = useAuth()
 
-  // Fonction pour charger le rôle à partir des valeurs actuelles
-  const loadRole = useCallback((userId: string | undefined, profileRole: string | undefined) => {
-    // Pas d'utilisateur = pas de rôle, terminer immédiatement
-    if (!userId) {
-      setRoleContext(null);
-      setLoading(false);
-      return;
+  // Calculer le rôle à partir du profil (déjà chargé par useAuth)
+  const roleContext = useMemo<UserRoleContext | null>(() => {
+    if (!user || !profile?.role) {
+      return null
     }
 
-    // Si on a déjà le profil en cache, l'utiliser directement sans requête
-    if (profileRole) {
-      console.log('✅ useUserRole - Utilisation du profil en cache, role:', profileRole);
-      const roleFromProfile = profileRole === 'admin' ? 'admin' :
-                              profileRole === 'instructor' ? 'trainer' :
-                              profileRole === 'student' ? 'student' : 'student';
-      setRoleContext({
-        role: roleFromProfile as UnifiedRole,
-        source: profileRole === 'admin' ? 'profiles_admin' : 'profiles_default',
-        orgId: null,
-      });
-      setLoading(false);
-      hasLoadedRef.current = true;
-      return;
-    }
+    // Mapper le rôle du profil vers le rôle unifié
+    const role: UnifiedRole = 
+      profile.role === 'admin' ? 'admin' :
+      profile.role === 'instructor' ? 'trainer' :
+      profile.role === 'student' ? 'student' :
+      profile.role === 'auditor' ? 'auditor' :
+      'student'
 
-    // IMPORTANT: Ne pas faire de requête supplémentaire si le profil n'est pas chargé
-    // Cela évite les blocages quand Supabase ne répond pas
-    // Utiliser un rôle par défaut et laisser l'application fonctionner
-    console.warn('⚠️ useUserRole - Profil non disponible, utilisation du rôle par défaut (student)');
-    setRoleContext({
-      role: 'student',
-      source: 'profiles_default',
+    return {
+      role,
+      source: 'profiles',
       orgId: null,
-    });
-    setLoading(false);
-    
-    // Optionnel: essayer de charger le rôle en arrière-plan avec timeout
-    // mais ne pas bloquer l'interface - et seulement si pas déjà fait
-    if (userId && !hasLoadedRef.current) {
-      hasLoadedRef.current = true;
-      const timeoutPromise = new Promise<null>((resolve) => setTimeout(() => resolve(null), 3000));
-      const rolePromise = getUserRole(userId, undefined).catch(() => null);
-      
-      Promise.race([rolePromise, timeoutPromise]).then((context) => {
-        if (context && context.role) {
-          console.log('🔍 useUserRole - Rôle chargé en arrière-plan:', context);
-          setRoleContext(context);
-        }
-      });
     }
-  }, []);
+  }, [user, profile?.role])
 
-  // Effect pour charger le rôle quand user.id ou profile.role change
-  useEffect(() => {
-    const userId = user?.id;
-    const profileRole = profile?.role;
-    
-    // Réinitialiser si l'utilisateur change
-    if (userId !== lastUserIdRef.current) {
-      hasLoadedRef.current = false;
-      lastUserIdRef.current = userId;
-    }
-    
-    loadRole(userId, profileRole);
-  }, [user?.id, profile?.role, loadRole]);
+  // Le loading dépend uniquement de authLoading
+  // car le profil est chargé en même temps que l'auth
+  const loading = authLoading
 
-  // Fonction pour forcer le rafraîchissement
-  const refreshRole = useCallback(() => {
-    hasLoadedRef.current = false;
-    loadRole(user?.id, profile?.role);
-  }, [user?.id, profile?.role, loadRole]);
+  // Helpers pour vérifier les rôles
+  const role = roleContext?.role ?? null
+  const isAdmin = role === 'admin'
+  const isTrainer = role === 'trainer' || role === 'instructor'
+  const isStudent = role === 'student'
+  const isAuditor = role === 'auditor'
 
-  // Retourner le rôle unifié avec des helpers
-  const role: UnifiedRole = roleContext?.role ?? null;
-  const isAdmin = role === 'admin';
-  const isTrainer = role === 'trainer' || role === 'instructor';
-  const isStudent = role === 'student';
-  const isAuditor = role === 'auditor';
-
-  // Helper pour obtenir le label du rôle
   const roleLabel = 
     isAdmin ? 'Administrateur' :
     isTrainer ? 'Formateur' :
     isAuditor ? 'Auditeur' :
-    'Étudiant';
+    'Étudiant'
 
   return {
     role,
@@ -111,10 +64,8 @@ export function useUserRole() {
     isAuditor,
     roleLabel,
     loading,
-    // Fallback vers profile.role si roleContext n'est pas encore chargé
     effectiveRole: role ?? (profile?.role as UnifiedRole) ?? null,
-    // Fonction pour forcer le rafraîchissement du rôle
-    refreshRole,
-  };
+    // Pour compatibilité avec l'ancien code
+    refreshRole: () => {},
+  }
 }
-
