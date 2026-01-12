@@ -363,6 +363,26 @@ export interface TpBatchWithItems extends TpBatch {
   tp_batch_items: TpBatchItemWithItem[];
 }
 
+// Ressources associées à un cours
+export type CourseResourceType = 'file' | 'url' | 'video' | 'document';
+
+export interface CourseResource {
+  id: string;
+  course_id: string;
+  title: string;
+  description: string | null;
+  resource_type: CourseResourceType;
+  file_path: string | null;
+  external_url: string | null;
+  file_size: number | null;
+  mime_type: string | null;
+  position: number;
+  is_visible: boolean;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+}
+
 // Vue unifiée des TP d'un cours
 export interface CourseAllTp {
   course_id: string;

@@ -6,6 +6,7 @@ import { Course, Module, Item } from '../../types/database'
 import { Save, Plus, Edit, Trash2, GripVertical, ChevronUp, ChevronDown, Code, Presentation, Link as LinkIcon, Image, X } from 'lucide-react'
 import { LinkedInPostModal } from '../../components/LinkedInPostModal'
 import { ImageUploadCarousel } from '../../components/ImageUploadCarousel'
+import { CourseResourcesManager } from '../../components/CourseResourcesManager'
 
 interface ModuleWithItems extends Module {
   items: Item[]
@@ -1666,6 +1667,13 @@ export function AdminCourseEdit() {
               </div>
             )}
           </div>
+
+          {/* Ressources de la formation */}
+          {!isNew && courseId && (
+            <div className="bg-white shadow rounded-lg p-6">
+              <CourseResourcesManager courseId={courseId} />
+            </div>
+          )}
         </div>
       </main>
 

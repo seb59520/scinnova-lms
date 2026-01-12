@@ -13,6 +13,7 @@ import { CourseJson } from '../types/courseJson'
 import { Eye, EyeOff, X, BookOpen, FileText, Download, Menu, List } from 'lucide-react'
 import { Lexique } from './Lexique'
 import { getCurrentUserRole } from '../lib/queries/userRole'
+import { CourseResourcesViewer } from '../components/CourseResourcesViewer'
 
 interface ModuleWithItems extends Module {
   items: Item[]
@@ -1008,6 +1009,11 @@ export function CourseView() {
                       courseId={courseId!} 
                     />
                   </div>
+                )}
+
+                {/* Ressources de la formation */}
+                {showHeaderContent && courseId && (
+                  <CourseResourcesViewer courseId={courseId} />
                 )}
 
                 {/* Navigation par module - étiquettes colorées */}
