@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react'
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react'
 import { User, Session, AuthError } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabaseClient'
 import { Profile } from '../types/database'
@@ -28,6 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
+  const initializedRef = useRef(false)
 
   /**
    * Récupère le profil utilisateur depuis la base de données
@@ -96,6 +97,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [fetchProfile])
 
   useEffect(() => {
+    // Éviter la double initialisation en mode strict de React
+    if (initializedRef.current) return
+    initializedRef.current = true
+
     let isMounted = true
 
     /**
@@ -114,17 +119,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           return
         }
 
-        setSession(currentSession)
-        setUser(currentSession?.user ?? null)
-
         if (currentSession?.user) {
+          setSession(currentSession)
+          setUser(currentSession.user)
+          
+          // Charger le profil AVANT de mettre loading à false
           const profileData = await createProfileIfNeeded(currentSession.user)
           if (isMounted) {
             setProfile(profileData)
+            setLoading(false)
           }
-        }
-        
-        if (isMounted) {
+        } else {
+          // Pas de session = pas de profil, on peut mettre loading à false
+          setSession(null)
+          setUser(null)
+          setProfile(null)
           setLoading(false)
         }
       } catch (err) {
@@ -147,17 +156,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         console.log('Auth event:', event)
 
-        setSession(currentSession)
-        setUser(currentSession?.user ?? null)
-
-        if (currentSession?.user) {
-          // Charger le profil de manière asynchrone sans bloquer
-          const profileData = await createProfileIfNeeded(currentSession.user)
-          if (isMounted) {
-            setProfile(profileData)
+        // Pour SIGNED_IN et TOKEN_REFRESHED, on doit recharger le profil
+        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+          setSession(currentSession)
+          setUser(currentSession?.user ?? null)
+          
+          if (currentSession?.user) {
+            const profileData = await createProfileIfNeeded(currentSession.user)
+            if (isMounted) {
+              setProfile(profileData)
+            }
           }
-        } else {
+        } else if (event === 'SIGNED_OUT') {
+          setSession(null)
+          setUser(null)
           setProfile(null)
+        } else {
+          // Pour les autres événements, juste mettre à jour session/user
+          setSession(currentSession)
+          setUser(currentSession?.user ?? null)
+          
+          if (!currentSession?.user) {
+            setProfile(null)
+          }
         }
       }
     )
