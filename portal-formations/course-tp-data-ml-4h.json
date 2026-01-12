@@ -1,0 +1,1640 @@
+{
+  "title": "TP Big Data → Data Science → Machine Learning (4h)",
+  "slug": "tp-data-ml-4h",
+  "description": "Parcours pratique de 4 heures pour construire un mini-projet data de bout en bout : génération de données, exploration, nettoyage, fusion, feature engineering et entraînement de modèles avec Scikit-learn, TensorFlow et PyTorch.",
+  "duration": "4 heures",
+  "level": "Débutant",
+  "published": true,
+  "modules": [
+    {
+      "title": "Module 0 : Introduction & Configuration",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#6366F1",
+        "secondaryColor": "#4F46E5"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "0.1 Objectifs du TP",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Vue d'ensemble du TP, objectifs pédagogiques et déroulé de la session."
+          },
+          "chapters": [
+            {
+              "title": "Objectifs pédagogiques",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎯 Objectifs du TP" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Ce TP couvre le parcours complet " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Big Data → Data Science → Machine Learning" },
+                      { "type": "text", "text": " à travers un cas métier concret : prédire la conversion d'une session e-commerce." }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "À l'issue de ce TP, les participants sauront :" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "text": "Définir un " },
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "use case ML" },
+                          { "type": "text", "text": " pertinent (décision répétitive automatisable)" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "text": "Générer un " },
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "grand volume de données" },
+                          { "type": "text", "text": " (≈ 300 000 lignes)" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Explorer et nettoyer" },
+                          { "type": "text", "text": " les données (valeurs manquantes, incohérences)" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Fusionner" },
+                          { "type": "text", "text": " plusieurs tables et créer des features" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "text": "Entraîner des modèles avec " },
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Scikit-learn, TensorFlow et PyTorch" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Comparer" },
+                          { "type": "text", "text": " les performances et conclure" }
+                        ]}]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Déroulé de la session (4h)",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "⏱️ Déroulé de la Session" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "La session est structurée en 4 heures avec le planning suivant :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "0:00 – 0:30" },
+                          { "type": "text", "text": " : Use case + critères ML (décision répétitive)" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "0:30 – 1:10" },
+                          { "type": "text", "text": " : Génération + exploration des données" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "1:10 – 2:00" },
+                          { "type": "text", "text": " : Nettoyage + fusion + feature engineering" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "2:00 – 3:20" },
+                          { "type": "text", "text": " : Modèles (Scikit-learn → TensorFlow → PyTorch)" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "3:20 – 4:00" },
+                          { "type": "text", "text": " : Comparaison + restitution" }
+                        ]}]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "0.2 Installation de l'environnement",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Guide d'installation de JupyterLab avec Anaconda (Windows) ou Miniforge (Mac)."
+          },
+          "chapters": [
+            {
+              "title": "Installation Windows (Anaconda)",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🪟 Installation Windows (Anaconda)" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Étape 1 : Installer Anaconda" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "text": "Télécharger Anaconda : " },
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "https://www.anaconda.com/download" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Exécuter l'installateur (cliquer sur Next, accepter la licence)" }]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Cocher \"Add to PATH\"" },
+                          { "type": "text", "text": " si proposé (simplifie l'usage)" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Terminer l'installation et redémarrer le terminal" }]}]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Étape 2 : Créer l'environnement" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Ouvrir Anaconda Prompt et exécuter :" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "bash" },
+                    "content": [{ "type": "text", "text": "conda create -n tp_ml python=3.11 -y\nconda activate tp_ml\nconda install jupyterlab pandas numpy matplotlib scikit-learn -y\npip install tensorflow torch" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Installation Mac (Miniforge)",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🍎 Installation Mac (Miniforge)" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Étape 1 : Installer Miniforge" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Ouvrir Terminal et exécuter :" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "bash" },
+                    "content": [{ "type": "text", "text": "curl -L -O https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh\nbash Miniforge3-MacOSX-arm64.sh -b\n~/miniforge3/bin/conda init zsh\nsource ~/.zshrc" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Étape 2 : Créer l'environnement" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "bash" },
+                    "content": [{ "type": "text", "text": "conda create -n tp_ml python=3.11 -y\nconda activate tp_ml\nconda install jupyterlab pandas numpy matplotlib scikit-learn -y\npip install tensorflow torch" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Vérification et lancement",
+              "position": 2,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "✅ Vérification et Lancement" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Vérifier l'installation" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "bash" },
+                    "content": [{ "type": "text", "text": "conda activate tp_ml\npython -c \"import pandas, numpy, sklearn, tensorflow, torch; print('✅ OK')\"" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Lancer JupyterLab" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "bash" },
+                    "content": [{ "type": "text", "text": "jupyter lab" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Le navigateur s'ouvre automatiquement. Créer un nouveau Notebook Python 3." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "💡 Conseil si machine lente" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Si votre machine est lente, réduisez le volume de données : remplacez " },
+                      { "type": "text", "marks": [{ "type": "code" }], "text": "N_ORDERS = 300_000" },
+                      { "type": "text", "text": " par " },
+                      { "type": "text", "marks": [{ "type": "code" }], "text": "N_ORDERS = 50_000" },
+                      { "type": "text", "text": " dans le code de génération." }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 1 : Use Case & Imports",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#059669"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Définir un Use Case ML",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Comprendre ce qu'est un use case ML et comment le définir."
+          },
+          "chapters": [
+            {
+              "title": "Qu'est-ce qu'un Use Case ML ?",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎯 Définir un Use Case ML" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Un use case ML = " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "une décision métier répétitive" },
+                      { "type": "text", "text": " qu'on veut améliorer ou automatiser." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Template à remplir" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "markdown" },
+                    "content": [{ "type": "text", "text": "### USE CASE — Définition\n**Contexte** : (ex : e-commerce / marketing)\n\n**Problème** : (ex : faible conversion)\n\n**Décision actuelle** : (ex : aucune priorisation)\n\n**Question ML** : (ex : prédire si une session va convertir)\n\n**Action si prédiction = OUI** : (ex : coupon / relance)\n\n**Valeur attendue** : (ex : +x% conversion, meilleur ROI)\n\n**Automatisable ?**\n- Répétitive : oui/non\n- Fréquente : oui/non\n- Règles relativement stables : oui/non" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "✅ " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Si l'une des réponses est \"non\"" },
+                      { "type": "text", "text": ", le ML est probablement un mauvais choix." }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Imports des bibliothèques",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Importer toutes les bibliothèques nécessaires pour le TP."
+          },
+          "chapters": [
+            {
+              "title": "Code des imports",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📦 Imports des Bibliothèques" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Sur Google Colab, décommentez si besoin :\n# !pip -q install pandas numpy scikit-learn matplotlib tensorflow torch\n\nimport numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix\nfrom sklearn.preprocessing import OneHotEncoder\nfrom sklearn.compose import ColumnTransformer\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.impute import SimpleImputer\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.ensemble import RandomForestClassifier\n\nimport tensorflow as tf\nfrom tensorflow import keras\n\nimport torch\nimport torch.nn as nn\nfrom torch.utils.data import TensorDataset, DataLoader\n\npd.set_option('display.max_columns', 200)\nrng = np.random.default_rng(42)\n\nprint('✅ Imports OK')" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Explication ligne par ligne",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📖 Explication des Imports" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "numpy" },
+                          { "type": "text", "text": " : calcul numérique + génération aléatoire" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "pandas" },
+                          { "type": "text", "text": " : tables de données (DataFrame)" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "matplotlib" },
+                          { "type": "text", "text": " : graphiques (sanity checks)" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "sklearn" },
+                          { "type": "text", "text": " : ML classique + pipelines (nettoyage/encodage/modèles)" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "tensorflow/keras" },
+                          { "type": "text", "text": " : deep learning (réseau de neurones)" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "torch" },
+                          { "type": "text", "text": " : deep learning (boucle d'entraînement explicite)" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "rng = ...42" },
+                          { "type": "text", "text": " : reproductibilité (mêmes résultats pour tous)" }
+                        ]}]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : Big Data - Génération des Données",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#F59E0B",
+        "secondaryColor": "#D97706"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Génération des tables",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Générer 300 000 lignes de données réparties sur 3 tables."
+          },
+          "chapters": [
+            {
+              "title": "Code de génération",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🗄️ Génération des Données (Big Data)" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Simuler un contexte réel : données réparties entre plusieurs systèmes (clients, produits, événements). On garde des tables séparées pour pratiquer la fusion ensuite." }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "N_ORDERS = 300_000\nN_CUSTOMERS = 60_000\nN_PRODUCTS = 1_200\n\n# Table 1 : clients\ncustomers = pd.DataFrame({\n    'customer_id': np.arange(1, N_CUSTOMERS + 1),\n    'age': rng.integers(16, 80, size=N_CUSTOMERS),\n    'region': rng.choice(['Nord', 'IDF', 'Ouest', 'Est', 'Sud'], size=N_CUSTOMERS, p=[0.20, 0.25, 0.18, 0.17, 0.20]),\n    'tenure_months': rng.integers(0, 120, size=N_CUSTOMERS),\n    'is_loyal': rng.choice([0, 1], size=N_CUSTOMERS, p=[0.7, 0.3]),\n})\n\n# Table 2 : produits\nproducts = pd.DataFrame({\n    'product_id': np.arange(1, N_PRODUCTS + 1),\n    'category': rng.choice(['Maison', 'Tech', 'Mode', 'Sport', 'Bébé', 'Beauté'], size=N_PRODUCTS, p=[0.18, 0.22, 0.20, 0.15, 0.10, 0.15]),\n    'base_price': np.round(rng.uniform(5, 800, size=N_PRODUCTS), 2),\n    'margin_rate': np.round(rng.uniform(0.10, 0.55, size=N_PRODUCTS), 2),\n})\n\n# Table 3 : événements (300k)\norders = pd.DataFrame({\n    'order_id': np.arange(1, N_ORDERS + 1),\n    'customer_id': rng.choice(customers['customer_id'], size=N_ORDERS),\n    'product_id': rng.choice(products['product_id'], size=N_ORDERS),\n    'channel': rng.choice(['Web', 'Mobile', 'Store'], size=N_ORDERS, p=[0.55, 0.35, 0.10]),\n    'traffic_source': rng.choice(['SEO', 'Ads', 'Email', 'Direct', 'Social'], size=N_ORDERS, p=[0.30, 0.28, 0.12, 0.20, 0.10]),\n    'session_minutes': np.round(rng.gamma(shape=2.2, scale=2.0, size=N_ORDERS), 2),\n    'cart_items': rng.integers(1, 8, size=N_ORDERS),\n    'day_of_week': rng.choice(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], size=N_ORDERS),\n})\n\nprint('Orders:', orders.shape, '| Customers:', customers.shape, '| Products:', products.shape)\norders.head()" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Explication ligne par ligne",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📖 Explication de la Génération" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "text": "Les variables " },
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "N_*" },
+                          { "type": "text", "text": " fixent les tailles des tables" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "customers" },
+                          { "type": "text", "text": " et " },
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "products" },
+                          { "type": "text", "text": " = tables de référence (référentiels)" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "orders" },
+                          { "type": "text", "text": " = table d'événements (le volume) avec " },
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "customer_id" },
+                          { "type": "text", "text": " et " },
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "product_id" },
+                          { "type": "text", "text": " pour faire les jointures" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "gamma(...)" },
+                          { "type": "text", "text": " produit des durées de session positives et réalistes" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "head()" },
+                          { "type": "text", "text": " permet de vérifier que tout est bien créé" }
+                        ]}]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : Data Science - Exploration & Nettoyage",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#3B82F6",
+        "secondaryColor": "#2563EB"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Exploration des données",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Explorer les données pour comprendre leur structure et leurs distributions."
+          },
+          "chapters": [
+            {
+              "title": "Commandes d'exploration",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔍 Exploration des Données" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Comprendre types, distributions, valeurs manquantes avant de décider quoi nettoyer." }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Structure et types\norders.info()\n\n# Statistiques descriptives\norders.describe()\n\n# Distribution des catégories\norders['channel'].value_counts()\norders['traffic_source'].value_counts()" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Explication",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📖 Explication de l'Exploration" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "info()" },
+                          { "type": "text", "text": " : types de colonnes, nombre de valeurs non-nulles, mémoire" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "describe()" },
+                          { "type": "text", "text": " : statistiques (min, max, moyenne, quartiles) pour les colonnes numériques" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "value_counts()" },
+                          { "type": "text", "text": " : distribution des valeurs pour les colonnes catégorielles" }
+                        ]}]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Injection de défauts (simulation)",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Injecter des défauts réalistes pour pratiquer le nettoyage."
+          },
+          "chapters": [
+            {
+              "title": "Code d'injection",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💉 Injection de Défauts" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Simuler des problèmes courants dans les données réelles :" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# 1) Valeurs manquantes (NaN) - 3% sur session_minutes\nmask_nan = rng.random(N_ORDERS) < 0.03\norders.loc[mask_nan, 'session_minutes'] = np.nan\n\n# 2) Incohérences catégorielles (casse)\nmask_cat = rng.random(N_ORDERS) < 0.02\norders.loc[mask_cat, 'channel'] = orders.loc[mask_cat, 'channel'].str.upper()\n\n# 3) Valeurs aberrantes négatives\nmask_neg = rng.random(N_ORDERS) < 0.01\norders.loc[mask_neg, 'cart_items'] = -1\n\nprint('Défauts injectés')\norders.isna().sum()" }]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.3 Nettoyage des données",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Nettoyer les valeurs manquantes, incohérences et valeurs aberrantes."
+          },
+          "chapters": [
+            {
+              "title": "Code de nettoyage",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🧹 Nettoyage des Données" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# 1) Imputer les NaN par la médiane\nmedian_session = orders['session_minutes'].median()\norders['session_minutes'] = orders['session_minutes'].fillna(median_session)\n\n# 2) Normaliser la casse des catégories\norders['channel'] = orders['channel'].str.capitalize()\n\n# 3) Remplacer les valeurs négatives par 1\norders.loc[orders['cart_items'] < 0, 'cart_items'] = 1\n\nprint('Après nettoyage:')\nprint('NaN restants:', orders.isna().sum().sum())\nprint('Valeurs négatives cart_items:', (orders['cart_items'] < 0).sum())" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Explication",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📖 Explication du Nettoyage" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "fillna(median)" },
+                          { "type": "text", "text": " : imputation par la médiane (robuste aux outliers)" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "str.capitalize()" },
+                          { "type": "text", "text": " : normalise \"WEB\" → \"Web\", \"MOBILE\" → \"Mobile\"" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "loc[condition, col] = valeur" },
+                          { "type": "text", "text": " : modification conditionnelle" }
+                        ]}]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : Fusion & Feature Engineering",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#8B5CF6",
+        "secondaryColor": "#7C3AED"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Fusion des tables",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Fusionner les 3 tables pour créer un dataset unifié."
+          },
+          "chapters": [
+            {
+              "title": "Code de fusion",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔗 Fusion des Tables" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Jointure orders + customers\ndf = orders.merge(customers, on='customer_id', how='left')\n\n# Jointure + products\ndf = df.merge(products, on='product_id', how='left')\n\nprint('Shape après fusion:', df.shape)\ndf.head()" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Explication",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📖 Explication de la Fusion" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "merge(..., on='key', how='left')" },
+                          { "type": "text", "text": " : jointure gauche sur la clé" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "text": "On garde toutes les lignes de " },
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "orders" },
+                          { "type": "text", "text": " et on enrichit avec les infos client/produit" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "text": "Le résultat : une table de 300k lignes avec toutes les colonnes" }
+                        ]}]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "4.2 Feature Engineering",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Créer des features utiles pour le Machine Learning."
+          },
+          "chapters": [
+            {
+              "title": "Création des features",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "⚙️ Feature Engineering" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Prix unitaire ajusté\ndf['unit_price'] = df['base_price'] * (1 + rng.uniform(-0.1, 0.1, len(df)))\n\n# Valeur du panier\ndf['basket_value'] = df['unit_price'] * df['cart_items']\n\n# Profit estimé\ndf['profit'] = df['basket_value'] * df['margin_rate']\n\nprint('Nouvelles colonnes créées')\ndf[['unit_price', 'basket_value', 'profit']].describe()" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Variable cible",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎯 Création de la Variable Cible" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Pour notre use case de prédiction de conversion :" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Variable cible : conversion (panier > seuil + durée session raisonnable)\ndf['converted'] = ((df['basket_value'] > 50) & (df['session_minutes'] > 2)).astype(int)\n\nprint('Distribution de la cible:')\nprint(df['converted'].value_counts(normalize=True))" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "La variable " },
+                      { "type": "text", "marks": [{ "type": "code" }], "text": "converted" },
+                      { "type": "text", "text": " sera notre cible binaire (0/1) pour les modèles de classification." }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "4.3 Sanity Check visuel",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Vérifier les données avec des graphiques."
+          },
+          "chapters": [
+            {
+              "title": "Graphiques de vérification",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📊 Sanity Check Visuel" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "fig, axes = plt.subplots(1, 3, figsize=(14, 4))\n\n# Distribution basket_value\naxes[0].hist(df['basket_value'].clip(upper=500), bins=50, edgecolor='black')\naxes[0].set_title('Distribution basket_value')\naxes[0].set_xlabel('Valeur (€)')\n\n# Distribution session_minutes\naxes[1].hist(df['session_minutes'].dropna(), bins=50, edgecolor='black')\naxes[1].set_title('Distribution session_minutes')\naxes[1].set_xlabel('Minutes')\n\n# Conversion par canal\ndf.groupby('channel')['converted'].mean().plot(kind='bar', ax=axes[2])\naxes[2].set_title('Taux de conversion par canal')\naxes[2].set_ylabel('Taux')\n\nplt.tight_layout()\nplt.show()" }]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : Machine Learning - Scikit-learn",
+      "position": 5,
+      "theme": {
+        "primaryColor": "#EC4899",
+        "secondaryColor": "#DB2777"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "5.1 Préparation des données ML",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Préparer les features et séparer train/test."
+          },
+          "chapters": [
+            {
+              "title": "Split train/test",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "✂️ Préparation Train/Test" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Sélection des features\nfeature_cols = ['age', 'tenure_months', 'is_loyal', 'session_minutes', \n                'cart_items', 'unit_price', 'margin_rate',\n                'channel', 'traffic_source', 'category', 'region']\n\nX = df[feature_cols]\ny = df['converted']\n\n# Split 80/20\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y, test_size=0.2, random_state=42, stratify=y\n)\n\nprint(f'Train: {len(X_train)} | Test: {len(X_test)}')\nprint(f'Distribution cible train: {y_train.mean():.2%}')" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Explication",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📖 Explication du Split" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "test_size=0.2" },
+                          { "type": "text", "text": " : 20% pour le test, 80% pour l'entraînement" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "stratify=y" },
+                          { "type": "text", "text": " : conserve les proportions de la cible dans train et test" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "random_state=42" },
+                          { "type": "text", "text": " : reproductibilité" }
+                        ]}]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "5.2 Modèle Baseline",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Créer un modèle baseline pour référence."
+          },
+          "chapters": [
+            {
+              "title": "Baseline naïf",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📏 Modèle Baseline" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Toujours commencer par un baseline naïf pour avoir un point de référence :" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Baseline : prédire toujours la classe majoritaire\nfrom collections import Counter\n\nmajority_class = Counter(y_train).most_common(1)[0][0]\ny_pred_baseline = [majority_class] * len(y_test)\n\nbaseline_acc = accuracy_score(y_test, y_pred_baseline)\nbaseline_f1 = f1_score(y_test, y_pred_baseline)\n\nprint(f'Baseline Accuracy: {baseline_acc:.4f}')\nprint(f'Baseline F1-Score: {baseline_f1:.4f}')" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Tout modèle doit faire " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "mieux que ce baseline" },
+                      { "type": "text", "text": " pour être utile." }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "5.3 Pipeline Scikit-learn",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Créer un pipeline complet avec preprocessing et modèle."
+          },
+          "chapters": [
+            {
+              "title": "Preprocessing",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔧 Preprocessing avec ColumnTransformer" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Colonnes numériques vs catégorielles\nnum_cols = ['age', 'tenure_months', 'is_loyal', 'session_minutes', \n            'cart_items', 'unit_price', 'margin_rate']\ncat_cols = ['channel', 'traffic_source', 'category', 'region']\n\n# Preprocessing\npreprocessor = ColumnTransformer([\n    ('num', SimpleImputer(strategy='median'), num_cols),\n    ('cat', OneHotEncoder(handle_unknown='ignore'), cat_cols)\n])" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Logistic Regression",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📈 Régression Logistique" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Pipeline complet\npipe_lr = Pipeline([\n    ('prep', preprocessor),\n    ('clf', LogisticRegression(max_iter=500, random_state=42))\n])\n\n# Entraînement\npipe_lr.fit(X_train, y_train)\n\n# Prédictions\ny_pred_lr = pipe_lr.predict(X_test)\n\n# Métriques\nprint('=== Logistic Regression ===')\nprint(f'Accuracy: {accuracy_score(y_test, y_pred_lr):.4f}')\nprint(f'F1-Score: {f1_score(y_test, y_pred_lr):.4f}')\nprint('Confusion Matrix:')\nprint(confusion_matrix(y_test, y_pred_lr))" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Random Forest",
+              "position": 2,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🌲 Random Forest" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Pipeline Random Forest\npipe_rf = Pipeline([\n    ('prep', preprocessor),\n    ('clf', RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42))\n])\n\n# Entraînement\npipe_rf.fit(X_train, y_train)\n\n# Prédictions\ny_pred_rf = pipe_rf.predict(X_test)\n\n# Métriques\nprint('=== Random Forest ===')\nprint(f'Accuracy: {accuracy_score(y_test, y_pred_rf):.4f}')\nprint(f'F1-Score: {f1_score(y_test, y_pred_rf):.4f}')\nprint('Confusion Matrix:')\nprint(confusion_matrix(y_test, y_pred_rf))" }]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 6 : Deep Learning - TensorFlow & PyTorch",
+      "position": 6,
+      "theme": {
+        "primaryColor": "#14B8A6",
+        "secondaryColor": "#0D9488"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "6.1 Préparation pour Deep Learning",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Préparer les données pour les réseaux de neurones."
+          },
+          "chapters": [
+            {
+              "title": "Transformation des données",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔄 Préparation Deep Learning" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Les réseaux de neurones ont besoin de données numériques. On utilise le preprocessor déjà défini :" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Transformer les données\nX_train_processed = preprocessor.fit_transform(X_train)\nX_test_processed = preprocessor.transform(X_test)\n\n# Convertir en dense si sparse\nif hasattr(X_train_processed, 'toarray'):\n    X_train_processed = X_train_processed.toarray()\n    X_test_processed = X_test_processed.toarray()\n\nprint(f'Shape après preprocessing: {X_train_processed.shape}')" }]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "6.2 TensorFlow / Keras",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Créer un MLP avec TensorFlow/Keras."
+          },
+          "chapters": [
+            {
+              "title": "Modèle Keras",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🧠 MLP avec TensorFlow/Keras" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Architecture du réseau\nmodel_tf = keras.Sequential([\n    keras.layers.Input(shape=(X_train_processed.shape[1],)),\n    keras.layers.Dense(64, activation='relu'),\n    keras.layers.Dense(32, activation='relu'),\n    keras.layers.Dense(1, activation='sigmoid')\n])\n\n# Compilation\nmodel_tf.compile(\n    optimizer='adam',\n    loss='binary_crossentropy',\n    metrics=['accuracy']\n)\n\n# Entraînement\nhistory = model_tf.fit(\n    X_train_processed, y_train,\n    epochs=10,\n    batch_size=256,\n    validation_split=0.1,\n    verbose=1\n)" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Évaluation Keras",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📊 Évaluation TensorFlow" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Prédictions\ny_pred_tf_proba = model_tf.predict(X_test_processed)\ny_pred_tf = (y_pred_tf_proba > 0.5).astype(int).flatten()\n\n# Métriques\nprint('=== TensorFlow/Keras ===')\nprint(f'Accuracy: {accuracy_score(y_test, y_pred_tf):.4f}')\nprint(f'F1-Score: {f1_score(y_test, y_pred_tf):.4f}')" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Explication architecture",
+              "position": 2,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📖 Explication de l'Architecture" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "Sequential" },
+                          { "type": "text", "text": " : empilement linéaire de couches" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "Dense(64, activation='relu')" },
+                          { "type": "text", "text": " : couche dense avec 64 neurones et activation ReLU" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "sigmoid" },
+                          { "type": "text", "text": " : sortie entre 0 et 1 pour la classification binaire" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "binary_crossentropy" },
+                          { "type": "text", "text": " : fonction de perte pour classification binaire" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "adam" },
+                          { "type": "text", "text": " : optimiseur adaptatif (standard pour deep learning)" }
+                        ]}]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "6.3 PyTorch",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Créer un MLP avec PyTorch et boucle d'entraînement explicite."
+          },
+          "chapters": [
+            {
+              "title": "Définition du modèle",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔥 MLP avec PyTorch" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "class MLP(nn.Module):\n    def __init__(self, input_dim):\n        super().__init__()\n        self.layers = nn.Sequential(\n            nn.Linear(input_dim, 64),\n            nn.ReLU(),\n            nn.Linear(64, 32),\n            nn.ReLU(),\n            nn.Linear(32, 1),\n            nn.Sigmoid()\n        )\n    \n    def forward(self, x):\n        return self.layers(x)\n\n# Instancier le modèle\ninput_dim = X_train_processed.shape[1]\nmodel_pt = MLP(input_dim)\nprint(model_pt)" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Préparation DataLoader",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📦 DataLoader PyTorch" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Convertir en tenseurs\nX_train_t = torch.tensor(X_train_processed, dtype=torch.float32)\ny_train_t = torch.tensor(y_train.values, dtype=torch.float32).unsqueeze(1)\nX_test_t = torch.tensor(X_test_processed, dtype=torch.float32)\ny_test_t = torch.tensor(y_test.values, dtype=torch.float32).unsqueeze(1)\n\n# DataLoader\ntrain_ds = TensorDataset(X_train_t, y_train_t)\ntrain_loader = DataLoader(train_ds, batch_size=256, shuffle=True)\n\nprint(f'Batches par epoch: {len(train_loader)}')" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Boucle d'entraînement",
+              "position": 2,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔄 Boucle d'Entraînement Explicite" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Loss et optimizer\ncriterion = nn.BCELoss()\noptimizer = torch.optim.Adam(model_pt.parameters(), lr=0.001)\n\n# Boucle d'entraînement\nEPOCHS = 10\nfor epoch in range(EPOCHS):\n    model_pt.train()\n    total_loss = 0\n    \n    for X_batch, y_batch in train_loader:\n        # Forward\n        y_pred = model_pt(X_batch)\n        loss = criterion(y_pred, y_batch)\n        \n        # Backward\n        optimizer.zero_grad()\n        loss.backward()\n        optimizer.step()\n        \n        total_loss += loss.item()\n    \n    avg_loss = total_loss / len(train_loader)\n    print(f'Epoch {epoch+1}/{EPOCHS} - Loss: {avg_loss:.4f}')" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Évaluation PyTorch",
+              "position": 3,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📊 Évaluation PyTorch" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Mode évaluation\nmodel_pt.eval()\nwith torch.no_grad():\n    y_pred_pt_proba = model_pt(X_test_t)\n    y_pred_pt = (y_pred_pt_proba > 0.5).int().numpy().flatten()\n\n# Métriques\nprint('=== PyTorch ===')\nprint(f'Accuracy: {accuracy_score(y_test, y_pred_pt):.4f}')\nprint(f'F1-Score: {f1_score(y_test, y_pred_pt):.4f}')" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Explication boucle PyTorch",
+              "position": 4,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📖 Explication de la Boucle PyTorch" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "model.train()" },
+                          { "type": "text", "text": " : active le mode entraînement (dropout, batchnorm)" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "optimizer.zero_grad()" },
+                          { "type": "text", "text": " : remet les gradients à zéro avant chaque batch" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "loss.backward()" },
+                          { "type": "text", "text": " : calcul des gradients (rétropropagation)" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "optimizer.step()" },
+                          { "type": "text", "text": " : mise à jour des poids" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "model.eval()" },
+                          { "type": "text", "text": " + " },
+                          { "type": "text", "marks": [{ "type": "code" }], "text": "torch.no_grad()" },
+                          { "type": "text", "text": " : mode évaluation sans calcul de gradients" }
+                        ]}]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 7 : Comparaison & Restitution",
+      "position": 7,
+      "theme": {
+        "primaryColor": "#EF4444",
+        "secondaryColor": "#DC2626"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "7.1 Tableau comparatif",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Comparer les performances de tous les modèles."
+          },
+          "chapters": [
+            {
+              "title": "Comparaison des modèles",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📊 Comparaison des Modèles" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# Tableau récapitulatif\nresults = pd.DataFrame({\n    'Modèle': ['Baseline', 'Logistic Regression', 'Random Forest', 'TensorFlow', 'PyTorch'],\n    'Accuracy': [\n        accuracy_score(y_test, y_pred_baseline),\n        accuracy_score(y_test, y_pred_lr),\n        accuracy_score(y_test, y_pred_rf),\n        accuracy_score(y_test, y_pred_tf),\n        accuracy_score(y_test, y_pred_pt)\n    ],\n    'F1-Score': [\n        f1_score(y_test, y_pred_baseline),\n        f1_score(y_test, y_pred_lr),\n        f1_score(y_test, y_pred_rf),\n        f1_score(y_test, y_pred_tf),\n        f1_score(y_test, y_pred_pt)\n    ]\n})\n\nresults = results.sort_values('F1-Score', ascending=False)\nprint(results.to_string(index=False))" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Visualisation",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📈 Visualisation des Résultats" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "fig, ax = plt.subplots(figsize=(10, 5))\n\nx = np.arange(len(results))\nwidth = 0.35\n\nax.bar(x - width/2, results['Accuracy'], width, label='Accuracy')\nax.bar(x + width/2, results['F1-Score'], width, label='F1-Score')\n\nax.set_ylabel('Score')\nax.set_title('Comparaison des Modèles')\nax.set_xticks(x)\nax.set_xticklabels(results['Modèle'], rotation=45, ha='right')\nax.legend()\nax.set_ylim(0, 1)\n\nplt.tight_layout()\nplt.show()" }]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "7.2 Points de restitution",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Questions clés pour la restitution en groupe."
+          },
+          "chapters": [
+            {
+              "title": "Questions de restitution",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎤 Points de Restitution" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Préparez des réponses pour chaque question (2-3 phrases) :" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Use Case" },
+                          { "type": "text", "text": " : Quelle décision métier automatisons-nous et pourquoi le ML est-il adapté ?" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Big Data" },
+                          { "type": "text", "text": " : Comment avons-nous structuré nos données (tables, volumes, jointures) ?" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Data Science" },
+                          { "type": "text", "text": " : Quels défauts avons-nous détectés et comment les avons-nous corrigés ?" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Feature Engineering" },
+                          { "type": "text", "text": " : Quelles features avons-nous créées et pourquoi sont-elles pertinentes ?" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Modèles" },
+                          { "type": "text", "text": " : Quel modèle a les meilleures performances et pourquoi ?" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Déploiement" },
+                          { "type": "text", "text": " : Comment ce modèle pourrait-il être utilisé en production ?" }
+                        ]}]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Ce qu'on a appris",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "✅ Ce Que Vous Avez Appris" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Use Case ML" },
+                          { "type": "text", "text": " : Identifier une décision répétitive automatisable" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Big Data" },
+                          { "type": "text", "text": " : Générer et manipuler de grands volumes de données" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Data Science" },
+                          { "type": "text", "text": " : Explorer, nettoyer, fusionner et enrichir les données" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Scikit-learn" },
+                          { "type": "text", "text": " : Pipelines, preprocessing, modèles classiques" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "TensorFlow/Keras" },
+                          { "type": "text", "text": " : Réseaux de neurones avec API haut niveau" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "PyTorch" },
+                          { "type": "text", "text": " : Boucle d'entraînement explicite pour plus de contrôle" }
+                        ]}]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Évaluation" },
+                          { "type": "text", "text": " : Accuracy, F1-Score, matrice de confusion" }
+                        ]}]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "🎉 " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Bravo !" },
+                      { "type": "text", "text": " Vous avez parcouru l'ensemble du cycle data, de la génération au déploiement potentiel." }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

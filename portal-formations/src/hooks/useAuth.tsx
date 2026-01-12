@@ -108,8 +108,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
      * Pattern officiel Supabase : getSession() + onAuthStateChange()
      */
     const initSession = async () => {
+      // Timeout de sécurité pour éviter le blocage indéfini
+      const timeoutId = setTimeout(() => {
+        if (isMounted) {
+          console.warn('Auth timeout - forcing loading to false')
+          setLoading(false)
+        }
+      }, 10000) // 10 secondes max
+
       try {
         const { data: { session: currentSession }, error } = await supabase.auth.getSession()
+        
+        clearTimeout(timeoutId)
         
         if (!isMounted) return
         
@@ -123,10 +133,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setSession(currentSession)
           setUser(currentSession.user)
           
-          // Charger le profil AVANT de mettre loading à false
-          const profileData = await createProfileIfNeeded(currentSession.user)
+          // Charger le profil avec timeout
+          try {
+            const profileData = await Promise.race([
+              createProfileIfNeeded(currentSession.user),
+              new Promise<null>((_, reject) => 
+                setTimeout(() => reject(new Error('Profile fetch timeout')), 5000)
+              )
+            ]) as Profile | null
+            
+            if (isMounted) {
+              setProfile(profileData)
+            }
+          } catch (profileError) {
+            console.warn('Profile fetch error/timeout:', profileError)
+          }
+          
           if (isMounted) {
-            setProfile(profileData)
             setLoading(false)
           }
         } else {
@@ -138,6 +161,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       } catch (err) {
         console.error('Exception initSession:', err)
+        clearTimeout(timeoutId)
         if (isMounted) {
           setLoading(false)
         }

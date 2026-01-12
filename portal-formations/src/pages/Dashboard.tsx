@@ -43,8 +43,13 @@ export function Dashboard() {
   }
 
   useEffect(() => {
-    fetchLibraryItems()
-  }, [])
+    if (user?.id) {
+      fetchLibraryItems()
+    } else {
+      // Si pas d'utilisateur (ne devrait pas arriver dans une route protégée)
+      setLoading(false)
+    }
+  }, [user?.id])
 
   useEffect(() => {
     async function loadOrg() {
