@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Profile } from '../../types/database'
-import { MessageSquare, Search, Download, User, Calendar, FileText, ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react'
+import { MessageSquare, Search, Download, User, Calendar, FileText, ChevronDown, ChevronUp, ArrowLeft, Trophy } from 'lucide-react'
 
 interface QuizResponse {
   id: string
@@ -29,7 +29,7 @@ export function AdminQuizResponses() {
   const [error, setError] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [expandedResponse, setExpandedResponse] = useState<string | null>(null)
-  const [quizTypeFilter, setQuizTypeFilter] = useState<string>('introduction_big_data')
+  const [quizTypeFilter, setQuizTypeFilter] = useState<string>('all')
 
   useEffect(() => {
     fetchResponses()
@@ -50,8 +50,26 @@ export function AdminQuizResponses() {
             role
           )
         `)
-        .eq('quiz_type', quizTypeFilter)
         .order('updated_at', { ascending: false })
+
+      // Appliquer le filtre selon le type sélectionné
+      if (quizTypeFilter === 'all') {
+        // Pas de filtre, on prend tout
+      } else if (quizTypeFilter === 'quiz_all') {
+        // Tous les quiz avec score (Big Data + Data Science + Machine Learning)
+        query = query.or('quiz_type.like.quiz_big_data_%,quiz_type.like.quiz_data_science_%,quiz_type.like.quiz_machine_learning_%')
+      } else if (quizTypeFilter === 'quiz_big_data') {
+        query = query.like('quiz_type', 'quiz_big_data_%')
+      } else if (quizTypeFilter === 'quiz_data_science') {
+        query = query.like('quiz_type', 'quiz_data_science_%')
+      } else if (quizTypeFilter === 'quiz_machine_learning') {
+        query = query.like('quiz_type', 'quiz_machine_learning_%')
+      } else if (quizTypeFilter === 'tp_big_data') {
+        query = query.like('quiz_type', 'tp_big_data_%')
+      } else {
+        // Filtre spécifique (ex: introduction_big_data)
+        query = query.eq('quiz_type', quizTypeFilter)
+      }
 
       // Si on est dans le contexte d'un cours, filtrer par les utilisateurs inscrits
       if (courseId) {
@@ -85,6 +103,19 @@ export function AdminQuizResponses() {
     
     const searchLower = searchTerm.toLowerCase()
     const userName = response.profiles?.full_name?.toLowerCase() || ''
+    
+    // Pour les quiz avec score
+    if (response.responses.level !== undefined) {
+      const score = String(response.responses.score || '')
+      const percentage = String(response.responses.percentage || '')
+      return (
+        userName.includes(searchLower) ||
+        score.includes(searchLower) ||
+        percentage.includes(searchLower)
+      )
+    }
+    
+    // Pour les quiz d'introduction
     const bigdata = response.responses.bigdata?.toLowerCase() || ''
     const ml = response.responses.machinelearning?.toLowerCase() || ''
     const ds = response.responses.datascience?.toLowerCase() || ''
@@ -196,27 +227,38 @@ export function AdminQuizResponses() {
               onChange={(e) => setQuizTypeFilter(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
-              <option value="introduction_big_data">Quiz Big Data / ML / DS</option>
               <option value="all">Tous les quiz</option>
+              <option value="quiz_all">📊 Quiz avec scores</option>
+              <option value="quiz_big_data">📊 Quiz Big Data</option>
+              <option value="quiz_data_science">📈 Quiz Data Science</option>
+              <option value="quiz_machine_learning">🤖 Quiz Machine Learning</option>
+              <option value="introduction_big_data">Quiz d'introduction</option>
+              <option value="tp_big_data">TP Big Data - Analyses</option>
             </select>
           </div>
         </div>
 
         {/* Statistiques */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-white rounded-lg border border-gray-200 p-4">
             <div className="text-sm text-gray-600 mb-1">Total de réponses</div>
             <div className="text-2xl font-bold text-gray-900">{filteredResponses.length}</div>
           </div>
           <div className="bg-white rounded-lg border border-gray-200 p-4">
-            <div className="text-sm text-gray-600 mb-1">Réponses complètes</div>
+            <div className="text-sm text-gray-600 mb-1">Quiz avec score</div>
+            <div className="text-2xl font-bold text-blue-600">
+              {filteredResponses.filter(r => r.responses.level !== undefined).length}
+            </div>
+          </div>
+          <div className="bg-white rounded-lg border border-gray-200 p-4">
+            <div className="text-sm text-gray-600 mb-1">Score moyen</div>
             <div className="text-2xl font-bold text-green-600">
-              {filteredResponses.filter(r => 
-                r.responses.bigdata && 
-                r.responses.machinelearning && 
-                r.responses.datascience && 
-                r.responses.expectations
-              ).length}
+              {(() => {
+                const quizWithScores = filteredResponses.filter(r => r.responses.percentage !== undefined)
+                if (quizWithScores.length === 0) return 'N/A'
+                const avg = quizWithScores.reduce((acc, r) => acc + Number(r.responses.percentage || 0), 0) / quizWithScores.length
+                return `${Math.round(avg)}%`
+              })()}
             </div>
           </div>
           <div className="bg-white rounded-lg border border-gray-200 p-4">
@@ -285,6 +327,28 @@ export function AdminQuizResponses() {
                             minute: '2-digit'
                           })}
                         </div>
+                        {response.responses.level !== undefined ? (
+                          <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ${
+                            response.quiz_type?.includes('data_science') 
+                              ? 'bg-purple-100 text-purple-800' 
+                              : response.quiz_type?.includes('machine_learning')
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-blue-100 text-blue-800'
+                          }`}>
+                            <Trophy className="w-3 h-3" />
+                            {response.responses.score}/{response.responses.total} ({response.responses.percentage}%)
+                          </div>
+                        ) : response.responses.analysis ? (
+                          <div className="flex items-center gap-2 px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-semibold">
+                            <FileText className="w-3 h-3" />
+                            TP Big Data
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2 px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-semibold">
+                            <MessageSquare className="w-3 h-3" />
+                            Introduction
+                          </div>
+                        )}
                       </div>
                     </div>
                     <button className="ml-4">
@@ -299,56 +363,132 @@ export function AdminQuizResponses() {
 
                 {expandedResponse === response.id && (
                   <div className="border-t border-gray-200 p-6 space-y-6">
-                    {/* Big Data */}
-                    {response.responses.bigdata && (
-                      <div>
-                        <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                          <FileText className="w-4 h-4" />
-                          Définition du Big Data
-                        </h4>
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                          <p className="text-gray-800 whitespace-pre-wrap">{response.responses.bigdata}</p>
+                    {/* Quiz avec score */}
+                    {response.responses.level !== undefined ? (
+                      <div className="space-y-4">
+                        <div className={`bg-gradient-to-r text-white rounded-lg p-6 ${
+                          response.quiz_type?.includes('data_science')
+                            ? 'from-purple-500 to-pink-500'
+                            : response.quiz_type?.includes('machine_learning')
+                              ? 'from-green-500 to-teal-500'
+                              : 'from-blue-500 to-purple-500'
+                        }`}>
+                          <h4 className="text-xl font-bold mb-2">
+                            {response.quiz_type?.includes('data_science') 
+                              ? '📈 Résultats du Quiz Data Science' 
+                              : response.quiz_type?.includes('machine_learning')
+                                ? '🤖 Résultats du Quiz Machine Learning'
+                                : '📊 Résultats du Quiz Big Data'}
+                          </h4>
+                          {response.responses.quizTitle && (
+                            <p className="text-sm opacity-90 mb-4">{response.responses.quizTitle}</p>
+                          )}
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div>
+                              <div className="text-sm opacity-90">Niveau</div>
+                              <div className="text-2xl font-bold">{response.responses.level}</div>
+                            </div>
+                            <div>
+                              <div className="text-sm opacity-90">Score</div>
+                              <div className="text-2xl font-bold">
+                                {response.responses.score} / {response.responses.total}
+                              </div>
+                            </div>
+                            <div>
+                              <div className="text-sm opacity-90">Pourcentage</div>
+                              <div className="text-2xl font-bold">{response.responses.percentage}%</div>
+                            </div>
+                            <div>
+                              <div className="text-sm opacity-90">Badge</div>
+                              <div className="text-2xl">{response.responses.badge || '—'}</div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    )}
 
-                    {/* Machine Learning */}
-                    {response.responses.machinelearning && (
-                      <div>
-                        <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                          <FileText className="w-4 h-4" />
-                          Définition du Machine Learning
-                        </h4>
-                        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                          <p className="text-gray-800 whitespace-pre-wrap">{response.responses.machinelearning}</p>
-                        </div>
-                      </div>
-                    )}
+                        {response.responses.wrongIds && response.responses.wrongIds.length > 0 && (
+                          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                            <h5 className="font-semibold text-red-900 mb-2">
+                              Questions ratées ({response.responses.wrongIds.length})
+                            </h5>
+                            <div className="text-sm text-red-800">
+                              IDs: {response.responses.wrongIds.join(', ')}
+                            </div>
+                          </div>
+                        )}
 
-                    {/* Data Science */}
-                    {response.responses.datascience && (
-                      <div>
-                        <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                          <FileText className="w-4 h-4" />
-                          Définition de la Data Science
-                        </h4>
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                          <p className="text-gray-800 whitespace-pre-wrap">{response.responses.datascience}</p>
+                        {response.responses.completedAt && (
+                          <div className="text-sm text-gray-600">
+                            Complété le : {new Date(response.responses.completedAt).toLocaleString('fr-FR')}
+                          </div>
+                        )}
+                      </div>
+                    ) : response.responses.analysis ? (
+                      /* TP Big Data - Analyse */
+                      <div className="space-y-4">
+                        <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg p-6">
+                          <h4 className="text-xl font-bold mb-2">Analyse TP Big Data</h4>
+                          <p className="text-sm opacity-90">
+                            {response.responses.itemTitle || 'TP Big Data'}
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg p-6">
+                          <h5 className="font-semibold text-gray-900 mb-3">Analyse de l'étudiant</h5>
+                          <div className="prose max-w-none">
+                            <p className="text-gray-800 whitespace-pre-wrap">{response.responses.analysis}</p>
+                          </div>
                         </div>
                       </div>
-                    )}
+                    ) : (
+                      /* Quiz d'introduction (réponses texte) */
+                      <>
+                        {response.responses.bigdata && (
+                          <div>
+                            <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                              <FileText className="w-4 h-4" />
+                              Définition du Big Data
+                            </h4>
+                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                              <p className="text-gray-800 whitespace-pre-wrap">{response.responses.bigdata}</p>
+                            </div>
+                          </div>
+                        )}
 
-                    {/* Attentes */}
-                    {response.responses.expectations && (
-                      <div>
-                        <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                          <FileText className="w-4 h-4" />
-                          Attentes du cours
-                        </h4>
-                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                          <p className="text-gray-800 whitespace-pre-wrap">{response.responses.expectations}</p>
-                        </div>
-                      </div>
+                        {response.responses.machinelearning && (
+                          <div>
+                            <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                              <FileText className="w-4 h-4" />
+                              Définition du Machine Learning
+                            </h4>
+                            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                              <p className="text-gray-800 whitespace-pre-wrap">{response.responses.machinelearning}</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {response.responses.datascience && (
+                          <div>
+                            <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                              <FileText className="w-4 h-4" />
+                              Définition de la Data Science
+                            </h4>
+                            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                              <p className="text-gray-800 whitespace-pre-wrap">{response.responses.datascience}</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {response.responses.expectations && (
+                          <div>
+                            <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                              <FileText className="w-4 h-4" />
+                              Attentes du cours
+                            </h4>
+                            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                              <p className="text-gray-800 whitespace-pre-wrap">{response.responses.expectations}</p>
+                            </div>
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 )}
