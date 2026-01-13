@@ -102,69 +102,75 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     initializedRef.current = true
 
     let isMounted = true
+    let loadingFinished = false
+
+    // Fonction helper pour marquer loading comme terminé
+    const finishLoading = () => {
+      if (!loadingFinished && isMounted) {
+        loadingFinished = true
+        setLoading(false)
+      }
+    }
+
+    // Timeout de sécurité global - TOUJOURS exécuté après 8 secondes
+    const globalTimeoutId = setTimeout(() => {
+      console.warn('Auth global timeout - forcing loading to false')
+      finishLoading()
+    }, 8000)
 
     /**
      * Initialisation de la session au montage
      * Pattern officiel Supabase : getSession() + onAuthStateChange()
      */
     const initSession = async () => {
-      // Timeout de sécurité pour éviter le blocage indéfini
-      const timeoutId = setTimeout(() => {
-        if (isMounted) {
-          console.warn('Auth timeout - forcing loading to false')
-          setLoading(false)
-        }
-      }, 10000) // 10 secondes max
-
       try {
+        console.log('initSession: starting...')
         const { data: { session: currentSession }, error } = await supabase.auth.getSession()
-        
-        clearTimeout(timeoutId)
         
         if (!isMounted) return
         
         if (error) {
           console.error('Erreur getSession:', error.message)
-          setLoading(false)
+          finishLoading()
           return
         }
+
+        console.log('initSession: session found?', !!currentSession?.user)
 
         if (currentSession?.user) {
           setSession(currentSession)
           setUser(currentSession.user)
           
-          // Charger le profil avec timeout
+          // Charger le profil avec timeout court
           try {
-            const profileData = await Promise.race([
-              createProfileIfNeeded(currentSession.user),
-              new Promise<null>((_, reject) => 
-                setTimeout(() => reject(new Error('Profile fetch timeout')), 5000)
-              )
-            ]) as Profile | null
+            const profilePromise = createProfileIfNeeded(currentSession.user)
+            const timeoutPromise = new Promise<null>((resolve) => 
+              setTimeout(() => {
+                console.warn('Profile fetch timeout after 3s')
+                resolve(null)
+              }, 3000)
+            )
+            
+            const profileData = await Promise.race([profilePromise, timeoutPromise])
             
             if (isMounted) {
               setProfile(profileData)
             }
           } catch (profileError) {
-            console.warn('Profile fetch error/timeout:', profileError)
+            console.warn('Profile fetch error:', profileError)
           }
           
-          if (isMounted) {
-            setLoading(false)
-          }
+          finishLoading()
         } else {
-          // Pas de session = pas de profil, on peut mettre loading à false
+          // Pas de session = pas de profil
           setSession(null)
           setUser(null)
           setProfile(null)
-          setLoading(false)
+          finishLoading()
         }
       } catch (err) {
         console.error('Exception initSession:', err)
-        clearTimeout(timeoutId)
-        if (isMounted) {
-          setLoading(false)
-        }
+        finishLoading()
       }
     }
 
@@ -172,31 +178,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     /**
      * Écouter les changements d'authentification
-     * C'est le seul endroit où on gère les événements auth
      */
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, currentSession) => {
         if (!isMounted) return
 
-        console.log('Auth event:', event)
+        console.log('Auth event:', event, '- user:', !!currentSession?.user)
 
-        // Pour SIGNED_IN et TOKEN_REFRESHED, on doit recharger le profil
         if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
           setSession(currentSession)
           setUser(currentSession?.user ?? null)
           
           if (currentSession?.user) {
-            const profileData = await createProfileIfNeeded(currentSession.user)
-            if (isMounted) {
-              setProfile(profileData)
-            }
+            // Charger le profil de manière non-bloquante
+            createProfileIfNeeded(currentSession.user)
+              .then(profileData => {
+                if (isMounted) {
+                  setProfile(profileData)
+                }
+              })
+              .catch(err => {
+                console.warn('Profile load error in auth change:', err)
+              })
+              .finally(() => {
+                // S'assurer que loading est false après un SIGNED_IN
+                finishLoading()
+              })
+          } else {
+            finishLoading()
           }
         } else if (event === 'SIGNED_OUT') {
           setSession(null)
           setUser(null)
           setProfile(null)
+          finishLoading()
         } else {
-          // Pour les autres événements, juste mettre à jour session/user
           setSession(currentSession)
           setUser(currentSession?.user ?? null)
           
@@ -209,6 +225,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return () => {
       isMounted = false
+      clearTimeout(globalTimeoutId)
       subscription.unsubscribe()
     }
   }, [createProfileIfNeeded])
