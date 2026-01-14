@@ -96,27 +96,13 @@ export function useSessionRealtime({
         .maybeSingle();
 
       if (stateError && stateError.code !== 'PGRST116') {
-        console.error('Error loading session_state:', stateError);
-        // Ne pas throw, on continue sans l'état
+        console.warn('Error loading session_state:', stateError.message);
+        // Ne pas throw, on continue sans l'état - le trigger devrait le créer
       }
       
-      // Si pas d'état trouvé, essayer de le créer (pour les sessions existantes avant la migration)
-      if (!stateData && !stateError) {
-        const { data: newState, error: createError } = await supabase
-          .from('session_state')
-          .insert({ session_id: sessionId })
-          .select()
-          .single();
-        
-        if (createError) {
-          console.warn('Could not create session_state:', createError);
-          // Pas critique, on continue
-        } else {
-          setSessionState(newState);
-        }
-      } else {
-        setSessionState(stateData);
-      }
+      // Si pas d'état trouvé, ce n'est pas grave - le trigger aurait dû le créer
+      // On continue avec un état null, les fonctionnalités live ne seront pas disponibles
+      setSessionState(stateData || null);
 
       // Charger les membres
       const { data: membersData, error: membersError } = await supabase
