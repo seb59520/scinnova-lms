@@ -177,4 +177,45 @@ CREATE TRIGGER trigger_assigned_resources_updated_at
   FOR EACH ROW
   EXECUTE FUNCTION update_assigned_resources_updated_at();
 
-SELECT 'Table assigned_resources created with RLS policies' as status;
+-- Trigger pour créer une notification quand une ressource est assignée
+CREATE OR REPLACE FUNCTION notify_assigned_resource()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- Créer une notification pour l'apprenant
+  INSERT INTO notifications (
+    user_id,
+    notification_type,
+    category,
+    title,
+    message,
+    session_id,
+    data
+  ) VALUES (
+    NEW.learner_id,
+    'trainer_message',
+    'message',
+    'Nouvelle ressource disponible',
+    format('Une nouvelle ressource "%s" vous a été assignée', NEW.title),
+    NEW.session_id,
+    jsonb_build_object(
+      'resource_id', NEW.id,
+      'trainer_id', NEW.trainer_id,
+      'resource_type', NEW.resource_type
+    )
+  );
+  
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS trigger_notify_assigned_resource ON assigned_resources;
+CREATE TRIGGER trigger_notify_assigned_resource
+  AFTER INSERT ON assigned_resources
+  FOR EACH ROW
+  EXECUTE FUNCTION notify_assigned_resource();
+
+-- Supprimer tout ancien trigger qui utilise 'type' au lieu de 'notification_type'
+DROP TRIGGER IF EXISTS on_assigned_resource_created ON assigned_resources;
+DROP FUNCTION IF EXISTS notify_resource_assigned();
+
+SELECT 'Table assigned_resources created with RLS policies and notification trigger' as status;
