@@ -77,7 +77,7 @@ function App() {
     <AuthProvider>
       <TimeTrackingProvider>
         <NetworkStatus />
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 pt-24">
         <Routes>
           {/* Routes publiques */}
           <Route
