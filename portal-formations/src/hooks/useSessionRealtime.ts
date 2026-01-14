@@ -93,12 +93,30 @@ export function useSessionRealtime({
         .from('session_state')
         .select('*')
         .eq('session_id', sessionId)
-        .single();
+        .maybeSingle();
 
       if (stateError && stateError.code !== 'PGRST116') {
-        throw stateError;
+        console.error('Error loading session_state:', stateError);
+        // Ne pas throw, on continue sans l'état
       }
-      setSessionState(stateData);
+      
+      // Si pas d'état trouvé, essayer de le créer (pour les sessions existantes avant la migration)
+      if (!stateData && !stateError) {
+        const { data: newState, error: createError } = await supabase
+          .from('session_state')
+          .insert({ session_id: sessionId })
+          .select()
+          .single();
+        
+        if (createError) {
+          console.warn('Could not create session_state:', createError);
+          // Pas critique, on continue
+        } else {
+          setSessionState(newState);
+        }
+      } else {
+        setSessionState(stateData);
+      }
 
       // Charger les membres
       const { data: membersData, error: membersError } = await supabase
@@ -109,7 +127,9 @@ export function useSessionRealtime({
         `)
         .eq('session_id', sessionId);
 
-      if (membersError) throw membersError;
+      if (membersError) {
+        console.error('Error loading session_members:', membersError);
+      }
       setMembers(membersData || []);
 
       // Trouver mon rôle
@@ -122,7 +142,9 @@ export function useSessionRealtime({
         .select('*')
         .eq('session_id', sessionId);
 
-      if (progressError) throw progressError;
+      if (progressError) {
+        console.error('Error loading learner_progress:', progressError);
+      }
       const progressMap = new Map<string, LearnerProgress>();
       progressData?.forEach(p => progressMap.set(p.user_id, p));
       setLearnerProgress(progressMap);
@@ -135,7 +157,9 @@ export function useSessionRealtime({
         .order('created_at', { ascending: false })
         .limit(50);
 
-      if (eventsError) throw eventsError;
+      if (eventsError) {
+        console.error('Error loading session_events:', eventsError);
+      }
       setRecentEvents(eventsData || []);
 
     } catch (err) {
