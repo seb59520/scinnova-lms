@@ -444,8 +444,8 @@ export function Dashboard() {
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 sm:px-0 space-y-8">
           
-          {/* Section Projets à rendre */}
-          {profile?.role !== 'admin' && projects.length > 0 && (
+          {/* Section Projets à rendre - visible aussi pour les admins s'ils sont inscrits comme learner */}
+          {projects.length > 0 && (
             <section>
               <div className="flex items-center gap-3 mb-4">
                 <ClipboardCheck className="w-6 h-6 text-purple-600" />
