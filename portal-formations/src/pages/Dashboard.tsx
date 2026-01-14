@@ -81,7 +81,8 @@ export function Dashboard() {
   // Charger les projets à rendre
   useEffect(() => {
     async function loadProjects() {
-      if (!user?.id || profile?.role === 'admin') return;
+      if (!user?.id) return;
+      // Note: même les admins peuvent avoir des projets à rendre s'ils sont inscrits comme learner
 
       try {
         // 1. Récupérer les sessions où l'utilisateur est inscrit
