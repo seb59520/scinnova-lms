@@ -86,55 +86,69 @@ export function Dashboard() {
 
       try {
         // 1. Récupérer les sessions où l'utilisateur est inscrit
-        const { data: memberSessions } = await supabase
+        const { data: memberSessions, error: memberError } = await supabase
           .from('session_members')
-          .select('session_id, session:sessions(id, title)')
-          .eq('user_id', user.id)
-          .eq('role', 'learner');
+          .select('session_id, role, session:sessions(id, title)')
+          .eq('user_id', user.id);
 
-        if (!memberSessions || memberSessions.length === 0) {
+        console.log('📋 Session members pour', user.id, ':', memberSessions, memberError);
+
+        // Filtrer pour ne garder que les learners
+        const learnerSessions = memberSessions?.filter(m => m.role === 'learner') || [];
+        console.log('📋 Sessions en tant que learner:', learnerSessions.length);
+
+        if (learnerSessions.length === 0) {
+          console.log('⚠️ Aucune session en tant que learner trouvée');
           setProjects([]);
           return;
         }
 
-        const sessionIds = memberSessions.map(m => m.session_id);
-        const sessionMap = new Map(memberSessions.map(m => [m.session_id, (m.session as any)?.title || 'Session']));
+        const sessionIds = learnerSessions.map(m => m.session_id);
+        const sessionMap = new Map(learnerSessions.map(m => [m.session_id, (m.session as any)?.title || 'Session']));
 
         // 2. Récupérer les restitutions de projet ouvertes pour ces sessions
-        const { data: restitutions } = await supabase
+        const { data: restitutions, error: restitError } = await supabase
           .from('session_project_restitutions')
           .select('*')
           .in('session_id', sessionIds)
           .in('status', ['open', 'published', 'grading', 'completed']);
 
+        console.log('📋 Restitutions pour sessions', sessionIds, ':', restitutions?.length, restitError);
+
         if (!restitutions || restitutions.length === 0) {
+          console.log('⚠️ Aucune restitution trouvée');
           setProjects([]);
           return;
         }
 
         // 3. Récupérer les soumissions de l'utilisateur
         const restitutionIds = restitutions.map(r => r.id);
-        const { data: submissions } = await supabase
+        const { data: submissions, error: subError } = await supabase
           .from('project_submissions')
           .select('restitution_id, status')
           .eq('user_id', user.id)
           .in('restitution_id', restitutionIds);
 
+        console.log('📋 Soumissions:', submissions, subError);
         const submissionMap = new Map(submissions?.map(s => [s.restitution_id, s.status]) || []);
 
         // 4. Récupérer les évaluations publiées avec les notes
-        const { data: evaluations } = await supabase
+        const { data: evaluations, error: evalError } = await supabase
           .from('project_evaluations')
-          .select('restitution_id, is_published, score_20, final_score, passed')
+          .select('restitution_id, is_published, score_20, final_score, passed, user_id')
           .eq('user_id', user.id)
-          .in('restitution_id', restitutionIds)
-          .eq('is_published', true);
+          .in('restitution_id', restitutionIds);
+        
+        console.log('📋 Évaluations (toutes):', evaluations, evalError);
+        console.log('📋 Évaluations publiées:', evaluations?.filter(e => e.is_published));
 
-        const evaluationMap = new Map(evaluations?.map(e => [e.restitution_id, {
+        // Filtrer pour ne garder que les évaluations publiées
+        const publishedEvaluations = evaluations?.filter(e => e.is_published) || [];
+        const evaluationMap = new Map(publishedEvaluations.map(e => [e.restitution_id, {
           is_published: e.is_published,
           score: e.final_score || e.score_20,
           passed: e.passed
-        }]) || []);
+        }]));
 
         // 5. Construire la liste des projets
         const projectsList: ProjectToSubmit[] = restitutions.map(r => {
