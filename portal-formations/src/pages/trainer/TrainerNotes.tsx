@@ -35,6 +35,7 @@ export function TrainerNotes() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [org, setOrg] = useState<any>(null);
+  const [isAdminUser, setIsAdminUser] = useState(false);
   const [notes, setNotes] = useState<TrainerNote[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -59,19 +60,26 @@ export function TrainerNotes() {
       setLoading(true);
 
       const { org: trainerOrg, role, error: contextError } = await getTrainerContext();
-      if (contextError || !trainerOrg) {
+      
+      // Pour les admins, l'org peut être null - on continue quand même
+      const isAdmin = role === 'admin';
+      if (contextError && !isAdmin) {
         console.error('Error loading trainer context:', contextError);
         setLoading(false);
         return;
       }
+      
+      // Si pas d'org mais admin, on utilise un org fictif pour les requêtes
+      const effectiveOrgId = trainerOrg?.id || '';
       setOrg(trainerOrg);
+      setIsAdminUser(isAdmin);
 
       // Charger les lookups en parallèle
       await Promise.all([
-        loadCourses(trainerOrg.id, role === 'admin'),
-        loadSessions(trainerOrg.id, role === 'admin'),
-        loadUsers(trainerOrg.id, role === 'admin'),
-        loadNotes(trainerOrg.id, user.id),
+        loadCourses(effectiveOrgId, isAdmin),
+        loadSessions(effectiveOrgId, isAdmin),
+        loadUsers(effectiveOrgId, isAdmin),
+        loadNotes(effectiveOrgId, user.id, isAdmin),
       ]);
 
       setLoading(false);
@@ -129,26 +137,51 @@ export function TrainerNotes() {
     setUsers(uniqueUsers);
   }
 
-  async function loadNotes(orgId: string, trainerId: string) {
+  async function loadNotes(orgId: string, trainerId: string, isAdmin: boolean = false) {
     const activeFilters: any = {};
     if (filters.course_id) activeFilters.course_id = filters.course_id;
     if (filters.module_id) activeFilters.module_id = filters.module_id;
     if (filters.session_id) activeFilters.session_id = filters.session_id;
     if (filters.user_id) activeFilters.user_id = filters.user_id;
 
-    const { notes: trainerNotes, error } = await getTrainerNotes(trainerId, orgId, activeFilters);
-    if (error) {
-      console.error('Error loading notes:', error);
+    // Pour les admins sans org, charger directement depuis Supabase sans filtrer par org
+    if (isAdmin && !orgId) {
+      try {
+        let query = supabase
+          .from('trainer_notes')
+          .select('*')
+          .eq('trainer_id', trainerId)
+          .order('created_at', { ascending: false });
+        
+        if (activeFilters.course_id) query = query.eq('course_id', activeFilters.course_id);
+        if (activeFilters.module_id) query = query.eq('module_id', activeFilters.module_id);
+        if (activeFilters.session_id) query = query.eq('session_id', activeFilters.session_id);
+        if (activeFilters.user_id) query = query.eq('user_id', activeFilters.user_id);
+        
+        const { data, error } = await query;
+        if (error) {
+          console.error('Error loading notes:', error);
+        } else {
+          setNotes(data || []);
+        }
+      } catch (err) {
+        console.error('Error loading notes:', err);
+      }
     } else {
-      setNotes(trainerNotes);
+      const { notes: trainerNotes, error } = await getTrainerNotes(trainerId, orgId, activeFilters);
+      if (error) {
+        console.error('Error loading notes:', error);
+      } else {
+        setNotes(trainerNotes);
+      }
     }
   }
 
   useEffect(() => {
-    if (org && user) {
-      loadNotes(org.id, user.id);
+    if (user && (org || isAdminUser)) {
+      loadNotes(org?.id || '', user.id, isAdminUser);
     }
-  }, [filters, org, user]);
+  }, [filters, org, user, isAdminUser]);
 
   function handleCreate() {
     setEditingNote(null);

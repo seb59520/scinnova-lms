@@ -86,8 +86,7 @@ export function useGradebook({
         .from('learner_submissions')
         .select(`
           *,
-          profile:profiles(full_name, avatar_url),
-          grade:grades(*)
+          profile:profiles(full_name, avatar_url)
         `)
         .eq('session_id', sessionId);
       
@@ -102,7 +101,6 @@ export function useGradebook({
       
       // Organiser les soumissions par activité
       const submissionsMap = new Map<string, LearnerSubmission[]>();
-      const gradesMap = new Map<string, Grade>();
       
       submissionsData?.forEach(sub => {
         const activityId = sub.activity_id;
@@ -110,14 +108,27 @@ export function useGradebook({
           submissionsMap.set(activityId, []);
         }
         submissionsMap.get(activityId)!.push(sub);
-        
-        // Extraire le grade si présent
-        if (sub.grade && sub.grade.length > 0) {
-          gradesMap.set(sub.id, sub.grade[0]);
-        }
       });
       
       setSubmissions(submissionsMap);
+      
+      // Charger les notes séparément pour éviter les problèmes de jointure
+      const submissionIds = submissionsData?.map(s => s.id) || [];
+      const gradesMap = new Map<string, Grade>();
+      
+      if (submissionIds.length > 0) {
+        const { data: gradesData, error: gradesError } = await supabase
+          .from('grades')
+          .select('*')
+          .in('submission_id', submissionIds);
+        
+        if (!gradesError && gradesData) {
+          gradesData.forEach(grade => {
+            gradesMap.set(grade.submission_id, grade);
+          });
+        }
+      }
+      
       setGrades(gradesMap);
       
       // Charger les résumés
