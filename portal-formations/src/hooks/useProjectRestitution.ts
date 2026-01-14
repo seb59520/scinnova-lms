@@ -132,29 +132,33 @@ export function useProjectRestitution({
       if (submissionsError) throw submissionsError;
       setSubmissions(submissionsData || []);
       
-      // Charger les évaluations
-      let evaluationsQuery = supabase
-        .from('project_evaluations')
-        .select('*')
-        .eq('session_id', sessionId);
-      
-      if (restitutionId) {
-        evaluationsQuery = evaluationsQuery.eq('restitution_id', restitutionId);
-      }
-      
-      // Si pas formateur, ne voir que ses évaluations publiées
-      if (!isTrainer) {
-        evaluationsQuery = evaluationsQuery
-          .eq('user_id', user.id)
-          .eq('is_published', true);
-      }
-      
-      const { data: evaluationsData, error: evaluationsError } = await evaluationsQuery;
-      
-      if (evaluationsError) throw evaluationsError;
-      
+      // Charger les évaluations séparément pour éviter les problèmes de RLS
+      const submissionIds = submissionsData?.map(s => s.id) || [];
       const evaluationsMap = new Map<string, ProjectEvaluation>();
-      evaluationsData?.forEach(e => evaluationsMap.set(e.submission_id, e));
+      
+      if (submissionIds.length > 0) {
+        let evaluationsQuery = supabase
+          .from('project_evaluations')
+          .select('*')
+          .in('submission_id', submissionIds);
+        
+        // Si pas formateur, ne voir que ses évaluations publiées
+        if (!isTrainer) {
+          evaluationsQuery = evaluationsQuery
+            .eq('user_id', user.id)
+            .eq('is_published', true);
+        }
+        
+        const { data: evaluationsData, error: evaluationsError } = await evaluationsQuery;
+        
+        if (evaluationsError) {
+          console.error('Error loading evaluations:', evaluationsError);
+        } else {
+          console.log('📊 Évaluations chargées:', evaluationsData?.length || 0);
+          evaluationsData?.forEach(e => evaluationsMap.set(e.submission_id, e));
+        }
+      }
+      
       setEvaluations(evaluationsMap);
       
       // Charger les templates si formateur

@@ -75,14 +75,18 @@ export function AllProjectsOverview() {
         .select('*', { count: 'exact', head: true })
         .eq('restitution_id', r.id);
 
-      // Moyenne des notes
+      // Moyenne des notes (utiliser final_score ou score_20)
       const { data: avgData } = await supabase
         .from('project_evaluations')
-        .select('final_score')
+        .select('final_score, score_20')
         .eq('restitution_id', r.id);
       
-      const avgScore = avgData && avgData.length > 0
-        ? avgData.reduce((sum, e) => sum + (e.final_score || 0), 0) / avgData.length
+      const validScores = (avgData || [])
+        .map(e => e.final_score || e.score_20)
+        .filter((s): s is number => s !== null && s !== undefined);
+      
+      const avgScore = validScores.length > 0
+        ? validScores.reduce((sum, s) => sum + s, 0) / validScores.length
         : null;
 
       projectsWithStats.push({
