@@ -217,7 +217,7 @@ export function Dashboard() {
             session:sessions (
               id,
               title,
-              course:courses (*)
+              course_id
             )
           `)
           .eq('user_id', user.id)
@@ -262,18 +262,34 @@ export function Dashboard() {
       const { data: sessionMembers, error: sessionMembersError } = sessionMembersResult
       if (sessionMembersError && sessionMembersError.code !== 'PGRST116') {
         console.error('Error fetching session members:', sessionMembersError)
-      } else if (sessionMembers) {
-        const sessionCourses: CourseWithEnrollment[] = sessionMembers
-          .filter((sm: any) => sm.session?.course && !addedCourseIds.has(sm.session.course.id))
-          .map((sm: any) => ({
-            ...sm.session.course,
-            session: sm.session,
-            sessionMember: sm,
-            type: 'course' as const
-          }))
+      } else if (sessionMembers && sessionMembers.length > 0) {
+        // Récupérer les course_ids des sessions
+        const courseIdsFromSessions = sessionMembers
+          .filter((sm: any) => sm.session?.course_id && !addedCourseIds.has(sm.session.course_id))
+          .map((sm: any) => sm.session.course_id)
         
-        sessionCourses.forEach((c: any) => addedCourseIds.add(c.id))
-        allItems.push(...sessionCourses)
+        if (courseIdsFromSessions.length > 0) {
+          // Charger les cours correspondants
+          const { data: sessionCoursesData, error: sessionCoursesError } = await supabase
+            .from('courses')
+            .select('*')
+            .in('id', courseIdsFromSessions)
+
+          if (!sessionCoursesError && sessionCoursesData) {
+            const sessionCourses: CourseWithEnrollment[] = sessionCoursesData.map((course: any) => {
+              const sm = sessionMembers.find((m: any) => m.session?.course_id === course.id)
+              return {
+                ...course,
+                session: sm?.session,
+                sessionMember: sm,
+                type: 'course' as const
+              }
+            })
+            
+            sessionCourses.forEach((c: any) => addedCourseIds.add(c.id))
+            allItems.push(...sessionCourses)
+          }
+        }
       }
 
       // Traiter les inscriptions aux programmes
