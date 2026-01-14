@@ -1,0 +1,1875 @@
+{
+  "title": "Introduction au no-code et enjeux",
+  "slug": "introduction-no-code-enjeux",
+  "description": "Formation complète sur le no-code : de la définition et les enjeux jusqu'à la création de MVP/POC, en passant par les headless CMS, les outils front-end no-code, l'automatisation et la gestion des coûts.",
+  "duration": "2 jours (14 heures)",
+  "level": "Débutant",
+  "published": true,
+  "theme": {
+    "primaryColor": "#6366F1",
+    "secondaryColor": "#A855F7",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Introduction au no-code et enjeux",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#6366F1",
+        "secondaryColor": "#A855F7"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Introduction au no-code",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Définition, historique et évolution du no-code."
+          },
+          "chapters": [
+            {
+              "title": "Définition du no-code",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Qu'est-ce que le no-code ?" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Le " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "no-code" },
+                      { "type": "text", "text": " est une approche de développement d'applications qui permet de créer des logiciels sans écrire de code traditionnel. Cette méthode utilise des interfaces visuelles, du glisser-déposer et des composants préconfigurés pour construire des applications." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Caractéristiques principales" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Interfaces visuelles" }, { "type": "text", "text": " : construction par glisser-déposer" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Composants préconfigurés" }, { "type": "text", "text": " : éléments prêts à l'emploi" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Logique visuelle" }, { "type": "text", "text": " : workflows et automatisations sans code" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Déploiement simplifié" }, { "type": "text", "text": " : publication en quelques clics" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Historique et évolution",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "L'évolution du no-code" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Le mouvement no-code a connu une évolution significative au fil des années :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Années 2000" }, { "type": "text", "text": " : Premiers outils de création de sites web (Dreamweaver, FrontPage)" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "2010-2015" }, { "type": "text", "text": " : Émergence des plateformes cloud (Wix, Squarespace)" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "2015-2020" }, { "type": "text", "text": " : Explosion des outils no-code avancés (Bubble, Webflow, Airtable)" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "2020-aujourd'hui" }, { "type": "text", "text": " : Démocratisation et adoption massive en entreprise" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Enjeux du no-code",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Les enjeux stratégiques du no-code pour les entreprises et les individus."
+          },
+          "chapters": [
+            {
+              "title": "Les enjeux stratégiques",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Pourquoi le no-code est-il important ?" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Le no-code répond à plusieurs enjeux majeurs dans le monde professionnel actuel :" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Réduction des coûts" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Les projets no-code permettent de réduire significativement les coûts de développement en diminuant le besoin de développeurs spécialisés et en accélérant les délais de livraison." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Accélération du développement" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Les applications peuvent être créées en quelques jours ou semaines au lieu de plusieurs mois, permettant une mise sur le marché rapide." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Accessibilité pour les non-techniques" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Les équipes métier peuvent désormais créer leurs propres outils sans dépendre entièrement des équipes IT." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Le mouvement des Citizen Makers" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "L'émergence des \"citizen makers\" ou \"citizen developers\" : des collaborateurs non-techniques qui créent des solutions digitales pour résoudre leurs problèmes métier quotidiens." }]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.3 Avantages et inconvénients du no-code",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Comparaison du no-code avec les méthodes de développement traditionnelles."
+          },
+          "chapters": [
+            {
+              "title": "Les avantages du no-code",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Avantages du no-code" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Accessibilité de la transformation numérique" }, { "type": "text", "text": " : permet à toutes les entreprises, quelle que soit leur taille, d'accéder à la digitalisation" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Processus itératif et rapide" }, { "type": "text", "text": " : développement et déploiement dans le cloud avec des cycles courts" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Applications par et pour l'entreprise" }, { "type": "text", "text": " : les équipes métier créent des outils adaptés à leurs besoins réels" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Mode Test & Learn" }, { "type": "text", "text": " : possibilité de tester rapidement des idées et d'itérer selon les retours" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Les inconvénients du no-code",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Inconvénients et limites" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Scalabilité pas toujours évidente" }, { "type": "text", "text": " : certaines plateformes peuvent montrer leurs limites avec une forte croissance" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Sécurité et propriété intellectuelle" }, { "type": "text", "text": " : le code appartient souvent à la plateforme, questions de sécurité des données" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Personnalisation limitée" }, { "type": "text", "text": " : certaines fonctionnalités avancées peuvent être difficiles ou impossibles à implémenter" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Documentation souvent en anglais" }, { "type": "text", "text": " : barrière linguistique pour certains utilisateurs" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.4 Exemples de cas d'utilisation réussis",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Exemples concrets de projets no-code réussis et cas d'utilisation courants."
+          },
+          "chapters": [
+            {
+              "title": "Exemples de réalisations",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Success stories no-code" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Voici des exemples concrets de projets réussis construits avec des outils no-code :" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Payfit - Gestion de paie" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Plateforme de gestion de paie automatisée, devenue une licorne française, qui a initialement utilisé des composants no-code pour prototyper rapidement." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Good Gigs - Job Board" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Application de recherche d'emploi (" },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "goodgigs.app" },
+                      { "type": "text", "text": ") entièrement réalisée sur " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Bubble" },
+                      { "type": "text", "text": "." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Outsite - Coliving App" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Plateforme de coliving (" },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "outsite.co" },
+                      { "type": "text", "text": ") construite avec " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Webflow" },
+                      { "type": "text", "text": "." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "MyNursery - Plateforme éducation" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Application pour les crèches (" },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "mynursery.io" },
+                      { "type": "text", "text": ") développée avec " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Adalo" },
+                      { "type": "text", "text": "." }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Cas d'utilisation courants",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Cas d'utilisation typiques" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Le no-code est particulièrement adapté pour les types de projets suivants :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Planification" }, { "type": "text", "text": " : outils de gestion de planning et de ressources" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Gestion de maintenance" }, { "type": "text", "text": " : suivi des interventions et des équipements" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "CRM" }, { "type": "text", "text": " : gestion de la relation client personnalisée" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Gestion de projets" }, { "type": "text", "text": " : tableaux de bord et suivi des tâches" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Réservation" }, { "type": "text", "text": " : systèmes de réservation d'évènements ou de produits" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Plateforme d'e-learning" }, { "type": "text", "text": " : création de formations en ligne" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : Accélération des MVP ou POC avec le no-code",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#8B5CF6",
+        "secondaryColor": "#EC4899"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Définition d'un MVP et d'un POC",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Comprendre les concepts de MVP (Minimum Viable Product) et POC (Proof of Concept)."
+          },
+          "chapters": [
+            {
+              "title": "MVP et POC : définitions",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Qu'est-ce qu'un MVP ?" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Le " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "MVP (Minimum Viable Product)" },
+                      { "type": "text", "text": " est la version la plus simple d'un produit qui permet de valider une hypothèse de marché avec un minimum de ressources. Il contient uniquement les fonctionnalités essentielles pour :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Résoudre un problème principal pour les utilisateurs" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Collecter des retours utilisateurs rapidement" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Valider le modèle économique" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Qu'est-ce qu'un POC ?" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Le " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "POC (Proof of Concept)" },
+                      { "type": "text", "text": " est une démonstration de faisabilité qui permet de vérifier qu'une idée ou une technologie peut fonctionner. Il sert à :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Prouver la faisabilité technique" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Identifier les risques potentiels" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Convaincre les parties prenantes" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Le no-code pour accélérer les MVP/POC",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Comment le no-code révolutionne le développement de MVP et POC."
+          },
+          "chapters": [
+            {
+              "title": "Avantages du no-code pour les MVP/POC",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Pourquoi utiliser le no-code pour les MVP/POC ?" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Rapidité de développement" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Créez un prototype fonctionnel en quelques jours au lieu de plusieurs semaines ou mois avec le développement traditionnel." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Facilité de création par les non-développeurs" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Les chefs de produit, designers et autres profils non-techniques peuvent créer directement leurs prototypes, favorisant une meilleure adéquation avec les besoins métier." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Itérations rapides" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Modifiez et mettez à jour votre application facilement pour incorporer les retours des utilisateurs sans délai technique important." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Réduction des coûts de développement" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Moins de ressources développement nécessaires, coûts réduits pour la phase de validation." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Flexibilité et évolutivité" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Les plateformes no-code modernes permettent de faire évoluer votre MVP vers un produit plus complet si le concept est validé." }]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.3 Démonstration Bubble/Flutterflow",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Démonstration pratique de la création d'un MVP avec Bubble ou Flutterflow."
+          },
+          "chapters": [
+            {
+              "title": "Présentation de Bubble",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Bubble : l'outil de référence" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Bubble" },
+                      { "type": "text", "text": " est une plateforme no-code qui permet de créer des applications web complètes avec :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Un éditeur visuel drag-and-drop" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Une base de données intégrée" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Des workflows visuels pour la logique métier" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Des plugins pour étendre les fonctionnalités" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Flutterflow : pour les applications mobiles" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Flutterflow" },
+                      { "type": "text", "text": " est spécialisé dans la création d'applications mobiles natives :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Interface visuelle intuitive" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Export du code Flutter" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Intégration Firebase native" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Applications iOS et Android" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.4 Atelier pratique : Création d'un MVP",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Atelier pratique de création d'un MVP ou POC simple."
+          },
+          "chapters": [
+            {
+              "title": "Instructions de l'atelier",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Atelier : Créez votre premier MVP" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Dans cet atelier, vous allez créer un MVP fonctionnel avec Bubble ou Flutterflow." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Objectifs" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Créer un compte sur la plateforme choisie" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Définir la structure de données" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Créer les écrans principaux" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Implémenter les workflows de base" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Tester et itérer" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Idées de projets" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Application de to-do list collaborative" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Système de réservation simple" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Plateforme de mise en relation" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Dashboard de suivi de données" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : Découverte d'un headless CMS",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#06B6D4"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Introduction aux headless CMS",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Définition et avantages des headless CMS."
+          },
+          "chapters": [
+            {
+              "title": "Qu'est-ce qu'un headless CMS ?",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Définition d'un headless CMS" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Un " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "headless CMS" },
+                      { "type": "text", "text": " (CMS sans tête) est un système de gestion de contenu qui sépare le backend (stockage et gestion du contenu) du frontend (présentation). Le contenu est exposé via une API, permettant de l'afficher sur n'importe quelle plateforme." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Avantages des headless CMS" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Flexibilité" }, { "type": "text", "text": " : utilisez n'importe quelle technologie frontend" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Multi-canal" }, { "type": "text", "text": " : web, mobile, IoT, etc. depuis une seule source" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Performance" }, { "type": "text", "text": " : APIs optimisées pour la vitesse" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Sécurité" }, { "type": "text", "text": " : surface d'attaque réduite" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Scalabilité" }, { "type": "text", "text": " : architecture moderne et évolutive" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Démonstration Strapi/Contentful",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Présentation et démonstration des headless CMS populaires."
+          },
+          "chapters": [
+            {
+              "title": "Strapi et Contentful",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Strapi : le CMS open-source" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Strapi" },
+                      { "type": "text", "text": " est un headless CMS open-source auto-hébergé :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "100% open-source et gratuit" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Self-hosted : contrôle total de vos données" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "API REST et GraphQL automatiques" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Interface d'administration personnalisable" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Contentful : la solution cloud" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Contentful" },
+                      { "type": "text", "text": " est un headless CMS cloud :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Solution SaaS clé en main" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "CDN global intégré" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Outils de collaboration avancés" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "SDK pour tous les langages" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.3 Création d'un projet CMS",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Création d'un projet avec définition de collections, champs et relations."
+          },
+          "chapters": [
+            {
+              "title": "Structure d'un projet CMS",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Créer votre premier projet" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "1. Définir les collections" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Les collections (ou content types) définissent la structure de vos données :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Articles de blog" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Pages" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Produits" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Catégories" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "2. Définir les champs" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Chaque collection contient des champs typés :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Texte (court, long, riche)" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Nombre (entier, décimal)" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Date et heure" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Média (image, vidéo, fichier)" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Booléen" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "3. Créer des relations" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Liez vos collections entre elles :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "One-to-One : un article a un auteur" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "One-to-Many : un auteur a plusieurs articles" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Many-to-Many : articles et tags" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.4 Utilisation de l'API",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Récupération et affichage des données via l'API du headless CMS."
+          },
+          "chapters": [
+            {
+              "title": "Consommer l'API du CMS",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Utiliser l'API REST" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Les headless CMS exposent automatiquement une API REST pour accéder à vos contenus. Exemple de requêtes :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "GET /articles" }, { "type": "text", "text": " : liste tous les articles" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "GET /articles/:id" }, { "type": "text", "text": " : récupère un article spécifique" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "GET /articles?filters[category]=tech" }, { "type": "text", "text": " : filtre les articles" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Intégration frontend" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Utilisez fetch ou axios pour récupérer et afficher les données dans votre application web ou mobile." }]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : Utilisation d'un outil no-code pour le Front-End",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#F59E0B",
+        "secondaryColor": "#EF4444"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Découverte de Webflow et Framer",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Présentation des outils no-code pour le développement front-end."
+          },
+          "chapters": [
+            {
+              "title": "Outils front-end no-code",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Webflow : le web design professionnel" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Webflow" },
+                      { "type": "text", "text": " est une plateforme de conception web visuelle qui génère du code HTML, CSS et JavaScript propre :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Designer visuel puissant avec contrôle CSS complet" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "CMS intégré pour le contenu dynamique" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Animations et interactions sophistiquées" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Hébergement inclus avec CDN global" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Framer : design interactif" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Framer" },
+                      { "type": "text", "text": " est un outil de design et de prototypage qui permet de créer des sites web modernes :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Interface inspirée des outils de design (Figma)" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Composants réutilisables" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Animations fluides et modernes" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Publication en un clic" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "4.2 Démonstration de création de site",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Démonstration pratique de création d'un site web avec Webflow ou Framer."
+          },
+          "chapters": [
+            {
+              "title": "Création d'un site pas à pas",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Processus de création" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Création du projet" }, { "type": "text", "text": " : démarrer avec un template ou from scratch" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Structure de la page" }, { "type": "text", "text": " : définir les sections (header, hero, features, footer)" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Styling" }, { "type": "text", "text": " : couleurs, typographie, espacements" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Responsive design" }, { "type": "text", "text": " : adaptation mobile et tablette" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Interactions" }, { "type": "text", "text": " : animations au scroll, hover states" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Publication" }, { "type": "text", "text": " : mise en ligne et configuration du domaine" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "4.3 Atelier pratique : Création d'un site web",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Atelier pratique de création d'un site web à partir d'un template Webflow."
+          },
+          "chapters": [
+            {
+              "title": "Instructions de l'atelier",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Atelier : Créez votre site web" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Objectif" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Créer un site web professionnel à partir d'un template Webflow en le personnalisant selon vos besoins." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Étapes" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Choisir un template adapté à votre projet" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Personnaliser les couleurs et la typographie" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Modifier les textes et images" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ajouter ou supprimer des sections" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Vérifier le responsive design" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Publier votre site" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Livrables" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Site web fonctionnel et publié" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Design responsive (mobile, tablette, desktop)" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Au moins une animation ou interaction" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : Utilisation d'outils no-code supplémentaires",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#3B82F6",
+        "secondaryColor": "#8B5CF6"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "5.1 Découverte d'Airtable, Make et Zapier",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Présentation des outils no-code d'automatisation et de gestion de données."
+          },
+          "chapters": [
+            {
+              "title": "Les outils d'automatisation",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Airtable : la base de données visuelle" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Airtable" },
+                      { "type": "text", "text": " combine la simplicité d'un tableur avec la puissance d'une base de données :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Interface intuitive type spreadsheet" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Vues multiples (grille, kanban, calendrier, galerie)" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Relations entre tables" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "API puissante pour les intégrations" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Make (ex-Integromat)" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Make" },
+                      { "type": "text", "text": " est un outil d'automatisation visuelle avancé :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Scénarios visuels complexes" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Plus de 1000 applications connectables" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Logique conditionnelle et boucles" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Gestion d'erreurs avancée" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Zapier" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Zapier" },
+                      { "type": "text", "text": " est la plateforme d'automatisation la plus populaire :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Plus de 5000 applications" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "\"Zaps\" simples à créer" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Templates prêts à l'emploi" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Idéal pour les automatisations simples" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "5.2 Démonstration d'automatisation",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Démonstration de l'automatisation de tâches et connexion d'applications."
+          },
+          "chapters": [
+            {
+              "title": "Exemples d'automatisations",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Cas d'usage courants" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Automatisation marketing" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Nouveau lead → ajout au CRM → email de bienvenue" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Publication réseaux sociaux automatique" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Automatisation commerciale" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Nouvelle commande → notification Slack → mise à jour stock" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Création de devis automatique à partir de formulaires" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Automatisation RH" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Nouvelle candidature → ajout dans Airtable → notification recruteur" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Onboarding automatisé avec création de comptes" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "5.3 Atelier pratique : Automatisation du MVP",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Atelier pratique d'automatisation des tâches du MVP créé précédemment."
+          },
+          "chapters": [
+            {
+              "title": "Instructions de l'atelier",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Atelier : Automatisez votre MVP" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Objectif" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Améliorer le MVP ou POC créé lors du Module 2 en ajoutant des automatisations avec Make ou Zapier." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Idées d'automatisation" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Notification par email lors d'une nouvelle inscription" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Synchronisation des données vers une Google Sheet" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Envoi de rappels automatiques" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Création automatique de tâches dans un outil de gestion de projet" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Livrables" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Au moins 2 automatisations fonctionnelles" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Documentation des scénarios créés" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Tests de fonctionnement validés" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 6 : Évaluation et gestion des coûts du no-code",
+      "position": 5,
+      "theme": {
+        "primaryColor": "#059669",
+        "secondaryColor": "#0891B2"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "6.1 Évaluation des coûts du no-code",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Comprendre les différents postes de coûts dans un projet no-code."
+          },
+          "chapters": [
+            {
+              "title": "Les postes de coûts",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Comprendre les coûts du no-code" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Abonnement cloud vs Self-hosting" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "La plupart des outils no-code fonctionnent en SaaS avec des abonnements mensuels. Alternative : certains outils comme Strapi peuvent être auto-hébergés." }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Cloud (SaaS)" }, { "type": "text", "text": " : coût mensuel prévisible, maintenance incluse, scalabilité automatique" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Self-hosting" }, { "type": "text", "text": " : coût initial + maintenance, contrôle total, potentiellement moins cher à long terme" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Coût du temps de développement" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Bien que plus rapide, le no-code nécessite toujours du temps pour :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Apprendre les outils" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Concevoir et construire l'application" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Tester et itérer" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Coût de la maintenance" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Mises à jour des plateformes" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Correction de bugs" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Évolutions fonctionnelles" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Support utilisateurs" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "6.2 Stratégies de gestion des coûts",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Stratégies pour optimiser et maîtriser les coûts des projets no-code."
+          },
+          "chapters": [
+            {
+              "title": "Optimisation des coûts",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Stratégies d'optimisation" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "1. Choisir les bons outils" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Comparer les offres et fonctionnalités" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Privilégier les outils avec plans gratuits pour le prototypage" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Éviter le sur-outillage" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "2. Planifier la scalabilité" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Anticiper la croissance et les coûts associés" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Prévoir une migration vers du code si nécessaire" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Négocier les contrats annuels pour des réductions" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "3. Optimiser l'utilisation" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Surveiller les métriques d'utilisation" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Optimiser les workflows pour réduire les opérations" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Nettoyer régulièrement les données inutilisées" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "6.3 Atelier pratique : Évaluation des coûts",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Atelier pratique d'évaluation des coûts et identification de stratégies de gestion."
+          },
+          "chapters": [
+            {
+              "title": "Instructions de l'atelier",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Atelier : Évaluez les coûts de votre projet" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Objectif" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Établir une estimation complète des coûts pour un projet no-code et identifier des stratégies d'optimisation." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Exercice" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Lister les outils nécessaires" }, { "type": "text", "text": " pour votre projet (MVP créé + automatisations)" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Calculer les coûts mensuels" }, { "type": "text", "text": " de chaque outil (plans nécessaires)" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Estimer le temps de développement" }, { "type": "text", "text": " et son coût" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Projeter les coûts à 1 an et 3 ans" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Identifier 3 stratégies" }, { "type": "text", "text": " pour réduire les coûts" }] }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Livrables" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Tableau récapitulatif des coûts" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Projection financière sur 3 ans" }] }]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Liste de recommandations d'optimisation" }] }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -7,7 +7,7 @@ import { KPICard } from '../../components/trainer/KPICard';
 import { AlertCard } from '../../components/trainer/AlertCard';
 import { TrainerHeader } from '../../components/trainer/TrainerHeader';
 import { formatPercent, formatScore, daysSince } from '../../utils/trainerUtils';
-import { Users, BookOpen, TrendingUp, AlertTriangle, Building2, ChevronDown, ChevronRight, MessageSquare } from 'lucide-react';
+import { Users, BookOpen, TrendingUp, AlertTriangle, Building2, ChevronDown, ChevronRight, MessageSquare, ClipboardCheck, Award, Play } from 'lucide-react';
 
 interface OrgWithSessions extends Org {
   sessions: Session[];
@@ -212,6 +212,22 @@ export function TrainerDashboard() {
                                 </div>
                                 <div className="flex gap-2">
                                   <Link
+                                    to={`/trainer/session/${session.id}/live`}
+                                    className="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700 flex items-center gap-1"
+                                    onClick={(e) => e.stopPropagation()}
+                                  >
+                                    <Play className="w-3 h-3" />
+                                    Live
+                                  </Link>
+                                  <Link
+                                    to={`/trainer/session/${session.id}/projects`}
+                                    className="px-3 py-1.5 text-sm bg-purple-600 text-white rounded hover:bg-purple-700 flex items-center gap-1"
+                                    onClick={(e) => e.stopPropagation()}
+                                  >
+                                    <ClipboardCheck className="w-3 h-3" />
+                                    Projets
+                                  </Link>
+                                  <Link
                                     to={`/trainer/session/${session.id}`}
                                     className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
                                     onClick={(e) => e.stopPropagation()}
@@ -302,34 +318,54 @@ export function TrainerDashboard() {
 
         {/* Quick actions */}
         {selectedSessionId && (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-6 mb-8">
+            <Link
+              to={`/trainer/session/${selectedSessionId}/live`}
+              className="rounded-lg border-2 border-green-200 bg-green-50 p-6 text-center hover:bg-green-100 transition-colors"
+            >
+              <Play className="h-8 w-8 mx-auto text-green-600 mb-2" />
+              <h3 className="font-semibold text-gray-900">Session Live</h3>
+              <p className="mt-1 text-sm text-gray-600">Animer en direct</p>
+            </Link>
+            <Link
+              to={`/trainer/session/${selectedSessionId}/projects`}
+              className="rounded-lg border-2 border-purple-200 bg-purple-50 p-6 text-center hover:bg-purple-100 transition-colors"
+            >
+              <ClipboardCheck className="h-8 w-8 mx-auto text-purple-600 mb-2" />
+              <h3 className="font-semibold text-gray-900">Projets</h3>
+              <p className="mt-1 text-sm text-gray-600">Évaluer les restitutions</p>
+            </Link>
+            <Link
+              to={`/trainer/session/${selectedSessionId}/gradebook`}
+              className="rounded-lg border-2 border-amber-200 bg-amber-50 p-6 text-center hover:bg-amber-100 transition-colors"
+            >
+              <Award className="h-8 w-8 mx-auto text-amber-600 mb-2" />
+              <h3 className="font-semibold text-gray-900">Carnet de notes</h3>
+              <p className="mt-1 text-sm text-gray-600">Gérer les notes</p>
+            </Link>
             <Link
               to={`/trainer/session/${selectedSessionId}`}
               className="rounded-lg border bg-white p-6 text-center hover:bg-gray-50"
             >
-              <h3 className="font-semibold text-gray-900">Voir les apprenants</h3>
-              <p className="mt-2 text-sm text-gray-600">Liste complète et actions</p>
+              <Users className="h-8 w-8 mx-auto text-blue-600 mb-2" />
+              <h3 className="font-semibold text-gray-900">Apprenants</h3>
+              <p className="mt-1 text-sm text-gray-600">Liste et actions</p>
             </Link>
             <Link
               to={`/trainer/analytics/${selectedSessionId}`}
               className="rounded-lg border bg-white p-6 text-center hover:bg-gray-50"
             >
-              <h3 className="font-semibold text-gray-900">Analyses détaillées</h3>
-              <p className="mt-2 text-sm text-gray-600">Modules et exercices</p>
-            </Link>
-            <Link
-              to={`/trainer/sessions/${selectedSessionId}/time-tracking`}
-              className="rounded-lg border bg-white p-6 text-center hover:bg-gray-50"
-            >
-              <h3 className="font-semibold text-gray-900">Temps passé</h3>
-              <p className="mt-2 text-sm text-gray-600">Temps actif par apprenant</p>
+              <TrendingUp className="h-8 w-8 mx-auto text-blue-600 mb-2" />
+              <h3 className="font-semibold text-gray-900">Analyses</h3>
+              <p className="mt-1 text-sm text-gray-600">Modules et exercices</p>
             </Link>
             <Link
               to="/trainer/notes"
               className="rounded-lg border bg-white p-6 text-center hover:bg-gray-50"
             >
+              <MessageSquare className="h-8 w-8 mx-auto text-gray-600 mb-2" />
               <h3 className="font-semibold text-gray-900">Mes notes</h3>
-              <p className="mt-2 text-sm text-gray-600">Notes privées</p>
+              <p className="mt-1 text-sm text-gray-600">Notes privées</p>
             </Link>
           </div>
         )}

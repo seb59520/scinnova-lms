@@ -57,3 +57,4 @@ jspm_packages/
 *.csv.gz
 sales_*.csv
 sales_*.csv.gz
+supabase/.temp/

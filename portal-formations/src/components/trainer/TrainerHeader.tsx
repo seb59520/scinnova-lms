@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { LogOut, User, ChevronDown, Settings, Home } from 'lucide-react';
+import { LogOut, User, ChevronDown, Settings, Home, Radio, BookOpen, BarChart3 } from 'lucide-react';
+import { NotificationCenter } from '../notifications/NotificationCenter';
 import logoScinnova from '../../../Logo SCINNOVA avec cerveau et fusée.png';
 
 export function TrainerHeader() {
@@ -38,81 +39,110 @@ export function TrainerHeader() {
             </div>
           </div>
 
-          {/* User menu */}
-          <div className="relative">
-            <button
-              onClick={() => setShowMenu(!showMenu)}
-              className="flex items-center gap-3 rounded-lg px-4 py-2 hover:bg-gray-100"
+          {/* Navigation formateur */}
+          <nav className="hidden md:flex items-center gap-6 ml-8">
+            <Link
+              to="/trainer"
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
             >
-              {/* Avatar */}
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
-                {userInitials}
-              </div>
+              <Home className="h-4 w-4" />
+              Dashboard
+            </Link>
+            <Link
+              to="/trainer/sessions"
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              <Radio className="h-4 w-4" />
+              Sessions
+            </Link>
+            <Link
+              to="/trainer/notes"
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              <BookOpen className="h-4 w-4" />
+              Notes
+            </Link>
+          </nav>
 
-              {/* User info */}
-              <div className="hidden text-left md:block">
-                <p className="text-sm font-medium text-gray-900">{displayName}</p>
-                <p className="text-xs text-gray-500">
-                  {profile?.role === 'admin' ? 'Administrateur' : 'Formateur'}
-                </p>
-              </div>
+          {/* Right side: Notifications + User menu */}
+          <div className="flex items-center gap-4">
+            {/* Centre de notifications */}
+            <NotificationCenter />
 
-              <ChevronDown className="h-4 w-4 text-gray-500" />
-            </button>
+            {/* User menu */}
+            <div className="relative">
+              <button
+                onClick={() => setShowMenu(!showMenu)}
+                className="flex items-center gap-3 rounded-lg px-4 py-2 hover:bg-gray-100"
+              >
+                {/* Avatar */}
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
+                  {userInitials}
+                </div>
 
-            {/* Dropdown menu */}
-            {showMenu && (
-              <>
-                <div
-                  className="fixed inset-0 z-10"
-                  onClick={() => setShowMenu(false)}
-                />
-                <div className="absolute right-0 z-20 mt-2 w-48 rounded-lg border border-gray-200 bg-white shadow-lg">
-                  <div className="p-4 border-b border-gray-200">
-                    <p className="text-sm font-medium text-gray-900">{displayName}</p>
-                    <p className="text-xs text-gray-500">{user?.email}</p>
-                  </div>
-                  <div className="p-2">
-                    <Link
-                      to="/app"
-                      onClick={() => setShowMenu(false)}
-                      className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      <Home className="h-4 w-4" />
-                      Portail principal
-                    </Link>
-                    <button
-                      onClick={() => {
-                        setShowMenu(false);
-                        navigate('/app');
-                      }}
-                      className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      <User className="h-4 w-4" />
-                      Mon profil
-                    </button>
-                    {profile?.role === 'admin' && (
+                {/* User info */}
+                <div className="hidden text-left md:block">
+                  <p className="text-sm font-medium text-gray-900">{displayName}</p>
+                  <p className="text-xs text-gray-500">
+                    {profile?.role === 'admin' ? 'Administrateur' : 'Formateur'}
+                  </p>
+                </div>
+
+                <ChevronDown className="h-4 w-4 text-gray-500" />
+              </button>
+
+              {/* Dropdown menu */}
+              {showMenu && (
+                <>
+                  <div
+                    className="fixed inset-0 z-10"
+                    onClick={() => setShowMenu(false)}
+                  />
+                  <div className="absolute right-0 z-20 mt-2 w-48 rounded-lg border border-gray-200 bg-white shadow-lg">
+                    <div className="p-4 border-b border-gray-200">
+                      <p className="text-sm font-medium text-gray-900">{displayName}</p>
+                      <p className="text-xs text-gray-500">{user?.email}</p>
+                    </div>
+                    <div className="p-2">
                       <Link
-                        to="/admin"
+                        to="/app"
                         onClick={() => setShowMenu(false)}
                         className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
-                        <Settings className="h-4 w-4" />
-                        Administration
+                        <Home className="h-4 w-4" />
+                        Portail principal
                       </Link>
-                    )}
-                    <div className="border-t border-gray-200 my-2" />
-                    <button
-                      onClick={handleSignOut}
-                      className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-red-600 hover:bg-red-50"
-                    >
-                      <LogOut className="h-4 w-4" />
-                      Déconnexion
-                    </button>
+                      <Link
+                        to="/profile"
+                        onClick={() => setShowMenu(false)}
+                        className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        <User className="h-4 w-4" />
+                        Mon profil
+                      </Link>
+                      {profile?.role === 'admin' && (
+                        <Link
+                          to="/admin"
+                          onClick={() => setShowMenu(false)}
+                          className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          <Settings className="h-4 w-4" />
+                          Administration
+                        </Link>
+                      )}
+                      <div className="border-t border-gray-200 my-2" />
+                      <button
+                        onClick={handleSignOut}
+                        className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        Déconnexion
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </>
-            )}
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>

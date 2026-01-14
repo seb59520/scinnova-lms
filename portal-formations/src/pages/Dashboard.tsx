@@ -6,7 +6,22 @@ import { isAuthError } from '../lib/supabaseHelpers'
 import { getUserOrg } from '../lib/queries/userQueries'
 import { Course, Enrollment, Program, ProgramEnrollment, Org } from '../types/database'
 import { AppHeader } from '../components/AppHeader'
-import { LayoutGrid, List, Calendar, BookOpen, Layers, Building2 } from 'lucide-react'
+import { LayoutGrid, List, Calendar, BookOpen, Layers, Building2, ClipboardCheck, Clock, CheckCircle, AlertCircle, Send } from 'lucide-react'
+
+// Type pour les projets à rendre
+interface ProjectToSubmit {
+  id: string;
+  title: string;
+  description: string | null;
+  due_date: string | null;
+  status: string;
+  session_id: string;
+  session_title: string;
+  submission_status: 'not_started' | 'draft' | 'submitted' | 'evaluated';
+  is_published: boolean;
+  score?: number | null;
+  passed?: boolean | null;
+}
 
 interface CourseWithEnrollment extends Course {
   enrollment?: Enrollment
@@ -27,6 +42,7 @@ export function Dashboard() {
   const [items, setItems] = useState<LibraryItem[]>([])
   const [courses, setCourses] = useState<CourseWithEnrollment[]>([])
   const [programs, setPrograms] = useState<ProgramWithEnrollment[]>([])
+  const [projects, setProjects] = useState<ProjectToSubmit[]>([])
   const [loading, setLoading] = useState(true)
   const [org, setOrg] = useState<Org | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
@@ -62,6 +78,113 @@ export function Dashboard() {
     loadOrg()
   }, [user?.id, profile?.role])
 
+  // Charger les projets à rendre
+  useEffect(() => {
+    async function loadProjects() {
+      if (!user?.id || profile?.role === 'admin') return;
+
+      try {
+        // 1. Récupérer les sessions où l'utilisateur est inscrit
+        const { data: memberSessions } = await supabase
+          .from('session_members')
+          .select('session_id, session:sessions(id, title)')
+          .eq('user_id', user.id)
+          .eq('role', 'learner');
+
+        if (!memberSessions || memberSessions.length === 0) {
+          setProjects([]);
+          return;
+        }
+
+        const sessionIds = memberSessions.map(m => m.session_id);
+        const sessionMap = new Map(memberSessions.map(m => [m.session_id, (m.session as any)?.title || 'Session']));
+
+        // 2. Récupérer les restitutions de projet ouvertes pour ces sessions
+        const { data: restitutions } = await supabase
+          .from('session_project_restitutions')
+          .select('*')
+          .in('session_id', sessionIds)
+          .in('status', ['open', 'published', 'grading', 'completed']);
+
+        if (!restitutions || restitutions.length === 0) {
+          setProjects([]);
+          return;
+        }
+
+        // 3. Récupérer les soumissions de l'utilisateur
+        const restitutionIds = restitutions.map(r => r.id);
+        const { data: submissions } = await supabase
+          .from('project_submissions')
+          .select('restitution_id, status')
+          .eq('user_id', user.id)
+          .in('restitution_id', restitutionIds);
+
+        const submissionMap = new Map(submissions?.map(s => [s.restitution_id, s.status]) || []);
+
+        // 4. Récupérer les évaluations publiées avec les notes
+        const { data: evaluations } = await supabase
+          .from('project_evaluations')
+          .select('restitution_id, is_published, score_20, final_score, passed')
+          .eq('user_id', user.id)
+          .in('restitution_id', restitutionIds)
+          .eq('is_published', true);
+
+        const evaluationMap = new Map(evaluations?.map(e => [e.restitution_id, {
+          is_published: e.is_published,
+          score: e.final_score || e.score_20,
+          passed: e.passed
+        }]) || []);
+
+        // 5. Construire la liste des projets
+        const projectsList: ProjectToSubmit[] = restitutions.map(r => {
+          const subStatus = submissionMap.get(r.id);
+          const evaluation = evaluationMap.get(r.id);
+          
+          let submission_status: ProjectToSubmit['submission_status'] = 'not_started';
+          if (evaluation?.is_published) {
+            submission_status = 'evaluated';
+          } else if (subStatus === 'submitted' || subStatus === 'evaluated') {
+            submission_status = 'submitted';
+          } else if (subStatus === 'draft') {
+            submission_status = 'draft';
+          }
+
+          return {
+            id: r.id,
+            title: r.title,
+            description: r.description,
+            due_date: r.due_date,
+            status: r.status,
+            session_id: r.session_id,
+            session_title: sessionMap.get(r.session_id) || 'Session',
+            submission_status,
+            is_published: evaluation?.is_published || false,
+            score: evaluation?.score || null,
+            passed: evaluation?.passed || null
+          };
+        });
+
+        // Trier : non soumis d'abord, puis par date limite
+        projectsList.sort((a, b) => {
+          const order = { not_started: 0, draft: 1, submitted: 2, evaluated: 3 };
+          if (order[a.submission_status] !== order[b.submission_status]) {
+            return order[a.submission_status] - order[b.submission_status];
+          }
+          if (a.due_date && b.due_date) {
+            return new Date(a.due_date).getTime() - new Date(b.due_date).getTime();
+          }
+          return 0;
+        });
+
+        setProjects(projectsList);
+      } catch (err) {
+        console.error('Error loading projects:', err);
+      }
+    }
+
+    loadProjects();
+  }, [user?.id, profile?.role])
+
   const fetchLibraryItems = async () => {
     try {
       if (!user?.id) {
@@ -74,7 +197,7 @@ export function Dashboard() {
 
       // Faire TOUTES les requêtes en parallèle pour optimiser le chargement
       const promises: Promise<any>[] = [
-        // Inscriptions aux cours
+        // Inscriptions aux cours (ancienne méthode)
         supabase
           .from('enrollments')
           .select(`*, courses (*)`)
@@ -86,6 +209,19 @@ export function Dashboard() {
           .select(`*, programs (*)`)
           .eq('user_id', user.id)
           .eq('status', 'active'),
+        // Inscriptions via sessions (nouvelle méthode)
+        supabase
+          .from('session_members')
+          .select(`
+            *,
+            session:sessions (
+              id,
+              title,
+              course:courses (*)
+            )
+          `)
+          .eq('user_id', user.id)
+          .eq('role', 'learner'),
       ]
 
       // Si admin, ajouter les requêtes pour tous les cours et programmes
@@ -98,9 +234,12 @@ export function Dashboard() {
 
       const results = await Promise.all(promises)
       
-      const [enrollmentsResult, programEnrollmentsResult, coursesResult, programsResult] = results
+      const [enrollmentsResult, programEnrollmentsResult, sessionMembersResult, coursesResult, programsResult] = results
 
-      // Traiter les inscriptions aux cours
+      // Set pour éviter les doublons de cours
+      const addedCourseIds = new Set<string>()
+
+      // Traiter les inscriptions aux cours (ancienne méthode)
       const { data: enrollments, error: enrollmentsError } = enrollmentsResult
       if (enrollmentsError && enrollmentsError.code !== 'PGRST116') {
         console.error('Error fetching enrollments:', enrollmentsError)
@@ -114,9 +253,28 @@ export function Dashboard() {
         ...e.courses,
         enrollment: e,
         type: 'course' as const
-      })) || [])
+      })) || []).filter((c: any) => c.id)
 
+      enrolledCourses.forEach((c: any) => addedCourseIds.add(c.id))
       allItems.push(...enrolledCourses)
+
+      // Traiter les inscriptions via sessions (nouvelle méthode)
+      const { data: sessionMembers, error: sessionMembersError } = sessionMembersResult
+      if (sessionMembersError && sessionMembersError.code !== 'PGRST116') {
+        console.error('Error fetching session members:', sessionMembersError)
+      } else if (sessionMembers) {
+        const sessionCourses: CourseWithEnrollment[] = sessionMembers
+          .filter((sm: any) => sm.session?.course && !addedCourseIds.has(sm.session.course.id))
+          .map((sm: any) => ({
+            ...sm.session.course,
+            session: sm.session,
+            sessionMember: sm,
+            type: 'course' as const
+          }))
+        
+        sessionCourses.forEach((c: any) => addedCourseIds.add(c.id))
+        allItems.push(...sessionCourses)
+      }
 
       // Traiter les inscriptions aux programmes
       const { data: programEnrollments, error: programEnrollmentsError } = programEnrollmentsResult
@@ -254,6 +412,108 @@ export function Dashboard() {
       {/* Main content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 sm:px-0 space-y-8">
+          
+          {/* Section Projets à rendre */}
+          {profile?.role !== 'admin' && projects.length > 0 && (
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <ClipboardCheck className="w-6 h-6 text-purple-600" />
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900">
+                  Mes projets à rendre
+                </h2>
+                <span className="text-sm bg-purple-100 text-purple-700 px-2.5 py-1 rounded-full">
+                  {projects.filter(p => p.submission_status !== 'evaluated').length} en attente
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {projects.map(project => {
+                  const isOverdue = project.due_date && new Date(project.due_date) < new Date() && project.submission_status !== 'submitted' && project.submission_status !== 'evaluated';
+                  
+                  return (
+                    <Link
+                      key={project.id}
+                      to={`/session/${project.session_id}/project/${project.id}`}
+                      className={`bg-white rounded-lg shadow-sm hover:shadow-md transition-all border-l-4 ${
+                        project.submission_status === 'evaluated' ? 'border-green-500' :
+                        project.submission_status === 'submitted' ? 'border-blue-500' :
+                        isOverdue ? 'border-red-500' :
+                        project.submission_status === 'draft' ? 'border-yellow-500' :
+                        'border-purple-500'
+                      }`}
+                    >
+                      <div className="p-4">
+                        <div className="flex items-start justify-between gap-2 mb-2">
+                          <h3 className="font-semibold text-gray-900 line-clamp-1">{project.title}</h3>
+                          {project.submission_status === 'evaluated' ? (
+                            <div className="flex items-center gap-2">
+                              <span className={`text-lg font-bold ${project.passed ? 'text-green-600' : 'text-red-600'}`}>
+                                {project.score?.toFixed(1)}/20
+                              </span>
+                              <span className={`flex items-center gap-1 text-xs px-2 py-1 rounded-full whitespace-nowrap ${
+                                project.passed ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                              }`}>
+                                <CheckCircle className="w-3 h-3" />
+                                {project.passed ? 'Validé' : 'Non validé'}
+                              </span>
+                            </div>
+                          ) : project.submission_status === 'submitted' ? (
+                            <span className="flex items-center gap-1 text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full whitespace-nowrap">
+                              <Send className="w-3 h-3" />
+                              Soumis
+                            </span>
+                          ) : project.submission_status === 'draft' ? (
+                            <span className="flex items-center gap-1 text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full whitespace-nowrap">
+                              <Clock className="w-3 h-3" />
+                              Brouillon
+                            </span>
+                          ) : (
+                            <span className="flex items-center gap-1 text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full whitespace-nowrap">
+                              <AlertCircle className="w-3 h-3" />
+                              À faire
+                            </span>
+                          )}
+                        </div>
+                        
+                        <p className="text-sm text-gray-500 mb-3">{project.session_title}</p>
+                        
+                        {project.due_date && (
+                          <div className={`flex items-center gap-1 text-xs ${
+                            isOverdue ? 'text-red-600 font-medium' : 'text-gray-500'
+                          }`}>
+                            <Calendar className="w-3 h-3" />
+                            {isOverdue ? 'En retard - ' : 'Date limite : '}
+                            {new Date(project.due_date).toLocaleDateString('fr-FR', {
+                              day: 'numeric',
+                              month: 'short',
+                              year: 'numeric'
+                            })}
+                          </div>
+                        )}
+                        
+                        <div className="mt-3 pt-3 border-t">
+                          <span className={`text-sm font-medium ${
+                            project.submission_status === 'evaluated' 
+                              ? 'text-green-600 hover:text-green-800' 
+                              : 'text-purple-600 hover:text-purple-800'
+                          }`}>
+                            {project.submission_status === 'evaluated' 
+                              ? 'Voir le détail →' 
+                              : project.submission_status === 'submitted'
+                                ? 'Voir ma soumission →'
+                                : project.submission_status === 'draft' 
+                                  ? 'Continuer →' 
+                                  : 'Commencer →'}
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
           {/* Section Formations */}
           <section>
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">

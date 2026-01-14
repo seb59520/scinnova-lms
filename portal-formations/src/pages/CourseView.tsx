@@ -768,14 +768,10 @@ export function CourseView() {
           <div 
             className="flex justify-between items-center py-4 px-4 transition-all duration-300"
             style={{
-              marginLeft: viewMode !== 'progress' && courseJson && sidebarOpen && isDesktop
-                ? 'var(--sidebar-width, 256px)'
-                : viewMode !== 'progress' && courseJson && sidebarOpen && !isDesktop
-                  ? 'var(--sidebar-width, 256px)' 
-                  : '0',
-              width: viewMode !== 'progress' && courseJson && sidebarOpen && isDesktop
-                ? `calc(100% - var(--sidebar-width, 256px))`
-                : '100%'
+              paddingLeft: viewMode !== 'progress' && courseJson && sidebarOpen && isDesktop
+                ? `calc(var(--sidebar-width, 256px) + 1rem)`
+                : '0',
+              width: '100%'
             }}
           >
             <div className="flex items-center space-x-4 flex-1">
@@ -941,7 +937,7 @@ export function CourseView() {
             )}
             {/* Sidebar redimensionnable et fixe */}
             <div className={`
-              fixed lg:sticky top-0 left-0 z-50 h-screen transition-transform duration-300 ease-in-out
+              fixed top-0 left-0 z-50 h-screen transition-transform duration-300 ease-in-out
               ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
             `} style={{ height: '100vh', zIndex: 50 }}>
               <ResizableSidebar
@@ -976,25 +972,20 @@ export function CourseView() {
         <div 
           className="flex-1 py-6 transition-all duration-300"
           style={{
-            marginLeft: viewMode !== 'progress' && courseJson && sidebarOpen && !isDesktop
-              ? 'var(--sidebar-width, 256px)' 
-              : '0',
+            paddingLeft: viewMode !== 'progress' && courseJson && sidebarOpen && isDesktop
+              ? `calc(var(--sidebar-width, 300px) + 1rem)`
+              : viewMode !== 'progress' && courseJson
+                ? '3.5rem' // Espace pour le bouton burger quand sidebar fermée
+                : '0',
             marginRight: hasLexique && lexiqueDrawerOpen 
               ? '384px' // w-96 = 384px
               : hasLexique 
                 ? '0' // Le drawer est présent mais caché
                 : '0',
-            width: viewMode !== 'progress' && courseJson && sidebarOpen && isDesktop
-              ? `calc(100% - var(--sidebar-width, 300px))`
-              : '100%'
+            width: '100%'
           }}
         >
-          <div className="w-full" style={{
-            paddingLeft: viewMode !== 'progress' && courseJson && sidebarOpen && isDesktop
-              ? '1rem' 
-              : '1rem',
-            paddingRight: '1rem'
-          }}>
+          <div className="w-full px-4">
             {/* Vue de progression */}
             {viewMode === 'progress' ? (
               <Progress />

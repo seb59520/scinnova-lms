@@ -1,10 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { getTrainerContext, getTrainerNotes, createTrainerNote, updateTrainerNote, deleteTrainerNote } from '../../lib/queries/trainerQueries';
+import { getTrainerContext, getTrainerNotes, createTrainerNote, updateTrainerNote, deleteTrainerNote, getSessions } from '../../lib/queries/trainerQueries';
 import type { TrainerNote } from '../../types/database';
 import { TrainerHeader } from '../../components/trainer/TrainerHeader';
 import { formatRelativeDate } from '../../utils/trainerUtils';
+import { supabase } from '../../lib/supabaseClient';
+
+// Types pour les lookups
+interface CourseLookup {
+  id: string;
+  title: string;
+}
+
+interface ModuleLookup {
+  id: string;
+  title: string;
+  course_id: string;
+}
+
+interface SessionLookup {
+  id: string;
+  title: string;
+  course_id: string;
+}
+
+interface UserLookup {
+  id: string;
+  display_name: string;
+}
 
 export function TrainerNotes() {
   const { user } = useAuth();
@@ -22,13 +46,19 @@ export function TrainerNotes() {
     user_id: searchParams.get('user_id') || '',
   });
 
+  // Lookups pour afficher les titres/noms
+  const [courses, setCourses] = useState<CourseLookup[]>([]);
+  const [modules, setModules] = useState<ModuleLookup[]>([]);
+  const [sessions, setSessions] = useState<SessionLookup[]>([]);
+  const [users, setUsers] = useState<UserLookup[]>([]);
+
   useEffect(() => {
     async function loadData() {
       if (!user) return;
 
       setLoading(true);
 
-      const { org: trainerOrg, error: contextError } = await getTrainerContext();
+      const { org: trainerOrg, role, error: contextError } = await getTrainerContext();
       if (contextError || !trainerOrg) {
         console.error('Error loading trainer context:', contextError);
         setLoading(false);
@@ -36,13 +66,68 @@ export function TrainerNotes() {
       }
       setOrg(trainerOrg);
 
-      await loadNotes(trainerOrg.id, user.id);
+      // Charger les lookups en parallèle
+      await Promise.all([
+        loadCourses(trainerOrg.id, role === 'admin'),
+        loadSessions(trainerOrg.id, role === 'admin'),
+        loadUsers(trainerOrg.id, role === 'admin'),
+        loadNotes(trainerOrg.id, user.id),
+      ]);
 
       setLoading(false);
     }
 
     loadData();
   }, [user]);
+
+  async function loadCourses(orgId: string, isAdmin: boolean) {
+    let query = supabase.from('courses').select('id, title').order('title');
+    if (!isAdmin) {
+      query = query.eq('org_id', orgId);
+    }
+    const { data } = await query;
+    setCourses(data || []);
+
+    // Charger les modules pour tous les cours
+    const courseIds = data?.map(c => c.id) || [];
+    if (courseIds.length > 0) {
+      const { data: modulesData } = await supabase
+        .from('modules')
+        .select('id, title, course_id')
+        .in('course_id', courseIds)
+        .order('order_index');
+      setModules(modulesData || []);
+    }
+  }
+
+  async function loadSessions(orgId: string, isAdmin: boolean) {
+    const { sessions: sessionData } = await getSessions(orgId, isAdmin);
+    setSessions(sessionData.map(s => ({ id: s.id, title: s.title, course_id: s.course_id })));
+  }
+
+  async function loadUsers(orgId: string, isAdmin: boolean) {
+    // Récupérer les utilisateurs de l'organisation avec leurs noms
+    let query = supabase
+      .from('org_members')
+      .select('user_id, display_name, profiles!inner(id, full_name)');
+    
+    if (!isAdmin) {
+      query = query.eq('org_id', orgId);
+    }
+    
+    const { data } = await query;
+    
+    const userList: UserLookup[] = (data || []).map((m: any) => ({
+      id: m.user_id,
+      display_name: m.display_name || m.profiles?.full_name || 'Utilisateur inconnu',
+    }));
+    
+    // Dédupliquer par id
+    const uniqueUsers = Array.from(
+      new Map(userList.map(u => [u.id, u])).values()
+    );
+    setUsers(uniqueUsers);
+  }
 
   async function loadNotes(orgId: string, trainerId: string) {
     const activeFilters: any = {};
@@ -186,44 +271,61 @@ export function TrainerNotes() {
         <div className="mb-6 rounded-lg border bg-white p-4">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Course ID</label>
-              <input
-                type="text"
+              <label className="block text-sm font-medium text-gray-700">Formation</label>
+              <select
                 value={filters.course_id}
-                onChange={(e) => setFilters({ ...filters, course_id: e.target.value })}
+                onChange={(e) => setFilters({ ...filters, course_id: e.target.value, module_id: '' })}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                placeholder="UUID..."
-              />
+              >
+                <option value="">Toutes les formations</option>
+                {courses.map(course => (
+                  <option key={course.id} value={course.id}>{course.title}</option>
+                ))}
+              </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Module ID</label>
-              <input
-                type="text"
+              <label className="block text-sm font-medium text-gray-700">Module</label>
+              <select
                 value={filters.module_id}
                 onChange={(e) => setFilters({ ...filters, module_id: e.target.value })}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                placeholder="UUID..."
-              />
+                disabled={!filters.course_id}
+              >
+                <option value="">Tous les modules</option>
+                {modules
+                  .filter(m => !filters.course_id || m.course_id === filters.course_id)
+                  .map(module => (
+                    <option key={module.id} value={module.id}>{module.title}</option>
+                  ))}
+              </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Session ID</label>
-              <input
-                type="text"
+              <label className="block text-sm font-medium text-gray-700">Session</label>
+              <select
                 value={filters.session_id}
                 onChange={(e) => setFilters({ ...filters, session_id: e.target.value })}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                placeholder="UUID..."
-              />
+              >
+                <option value="">Toutes les sessions</option>
+                {sessions
+                  .filter(s => !filters.course_id || s.course_id === filters.course_id)
+                  .map(session => (
+                    <option key={session.id} value={session.id}>{session.title}</option>
+                  ))}
+              </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">User ID</label>
-              <input
-                type="text"
+              <label className="block text-sm font-medium text-gray-700">Apprenant</label>
+              <select
                 value={filters.user_id}
                 onChange={(e) => setFilters({ ...filters, user_id: e.target.value })}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                placeholder="UUID..."
-              />
+              >
+                <option value="">Tous les apprenants</option>
+                {users.map(u => (
+                  <option key={u.id} value={u.id}>{u.display_name}</option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
@@ -235,49 +337,87 @@ export function TrainerNotes() {
           </div>
         ) : (
           <div className="space-y-4">
-            {notes.map((note) => (
-              <div key={note.id} className="rounded-lg border bg-white p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {note.title || 'Sans titre'}
-                    </h3>
-                    <p className="mt-2 text-gray-700 whitespace-pre-wrap">{note.content}</p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {note.tags && note.tags.length > 0 && (
-                        <>
-                          {note.tags.map((tag, idx) => (
-                            <span
-                              key={idx}
-                              className="rounded-full bg-blue-100 px-3 py-1 text-xs text-blue-800"
-                            >
-                              {tag}
+            {notes.map((note) => {
+              // Résoudre les titres/noms depuis les lookups
+              const courseName = note.course_id ? courses.find(c => c.id === note.course_id)?.title : null;
+              const moduleName = note.module_id ? modules.find(m => m.id === note.module_id)?.title : null;
+              const sessionName = note.session_id ? sessions.find(s => s.id === note.session_id)?.title : null;
+              const userName = note.user_id ? users.find(u => u.id === note.user_id)?.display_name : null;
+              
+              const hasAssociations = courseName || moduleName || sessionName || userName;
+              
+              return (
+                <div key={note.id} className="rounded-lg border bg-white p-6">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {note.title || 'Sans titre'}
+                      </h3>
+                      
+                      {/* Associations */}
+                      {hasAssociations && (
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          {courseName && (
+                            <span className="inline-flex items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-800">
+                              📚 {courseName}
                             </span>
-                          ))}
-                        </>
+                          )}
+                          {moduleName && (
+                            <span className="inline-flex items-center rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium text-indigo-800">
+                              📖 {moduleName}
+                            </span>
+                          )}
+                          {sessionName && (
+                            <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
+                              🗓️ {sessionName}
+                            </span>
+                          )}
+                          {userName && (
+                            <span className="inline-flex items-center rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-800">
+                              👤 {userName}
+                            </span>
+                          )}
+                        </div>
                       )}
+                      
+                      <p className="mt-3 text-gray-700 whitespace-pre-wrap">{note.content}</p>
+                      
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {note.tags && note.tags.length > 0 && (
+                          <>
+                            {note.tags.map((tag, idx) => (
+                              <span
+                                key={idx}
+                                className="rounded-full bg-blue-100 px-3 py-1 text-xs text-blue-800"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </>
+                        )}
+                      </div>
+                      <p className="mt-4 text-xs text-gray-500">
+                        {formatRelativeDate(note.updated_at)}
+                      </p>
                     </div>
-                    <p className="mt-4 text-xs text-gray-500">
-                      {formatRelativeDate(note.updated_at)}
-                    </p>
-                  </div>
-                  <div className="ml-4 flex gap-2">
-                    <button
-                      onClick={() => handleEdit(note)}
-                      className="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700"
-                    >
-                      Modifier
-                    </button>
-                    <button
-                      onClick={() => handleDelete(note.id)}
-                      className="rounded bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
-                    >
-                      Supprimer
-                    </button>
+                    <div className="ml-4 flex gap-2">
+                      <button
+                        onClick={() => handleEdit(note)}
+                        className="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700"
+                      >
+                        Modifier
+                      </button>
+                      <button
+                        onClick={() => handleDelete(note.id)}
+                        className="rounded bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
+                      >
+                        Supprimer
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
@@ -325,40 +465,56 @@ export function TrainerNotes() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Course ID</label>
-                      <input
-                        type="text"
+                      <label className="block text-sm font-medium text-gray-700">Formation</label>
+                      <select
                         name="course_id"
                         defaultValue={editingNote?.course_id || filters.course_id || ''}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                      />
+                      >
+                        <option value="">Aucune</option>
+                        {courses.map(course => (
+                          <option key={course.id} value={course.id}>{course.title}</option>
+                        ))}
+                      </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Module ID</label>
-                      <input
-                        type="text"
+                      <label className="block text-sm font-medium text-gray-700">Module</label>
+                      <select
                         name="module_id"
                         defaultValue={editingNote?.module_id || filters.module_id || ''}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                      />
+                      >
+                        <option value="">Aucun</option>
+                        {modules.map(module => (
+                          <option key={module.id} value={module.id}>{module.title}</option>
+                        ))}
+                      </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Session ID</label>
-                      <input
-                        type="text"
+                      <label className="block text-sm font-medium text-gray-700">Session</label>
+                      <select
                         name="session_id"
                         defaultValue={editingNote?.session_id || filters.session_id || ''}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                      />
+                      >
+                        <option value="">Aucune</option>
+                        {sessions.map(session => (
+                          <option key={session.id} value={session.id}>{session.title}</option>
+                        ))}
+                      </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">User ID</label>
-                      <input
-                        type="text"
+                      <label className="block text-sm font-medium text-gray-700">Apprenant</label>
+                      <select
                         name="user_id"
                         defaultValue={editingNote?.user_id || filters.user_id || ''}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                      />
+                      >
+                        <option value="">Aucun</option>
+                        {users.map(u => (
+                          <option key={u.id} value={u.id}>{u.display_name}</option>
+                        ))}
+                      </select>
                     </div>
                   </div>
                   <div>

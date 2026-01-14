@@ -3,9 +3,9 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useUserRole } from '../hooks/useUserRole';
 import { getUserOrg } from '../lib/queries/userQueries';
-import { supabase } from '../lib/supabaseClient';
 import type { Org } from '../types/database';
-import { Building2, LogOut, User, ChevronDown, Settings, Home, Mail } from 'lucide-react';
+import { Building2, LogOut, User, ChevronDown, Settings, Home } from 'lucide-react';
+import { NotificationCenter } from './notifications/NotificationCenter';
 import logoScinnova from '../../Logo SCINNOVA avec cerveau et fusée.png';
 
 interface AppHeaderProps {
@@ -29,8 +29,6 @@ export function AppHeader({
   const [showMenu, setShowMenu] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
   const [org, setOrg] = useState<Org | null>(null);
-  const [unreadNotifications, setUnreadNotifications] = useState(0);
-
   useEffect(() => {
     async function loadOrg() {
       if (!user?.id || isAdmin) return; // Pas besoin pour les admins
@@ -41,52 +39,6 @@ export function AppHeader({
     
     loadOrg();
   }, [user?.id, isAdmin]);
-
-  // Charger les notifications non lues pour tous les utilisateurs
-  useEffect(() => {
-    async function loadNotifications() {
-      if (!user?.id) return;
-      
-      try {
-        const { count, error } = await supabase
-          .from('notifications')
-          .select('*', { count: 'exact', head: true })
-          .eq('user_id', user.id)
-          .eq('is_read', false);
-
-        if (!error && count !== null) {
-          setUnreadNotifications(count);
-        }
-      } catch (error) {
-        console.error('Erreur lors du chargement des notifications:', error);
-      }
-    }
-
-    loadNotifications();
-
-    // Écouter les nouvelles notifications en temps réel
-    if (user?.id) {
-      const subscription = supabase
-        .channel('notifications')
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'notifications',
-            filter: `user_id=eq.${user.id}`,
-          },
-          () => {
-            loadNotifications();
-          }
-        )
-        .subscribe();
-
-      return () => {
-        subscription.unsubscribe();
-      };
-    }
-  }, [user?.id]);
 
   const handleSignOut = async () => {
     try {
@@ -139,19 +91,9 @@ export function AppHeader({
 
           {/* Right side - User menu */}
           <div className="flex items-center space-x-4">
-            {/* Lien vers la boîte aux lettres pour tous les utilisateurs */}
-            <Link
-              to="/mailbox"
-              className="relative text-sm text-gray-600 hover:text-gray-900 hidden md:flex items-center gap-2"
-              title="Boîte aux lettres"
-            >
-              <Mail className="w-5 h-5" />
-              {unreadNotifications > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
-                  {unreadNotifications > 9 ? '9+' : unreadNotifications}
-                </span>
-              )}
-            </Link>
+            {/* Centre de notifications */}
+            <NotificationCenter />
+            
             {isAdmin && (
               <Link
                 to="/admin/documentation"

@@ -391,23 +391,39 @@ export async function getSessionKPIs(sessionId: string): Promise<{
 
 /**
  * Récupère la table des apprenants pour une session
+ * Utilise session_members (nouvelle table) avec fallback sur enrollments (ancienne table)
  */
 export async function getLearnersTable(sessionId: string): Promise<{
   learners: LearnerRow[];
   error: Error | null;
 }> {
   try {
-    const { data: enrollments, error: enrollError } = await supabase
-      .from('enrollments')
+    // D'abord essayer session_members (nouvelle structure)
+    const { data: sessionMembers, error: membersError } = await supabase
+      .from('session_members')
       .select('user_id')
       .eq('session_id', sessionId)
-      .eq('status', 'active');
+      .eq('role', 'learner');
 
-    if (enrollError) {
-      return { learners: [], error: enrollError };
+    let userIds: string[] = [];
+
+    if (!membersError && sessionMembers && sessionMembers.length > 0) {
+      // Utiliser session_members
+      userIds = sessionMembers.map((m: any) => m.user_id);
+    } else {
+      // Fallback sur enrollments (ancienne structure)
+      const { data: enrollments, error: enrollError } = await supabase
+        .from('enrollments')
+        .select('user_id')
+        .eq('session_id', sessionId)
+        .eq('status', 'active');
+
+      if (enrollError) {
+        return { learners: [], error: enrollError };
+      }
+
+      userIds = enrollments?.map((e: any) => e.user_id) || [];
     }
-
-    const userIds = enrollments?.map((e: any) => e.user_id) || [];
 
     if (userIds.length === 0) {
       return { learners: [], error: null };

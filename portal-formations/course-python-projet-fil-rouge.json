@@ -1,0 +1,754 @@
+{
+  "title": "Projet Fil Rouge Python - Gestionnaire de Budget",
+  "slug": "python-projet-fil-rouge-budget",
+  "description": "Projet pratique à réaliser en parallèle de la formation Python. Construisez progressivement un gestionnaire de budget personnel complet sur 5 jours.",
+  "duration": "5 jours (en parallèle de la formation)",
+  "level": "Débutant",
+  "published": true,
+  "theme": {
+    "primaryColor": "#10B981",
+    "secondaryColor": "#059669",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Introduction au projet",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#059669"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Présentation du projet fil rouge",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez le projet que vous allez construire tout au long de la formation."
+          },
+          "chapters": [
+            {
+              "title": "Le projet : Gestionnaire de Budget Personnel",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💰 Gestionnaire de Budget Personnel" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Tout au long de cette formation Python de 5 jours, vous allez construire progressivement une application complète de gestion de budget personnel. Chaque jour, vous ajouterez de nouvelles fonctionnalités en utilisant les concepts appris." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🎯 Objectif final" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "À la fin des 5 jours, vous aurez une application console qui permet de :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Ajouter des revenus et des dépenses" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Catégoriser les transactions (alimentation, transport, loisirs...)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Afficher le solde actuel et l'historique" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Filtrer les transactions par date ou catégorie" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Définir des budgets par catégorie avec alertes" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Sauvegarder et charger les données" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Générer des rapports et statistiques" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "📅 Progression sur 5 jours" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "text" },
+                    "content": [{ "type": "text", "text": "┌─────────┬──────────────────────────────────────────────────────────┐\n│  Jour   │  Ce que vous construisez                                 │\n├─────────┼──────────────────────────────────────────────────────────┤\n│ Jour 1  │ Saisie et affichage de transactions simples              │\n│ Jour 2  │ Stockage en listes/dicts, catégories, calculs            │\n│ Jour 3  │ Menu interactif, fonctions, filtres, statistiques        │\n│ Jour 4  │ Sauvegarde JSON, gestion d'erreurs, modules              │\n│ Jour 5  │ Classes Transaction, Compte, Budget, rapports            │\n└─────────┴──────────────────────────────────────────────────────────┘" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "📁 Structure du projet" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Créez un dossier dédié pour ce projet :" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "text" },
+                    "content": [{ "type": "text", "text": "budget-manager/\n├── jour1_budget.py      # Version Jour 1\n├── jour2_budget.py      # Version Jour 2\n├── jour3_budget.py      # Version Jour 3\n├── jour4_budget.py      # Version Jour 4\n├── jour5_budget/        # Version finale (POO)\n│   ├── __init__.py\n│   ├── models.py        # Classes Transaction, Compte, Budget\n│   ├── storage.py       # Sauvegarde/chargement\n│   ├── reports.py       # Génération de rapports\n│   └── main.py          # Point d'entrée\n└── data/\n    └── budget.json      # Données sauvegardées" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [{ "type": "paragraph", "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "💡 Conseil : " },
+                      { "type": "text", "text": "Gardez une version de votre code pour chaque jour. Cela vous permettra de voir votre progression et de revenir en arrière si nécessaire." }
+                    ]}]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Jour 1 : Premiers pas",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Étape 1 : Saisie de transactions",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Créer la base du gestionnaire avec saisie et affichage simples."
+          },
+          "chapters": [
+            {
+              "title": "Objectifs du Jour 1",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📋 Jour 1 : Premiers pas" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Compétences utilisées" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Variables (int, float, str)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Fonction input() et print()" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Conversion de types (float())" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "F-strings pour le formatage" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🎯 Objectifs" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Afficher un message de bienvenue" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Demander le solde initial" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Permettre de saisir une transaction (montant + description)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Afficher le nouveau solde" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Formater les montants avec 2 décimales" }]}]}
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Code à réaliser",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💻 Code Jour 1" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Créez le fichier jour1_budget.py :" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# ===========================================\n# GESTIONNAIRE DE BUDGET - JOUR 1\n# ===========================================\n\n# Message de bienvenue\nprint(\"=\"*50)\nprint(\"💰 GESTIONNAIRE DE BUDGET PERSONNEL 💰\")\nprint(\"=\"*50)\n\n# Demander le solde initial\nsolde_initial = float(input(\"\\nEntrez votre solde initial (€) : \"))\nsolde = solde_initial\n\nprint(f\"\\n✅ Solde initial enregistré : {solde:.2f} €\")\n\n# Saisie d'une dépense\nprint(\"\\n--- Nouvelle dépense ---\")\ndescription_depense = input(\"Description de la dépense : \")\nmontant_depense = float(input(\"Montant (€) : \"))\n\n# Mettre à jour le solde (dépense = négatif)\nsolde = solde - montant_depense\n\nprint(f\"\\n📉 Dépense enregistrée : {description_depense} - {montant_depense:.2f} €\")\nprint(f\"💳 Nouveau solde : {solde:.2f} €\")\n\n# Saisie d'un revenu\nprint(\"\\n--- Nouveau revenu ---\")\ndescription_revenu = input(\"Description du revenu : \")\nmontant_revenu = float(input(\"Montant (€) : \"))\n\n# Mettre à jour le solde (revenu = positif)\nsolde = solde + montant_revenu\n\nprint(f\"\\n📈 Revenu enregistré : {description_revenu} + {montant_revenu:.2f} €\")\nprint(f\"💳 Nouveau solde : {solde:.2f} €\")\n\n# Résumé\nprint(\"\\n\" + \"=\"*50)\nprint(\"📊 RÉSUMÉ\")\nprint(\"=\"*50)\nprint(f\"Solde initial     : {solde_initial:.2f} €\")\nprint(f\"Total dépenses    : -{montant_depense:.2f} €\")\nprint(f\"Total revenus     : +{montant_revenu:.2f} €\")\nprint(f\"Solde actuel      : {solde:.2f} €\")\n\n# Indication sur l'état du compte\nif solde > solde_initial:\n    print(\"\\n🎉 Vous avez gagné de l'argent !\")\nelif solde < solde_initial:\n    print(\"\\n⚠️ Vous avez dépensé plus que gagné.\")\nelse:\n    print(\"\\n➡️ Votre solde est identique au départ.\")" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🧪 Test" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Exécutez le programme et testez avec :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Solde initial : 1000" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Dépense : \"Courses\" - 85.50" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Revenu : \"Salaire\" - 1500" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "✅ Checklist Jour 1" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Le programme demande un solde initial" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ On peut saisir une dépense (description + montant)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ On peut saisir un revenu (description + montant)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Le solde est mis à jour correctement" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Les montants sont affichés avec 2 décimales" }]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Jour 2 : Structures de données",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#8B5CF6",
+        "secondaryColor": "#7C3AED"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Étape 2 : Stocker les transactions",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Utiliser des listes et dictionnaires pour gérer plusieurs transactions."
+          },
+          "chapters": [
+            {
+              "title": "Objectifs du Jour 2",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📋 Jour 2 : Structures de données" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Compétences utilisées" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Listes pour stocker plusieurs transactions" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Dictionnaires pour représenter une transaction" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Parcours de listes" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Catégories prédéfinies" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🎯 Objectifs" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Stocker les transactions dans une liste de dictionnaires" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ajouter une catégorie à chaque transaction" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Proposer des catégories prédéfinies" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Afficher l'historique des transactions" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Calculer les totaux par catégorie" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Structure d'une transaction" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "transaction = {\n    \"type\": \"depense\",        # ou \"revenu\"\n    \"montant\": 85.50,\n    \"description\": \"Courses\",\n    \"categorie\": \"Alimentation\",\n    \"date\": \"2024-01-15\"\n}" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Code à réaliser",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💻 Code Jour 2" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Créez le fichier jour2_budget.py :" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# ===========================================\n# GESTIONNAIRE DE BUDGET - JOUR 2\n# ===========================================\nfrom datetime import date\n\n# Catégories disponibles\nCATEGORIES_DEPENSES = [\n    \"Alimentation\", \"Transport\", \"Logement\", \"Loisirs\",\n    \"Santé\", \"Vêtements\", \"Factures\", \"Autre\"\n]\nCATEGORIES_REVENUS = [\n    \"Salaire\", \"Freelance\", \"Vente\", \"Remboursement\", \"Autre\"\n]\n\n# Stockage des données\ntransactions = []\nsolde_initial = 0.0\n\n# Message de bienvenue\nprint(\"=\"*50)\nprint(\"💰 GESTIONNAIRE DE BUDGET - JOUR 2 💰\")\nprint(\"=\"*50)\n\n# Solde initial\nsolde_initial = float(input(\"\\nSolde initial (€) : \"))\nprint(f\"✅ Solde initial : {solde_initial:.2f} €\")\n\n# Boucle pour ajouter des transactions\ncontinuer = True\nwhile continuer:\n    print(\"\\n\" + \"-\"*40)\n    print(\"1. Ajouter une dépense\")\n    print(\"2. Ajouter un revenu\")\n    print(\"3. Voir l'historique\")\n    print(\"4. Voir les totaux par catégorie\")\n    print(\"5. Quitter\")\n    \n    choix = input(\"\\nVotre choix : \")\n    \n    if choix == \"1\":\n        # Ajouter une dépense\n        print(\"\\n--- Nouvelle dépense ---\")\n        description = input(\"Description : \")\n        montant = float(input(\"Montant (€) : \"))\n        \n        # Afficher les catégories\n        print(\"\\nCatégories :\")\n        for i, cat in enumerate(CATEGORIES_DEPENSES, 1):\n            print(f\"  {i}. {cat}\")\n        choix_cat = int(input(\"Choisir une catégorie (numéro) : \")) - 1\n        categorie = CATEGORIES_DEPENSES[choix_cat]\n        \n        # Créer la transaction\n        transaction = {\n            \"type\": \"depense\",\n            \"montant\": montant,\n            \"description\": description,\n            \"categorie\": categorie,\n            \"date\": str(date.today())\n        }\n        transactions.append(transaction)\n        print(f\"\\n✅ Dépense ajoutée : {description} - {montant:.2f} € ({categorie})\")\n    \n    elif choix == \"2\":\n        # Ajouter un revenu\n        print(\"\\n--- Nouveau revenu ---\")\n        description = input(\"Description : \")\n        montant = float(input(\"Montant (€) : \"))\n        \n        # Afficher les catégories\n        print(\"\\nCatégories :\")\n        for i, cat in enumerate(CATEGORIES_REVENUS, 1):\n            print(f\"  {i}. {cat}\")\n        choix_cat = int(input(\"Choisir une catégorie (numéro) : \")) - 1\n        categorie = CATEGORIES_REVENUS[choix_cat]\n        \n        # Créer la transaction\n        transaction = {\n            \"type\": \"revenu\",\n            \"montant\": montant,\n            \"description\": description,\n            \"categorie\": categorie,\n            \"date\": str(date.today())\n        }\n        transactions.append(transaction)\n        print(f\"\\n✅ Revenu ajouté : {description} + {montant:.2f} € ({categorie})\")\n    \n    elif choix == \"3\":\n        # Afficher l'historique\n        print(\"\\n\" + \"=\"*50)\n        print(\"📜 HISTORIQUE DES TRANSACTIONS\")\n        print(\"=\"*50)\n        \n        if not transactions:\n            print(\"Aucune transaction enregistrée.\")\n        else:\n            for t in transactions:\n                signe = \"-\" if t[\"type\"] == \"depense\" else \"+\"\n                print(f\"{t['date']} | {signe}{t['montant']:.2f}€ | {t['description']} ({t['categorie']})\")\n        \n        # Calculer et afficher le solde\n        total_depenses = sum(t[\"montant\"] for t in transactions if t[\"type\"] == \"depense\")\n        total_revenus = sum(t[\"montant\"] for t in transactions if t[\"type\"] == \"revenu\")\n        solde_actuel = solde_initial + total_revenus - total_depenses\n        \n        print(\"\\n\" + \"-\"*50)\n        print(f\"💳 Solde actuel : {solde_actuel:.2f} €\")\n    \n    elif choix == \"4\":\n        # Totaux par catégorie\n        print(\"\\n\" + \"=\"*50)\n        print(\"📊 TOTAUX PAR CATÉGORIE\")\n        print(\"=\"*50)\n        \n        # Dépenses par catégorie\n        print(\"\\n📉 DÉPENSES :\")\n        totaux_depenses = {}\n        for t in transactions:\n            if t[\"type\"] == \"depense\":\n                cat = t[\"categorie\"]\n                totaux_depenses[cat] = totaux_depenses.get(cat, 0) + t[\"montant\"]\n        \n        for cat, total in totaux_depenses.items():\n            print(f\"  {cat}: {total:.2f} €\")\n        \n        # Revenus par catégorie\n        print(\"\\n📈 REVENUS :\")\n        totaux_revenus = {}\n        for t in transactions:\n            if t[\"type\"] == \"revenu\":\n                cat = t[\"categorie\"]\n                totaux_revenus[cat] = totaux_revenus.get(cat, 0) + t[\"montant\"]\n        \n        for cat, total in totaux_revenus.items():\n            print(f\"  {cat}: {total:.2f} €\")\n    \n    elif choix == \"5\":\n        continuer = False\n        print(\"\\nAu revoir ! 👋\")\n    \n    else:\n        print(\"\\n❌ Choix invalide, veuillez réessayer.\")" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "✅ Checklist Jour 2" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Les transactions sont stockées dans une liste" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Chaque transaction est un dictionnaire" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Les catégories sont proposées à l'utilisateur" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ L'historique affiche toutes les transactions" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Les totaux par catégorie sont calculés" }]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Jour 3 : Fonctions et menu",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#F59E0B",
+        "secondaryColor": "#D97706"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Étape 3 : Organiser avec des fonctions",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Restructurer le code avec des fonctions réutilisables."
+          },
+          "chapters": [
+            {
+              "title": "Objectifs du Jour 3",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📋 Jour 3 : Fonctions et menu" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Compétences utilisées" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Définition de fonctions" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Paramètres et valeurs de retour" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Compréhensions de listes" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Filtrage et statistiques" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🎯 Nouvelles fonctionnalités" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Refactorer le code en fonctions" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ajouter un filtre par catégorie" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ajouter un filtre par date (mois)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Afficher des statistiques (moyenne, max, min)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ajouter des alertes budget" }]}]}
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Code à réaliser",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💻 Code Jour 3" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Créez le fichier jour3_budget.py :" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# ===========================================\n# GESTIONNAIRE DE BUDGET - JOUR 3\n# ===========================================\nfrom datetime import date, datetime\n\n# Configuration\nCATEGORIES_DEPENSES = [\"Alimentation\", \"Transport\", \"Logement\", \"Loisirs\", \"Santé\", \"Factures\", \"Autre\"]\nCATEGORIES_REVENUS = [\"Salaire\", \"Freelance\", \"Vente\", \"Autre\"]\n\n# Données globales\ntransactions = []\nsolde_initial = 0.0\nbudgets = {}  # Budget par catégorie\n\n# ===========================================\n# FONCTIONS\n# ===========================================\n\ndef afficher_menu():\n    \"\"\"Affiche le menu principal.\"\"\"\n    print(\"\\n\" + \"=\"*50)\n    print(\"💰 GESTIONNAIRE DE BUDGET\")\n    print(\"=\"*50)\n    print(\"1. Ajouter une dépense\")\n    print(\"2. Ajouter un revenu\")\n    print(\"3. Voir l'historique\")\n    print(\"4. Voir les totaux par catégorie\")\n    print(\"5. Filtrer par catégorie\")\n    print(\"6. Statistiques\")\n    print(\"7. Définir un budget\")\n    print(\"8. Quitter\")\n    return input(\"\\nVotre choix : \")\n\n\ndef choisir_categorie(categories):\n    \"\"\"Affiche les catégories et retourne le choix.\"\"\"\n    print(\"\\nCatégories :\")\n    for i, cat in enumerate(categories, 1):\n        print(f\"  {i}. {cat}\")\n    choix = int(input(\"Choisir (numéro) : \")) - 1\n    return categories[choix]\n\n\ndef ajouter_transaction(type_trans):\n    \"\"\"Ajoute une transaction (dépense ou revenu).\"\"\"\n    categories = CATEGORIES_DEPENSES if type_trans == \"depense\" else CATEGORIES_REVENUS\n    \n    description = input(\"Description : \")\n    montant = float(input(\"Montant (€) : \"))\n    categorie = choisir_categorie(categories)\n    \n    transaction = {\n        \"type\": type_trans,\n        \"montant\": montant,\n        \"description\": description,\n        \"categorie\": categorie,\n        \"date\": str(date.today())\n    }\n    transactions.append(transaction)\n    \n    # Vérifier le budget\n    if type_trans == \"depense\" and categorie in budgets:\n        verifier_budget(categorie)\n    \n    signe = \"-\" if type_trans == \"depense\" else \"+\"\n    print(f\"\\n✅ {type_trans.capitalize()} ajouté(e) : {description} {signe}{montant:.2f}€\")\n\n\ndef calculer_solde():\n    \"\"\"Calcule et retourne le solde actuel.\"\"\"\n    total_revenus = sum(t[\"montant\"] for t in transactions if t[\"type\"] == \"revenu\")\n    total_depenses = sum(t[\"montant\"] for t in transactions if t[\"type\"] == \"depense\")\n    return solde_initial + total_revenus - total_depenses\n\n\ndef afficher_historique(liste_transactions=None):\n    \"\"\"Affiche l'historique des transactions.\"\"\"\n    liste = liste_transactions if liste_transactions else transactions\n    \n    print(\"\\n\" + \"=\"*60)\n    print(\"📜 HISTORIQUE\")\n    print(\"=\"*60)\n    \n    if not liste:\n        print(\"Aucune transaction.\")\n        return\n    \n    for t in liste:\n        signe = \"-\" if t[\"type\"] == \"depense\" else \"+\"\n        emoji = \"📉\" if t[\"type\"] == \"depense\" else \"📈\"\n        print(f\"{emoji} {t['date']} | {signe}{t['montant']:>8.2f}€ | {t['description']:<20} ({t['categorie']})\")\n    \n    print(\"-\"*60)\n    print(f\"💳 Solde actuel : {calculer_solde():.2f}€\")\n\n\ndef calculer_totaux_par_categorie():\n    \"\"\"Calcule et affiche les totaux par catégorie.\"\"\"\n    print(\"\\n\" + \"=\"*50)\n    print(\"📊 TOTAUX PAR CATÉGORIE\")\n    print(\"=\"*50)\n    \n    # Dépenses\n    print(\"\\n📉 DÉPENSES :\")\n    depenses = [t for t in transactions if t[\"type\"] == \"depense\"]\n    totaux = {}\n    for t in depenses:\n        totaux[t[\"categorie\"]] = totaux.get(t[\"categorie\"], 0) + t[\"montant\"]\n    \n    for cat, total in sorted(totaux.items(), key=lambda x: x[1], reverse=True):\n        barre = \"█\" * int(total / 50)\n        print(f\"  {cat:<15} : {total:>8.2f}€ {barre}\")\n    \n    # Revenus\n    print(\"\\n📈 REVENUS :\")\n    revenus = [t for t in transactions if t[\"type\"] == \"revenu\"]\n    totaux = {}\n    for t in revenus:\n        totaux[t[\"categorie\"]] = totaux.get(t[\"categorie\"], 0) + t[\"montant\"]\n    \n    for cat, total in sorted(totaux.items(), key=lambda x: x[1], reverse=True):\n        print(f\"  {cat:<15} : {total:>8.2f}€\")\n\n\ndef filtrer_par_categorie():\n    \"\"\"Filtre les transactions par catégorie.\"\"\"\n    # Lister toutes les catégories utilisées\n    categories_utilisees = list(set(t[\"categorie\"] for t in transactions))\n    \n    if not categories_utilisees:\n        print(\"Aucune transaction enregistrée.\")\n        return\n    \n    print(\"\\nCatégories disponibles :\")\n    for i, cat in enumerate(categories_utilisees, 1):\n        print(f\"  {i}. {cat}\")\n    \n    choix = int(input(\"Choisir (numéro) : \")) - 1\n    categorie = categories_utilisees[choix]\n    \n    # Filtrer\n    filtre = [t for t in transactions if t[\"categorie\"] == categorie]\n    afficher_historique(filtre)\n\n\ndef afficher_statistiques():\n    \"\"\"Affiche des statistiques sur les transactions.\"\"\"\n    print(\"\\n\" + \"=\"*50)\n    print(\"📈 STATISTIQUES\")\n    print(\"=\"*50)\n    \n    depenses = [t[\"montant\"] for t in transactions if t[\"type\"] == \"depense\"]\n    revenus = [t[\"montant\"] for t in transactions if t[\"type\"] == \"revenu\"]\n    \n    if depenses:\n        print(f\"\\n📉 Dépenses :\")\n        print(f\"  Total     : {sum(depenses):.2f}€\")\n        print(f\"  Moyenne   : {sum(depenses)/len(depenses):.2f}€\")\n        print(f\"  Max       : {max(depenses):.2f}€\")\n        print(f\"  Min       : {min(depenses):.2f}€\")\n        print(f\"  Nombre    : {len(depenses)}\")\n    \n    if revenus:\n        print(f\"\\n📈 Revenus :\")\n        print(f\"  Total     : {sum(revenus):.2f}€\")\n        print(f\"  Moyenne   : {sum(revenus)/len(revenus):.2f}€\")\n        print(f\"  Max       : {max(revenus):.2f}€\")\n        print(f\"  Nombre    : {len(revenus)}\")\n    \n    print(f\"\\n💰 Épargne : {calculer_solde() - solde_initial:.2f}€\")\n\n\ndef definir_budget():\n    \"\"\"Définit un budget pour une catégorie.\"\"\"\n    print(\"\\n--- Définir un budget ---\")\n    categorie = choisir_categorie(CATEGORIES_DEPENSES)\n    montant = float(input(f\"Budget mensuel pour '{categorie}' (€) : \"))\n    budgets[categorie] = montant\n    print(f\"✅ Budget défini : {categorie} = {montant:.2f}€/mois\")\n\n\ndef verifier_budget(categorie):\n    \"\"\"Vérifie si le budget est dépassé.\"\"\"\n    if categorie not in budgets:\n        return\n    \n    # Calculer le total des dépenses de cette catégorie ce mois\n    mois_actuel = date.today().strftime(\"%Y-%m\")\n    total = sum(\n        t[\"montant\"] for t in transactions\n        if t[\"type\"] == \"depense\" \n        and t[\"categorie\"] == categorie\n        and t[\"date\"].startswith(mois_actuel)\n    )\n    \n    budget = budgets[categorie]\n    pourcentage = (total / budget) * 100\n    \n    if total >= budget:\n        print(f\"\\n🚨 ALERTE : Budget '{categorie}' dépassé ! ({total:.2f}€ / {budget:.2f}€)\")\n    elif pourcentage >= 80:\n        print(f\"\\n⚠️ Attention : Budget '{categorie}' à {pourcentage:.0f}% ({total:.2f}€ / {budget:.2f}€)\")\n\n\n# ===========================================\n# PROGRAMME PRINCIPAL\n# ===========================================\n\ndef main():\n    global solde_initial\n    \n    print(\"\\n\" + \"=\"*50)\n    print(\"💰 GESTIONNAIRE DE BUDGET - JOUR 3 💰\")\n    print(\"=\"*50)\n    \n    solde_initial = float(input(\"Solde initial (€) : \"))\n    \n    while True:\n        choix = afficher_menu()\n        \n        if choix == \"1\":\n            ajouter_transaction(\"depense\")\n        elif choix == \"2\":\n            ajouter_transaction(\"revenu\")\n        elif choix == \"3\":\n            afficher_historique()\n        elif choix == \"4\":\n            calculer_totaux_par_categorie()\n        elif choix == \"5\":\n            filtrer_par_categorie()\n        elif choix == \"6\":\n            afficher_statistiques()\n        elif choix == \"7\":\n            definir_budget()\n        elif choix == \"8\":\n            print(\"\\nAu revoir ! 👋\")\n            break\n        else:\n            print(\"\\n❌ Choix invalide.\")\n\n\nif __name__ == \"__main__\":\n    main()" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "✅ Checklist Jour 3" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Le code est organisé en fonctions" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ On peut filtrer par catégorie" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Les statistiques sont calculées (moyenne, max, min)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ On peut définir des budgets par catégorie" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Les alertes budget fonctionnent" }]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Jour 4 : Fichiers et modules",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#EF4444",
+        "secondaryColor": "#DC2626"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Étape 4 : Persistance des données",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Sauvegarder et charger les données en JSON."
+          },
+          "chapters": [
+            {
+              "title": "Objectifs du Jour 4",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📋 Jour 4 : Fichiers et modules" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Compétences utilisées" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Lecture/écriture de fichiers JSON" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Gestion des exceptions (try/except)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Organisation en modules" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Validation des entrées" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🎯 Nouvelles fonctionnalités" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Sauvegarder les données automatiquement" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Charger les données au démarrage" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Gérer les erreurs de saisie" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Exporter un rapport mensuel" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Séparer le code en modules" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Structure du fichier JSON" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "json" },
+                    "content": [{ "type": "text", "text": "{\n  \"solde_initial\": 1000.0,\n  \"budgets\": {\n    \"Alimentation\": 300,\n    \"Loisirs\": 100\n  },\n  \"transactions\": [\n    {\n      \"type\": \"depense\",\n      \"montant\": 85.50,\n      \"description\": \"Courses\",\n      \"categorie\": \"Alimentation\",\n      \"date\": \"2024-01-15\"\n    }\n  ]\n}" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Code à réaliser",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💻 Code Jour 4" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Créez le fichier jour4_budget.py. Voici les nouvelles fonctions à ajouter :" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# ===========================================\n# GESTIONNAIRE DE BUDGET - JOUR 4\n# Nouvelles fonctions : sauvegarde, chargement, validation\n# ===========================================\nimport json\nimport os\nfrom datetime import date\nfrom pathlib import Path\n\n# Fichier de données\nFICHIER_DONNEES = \"budget_data.json\"\n\n# ... (garder les constantes et variables du Jour 3)\n\n# ===========================================\n# FONCTIONS DE PERSISTANCE\n# ===========================================\n\ndef sauvegarder_donnees():\n    \"\"\"Sauvegarde toutes les données dans un fichier JSON.\"\"\"\n    data = {\n        \"solde_initial\": solde_initial,\n        \"budgets\": budgets,\n        \"transactions\": transactions\n    }\n    \n    try:\n        with open(FICHIER_DONNEES, \"w\", encoding=\"utf-8\") as f:\n            json.dump(data, f, indent=2, ensure_ascii=False)\n        print(\"💾 Données sauvegardées.\")\n    except IOError as e:\n        print(f\"❌ Erreur de sauvegarde : {e}\")\n\n\ndef charger_donnees():\n    \"\"\"Charge les données depuis le fichier JSON.\"\"\"\n    global solde_initial, budgets, transactions\n    \n    if not Path(FICHIER_DONNEES).exists():\n        print(\"📂 Aucune donnée existante. Nouveau budget.\")\n        return False\n    \n    try:\n        with open(FICHIER_DONNEES, \"r\", encoding=\"utf-8\") as f:\n            data = json.load(f)\n        \n        solde_initial = data.get(\"solde_initial\", 0)\n        budgets = data.get(\"budgets\", {})\n        transactions = data.get(\"transactions\", [])\n        \n        print(f\"✅ Données chargées : {len(transactions)} transactions\")\n        return True\n    \n    except json.JSONDecodeError:\n        print(\"❌ Erreur : fichier JSON corrompu.\")\n        return False\n    except IOError as e:\n        print(f\"❌ Erreur de lecture : {e}\")\n        return False\n\n\n# ===========================================\n# FONCTIONS DE VALIDATION\n# ===========================================\n\ndef demander_montant(message=\"Montant (€) : \"):\n    \"\"\"Demande un montant avec validation.\"\"\"\n    while True:\n        try:\n            montant = float(input(message))\n            if montant < 0:\n                print(\"❌ Le montant doit être positif.\")\n                continue\n            return montant\n        except ValueError:\n            print(\"❌ Veuillez entrer un nombre valide.\")\n\n\ndef demander_choix_menu(options, message=\"Votre choix : \"):\n    \"\"\"Demande un choix dans un menu avec validation.\"\"\"\n    while True:\n        try:\n            choix = int(input(message))\n            if 1 <= choix <= len(options):\n                return choix - 1\n            print(f\"❌ Choisissez entre 1 et {len(options)}.\")\n        except ValueError:\n            print(\"❌ Veuillez entrer un numéro.\")\n\n\n# ===========================================\n# EXPORT RAPPORT\n# ===========================================\n\ndef exporter_rapport_mensuel():\n    \"\"\"Exporte un rapport mensuel au format texte.\"\"\"\n    mois = input(\"Mois (YYYY-MM) ou Entrée pour le mois actuel : \")\n    if not mois:\n        mois = date.today().strftime(\"%Y-%m\")\n    \n    # Filtrer les transactions du mois\n    trans_mois = [t for t in transactions if t[\"date\"].startswith(mois)]\n    \n    if not trans_mois:\n        print(f\"Aucune transaction pour {mois}.\")\n        return\n    \n    # Calculer les totaux\n    total_depenses = sum(t[\"montant\"] for t in trans_mois if t[\"type\"] == \"depense\")\n    total_revenus = sum(t[\"montant\"] for t in trans_mois if t[\"type\"] == \"revenu\")\n    \n    # Générer le rapport\n    rapport = f\"\"\"\n{'='*50}\n📊 RAPPORT MENSUEL - {mois}\n{'='*50}\n\n📈 Revenus totaux  : +{total_revenus:.2f}€\n📉 Dépenses totales : -{total_depenses:.2f}€\n{'─'*50}\n💰 Bilan           : {total_revenus - total_depenses:+.2f}€\n\n📜 Détail des transactions :\n\"\"\"\n    \n    for t in trans_mois:\n        signe = \"-\" if t[\"type\"] == \"depense\" else \"+\"\n        rapport += f\"  {t['date']} | {signe}{t['montant']:.2f}€ | {t['description']} ({t['categorie']})\\n\"\n    \n    # Sauvegarder le rapport\n    nom_fichier = f\"rapport_{mois}.txt\"\n    with open(nom_fichier, \"w\", encoding=\"utf-8\") as f:\n        f.write(rapport)\n    \n    print(rapport)\n    print(f\"\\n✅ Rapport exporté : {nom_fichier}\")\n\n\n# ===========================================\n# PROGRAMME PRINCIPAL MODIFIÉ\n# ===========================================\n\ndef main():\n    global solde_initial\n    \n    print(\"\\n\" + \"=\"*50)\n    print(\"💰 GESTIONNAIRE DE BUDGET - JOUR 4 💰\")\n    print(\"=\"*50)\n    \n    # Charger les données existantes\n    donnees_existantes = charger_donnees()\n    \n    if not donnees_existantes:\n        solde_initial = demander_montant(\"Solde initial (€) : \")\n        sauvegarder_donnees()\n    \n    while True:\n        choix = afficher_menu()\n        \n        if choix == \"1\":\n            ajouter_transaction(\"depense\")\n            sauvegarder_donnees()  # Sauvegarde automatique\n        elif choix == \"2\":\n            ajouter_transaction(\"revenu\")\n            sauvegarder_donnees()\n        elif choix == \"3\":\n            afficher_historique()\n        elif choix == \"4\":\n            calculer_totaux_par_categorie()\n        elif choix == \"5\":\n            filtrer_par_categorie()\n        elif choix == \"6\":\n            afficher_statistiques()\n        elif choix == \"7\":\n            definir_budget()\n            sauvegarder_donnees()\n        elif choix == \"8\":\n            exporter_rapport_mensuel()\n        elif choix == \"9\":\n            sauvegarder_donnees()\n            print(\"\\nAu revoir ! 👋\")\n            break\n        else:\n            print(\"\\n❌ Choix invalide.\")\n\n\nif __name__ == \"__main__\":\n    main()" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "✅ Checklist Jour 4" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Les données sont sauvegardées en JSON" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Les données sont chargées au démarrage" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Les erreurs de saisie sont gérées" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Le rapport mensuel peut être exporté" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Les exceptions sont capturées proprement" }]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Jour 5 : Version POO",
+      "position": 5,
+      "theme": {
+        "primaryColor": "#06B6D4",
+        "secondaryColor": "#0891B2"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Étape 5 : Architecture orientée objet",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Refactorer le projet avec des classes."
+          },
+          "chapters": [
+            {
+              "title": "Objectifs du Jour 5",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "📋 Jour 5 : Version POO" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Compétences utilisées" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Classes et objets" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Héritage" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Méthodes spéciales (__str__, __repr__)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Properties et encapsulation" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🏗️ Architecture des classes" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "text" },
+                    "content": [{ "type": "text", "text": "┌─────────────────────────────────────────────────────────┐\n│                      Transaction                         │\n│  - date, description, montant, categorie                │\n│  - __str__(), to_dict(), from_dict()                    │\n└─────────────────────────────────────────────────────────┘\n                           ▲\n           ┌───────────────┴───────────────┐\n           │                               │\n┌──────────┴──────────┐       ┌────────────┴────────────┐\n│      Depense        │       │        Revenu           │\n│  (type=\"depense\")   │       │    (type=\"revenu\")      │\n└─────────────────────┘       └─────────────────────────┘\n\n┌─────────────────────────────────────────────────────────┐\n│                        Budget                            │\n│  - categorie, montant_max                               │\n│  - verifier(depenses) → bool, pourcentage               │\n└─────────────────────────────────────────────────────────┘\n\n┌─────────────────────────────────────────────────────────┐\n│                      Compte                              │\n│  - solde_initial, transactions[], budgets[]             │\n│  - ajouter_transaction(), solde_actuel                  │\n│  - filtrer(), statistiques(), rapport()                 │\n│  - sauvegarder(), charger()                             │\n└─────────────────────────────────────────────────────────┘" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Code des classes",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💻 Classes du projet" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Créez un dossier jour5_budget/ avec les fichiers suivants :" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "models.py" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "\"\"\"Classes de données pour le gestionnaire de budget.\"\"\"\nfrom abc import ABC, abstractmethod\nfrom datetime import date\nfrom typing import Optional\n\n\nclass Transaction(ABC):\n    \"\"\"Classe abstraite représentant une transaction.\"\"\"\n    \n    def __init__(self, montant: float, description: str, \n                 categorie: str, date_trans: Optional[str] = None):\n        self._montant = montant\n        self._description = description\n        self._categorie = categorie\n        self._date = date_trans or str(date.today())\n    \n    @property\n    def montant(self) -> float:\n        return self._montant\n    \n    @property\n    def description(self) -> str:\n        return self._description\n    \n    @property\n    def categorie(self) -> str:\n        return self._categorie\n    \n    @property\n    def date(self) -> str:\n        return self._date\n    \n    @property\n    @abstractmethod\n    def type_transaction(self) -> str:\n        pass\n    \n    @property\n    @abstractmethod\n    def impact_solde(self) -> float:\n        \"\"\"Montant avec signe (+ pour revenu, - pour dépense).\"\"\"\n        pass\n    \n    def __str__(self) -> str:\n        signe = \"+\" if self.impact_solde > 0 else \"\"\n        return f\"{self._date} | {signe}{self.impact_solde:.2f}€ | {self._description} ({self._categorie})\"\n    \n    def __repr__(self) -> str:\n        return f\"{self.__class__.__name__}({self._montant}, '{self._description}', '{self._categorie}')\"\n    \n    def to_dict(self) -> dict:\n        return {\n            \"type\": self.type_transaction,\n            \"montant\": self._montant,\n            \"description\": self._description,\n            \"categorie\": self._categorie,\n            \"date\": self._date\n        }\n    \n    @classmethod\n    def from_dict(cls, data: dict) -> 'Transaction':\n        if data[\"type\"] == \"depense\":\n            return Depense(data[\"montant\"], data[\"description\"], \n                          data[\"categorie\"], data[\"date\"])\n        else:\n            return Revenu(data[\"montant\"], data[\"description\"], \n                         data[\"categorie\"], data[\"date\"])\n\n\nclass Depense(Transaction):\n    \"\"\"Représente une dépense.\"\"\"\n    \n    @property\n    def type_transaction(self) -> str:\n        return \"depense\"\n    \n    @property\n    def impact_solde(self) -> float:\n        return -self._montant\n\n\nclass Revenu(Transaction):\n    \"\"\"Représente un revenu.\"\"\"\n    \n    @property\n    def type_transaction(self) -> str:\n        return \"revenu\"\n    \n    @property\n    def impact_solde(self) -> float:\n        return self._montant\n\n\nclass Budget:\n    \"\"\"Représente un budget pour une catégorie.\"\"\"\n    \n    def __init__(self, categorie: str, montant_max: float):\n        self._categorie = categorie\n        self._montant_max = montant_max\n    \n    @property\n    def categorie(self) -> str:\n        return self._categorie\n    \n    @property\n    def montant_max(self) -> float:\n        return self._montant_max\n    \n    def verifier(self, total_depenses: float) -> tuple[bool, float]:\n        \"\"\"Vérifie si le budget est respecté.\n        Retourne (est_depasse, pourcentage_utilise).\n        \"\"\"\n        pourcentage = (total_depenses / self._montant_max) * 100\n        est_depasse = total_depenses > self._montant_max\n        return est_depasse, pourcentage\n    \n    def __str__(self) -> str:\n        return f\"Budget {self._categorie}: {self._montant_max:.2f}€\"\n    \n    def to_dict(self) -> dict:\n        return {self._categorie: self._montant_max}\n    \n    @classmethod\n    def from_dict(cls, categorie: str, montant: float) -> 'Budget':\n        return cls(categorie, montant)" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "compte.py" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "\"\"\"Classe Compte : gère les transactions et budgets.\"\"\"\nimport json\nfrom pathlib import Path\nfrom datetime import date\nfrom typing import List, Optional\nfrom models import Transaction, Depense, Revenu, Budget\n\n\nclass Compte:\n    \"\"\"Gère un compte avec ses transactions et budgets.\"\"\"\n    \n    def __init__(self, solde_initial: float = 0.0):\n        self._solde_initial = solde_initial\n        self._transactions: List[Transaction] = []\n        self._budgets: dict[str, Budget] = {}\n    \n    @property\n    def solde_initial(self) -> float:\n        return self._solde_initial\n    \n    @property\n    def solde_actuel(self) -> float:\n        return self._solde_initial + sum(t.impact_solde for t in self._transactions)\n    \n    @property\n    def transactions(self) -> List[Transaction]:\n        return self._transactions.copy()\n    \n    def ajouter_transaction(self, transaction: Transaction) -> None:\n        self._transactions.append(transaction)\n        \n        # Vérifier le budget si c'est une dépense\n        if isinstance(transaction, Depense):\n            self._verifier_budget(transaction.categorie)\n    \n    def ajouter_budget(self, budget: Budget) -> None:\n        self._budgets[budget.categorie] = budget\n    \n    def _verifier_budget(self, categorie: str) -> Optional[str]:\n        if categorie not in self._budgets:\n            return None\n        \n        budget = self._budgets[categorie]\n        total = self.total_depenses_categorie(categorie)\n        est_depasse, pourcentage = budget.verifier(total)\n        \n        if est_depasse:\n            return f\"🚨 ALERTE : Budget '{categorie}' dépassé ! ({total:.2f}€ / {budget.montant_max:.2f}€)\"\n        elif pourcentage >= 80:\n            return f\"⚠️ Attention : Budget '{categorie}' à {pourcentage:.0f}%\"\n        return None\n    \n    def total_depenses_categorie(self, categorie: str, mois: str = None) -> float:\n        mois = mois or date.today().strftime(\"%Y-%m\")\n        return sum(\n            t.montant for t in self._transactions\n            if isinstance(t, Depense) \n            and t.categorie == categorie\n            and t.date.startswith(mois)\n        )\n    \n    def filtrer(self, categorie: str = None, type_trans: str = None, \n                mois: str = None) -> List[Transaction]:\n        \"\"\"Filtre les transactions selon les critères.\"\"\"\n        resultat = self._transactions\n        \n        if categorie:\n            resultat = [t for t in resultat if t.categorie == categorie]\n        if type_trans:\n            resultat = [t for t in resultat if t.type_transaction == type_trans]\n        if mois:\n            resultat = [t for t in resultat if t.date.startswith(mois)]\n        \n        return resultat\n    \n    def statistiques(self) -> dict:\n        \"\"\"Calcule les statistiques du compte.\"\"\"\n        depenses = [t.montant for t in self._transactions if isinstance(t, Depense)]\n        revenus = [t.montant for t in self._transactions if isinstance(t, Revenu)]\n        \n        return {\n            \"total_depenses\": sum(depenses),\n            \"total_revenus\": sum(revenus),\n            \"moyenne_depenses\": sum(depenses) / len(depenses) if depenses else 0,\n            \"max_depense\": max(depenses) if depenses else 0,\n            \"nb_transactions\": len(self._transactions),\n            \"epargne\": self.solde_actuel - self._solde_initial\n        }\n    \n    def generer_rapport(self, mois: str = None) -> str:\n        \"\"\"Génère un rapport textuel.\"\"\"\n        mois = mois or date.today().strftime(\"%Y-%m\")\n        trans = self.filtrer(mois=mois)\n        stats = self.statistiques()\n        \n        rapport = f\"\"\"\n{'='*50}\n📊 RAPPORT - {mois}\n{'='*50}\n\nSolde actuel: {self.solde_actuel:.2f}€\nTotal dépenses: {stats['total_depenses']:.2f}€\nTotal revenus: {stats['total_revenus']:.2f}€\nÉpargne: {stats['epargne']:+.2f}€\n\n{'─'*50}\nTRANSACTIONS DU MOIS\n{'─'*50}\n\"\"\"\n        for t in trans:\n            rapport += f\"{t}\\n\"\n        \n        return rapport\n    \n    # Persistance\n    def sauvegarder(self, fichier: str = \"budget.json\") -> None:\n        data = {\n            \"solde_initial\": self._solde_initial,\n            \"budgets\": {k: v.montant_max for k, v in self._budgets.items()},\n            \"transactions\": [t.to_dict() for t in self._transactions]\n        }\n        with open(fichier, \"w\", encoding=\"utf-8\") as f:\n            json.dump(data, f, indent=2, ensure_ascii=False)\n    \n    @classmethod\n    def charger(cls, fichier: str = \"budget.json\") -> 'Compte':\n        if not Path(fichier).exists():\n            return cls()\n        \n        with open(fichier, \"r\", encoding=\"utf-8\") as f:\n            data = json.load(f)\n        \n        compte = cls(data.get(\"solde_initial\", 0))\n        \n        for cat, montant in data.get(\"budgets\", {}).items():\n            compte.ajouter_budget(Budget(cat, montant))\n        \n        for t_data in data.get(\"transactions\", []):\n            compte._transactions.append(Transaction.from_dict(t_data))\n        \n        return compte" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "✅ Checklist Jour 5" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Transaction est une classe abstraite" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Depense et Revenu héritent de Transaction" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Compte gère les transactions et budgets" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Les méthodes __str__ et to_dict fonctionnent" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Le programme principal utilise les classes" }]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "Projet terminé !",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Félicitations ! Récapitulatif du projet fil rouge."
+          },
+          "chapters": [
+            {
+              "title": "Résumé du projet",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎉 Projet terminé !" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Félicitations ! Vous avez construit une application complète de gestion de budget personnel en Python." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Ce que vous avez accompli" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Jour 1 : Programme basique avec variables et input/output" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Jour 2 : Stockage en listes/dictionnaires, catégories" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Jour 3 : Code structuré en fonctions, statistiques, alertes" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Jour 4 : Persistance JSON, gestion d'erreurs, rapports" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Jour 5 : Architecture POO professionnelle" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🚀 Pour aller plus loin" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Idées d'améliorations pour continuer à pratiquer :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ajouter une interface graphique (Tkinter, PyQt)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Créer des graphiques avec matplotlib" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ajouter la gestion de plusieurs comptes" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Implémenter des transactions récurrentes" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Créer une API REST avec Flask/FastAPI" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ajouter des tests unitaires avec pytest" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🎓 Compétences acquises" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "En réalisant ce projet, vous avez pratiqué :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Variables, types et opérations" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Structures de données (listes, dictionnaires)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Conditions et boucles" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Fonctions et modularité" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Manipulation de fichiers" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Gestion des exceptions" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Programmation orientée objet" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Bravo ! Vous êtes maintenant prêt(e) à créer vos propres projets Python !" }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

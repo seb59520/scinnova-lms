@@ -47,6 +47,19 @@ import { TrainerUseCaseAnalyses } from './pages/trainer/TrainerUseCaseAnalyses'
 import { TrainerDataScienceExercises } from './pages/trainer/TrainerDataScienceExercises'
 import { UserTimeTracking } from './pages/trainer/UserTimeTracking'
 import { TrainerRouteGuard } from './components/trainer/TrainerRouteGuard'
+// Nouvelles pages pour sessions synchronisées
+import { SessionLive } from './pages/trainer/SessionLive'
+import { SessionHub } from './pages/trainer/SessionHub'
+import { TrainerGradebook } from './pages/trainer/TrainerGradebook'
+import { LiveQuizControl } from './pages/trainer/LiveQuizControl'
+import { SessionsManager } from './pages/trainer/SessionsManager'
+import { ProjectsManager } from './pages/trainer/ProjectsManager'
+import { ProjectEvaluation } from './pages/trainer/ProjectEvaluation'
+import { ProjectTemplatesManager } from './pages/trainer/ProjectTemplatesManager'
+import { AllProjectsOverview } from './pages/trainer/AllProjectsOverview'
+import { LearnerGradebook } from './pages/LearnerGradebook'
+import { LiveQuizPlay } from './pages/LiveQuizPlay'
+import { ProjectSubmissionPage } from './pages/ProjectSubmissionPage'
 import { Profile } from './pages/Profile'
 import { DebugProfile } from './pages/DebugProfile'
 import { DiagnosticRole } from './pages/DiagnosticRole'
@@ -450,6 +463,14 @@ function App() {
             }
           />
           <Route
+            path="/trainer/sessions"
+            element={
+              <TrainerRouteGuard>
+                <SessionsManager />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
             path="/trainer/session/:sessionId"
             element={
               <TrainerRouteGuard>
@@ -575,6 +596,102 @@ function App() {
               <TrainerRouteGuard>
                 <TrainerDataScienceExercises />
               </TrainerRouteGuard>
+            }
+          />
+          
+          {/* Routes Session (formateur) */}
+          <Route
+            path="/trainer/session/:sessionId"
+            element={
+              <TrainerRouteGuard>
+                <SessionHub />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/session/:sessionId/live"
+            element={
+              <TrainerRouteGuard>
+                <SessionLive />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/session/:sessionId/gradebook"
+            element={
+              <TrainerRouteGuard>
+                <TrainerGradebook />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/session/:sessionId/quiz/:activityId"
+            element={
+              <TrainerRouteGuard>
+                <LiveQuizControl />
+              </TrainerRouteGuard>
+            }
+          />
+          
+          {/* Routes formateur - Restitution de projet */}
+          <Route
+            path="/trainer/session/:sessionId/projects"
+            element={
+              <TrainerRouteGuard>
+                <ProjectsManager />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/session/:sessionId/project/:restitutionId/evaluate"
+            element={
+              <TrainerRouteGuard>
+                <ProjectEvaluation />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/project-templates"
+            element={
+              <TrainerRouteGuard>
+                <ProjectTemplatesManager />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/projects"
+            element={
+              <TrainerRouteGuard>
+                <AllProjectsOverview />
+              </TrainerRouteGuard>
+            }
+          />
+
+          {/* Routes apprenant - Sessions et Gradebook */}
+          <Route
+            path="/session/:sessionId/gradebook"
+            element={
+              <ProtectedRoute>
+                <LearnerGradebook />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/session/:sessionId/quiz/:activityId"
+            element={
+              <ProtectedRoute>
+                <LiveQuizPlay />
+              </ProtectedRoute>
+            }
+          />
+          
+          {/* Routes apprenant - Restitution de projet */}
+          <Route
+            path="/session/:sessionId/project/:restitutionId"
+            element={
+              <ProtectedRoute>
+                <ProjectSubmissionPage />
+              </ProtectedRoute>
             }
           />
 
