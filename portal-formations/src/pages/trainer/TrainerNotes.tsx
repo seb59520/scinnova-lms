@@ -99,12 +99,23 @@ export function TrainerNotes() {
     // Charger les modules pour tous les cours
     const courseIds = data?.map(c => c.id) || [];
     if (courseIds.length > 0) {
-      const { data: modulesData } = await supabase
+      const { data: modulesData, error: modulesError } = await supabase
         .from('modules')
         .select('id, title, course_id')
         .in('course_id', courseIds)
-        .order('order_index');
-      setModules(modulesData || []);
+        .order('position');  // utiliser 'position' au lieu de 'order_index'
+      
+      if (modulesError) {
+        console.warn('Erreur chargement modules:', modulesError);
+        // Essayer sans tri si la colonne n'existe pas
+        const { data: fallbackModules } = await supabase
+          .from('modules')
+          .select('id, title, course_id')
+          .in('course_id', courseIds);
+        setModules(fallbackModules || []);
+      } else {
+        setModules(modulesData || []);
+      }
     }
   }
 
