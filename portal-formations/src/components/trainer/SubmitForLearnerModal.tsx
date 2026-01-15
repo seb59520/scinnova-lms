@@ -425,15 +425,21 @@ export function SubmitForLearnerModal({
               onChange={handleFileUpload}
               className="hidden"
               disabled={!selectedLearnerId}
+              accept=".pdf,.png,.jpg,.jpeg,.gif,.webp,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip,.rar,.7z,.txt,.csv,.md,.json,.mp4,.webm,.mov"
             />
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={uploading || !selectedLearnerId}
-              className="w-full py-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full py-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-colors flex flex-col items-center justify-center gap-2 disabled:opacity-50"
             >
-              <Upload className={`w-5 h-5 ${uploading ? 'animate-bounce' : ''}`} />
-              {uploading ? 'Upload en cours...' : 'Ajouter des fichiers'}
+              <div className="flex items-center gap-2">
+                <Upload className={`w-5 h-5 ${uploading ? 'animate-bounce' : ''}`} />
+                {uploading ? 'Upload en cours...' : 'Ajouter des fichiers'}
+              </div>
+              <span className="text-xs text-gray-500">
+                PDF, Images (PNG, JPG, GIF, WebP), Word, PowerPoint, Excel, ZIP, Vidéos (MP4, WebM) - Max 100 Mo
+              </span>
             </button>
           </div>
 
