@@ -127,18 +127,41 @@ export function SessionProjectReport() {
         console.log('📋 Évaluations chargées:', evaluations?.length, evaluationsError);
 
         // Récupérer tous les user_ids des soumissions
-        const submissionUserIds = submissions?.map(s => s.user_id).filter(Boolean) || [];
+        const submissionUserIds = [...new Set(
+          (submissions || [])
+            .map(s => s.user_id)
+            .filter((id): id is string => typeof id === 'string' && id.length > 0)
+        )];
         console.log('📋 User IDs des soumissions:', submissionUserIds);
         
-        // Charger les profils de tous les utilisateurs qui ont soumis
+        // Charger les profils un par un si nécessaire (contournement RLS)
         let allProfiles: any[] = [];
         if (submissionUserIds.length > 0) {
+          // Essayer d'abord avec .in()
           const { data: profilesData, error: profilesError } = await supabase
             .from('profiles')
             .select('id, full_name, email')
             .in('id', submissionUserIds);
+          
           console.log('📋 Profils chargés:', profilesData?.length, profilesError);
-          allProfiles = profilesData || [];
+          
+          if (profilesError) {
+            console.warn('⚠️ Erreur chargement profils, tentative alternative...');
+            // Charger les profils un par un
+            for (const userId of submissionUserIds) {
+              const { data: profile } = await supabase
+                .from('profiles')
+                .select('id, full_name, email')
+                .eq('id', userId)
+                .maybeSingle();
+              if (profile) {
+                allProfiles.push(profile);
+              }
+            }
+            console.log('📋 Profils chargés (alt):', allProfiles.length);
+          } else {
+            allProfiles = profilesData || [];
+          }
         }
 
         // Construire les rapports UNIQUEMENT pour ceux qui ont soumis
