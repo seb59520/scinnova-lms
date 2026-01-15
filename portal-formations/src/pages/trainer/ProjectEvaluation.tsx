@@ -264,18 +264,32 @@ export function ProjectEvaluation() {
   React.useEffect(() => {
     async function loadLearners() {
       if (!sessionId) return;
+
+      const { supabase } = await import('../../lib/supabaseClient');
       
-      const { data, error } = await (await import('../../lib/supabaseClient')).supabase
+      // D'abord, essayer de charger via session_members
+      const { data, error } = await supabase
         .from('session_members')
         .select(`
           user_id,
+          role,
           profile:profiles(id, full_name, avatar_url)
         `)
-        .eq('session_id', sessionId)
-        .eq('role', 'learner');
+        .eq('session_id', sessionId);
 
-      if (!error && data) {
-        const learners = data
+      console.log('📋 Session members chargés:', data, error);
+
+      if (error) {
+        console.error('Erreur chargement session_members:', error);
+        return;
+      }
+
+      if (data) {
+        // Filtrer pour ne garder que les learners
+        const learnerMembers = data.filter((m: any) => m.role === 'learner');
+        console.log('📋 Learners trouvés:', learnerMembers.length);
+        
+        const learners = learnerMembers
           .filter((m: any) => m.profile)
           .map((m: any) => ({
             id: m.profile.id,
