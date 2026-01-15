@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useProjectRestitution } from '../../hooks/useProjectRestitution';
 import { TrainerHeader } from '../../components/trainer/TrainerHeader';
+import { SubmitForLearnerModal } from '../../components/trainer/SubmitForLearnerModal';
 import {
   Star, User, ExternalLink, FileText, CheckCircle, Clock, AlertCircle,
   ChevronDown, ChevronRight, ChevronLeft, Send, Eye, Download,
@@ -241,6 +242,8 @@ export function ProjectEvaluation() {
   const [finalScoreOverride, setFinalScoreOverride] = useState<string>('');
   const [isSaving, setIsSaving] = useState(false);
   const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [showSubmitForLearnerModal, setShowSubmitForLearnerModal] = useState(false);
+  const [sessionLearners, setSessionLearners] = useState<Array<{ id: string; full_name: string; avatar_url?: string }>>([]);
   
   const {
     currentRestitution,
@@ -256,6 +259,34 @@ export function ProjectEvaluation() {
     restitutionId,
     isTrainer: true
   });
+
+  // Charger les apprenants de la session pour le modal de soumission
+  React.useEffect(() => {
+    async function loadLearners() {
+      if (!sessionId) return;
+      
+      const { data, error } = await (await import('../../lib/supabaseClient')).supabase
+        .from('session_members')
+        .select(`
+          user_id,
+          profile:profiles(id, full_name, avatar_url)
+        `)
+        .eq('session_id', sessionId)
+        .eq('role', 'learner');
+
+      if (!error && data) {
+        const learners = data
+          .filter((m: any) => m.profile)
+          .map((m: any) => ({
+            id: m.profile.id,
+            full_name: m.profile.full_name || 'Apprenant',
+            avatar_url: m.profile.avatar_url
+          }));
+        setSessionLearners(learners);
+      }
+    }
+    loadLearners();
+  }, [sessionId]);
 
   // Filtrer les soumissions
   const filteredSubmissions = useMemo(() => {
@@ -405,6 +436,13 @@ export function ProjectEvaluation() {
               <p className="text-gray-500">Évaluation des projets</p>
             </div>
             <div className="flex items-center gap-3">
+              <button
+                onClick={() => setShowSubmitForLearnerModal(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                <Plus className="h-4 w-4" />
+                Soumettre pour un apprenant
+              </button>
               <button
                 onClick={() => trainerActions.publishAllEvaluations(restitutionId!)}
                 className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
@@ -850,6 +888,20 @@ export function ProjectEvaluation() {
           </div>
         </div>
       </div>
+
+      {/* Modal pour soumettre au nom d'un apprenant */}
+      {showSubmitForLearnerModal && restitutionId && sessionId && (
+        <SubmitForLearnerModal
+          restitutionId={restitutionId}
+          sessionId={sessionId}
+          learners={sessionLearners}
+          onClose={() => setShowSubmitForLearnerModal(false)}
+          onSuccess={() => {
+            setShowSubmitForLearnerModal(false);
+            refresh();
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -51,6 +51,9 @@ interface UseProjectRestitutionReturn {
     publishEvaluation: (evaluationId: string) => Promise<void>;
     publishAllEvaluations: (restitutionId: string) => Promise<void>;
     returnSubmission: (submissionId: string, reason: string) => Promise<void>;
+    // Soumettre au nom d'un apprenant
+    createSubmissionForLearner: (restitutionId: string, learnerId: string, data: Partial<ProjectSubmission>) => Promise<ProjectSubmission | null>;
+    updateSubmissionForLearner: (submissionId: string, data: Partial<ProjectSubmission>) => Promise<void>;
   };
   
   // Actions apprenant
@@ -436,6 +439,91 @@ export function useProjectRestitution({
       
       if (error) {
         console.error('Error resetting submission:', error);
+        throw error;
+      }
+    },
+
+    // Créer une soumission au nom d'un apprenant (ex: éléments reçus par mail)
+    createSubmissionForLearner: async (
+      restitutionId: string, 
+      learnerId: string, 
+      data: Partial<ProjectSubmission>
+    ): Promise<ProjectSubmission | null> => {
+      // Vérifier si une soumission existe déjà pour cet apprenant
+      const { data: existing } = await supabase
+        .from('project_submissions')
+        .select('*')
+        .eq('restitution_id', restitutionId)
+        .eq('user_id', learnerId)
+        .maybeSingle();
+
+      if (existing) {
+        // Mettre à jour la soumission existante
+        const { data: updated, error } = await supabase
+          .from('project_submissions')
+          .update({
+            ...data,
+            status: data.status || 'submitted',
+            submitted_at: new Date().toISOString(),
+            submitted_by_trainer: user?.id,
+            last_saved_at: new Date().toISOString()
+          })
+          .eq('id', existing.id)
+          .select()
+          .single();
+
+        if (error) {
+          console.error('Error updating submission for learner:', error);
+          return null;
+        }
+        return updated;
+      }
+
+      // Créer une nouvelle soumission
+      const { data: result, error } = await supabase
+        .from('project_submissions')
+        .insert({
+          restitution_id: restitutionId,
+          session_id: sessionId,
+          user_id: learnerId,
+          project_title: data.project_title || 'Projet soumis par le formateur',
+          project_description: data.project_description,
+          presentation_link: data.presentation_link,
+          app_link: data.app_link,
+          documentation_link: data.documentation_link,
+          repository_link: data.repository_link,
+          video_link: data.video_link,
+          learner_notes: data.learner_notes,
+          files: data.files || [],
+          tools_used: data.tools_used || [],
+          status: 'submitted',
+          started_at: new Date().toISOString(),
+          submitted_at: new Date().toISOString(),
+          submitted_by_trainer: user?.id
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error creating submission for learner:', error);
+        return null;
+      }
+
+      return result;
+    },
+
+    // Mettre à jour une soumission pour un apprenant
+    updateSubmissionForLearner: async (submissionId: string, data: Partial<ProjectSubmission>) => {
+      const { error } = await supabase
+        .from('project_submissions')
+        .update({
+          ...data,
+          last_saved_at: new Date().toISOString()
+        })
+        .eq('id', submissionId);
+
+      if (error) {
+        console.error('Error updating submission for learner:', error);
         throw error;
       }
     }
