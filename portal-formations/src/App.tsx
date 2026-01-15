@@ -55,6 +55,7 @@ import { LiveQuizControl } from './pages/trainer/LiveQuizControl'
 import { SessionsManager } from './pages/trainer/SessionsManager'
 import { ProjectsManager } from './pages/trainer/ProjectsManager'
 import { ProjectEvaluation } from './pages/trainer/ProjectEvaluation'
+import { SessionProjectReport } from './pages/trainer/SessionProjectReport'
 import { ProjectTemplatesManager } from './pages/trainer/ProjectTemplatesManager'
 import { AllProjectsOverview } from './pages/trainer/AllProjectsOverview'
 import { LearnerGradebook } from './pages/LearnerGradebook'
@@ -647,6 +648,14 @@ function App() {
             element={
               <TrainerRouteGuard>
                 <ProjectEvaluation />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/session/:sessionId/project/:restitutionId/report"
+            element={
+              <TrainerRouteGuard>
+                <SessionProjectReport />
               </TrainerRouteGuard>
             }
           />

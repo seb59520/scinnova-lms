@@ -464,6 +464,13 @@ export function ProjectEvaluation() {
                 <Send className="h-4 w-4" />
                 Publier toutes les notes
               </button>
+              <Link
+                to={`/trainer/session/${sessionId}/project/${restitutionId}/report`}
+                className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+              >
+                <BarChart3 className="h-4 w-4" />
+                Compte rendu
+              </Link>
             </div>
           </div>
         </div>
