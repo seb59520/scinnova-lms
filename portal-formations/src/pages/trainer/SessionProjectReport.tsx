@@ -10,7 +10,6 @@ import {
 interface LearnerReport {
   id: string;
   full_name: string;
-  email: string;
   submission?: {
     id: string;
     project_title: string;
@@ -134,34 +133,16 @@ export function SessionProjectReport() {
         )];
         console.log('📋 User IDs des soumissions:', submissionUserIds);
         
-        // Charger les profils un par un si nécessaire (contournement RLS)
+        // Charger les profils (sans email car la colonne n'existe pas)
         let allProfiles: any[] = [];
         if (submissionUserIds.length > 0) {
-          // Essayer d'abord avec .in()
           const { data: profilesData, error: profilesError } = await supabase
             .from('profiles')
-            .select('id, full_name, email')
+            .select('id, full_name')
             .in('id', submissionUserIds);
           
           console.log('📋 Profils chargés:', profilesData?.length, profilesError);
-          
-          if (profilesError) {
-            console.warn('⚠️ Erreur chargement profils, tentative alternative...');
-            // Charger les profils un par un
-            for (const userId of submissionUserIds) {
-              const { data: profile } = await supabase
-                .from('profiles')
-                .select('id, full_name, email')
-                .eq('id', userId)
-                .maybeSingle();
-              if (profile) {
-                allProfiles.push(profile);
-              }
-            }
-            console.log('📋 Profils chargés (alt):', allProfiles.length);
-          } else {
-            allProfiles = profilesData || [];
-          }
+          allProfiles = profilesData || [];
         }
 
         // Construire les rapports UNIQUEMENT pour ceux qui ont soumis
@@ -172,7 +153,6 @@ export function SessionProjectReport() {
           return {
             id: submission.user_id || '',
             full_name: profile?.full_name || 'Apprenant',
-            email: profile?.email || '',
             submission: {
               id: submission.id,
               project_title: submission.project_title,
@@ -228,14 +208,12 @@ export function SessionProjectReport() {
   // Export CSV
   const exportCSV = () => {
     const headers = [
-      'Nom', 'Email', 'Projet soumis', 'Titre du projet', 
-      'Date de soumission', 'Note /20', 'Validé', 'Points forts', 'Axes amélioration'
+      'Nom', 'Titre du projet', 'Date de soumission', 
+      'Note /20', 'Validé', 'Points forts', 'Axes amélioration'
     ];
 
     const rows = learnerReports.map(r => [
       r.full_name,
-      r.email,
-      r.submission ? 'Oui' : 'Non',
       r.submission?.project_title || '',
       r.submission?.submitted_at ? new Date(r.submission.submitted_at).toLocaleDateString('fr-FR') : '',
       r.evaluation?.final_score || r.evaluation?.score_20 || '',
@@ -392,10 +370,9 @@ export function SessionProjectReport() {
                     )}
                   </div>
                   
-                  {/* Nom et email */}
+                  {/* Nom */}
                   <div className="flex-1 min-w-0">
                     <div className="font-medium text-gray-900">{report.full_name}</div>
-                    <div className="text-sm text-gray-500 truncate">{report.email}</div>
                   </div>
                   
                   {/* Projet */}
