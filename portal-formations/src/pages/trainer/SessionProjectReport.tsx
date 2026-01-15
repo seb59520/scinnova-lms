@@ -110,29 +110,49 @@ export function SessionProjectReport() {
         
         console.log('📋 Profils chargés:', profiles.length);
 
-        // Charger les soumissions
-        const { data: submissions } = await supabase
+        // Charger les soumissions avec le profil de l'utilisateur
+        const { data: submissions, error: submissionsError } = await supabase
           .from('project_submissions')
           .select('*')
           .eq('restitution_id', restitutionId);
 
+        console.log('📋 Soumissions chargées:', submissions?.length, submissionsError);
+
         // Charger les évaluations
-        const { data: evaluations } = await supabase
+        const { data: evaluations, error: evaluationsError } = await supabase
           .from('project_evaluations')
           .select('*')
           .eq('restitution_id', restitutionId);
 
-        // Construire les rapports par apprenant
-        const reports: LearnerReport[] = (members || []).map((m: any) => {
-          const profile = profiles.find(p => p.id === m.user_id);
-          const submission = submissions?.find(s => s.user_id === m.user_id);
-          const evaluation = evaluations?.find(e => e.user_id === m.user_id);
+        console.log('📋 Évaluations chargées:', evaluations?.length, evaluationsError);
+
+        // Récupérer les profils des utilisateurs qui ont soumis (plus fiable)
+        const submissionUserIds = submissions?.map(s => s.user_id) || [];
+        const allUserIds = [...new Set([...learnerIds, ...submissionUserIds])];
+        
+        let allProfiles: any[] = profiles;
+        if (submissionUserIds.length > 0) {
+          const missingIds = submissionUserIds.filter(id => !profiles.find(p => p.id === id));
+          if (missingIds.length > 0) {
+            const { data: extraProfiles } = await supabase
+              .from('profiles')
+              .select('id, full_name, email')
+              .in('id', missingIds);
+            allProfiles = [...profiles, ...(extraProfiles || [])];
+          }
+        }
+        console.log('📋 Tous les profils:', allProfiles.length);
+
+        // Construire les rapports UNIQUEMENT pour ceux qui ont soumis
+        const reports: LearnerReport[] = (submissions || []).map((submission: any) => {
+          const profile = allProfiles.find(p => p.id === submission.user_id);
+          const evaluation = evaluations?.find(e => e.user_id === submission.user_id);
 
           return {
-            id: m.user_id || '',
-            full_name: profile?.full_name || 'Inconnu',
+            id: submission.user_id || '',
+            full_name: profile?.full_name || 'Apprenant',
             email: profile?.email || '',
-            submission: submission ? {
+            submission: {
               id: submission.id,
               project_title: submission.project_title,
               project_description: submission.project_description,
@@ -143,7 +163,7 @@ export function SessionProjectReport() {
               tools_used: submission.tools_used || [],
               submitted_at: submission.submitted_at,
               status: submission.status
-            } : undefined,
+            },
             evaluation: evaluation ? {
               score_20: evaluation.score_20,
               final_score: evaluation.final_score,
@@ -167,10 +187,9 @@ export function SessionProjectReport() {
     loadData();
   }, [sessionId, restitutionId]);
 
-  // Statistiques globales
+  // Statistiques globales (uniquement les soumissions)
   const stats = useMemo(() => {
-    const total = learnerReports.length;
-    const submitted = learnerReports.filter(r => r.submission).length;
+    const submitted = learnerReports.length; // Tous ont soumis maintenant
     const evaluated = learnerReports.filter(r => r.evaluation).length;
     const passed = learnerReports.filter(r => r.evaluation?.passed).length;
     
@@ -182,7 +201,7 @@ export function SessionProjectReport() {
       ? scores.reduce((a, b) => a + b, 0) / scores.length 
       : 0;
 
-    return { total, submitted, evaluated, passed, avgScore };
+    return { submitted, evaluated, passed, avgScore };
   }, [learnerReports]);
 
   // Export CSV
@@ -285,22 +304,14 @@ export function SessionProjectReport() {
         </div>
 
         {/* Statistiques globales */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8 print:grid-cols-5 print:gap-2 print:mb-4">
-          <div className="bg-white rounded-lg shadow p-4 print:p-2 print:shadow-none print:border">
-            <div className="flex items-center gap-2 text-blue-600">
-              <Users className="h-5 w-5 print:h-4 print:w-4" />
-              <span className="text-sm font-medium">Apprenants</span>
-            </div>
-            <div className="text-2xl font-bold text-gray-900 print:text-xl">{stats.total}</div>
-          </div>
-          
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 print:grid-cols-4 print:gap-2 print:mb-4">
           <div className="bg-white rounded-lg shadow p-4 print:p-2 print:shadow-none print:border">
             <div className="flex items-center gap-2 text-purple-600">
               <FileText className="h-5 w-5 print:h-4 print:w-4" />
-              <span className="text-sm font-medium">Soumis</span>
+              <span className="text-sm font-medium">Projets soumis</span>
             </div>
             <div className="text-2xl font-bold text-gray-900 print:text-xl">
-              {stats.submitted}/{stats.total}
+              {stats.submitted}
             </div>
           </div>
           
@@ -380,13 +391,11 @@ export function SessionProjectReport() {
                       </div>
                     </td>
                     <td className="px-4 py-3 text-center">
-                      {report.submission ? (
-                        <span className="text-green-600 text-sm">
-                          {new Date(report.submission.submitted_at!).toLocaleDateString('fr-FR')}
-                        </span>
-                      ) : (
-                        <span className="text-red-500 text-sm">Non soumis</span>
-                      )}
+                      <span className="text-green-600 text-sm">
+                        {report.submission?.submitted_at 
+                          ? new Date(report.submission.submitted_at).toLocaleDateString('fr-FR')
+                          : '-'}
+                      </span>
                     </td>
                     <td className="px-4 py-3 text-center">
                       {report.evaluation ? (
@@ -402,22 +411,20 @@ export function SessionProjectReport() {
                       )}
                     </td>
                     <td className="px-4 py-3 text-center">
-                      {report.evaluation?.passed === true && (
+                      {report.evaluation?.passed === true ? (
                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">
                           <CheckCircle className="h-3 w-3" />
                           Validé
                         </span>
-                      )}
-                      {report.evaluation?.passed === false && (
+                      ) : report.evaluation?.passed === false ? (
                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs">
                           <XCircle className="h-3 w-3" />
                           Non validé
                         </span>
-                      )}
-                      {!report.evaluation && report.submission && (
+                      ) : (
                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs">
                           <Clock className="h-3 w-3" />
-                          En attente
+                          À évaluer
                         </span>
                       )}
                     </td>
@@ -567,9 +574,6 @@ export function SessionProjectReport() {
                 </div>
               )}
 
-              {!report.submission && (
-                <p className="text-gray-500 italic">Aucun projet soumis</p>
-              )}
             </div>
           ))}
         </div>
