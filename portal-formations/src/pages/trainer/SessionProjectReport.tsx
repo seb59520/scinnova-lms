@@ -87,15 +87,28 @@ export function SessionProjectReport() {
 
         setRestitution(restitutionData);
 
-        // Charger les membres de la session (learners)
-        const { data: members } = await supabase
+        // Charger les membres de la session (learners) - sans jointure pour éviter les problèmes RLS
+        const { data: members, error: membersError } = await supabase
           .from('session_members')
-          .select(`
-            user_id,
-            profile:profiles(id, full_name, email)
-          `)
+          .select('user_id, role')
           .eq('session_id', sessionId)
           .eq('role', 'learner');
+
+        console.log('📋 Members chargés:', members, membersError);
+
+        // Charger les profils séparément
+        const learnerIds = members?.map(m => m.user_id) || [];
+        let profiles: any[] = [];
+        
+        if (learnerIds.length > 0) {
+          const { data: profilesData } = await supabase
+            .from('profiles')
+            .select('id, full_name, email')
+            .in('id', learnerIds);
+          profiles = profilesData || [];
+        }
+        
+        console.log('📋 Profils chargés:', profiles.length);
 
         // Charger les soumissions
         const { data: submissions } = await supabase
@@ -111,13 +124,14 @@ export function SessionProjectReport() {
 
         // Construire les rapports par apprenant
         const reports: LearnerReport[] = (members || []).map((m: any) => {
-          const submission = submissions?.find(s => s.user_id === m.profile?.id);
-          const evaluation = evaluations?.find(e => e.user_id === m.profile?.id);
+          const profile = profiles.find(p => p.id === m.user_id);
+          const submission = submissions?.find(s => s.user_id === m.user_id);
+          const evaluation = evaluations?.find(e => e.user_id === m.user_id);
 
           return {
-            id: m.profile?.id || '',
-            full_name: m.profile?.full_name || 'Inconnu',
-            email: m.profile?.email || '',
+            id: m.user_id || '',
+            full_name: profile?.full_name || 'Inconnu',
+            email: profile?.email || '',
             submission: submission ? {
               id: submission.id,
               project_title: submission.project_title,

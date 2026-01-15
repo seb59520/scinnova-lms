@@ -267,36 +267,40 @@ export function ProjectEvaluation() {
 
       const { supabase } = await import('../../lib/supabaseClient');
       
-      // D'abord, essayer de charger via session_members
-      const { data, error } = await supabase
+      // Charger les membres sans jointure pour éviter les problèmes RLS
+      const { data: membersData, error: membersError } = await supabase
         .from('session_members')
-        .select(`
-          user_id,
-          role,
-          profile:profiles(id, full_name, avatar_url)
-        `)
-        .eq('session_id', sessionId);
+        .select('user_id, role')
+        .eq('session_id', sessionId)
+        .eq('role', 'learner');
 
-      console.log('📋 Session members chargés:', data, error);
+      console.log('📋 Session members chargés:', membersData, membersError);
 
-      if (error) {
-        console.error('Erreur chargement session_members:', error);
+      if (membersError) {
+        console.error('Erreur chargement session_members:', membersError);
         return;
       }
 
-      if (data) {
-        // Filtrer pour ne garder que les learners
-        const learnerMembers = data.filter((m: any) => m.role === 'learner');
-        console.log('📋 Learners trouvés:', learnerMembers.length);
-        
-        const learners = learnerMembers
-          .filter((m: any) => m.profile)
-          .map((m: any) => ({
-            id: m.profile.id,
-            full_name: m.profile.full_name || 'Apprenant',
-            avatar_url: m.profile.avatar_url
+      if (membersData && membersData.length > 0) {
+        // Charger les profils séparément
+        const userIds = membersData.map(m => m.user_id);
+        const { data: profilesData, error: profilesError } = await supabase
+          .from('profiles')
+          .select('id, full_name, avatar_url')
+          .in('id', userIds);
+
+        console.log('📋 Profils chargés:', profilesData?.length, profilesError);
+
+        if (profilesData) {
+          const learners = profilesData.map(p => ({
+            id: p.id,
+            full_name: p.full_name || 'Apprenant',
+            avatar_url: p.avatar_url
           }));
-        setSessionLearners(learners);
+          setSessionLearners(learners);
+        }
+      } else {
+        setSessionLearners([]);
       }
     }
     loadLearners();
