@@ -307,21 +307,30 @@ export function SubmitForLearnerModal({
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <User className="inline w-4 h-4 mr-1" />
-              Apprenant *
+              Apprenant * ({learners.length} disponible{learners.length > 1 ? 's' : ''})
             </label>
-            <select
-              value={selectedLearnerId}
-              onChange={(e) => setSelectedLearnerId(e.target.value)}
-              required
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Sélectionner un apprenant...</option>
-              {learners.map(learner => (
-                <option key={learner.id} value={learner.id}>
-                  {learner.full_name}
-                </option>
-              ))}
-            </select>
+            {learners.length === 0 ? (
+              <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-800 text-sm">
+                <p className="font-medium">Aucun apprenant trouvé dans cette session.</p>
+                <p className="text-xs mt-1">
+                  Assurez-vous que des apprenants sont inscrits avec le rôle "learner" dans cette session.
+                </p>
+              </div>
+            ) : (
+              <select
+                value={selectedLearnerId}
+                onChange={(e) => setSelectedLearnerId(e.target.value)}
+                required
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 bg-white"
+              >
+                <option value="">Sélectionner un apprenant...</option>
+                {learners.map(learner => (
+                  <option key={learner.id} value={learner.id}>
+                    {learner.full_name}
+                  </option>
+                ))}
+              </select>
+            )}
             <p className="text-xs text-gray-500 mt-1">
               Utilisez cette fonction si l'apprenant vous a envoyé son projet par mail ou autre moyen.
             </p>
