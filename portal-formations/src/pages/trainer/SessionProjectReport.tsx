@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
 import { TrainerHeader } from '../../components/trainer/TrainerHeader';
 import {
-  FileText, Download, Users, Award, BarChart3, ChevronLeft,
+  FileText, Download, BarChart3, ChevronLeft, ChevronDown, ChevronUp,
   CheckCircle, XCircle, Clock, Star, ExternalLink, Printer
 } from 'lucide-react';
 
@@ -110,7 +110,7 @@ export function SessionProjectReport() {
         
         console.log('📋 Profils chargés:', profiles.length);
 
-        // Charger les soumissions avec le profil de l'utilisateur
+        // Charger les soumissions
         const { data: submissions, error: submissionsError } = await supabase
           .from('project_submissions')
           .select('*')
@@ -126,22 +126,20 @@ export function SessionProjectReport() {
 
         console.log('📋 Évaluations chargées:', evaluations?.length, evaluationsError);
 
-        // Récupérer les profils des utilisateurs qui ont soumis (plus fiable)
-        const submissionUserIds = submissions?.map(s => s.user_id) || [];
-        const allUserIds = [...new Set([...learnerIds, ...submissionUserIds])];
+        // Récupérer tous les user_ids des soumissions
+        const submissionUserIds = submissions?.map(s => s.user_id).filter(Boolean) || [];
+        console.log('📋 User IDs des soumissions:', submissionUserIds);
         
-        let allProfiles: any[] = profiles;
+        // Charger les profils de tous les utilisateurs qui ont soumis
+        let allProfiles: any[] = [];
         if (submissionUserIds.length > 0) {
-          const missingIds = submissionUserIds.filter(id => !profiles.find(p => p.id === id));
-          if (missingIds.length > 0) {
-            const { data: extraProfiles } = await supabase
-              .from('profiles')
-              .select('id, full_name, email')
-              .in('id', missingIds);
-            allProfiles = [...profiles, ...(extraProfiles || [])];
-          }
+          const { data: profilesData, error: profilesError } = await supabase
+            .from('profiles')
+            .select('id, full_name, email')
+            .in('id', submissionUserIds);
+          console.log('📋 Profils chargés:', profilesData?.length, profilesError);
+          allProfiles = profilesData || [];
         }
-        console.log('📋 Tous les profils:', allProfiles.length);
 
         // Construire les rapports UNIQUEMENT pour ceux qui ont soumis
         const reports: LearnerReport[] = (submissions || []).map((submission: any) => {
@@ -346,7 +344,7 @@ export function SessionProjectReport() {
           </div>
         </div>
 
-        {/* Tableau récapitulatif */}
+        {/* Tableau avec accordéons */}
         <div className="bg-white rounded-lg shadow mb-8 print:shadow-none print:border print:mb-4">
           <div className="px-6 py-4 border-b print:px-4 print:py-2">
             <h2 className="text-lg font-semibold text-gray-900 print:text-base">
@@ -354,228 +352,225 @@ export function SessionProjectReport() {
             </h2>
           </div>
           
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                    Apprenant
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                    Projet
-                  </th>
-                  <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">
-                    Soumis
-                  </th>
-                  <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">
-                    Note
-                  </th>
-                  <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">
-                    Statut
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase print:hidden">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {learnerReports.map(report => (
-                  <tr key={report.id} className="hover:bg-gray-50">
-                    <td className="px-4 py-3">
-                      <div className="font-medium text-gray-900">{report.full_name}</div>
-                      <div className="text-sm text-gray-500">{report.email}</div>
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="text-sm text-gray-900">
-                        {report.submission?.project_title || '-'}
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-center">
-                      <span className="text-green-600 text-sm">
-                        {report.submission?.submitted_at 
-                          ? new Date(report.submission.submitted_at).toLocaleDateString('fr-FR')
-                          : '-'}
+          <div className="divide-y divide-gray-200">
+            {learnerReports.map(report => (
+              <div key={report.id} className="print:break-inside-avoid">
+                {/* Ligne principale cliquable */}
+                <div 
+                  className="flex items-center px-4 py-3 hover:bg-gray-50 cursor-pointer print:cursor-default"
+                  onClick={() => setSelectedLearner(selectedLearner === report.id ? null : report.id)}
+                >
+                  {/* Chevron */}
+                  <div className="mr-3 print:hidden">
+                    {selectedLearner === report.id ? (
+                      <ChevronUp className="h-5 w-5 text-gray-400" />
+                    ) : (
+                      <ChevronDown className="h-5 w-5 text-gray-400" />
+                    )}
+                  </div>
+                  
+                  {/* Nom et email */}
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-gray-900">{report.full_name}</div>
+                    <div className="text-sm text-gray-500 truncate">{report.email}</div>
+                  </div>
+                  
+                  {/* Projet */}
+                  <div className="hidden md:block flex-1 px-4">
+                    <div className="text-sm text-gray-900 font-medium">
+                      {report.submission?.project_title || '-'}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {report.submission?.submitted_at 
+                        ? `Soumis le ${new Date(report.submission.submitted_at).toLocaleDateString('fr-FR')}`
+                        : ''}
+                    </div>
+                  </div>
+                  
+                  {/* Note */}
+                  <div className="w-20 text-center">
+                    {report.evaluation ? (
+                      <span className={`text-lg font-bold ${
+                        (report.evaluation.final_score || report.evaluation.score_20 || 0) >= 10
+                          ? 'text-green-600'
+                          : 'text-red-600'
+                      }`}>
+                        {(report.evaluation.final_score || report.evaluation.score_20)?.toFixed(1)}
                       </span>
-                    </td>
-                    <td className="px-4 py-3 text-center">
-                      {report.evaluation ? (
-                        <span className={`font-bold ${
-                          (report.evaluation.final_score || report.evaluation.score_20 || 0) >= 10
-                            ? 'text-green-600'
-                            : 'text-red-600'
-                        }`}>
-                          {(report.evaluation.final_score || report.evaluation.score_20)?.toFixed(1)}/20
-                        </span>
-                      ) : (
-                        <span className="text-gray-400">-</span>
-                      )}
-                    </td>
-                    <td className="px-4 py-3 text-center">
-                      {report.evaluation?.passed === true ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">
-                          <CheckCircle className="h-3 w-3" />
-                          Validé
-                        </span>
-                      ) : report.evaluation?.passed === false ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs">
-                          <XCircle className="h-3 w-3" />
-                          Non validé
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs">
-                          <Clock className="h-3 w-3" />
-                          À évaluer
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-4 py-3 print:hidden">
-                      <button
-                        onClick={() => setSelectedLearner(selectedLearner === report.id ? null : report.id)}
-                        className="text-blue-600 hover:text-blue-800 text-sm"
-                      >
-                        {selectedLearner === report.id ? 'Masquer' : 'Détails'}
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Détails individuels (expandable ou pour l'impression) */}
-        <div className="space-y-6 print:space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900 print:text-base hidden print:block">
-            Fiches individuelles
-          </h2>
-          
-          {learnerReports.filter(r => r.evaluation || selectedLearner === r.id).map(report => (
-            <div 
-              key={report.id} 
-              className={`bg-white rounded-lg shadow p-6 print:shadow-none print:border print:p-4 print:break-inside-avoid ${
-                selectedLearner === report.id || 'hidden print:block'
-              }`}
-            >
-              <div className="flex items-start justify-between mb-4 print:mb-2">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 print:text-base">
-                    {report.full_name}
-                  </h3>
-                  <p className="text-sm text-gray-500">{report.email}</p>
+                    ) : (
+                      <span className="text-gray-400">-</span>
+                    )}
+                    <div className="text-xs text-gray-500">/20</div>
+                  </div>
+                  
+                  {/* Statut */}
+                  <div className="w-24 text-center">
+                    {report.evaluation?.passed === true ? (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">
+                        <CheckCircle className="h-3 w-3" />
+                        Validé
+                      </span>
+                    ) : report.evaluation?.passed === false ? (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs">
+                        <XCircle className="h-3 w-3" />
+                        Non validé
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs">
+                        <Clock className="h-3 w-3" />
+                        À évaluer
+                      </span>
+                    )}
+                  </div>
                 </div>
-                {report.evaluation && (
-                  <div className={`text-2xl font-bold print:text-xl ${
-                    report.evaluation.passed ? 'text-green-600' : 'text-red-600'
+                
+                {/* Détails (accordéon) - visible si sélectionné ou pour l'impression */}
+                {(selectedLearner === report.id || true) && (
+                  <div className={`bg-gray-50 px-4 py-4 border-t print:bg-white ${
+                    selectedLearner === report.id ? 'block' : 'hidden print:block'
                   }`}>
-                    {(report.evaluation.final_score || report.evaluation.score_20)?.toFixed(1)}/20
+                    <div className="ml-8 print:ml-0">
+                      {/* Info projet sur mobile */}
+                      <div className="md:hidden mb-3">
+                        <div className="text-sm font-medium text-gray-900">
+                          {report.submission?.project_title}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          Soumis le {report.submission?.submitted_at 
+                            ? new Date(report.submission.submitted_at).toLocaleDateString('fr-FR')
+                            : '-'}
+                        </div>
+                      </div>
+
+                      {/* Description du projet */}
+                      {report.submission?.project_description && (
+                        <p className="text-sm text-gray-600 mb-3">{report.submission.project_description}</p>
+                      )}
+                      
+                      {/* Liens */}
+                      <div className="flex flex-wrap gap-3 mb-3">
+                        {report.submission?.presentation_link && (
+                          <a 
+                            href={report.submission.presentation_link} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline print:text-gray-700"
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                            Présentation
+                          </a>
+                        )}
+                        {report.submission?.app_link && (
+                          <a 
+                            href={report.submission.app_link} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline print:text-gray-700"
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                            Application
+                          </a>
+                        )}
+                        {report.submission?.documentation_link && (
+                          <a 
+                            href={report.submission.documentation_link} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline print:text-gray-700"
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                            Documentation
+                          </a>
+                        )}
+                        {report.submission?.video_link && (
+                          <a 
+                            href={report.submission.video_link} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline print:text-gray-700"
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                            Vidéo
+                          </a>
+                        )}
+                      </div>
+                      
+                      {/* Outils utilisés */}
+                      {report.submission?.tools_used && report.submission.tools_used.length > 0 && (
+                        <div className="mb-3">
+                          <span className="text-sm text-gray-500">Outils: </span>
+                          <span className="text-sm text-gray-700">
+                            {report.submission.tools_used.map((t: any) => typeof t === 'string' ? t : t.name).join(', ')}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Évaluation */}
+                      {report.evaluation && (
+                        <div className="space-y-3 mt-4 pt-4 border-t border-gray-200">
+                          {/* Notes par critère */}
+                          {restitution?.criteria && restitution.criteria.length > 0 && (
+                            <div>
+                              <h4 className="text-sm font-medium text-gray-700 mb-2">Évaluation par critère:</h4>
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                {restitution.criteria.map(criterion => {
+                                  const score = report.evaluation?.criteria_scores[criterion.id];
+                                  return (
+                                    <div key={criterion.id} className="bg-white p-2 rounded border text-sm">
+                                      <div className="font-medium text-gray-700 text-xs">{criterion.name}</div>
+                                      <div className="flex items-center gap-1 mt-1">
+                                        {Array.from({ length: criterion.max_stars }, (_, i) => (
+                                          <Star 
+                                            key={i} 
+                                            className={`h-3 w-3 ${
+                                              i < (score?.stars || 0) 
+                                                ? 'fill-yellow-400 text-yellow-400' 
+                                                : 'text-gray-300'
+                                            }`}
+                                          />
+                                        ))}
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Feedback */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            {report.evaluation.strengths && (
+                              <div className="bg-green-50 p-3 rounded print:bg-white print:border print:border-green-200">
+                                <h5 className="text-xs font-medium text-green-800 mb-1">Points forts</h5>
+                                <p className="text-sm text-green-700">{report.evaluation.strengths}</p>
+                              </div>
+                            )}
+                            {report.evaluation.improvements && (
+                              <div className="bg-orange-50 p-3 rounded print:bg-white print:border print:border-orange-200">
+                                <h5 className="text-xs font-medium text-orange-800 mb-1">Axes d'amélioration</h5>
+                                <p className="text-sm text-orange-700">{report.evaluation.improvements}</p>
+                              </div>
+                            )}
+                          </div>
+                          
+                          {report.evaluation.global_feedback && (
+                            <div className="bg-blue-50 p-3 rounded print:bg-white print:border print:border-blue-200">
+                              <h5 className="text-xs font-medium text-blue-800 mb-1">Commentaire général</h5>
+                              <p className="text-sm text-blue-700">{report.evaluation.global_feedback}</p>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {!report.evaluation && (
+                        <p className="text-sm text-gray-500 italic">En attente d'évaluation</p>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
-
-              {report.submission && (
-                <div className="mb-4 print:mb-2">
-                  <h4 className="font-medium text-gray-700 mb-2">Projet: {report.submission.project_title}</h4>
-                  {report.submission.project_description && (
-                    <p className="text-sm text-gray-600 mb-2">{report.submission.project_description}</p>
-                  )}
-                  
-                  <div className="flex flex-wrap gap-2 text-sm">
-                    {report.submission.presentation_link && (
-                      <a 
-                        href={report.submission.presentation_link} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-blue-600 hover:underline print:text-gray-700"
-                      >
-                        <ExternalLink className="h-3 w-3" />
-                        Présentation
-                      </a>
-                    )}
-                    {report.submission.app_link && (
-                      <a 
-                        href={report.submission.app_link} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-blue-600 hover:underline print:text-gray-700"
-                      >
-                        <ExternalLink className="h-3 w-3" />
-                        Application
-                      </a>
-                    )}
-                  </div>
-                  
-                  {report.submission.tools_used && report.submission.tools_used.length > 0 && (
-                    <div className="mt-2">
-                      <span className="text-sm text-gray-500">Outils: </span>
-                      <span className="text-sm text-gray-700">
-                        {report.submission.tools_used.map((t: any) => t.name).join(', ')}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {report.evaluation && (
-                <div className="space-y-3 print:space-y-2">
-                  {/* Notes par critère */}
-                  {restitution?.criteria && restitution.criteria.length > 0 && (
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Évaluation par critère:</h4>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 print:grid-cols-3">
-                        {restitution.criteria.map(criterion => {
-                          const score = report.evaluation?.criteria_scores[criterion.id];
-                          return (
-                            <div key={criterion.id} className="bg-gray-50 p-2 rounded text-sm print:bg-white print:border">
-                              <div className="font-medium text-gray-700">{criterion.name}</div>
-                              <div className="flex items-center gap-1">
-                                {Array.from({ length: criterion.max_stars }, (_, i) => (
-                                  <Star 
-                                    key={i} 
-                                    className={`h-3 w-3 ${
-                                      i < (score?.stars || 0) 
-                                        ? 'fill-yellow-400 text-yellow-400' 
-                                        : 'text-gray-300'
-                                    }`}
-                                  />
-                                ))}
-                                <span className="text-xs text-gray-500 ml-1">
-                                  ({score?.stars || 0}/{criterion.max_stars})
-                                </span>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Feedback */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 print:gap-2">
-                    {report.evaluation.strengths && (
-                      <div className="bg-green-50 p-3 rounded print:bg-white print:border print:border-green-200">
-                        <h5 className="text-sm font-medium text-green-800 mb-1">Points forts</h5>
-                        <p className="text-sm text-green-700">{report.evaluation.strengths}</p>
-                      </div>
-                    )}
-                    {report.evaluation.improvements && (
-                      <div className="bg-orange-50 p-3 rounded print:bg-white print:border print:border-orange-200">
-                        <h5 className="text-sm font-medium text-orange-800 mb-1">Axes d'amélioration</h5>
-                        <p className="text-sm text-orange-700">{report.evaluation.improvements}</p>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {report.evaluation.global_feedback && (
-                    <div className="bg-blue-50 p-3 rounded print:bg-white print:border print:border-blue-200">
-                      <h5 className="text-sm font-medium text-blue-800 mb-1">Commentaire général</h5>
-                      <p className="text-sm text-blue-700">{report.evaluation.global_feedback}</p>
-                    </div>
-                  )}
-                </div>
-              )}
-
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Footer pour l'impression */}
