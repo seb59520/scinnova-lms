@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { supabase } from '../../lib/supabaseClient';
-import { X, Upload, Link as LinkIcon, FileText, User, Send, Plus, Trash2, CheckCircle } from 'lucide-react';
+import { X, Upload, Link as LinkIcon, FileText, User, Send, Plus, Trash2, CheckCircle, Save } from 'lucide-react';
 import type { ProjectSubmission, ToolUsed, ProjectFile } from '../../types/sessions';
 
 interface SubmitForLearnerModalProps {
@@ -11,6 +11,24 @@ interface SubmitForLearnerModalProps {
   onSuccess: () => void;
 }
 
+// Clé pour le localStorage
+const getStorageKey = (restitutionId: string) => `submit-for-learner-draft-${restitutionId}`;
+
+interface DraftData {
+  selectedLearnerId: string;
+  projectTitle: string;
+  projectDescription: string;
+  presentationLink: string;
+  appLink: string;
+  documentationLink: string;
+  repositoryLink: string;
+  videoLink: string;
+  learnerNotes: string;
+  toolsUsed: ToolUsed[];
+  files: ProjectFile[];
+  savedAt: string;
+}
+
 export function SubmitForLearnerModal({
   restitutionId,
   sessionId,
@@ -18,25 +36,90 @@ export function SubmitForLearnerModal({
   onClose,
   onSuccess
 }: SubmitForLearnerModalProps) {
-  const [selectedLearnerId, setSelectedLearnerId] = useState('');
-  const [projectTitle, setProjectTitle] = useState('');
-  const [projectDescription, setProjectDescription] = useState('');
-  const [presentationLink, setPresentationLink] = useState('');
-  const [appLink, setAppLink] = useState('');
-  const [documentationLink, setDocumentationLink] = useState('');
-  const [repositoryLink, setRepositoryLink] = useState('');
-  const [videoLink, setVideoLink] = useState('');
-  const [learnerNotes, setLearnerNotes] = useState('');
-  const [toolsUsed, setToolsUsed] = useState<ToolUsed[]>([]);
-  const [files, setFiles] = useState<ProjectFile[]>([]);
+  // Charger le brouillon depuis localStorage
+  const loadDraft = useCallback((): Partial<DraftData> => {
+    try {
+      const saved = localStorage.getItem(getStorageKey(restitutionId));
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {
+      console.error('Erreur chargement brouillon:', e);
+    }
+    return {};
+  }, [restitutionId]);
+
+  const draft = loadDraft();
+
+  const [selectedLearnerId, setSelectedLearnerId] = useState(draft.selectedLearnerId || '');
+  const [projectTitle, setProjectTitle] = useState(draft.projectTitle || '');
+  const [projectDescription, setProjectDescription] = useState(draft.projectDescription || '');
+  const [presentationLink, setPresentationLink] = useState(draft.presentationLink || '');
+  const [appLink, setAppLink] = useState(draft.appLink || '');
+  const [documentationLink, setDocumentationLink] = useState(draft.documentationLink || '');
+  const [repositoryLink, setRepositoryLink] = useState(draft.repositoryLink || '');
+  const [videoLink, setVideoLink] = useState(draft.videoLink || '');
+  const [learnerNotes, setLearnerNotes] = useState(draft.learnerNotes || '');
+  const [toolsUsed, setToolsUsed] = useState<ToolUsed[]>(draft.toolsUsed || []);
+  const [files, setFiles] = useState<ProjectFile[]>(draft.files || []);
   const [newTool, setNewTool] = useState({ name: '', role: '', plan: '', cost_monthly: '' });
   const [showToolForm, setShowToolForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [lastSaved, setLastSaved] = useState<Date | null>(draft.savedAt ? new Date(draft.savedAt) : null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Sauvegarder automatiquement dans localStorage
+  const saveDraft = useCallback(() => {
+    const draftData: DraftData = {
+      selectedLearnerId,
+      projectTitle,
+      projectDescription,
+      presentationLink,
+      appLink,
+      documentationLink,
+      repositoryLink,
+      videoLink,
+      learnerNotes,
+      toolsUsed,
+      files,
+      savedAt: new Date().toISOString()
+    };
+    try {
+      localStorage.setItem(getStorageKey(restitutionId), JSON.stringify(draftData));
+      setLastSaved(new Date());
+    } catch (e) {
+      console.error('Erreur sauvegarde brouillon:', e);
+    }
+  }, [restitutionId, selectedLearnerId, projectTitle, projectDescription, presentationLink, 
+      appLink, documentationLink, repositoryLink, videoLink, learnerNotes, toolsUsed, files]);
+
+  // Sauvegarder automatiquement toutes les 3 secondes si des changements
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (projectTitle || selectedLearnerId || presentationLink || appLink) {
+        saveDraft();
+      }
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [saveDraft, projectTitle, selectedLearnerId, presentationLink, appLink]);
+
+  // Sauvegarder quand on quitte la page
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      saveDraft();
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [saveDraft]);
+
+  // Effacer le brouillon après soumission réussie
+  const clearDraft = () => {
+    localStorage.removeItem(getStorageKey(restitutionId));
+  };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const uploadedFiles = e.target.files;
@@ -165,6 +248,9 @@ export function SubmitForLearnerModal({
         if (insertError) throw insertError;
       }
 
+      // Effacer le brouillon après soumission réussie
+      clearDraft();
+      
       setSuccess(true);
       setTimeout(() => {
         onSuccess();
@@ -196,7 +282,15 @@ export function SubmitForLearnerModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
       <div className="bg-white rounded-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
-          <h2 className="text-xl font-semibold">Soumettre un projet pour un apprenant</h2>
+          <div>
+            <h2 className="text-xl font-semibold">Soumettre un projet pour un apprenant</h2>
+            {lastSaved && (
+              <p className="text-xs text-green-600 flex items-center gap-1 mt-1">
+                <Save className="w-3 h-3" />
+                Brouillon sauvegardé à {lastSaved.toLocaleTimeString('fr-FR')}
+              </p>
+            )}
+          </div>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
             <X className="w-6 h-6" />
           </button>
@@ -430,22 +524,50 @@ export function SubmitForLearnerModal({
           </div>
 
           {/* Actions */}
-          <div className="flex justify-end gap-3 pt-4 border-t">
+          <div className="flex justify-between pt-4 border-t">
             <button
               type="button"
-              onClick={onClose}
-              className="px-4 py-2 border rounded-lg text-gray-700 hover:bg-gray-50"
+              onClick={() => {
+                if (confirm('Effacer le brouillon ?')) {
+                  clearDraft();
+                  setSelectedLearnerId('');
+                  setProjectTitle('');
+                  setProjectDescription('');
+                  setPresentationLink('');
+                  setAppLink('');
+                  setDocumentationLink('');
+                  setVideoLink('');
+                  setLearnerNotes('');
+                  setToolsUsed([]);
+                  setFiles([]);
+                  setLastSaved(null);
+                }
+              }}
+              className="text-sm text-red-600 hover:text-red-800"
             >
-              Annuler
+              Effacer le brouillon
             </button>
-            <button
-              type="submit"
-              disabled={loading || !selectedLearnerId || !projectTitle.trim()}
-              className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 flex items-center gap-2"
-            >
-              <Send className="w-4 h-4" />
-              {loading ? 'Soumission...' : 'Soumettre le projet'}
-            </button>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  saveDraft();
+                  onClose();
+                }}
+                className="px-4 py-2 border rounded-lg text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+              >
+                <Save className="w-4 h-4" />
+                Sauvegarder et fermer
+              </button>
+              <button
+                type="submit"
+                disabled={loading || !selectedLearnerId || !projectTitle.trim()}
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 flex items-center gap-2"
+              >
+                <Send className="w-4 h-4" />
+                {loading ? 'Soumission...' : 'Soumettre le projet'}
+              </button>
+            </div>
           </div>
         </form>
       </div>
