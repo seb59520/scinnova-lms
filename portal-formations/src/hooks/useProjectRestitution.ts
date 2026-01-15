@@ -112,11 +112,12 @@ export function useProjectRestitution({
       }
       
       // Charger les soumissions
+      // Note: on utilise !user_id pour spécifier la relation car il y a aussi submitted_by_trainer
       let submissionsQuery = supabase
         .from('project_submissions')
         .select(`
           *,
-          profile:profiles(full_name)
+          profile:profiles!user_id(full_name, avatar_url)
         `)
         .eq('session_id', sessionId);
       
