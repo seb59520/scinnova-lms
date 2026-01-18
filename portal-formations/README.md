@@ -50,7 +50,23 @@ Application web de formation en ligne avec React, Vite, TypeScript et Supabase.
    VITE_SUPABASE_ANON_KEY=your-anon-key
    ```
 
-5. **Démarrage développement**
+5. **Configuration de l'API Gamma (optionnel)**
+   
+   Pour utiliser la génération de slides avec Gamma, vous devez :
+   
+   - Obtenir une clé API Gamma (nécessite un abonnement Pro ou supérieur)
+   - Configurer la variable d'environnement dans Supabase :
+     ```bash
+     # Dans le dashboard Supabase, allez dans Settings > Edge Functions > Secrets
+     # Ajoutez : GAMMA_API_KEY=votre_cle_api_gamma
+     ```
+   
+   - Déployer l'Edge Function :
+     ```bash
+     supabase functions deploy generate-gamma
+     ```
+
+6. **Démarrage développement**
    ```bash
    npm run dev
    ```

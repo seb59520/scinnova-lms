@@ -1,0 +1,1071 @@
+{
+  "type": "resource",
+  "title": "1.2 Installation de Python sous Windows",
+  "position": 1,
+  "published": true,
+  "content": {
+    "description": "Guide étape par étape pour installer Python sur Windows."
+  },
+  "chapters": [
+    {
+      "title": "Téléchargement de Python",
+      "position": 0,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 1
+            },
+            "content": [
+              {
+                "text": "Téléchargement de Python",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "text": "Étape 1 : Accéder au site officiel",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "orderedList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "Ouvrez votre navigateur et allez sur ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "python.org",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "Cliquez sur ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "Downloads",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " dans le menu",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "Le site détecte automatiquement Windows et propose la dernière version stable",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "text": "Étape 2 : Choisir la bonne version",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "text": "Téléchargez la dernière version stable de Python 3 (par exemple Python 3.12.x). Évitez les versions alpha ou beta pour un usage de production.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "blockquote",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "text": "Conseil : ",
+                    "type": "text",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Choisissez l'installateur \"Windows installer (64-bit)\" pour les systèmes modernes.",
+                    "type": "text"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "type": "content",
+      "published": true
+    },
+    {
+      "title": "Installation de Python",
+      "position": 1,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 1
+            },
+            "content": [
+              {
+                "text": "Installation de Python",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "text": "Étapes d'installation",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "orderedList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "Double-cliquez sur le fichier téléchargé (ex: ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "python-3.12.x-amd64.exe",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ]
+                      },
+                      {
+                        "text": ")",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "IMPORTANT : ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "Cochez la case ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "\"Add Python to PATH\"",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " en bas de la fenêtre !",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "Cliquez sur ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "\"Install Now\"",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " pour une installation standard",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "Attendez la fin de l'installation",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "Cliquez sur ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "\"Disable path length limit\"",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " si proposé (recommandé)",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "Cliquez sur ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "\"Close\"",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "text": "💡 Pourquoi cocher \"Add Python to PATH\" ?",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "text": "Le PATH (chemin d'accès) est une variable d'environnement système qui indique à Windows où chercher les exécutables lorsque vous tapez une commande dans l'invite de commandes ou le terminal.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "text": "À quoi ça sert ?",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "orderedList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "Sans PATH : ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "Vous devriez taper le chemin complet à chaque fois, par exemple ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "C:\\Users\\VotreNom\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " pour lancer Python",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "Avec PATH : ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "Vous pouvez simplement taper ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "python",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " depuis n'importe quel dossier, et Windows trouvera automatiquement Python",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "text": "À qui ça sert ?",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "orderedList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "Développeurs : ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "Pour exécuter des scripts Python depuis n'importe où, utiliser pip pour installer des packages, et travailler avec des outils comme ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "virtualenv",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ]
+                      },
+                      {
+                        "text": ", ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "pip",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ]
+                      },
+                      {
+                        "text": ", etc.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "Étudiants : ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "Pour suivre les tutoriels et exemples de code sans se soucier des chemins complets",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "Utilisateurs de frameworks : ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "Les outils comme ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "Django",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ]
+                      },
+                      {
+                        "text": ", ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "Flask",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ]
+                      },
+                      {
+                        "text": ", ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "Jupyter",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " ont besoin que Python soit accessible via PATH",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "IDE et éditeurs : ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "VS Code, PyCharm, et autres éditeurs peuvent détecter automatiquement Python s'il est dans le PATH",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "text": "Exemple concret",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "text": "Imaginez que vous créez un fichier ",
+                "type": "text"
+              },
+              {
+                "text": "mon_script.py",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "code"
+                  }
+                ]
+              },
+              {
+                "text": " dans votre dossier Documents. Sans PATH, vous devriez faire :",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "bash"
+            },
+            "content": [
+              {
+                "text": "C:\\Users\\VotreNom\\AppData\\Local\\Programs\\Python\\Python312\\python.exe C:\\Users\\VotreNom\\Documents\\mon_script.py",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "text": "Avec PATH configuré, c'est beaucoup plus simple :",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "bash"
+            },
+            "content": [
+              {
+                "text": "cd Documents\npython mon_script.py",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "blockquote",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "text": "💡 ",
+                    "type": "text",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "text": "En résumé : cocher \"Add Python to PATH\" rend Python utilisable facilement depuis n'importe où, comme les commandes ",
+                    "type": "text"
+                  },
+                  {
+                    "text": "dir",
+                    "type": "text",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "text": " ou ",
+                    "type": "text"
+                  },
+                  {
+                    "text": "cd",
+                    "type": "text",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "text": " que vous utilisez déjà tous les jours !",
+                    "type": "text"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "text": "⚠️ Erreur fréquente",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "blockquote",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "text": "Si vous oubliez de cocher \"Add Python to PATH\", vous devrez soit réinstaller Python, soit ajouter manuellement Python au PATH système.",
+                    "type": "text"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "type": "content",
+      "published": true
+    },
+    {
+      "title": "Vérification de l'installation",
+      "position": 2,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 1
+            },
+            "content": [
+              {
+                "text": "✅ Vérification de l'installation",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "text": "Ouvrir l'invite de commandes",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "orderedList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "Appuyez sur ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "Windows + R",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "Tapez ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "cmd",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " et appuyez sur Entrée",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "text": "Ou recherchez \"Invite de commandes\" dans le menu Démarrer",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "text": "Tester Python",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "text": "Dans l'invite de commandes, tapez :",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "bash"
+            },
+            "content": [
+              {
+                "text": "python --version",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "text": "Vous devriez voir :",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "bash"
+            },
+            "content": [
+              {
+                "text": "Python 3.12.x",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "text": "Tester pip (gestionnaire de packages)",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "bash"
+            },
+            "content": [
+              {
+                "text": "pip --version",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "text": "Résultat attendu :",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "bash"
+            },
+            "content": [
+              {
+                "text": "pip 24.x from C:\\Users\\...\\Python312\\Lib\\site-packages\\pip (python 3.12)",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "text": "🎉 Premier test Python",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "text": "Lancez l'interpréteur Python en tapant simplement :",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "bash"
+            },
+            "content": [
+              {
+                "text": "python",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "text": "Puis tapez votre première ligne de code :",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": {
+              "language": "python"
+            },
+            "content": [
+              {
+                "text": "print(\"Hello, Python!\")",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "text": "Pour quitter l'interpréteur, tapez ",
+                "type": "text"
+              },
+              {
+                "text": "exit()",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "code"
+                  }
+                ]
+              },
+              {
+                "text": " ou ",
+                "type": "text"
+              },
+              {
+                "text": "Ctrl+Z",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "code"
+                  }
+                ]
+              },
+              {
+                "text": " puis Entrée.",
+                "type": "text"
+              }
+            ]
+          }
+        ]
+      },
+      "type": "content",
+      "published": true
+    }
+  ]
+}

@@ -2,6 +2,9 @@ import { Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './hooks/useAuth'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { NetworkStatus } from './components/NetworkStatus'
+import { GammaPresentationProvider } from './hooks/useGammaPresentation'
+import { GammaPresentation } from './components/GammaPresentation'
+import { useGammaPresentation } from './hooks/useGammaPresentation'
 import { Login } from './pages/Login'
 import { Register } from './pages/Register'
 import { ResetPassword } from './pages/ResetPassword'
@@ -73,12 +76,13 @@ import { ChatWidget } from './components/ChatWidget'
 import { TimeTrackingProvider } from './components/TimeTrackingProvider'
 import DataExercisesPage from './pages/DataExercisesPage'
 
-function App() {
+function AppContent() {
+  const { isOpen, data, closeGammaPresentation } = useGammaPresentation()
+
   return (
-    <AuthProvider>
-      <TimeTrackingProvider>
-        <NetworkStatus />
-        <div className="min-h-screen bg-gray-50 pt-24">
+    <>
+      <NetworkStatus />
+      <div className="min-h-screen bg-gray-50 pt-24">
         <Routes>
           {/* Routes publiques */}
           <Route
@@ -710,6 +714,25 @@ function App() {
         {/* Widget de chat disponible partout */}
         <ChatWidget />
       </div>
+      {isOpen && data && (
+        <GammaPresentation
+          gammaUrl={data.gammaUrl}
+          pdfUrl={data.pdfUrl}
+          pptxUrl={data.pptxUrl}
+          onClose={closeGammaPresentation}
+        />
+      )}
+      </>
+    )
+  }
+
+function App() {
+  return (
+    <AuthProvider>
+      <TimeTrackingProvider>
+        <GammaPresentationProvider>
+          <AppContent />
+        </GammaPresentationProvider>
       </TimeTrackingProvider>
     </AuthProvider>
   )

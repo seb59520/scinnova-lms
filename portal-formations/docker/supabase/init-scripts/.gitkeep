@@ -1,0 +1,2 @@
+# Ce dossier contient les scripts SQL à exécuter au démarrage de PostgreSQL
+# Placez vos scripts d'initialisation ici (ils seront exécutés dans l'ordre alphabétique)

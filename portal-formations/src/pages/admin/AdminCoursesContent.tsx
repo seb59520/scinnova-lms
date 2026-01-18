@@ -444,28 +444,68 @@ export function AdminCoursesContent() {
     }
   }
 
-  const handleOpenPresentation = (courseId: string) => {
-    // Ouvrir la présentation dans une nouvelle fenêtre
-    const presentationUrl = `${window.location.origin}/presentation/${courseId}`
-    const presentationWindow = window.open(
-      presentationUrl,
-      'presentation',
-      'width=1920,height=1080,fullscreen=yes,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no'
-    )
-    
-    if (!presentationWindow) {
-      alert('Veuillez autoriser les popups pour ouvrir la présentation dans une nouvelle fenêtre.')
-    } else {
-      // Essayer de mettre en plein écran
-      if (presentationWindow.document) {
-        presentationWindow.addEventListener('load', () => {
-          if (presentationWindow.document.documentElement.requestFullscreen) {
-            presentationWindow.document.documentElement.requestFullscreen().catch(() => {
-              // Ignorer si le plein écran n'est pas disponible
-            })
-          }
-        })
+  const handleOpenPresentation = async (courseId: string) => {
+    try {
+      // Vérifier s'il existe une présentation Gamma pour ce cours
+      // Chercher dans les items du cours qui ont une asset_path commençant par https:// (URL Gamma)
+      const { data: itemsWithGamma } = await supabase
+        .from('items')
+        .select(`
+          id,
+          asset_path,
+          modules!inner(course_id)
+        `)
+        .eq('modules.course_id', courseId)
+        .not('asset_path', 'is', null)
+        .like('asset_path', 'https://%')
+        .limit(1)
+        .single()
+
+      // Si une présentation Gamma existe, l'ouvrir
+      if (itemsWithGamma?.asset_path) {
+        const presentationWindow = window.open(
+          itemsWithGamma.asset_path,
+          'presentation',
+          'width=1920,height=1080,fullscreen=yes,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no'
+        )
+        
+        if (!presentationWindow) {
+          alert('Veuillez autoriser les popups pour ouvrir la présentation dans une nouvelle fenêtre.')
+        }
+        return
       }
+
+      // Sinon, utiliser le comportement par défaut (présentation des chapitres)
+      const presentationUrl = `${window.location.origin}/presentation/${courseId}`
+      const presentationWindow = window.open(
+        presentationUrl,
+        'presentation',
+        'width=1920,height=1080,fullscreen=yes,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no'
+      )
+      
+      if (!presentationWindow) {
+        alert('Veuillez autoriser les popups pour ouvrir la présentation dans une nouvelle fenêtre.')
+      } else {
+        // Essayer de mettre en plein écran
+        if (presentationWindow.document) {
+          presentationWindow.addEventListener('load', () => {
+            if (presentationWindow.document.documentElement.requestFullscreen) {
+              presentationWindow.document.documentElement.requestFullscreen().catch(() => {
+                // Ignorer si le plein écran n'est pas disponible
+              })
+            }
+          })
+        }
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'ouverture de la présentation:', error)
+      // Fallback vers le comportement par défaut en cas d'erreur
+      const presentationUrl = `${window.location.origin}/presentation/${courseId}`
+      window.open(
+        presentationUrl,
+        'presentation',
+        'width=1920,height=1080,fullscreen=yes,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no'
+      )
     }
   }
 

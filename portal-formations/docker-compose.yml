@@ -1,0 +1,184 @@
+version: '3.8'
+
+# Docker Compose charge automatiquement le fichier .env
+# Si .env.production existe, créez un lien : ln -sf .env.production .env
+# Ou utilisez : env_file: .env.production dans chaque service
+
+services:
+  # Supabase (utilise le docker-compose dans docker/supabase)
+  supabase-db:
+    image: supabase/postgres:15.1.0.147
+    container_name: portal_formations_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -h localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "54322:5432"
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+    volumes:
+      - supabase_db_data:/var/lib/postgresql/data
+      - ./docker/supabase/init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - portal_formations_network
+
+  supabase-kong:
+    image: kong:2.8.1
+    container_name: portal_formations_kong
+    ports:
+      - "8000:8000/tcp"
+    environment:
+      KONG_DATABASE: "off"
+      KONG_DECLARATIVE_CONFIG: /var/lib/kong/kong.yml
+      SUPABASE_ANON_KEY: ${ANON_KEY}
+      SUPABASE_SERVICE_KEY: ${SERVICE_ROLE_KEY}
+      JWT_SECRET: ${JWT_SECRET}
+    volumes:
+      - ./docker/supabase/kong.yml:/var/lib/kong/kong.yml:ro
+    healthcheck:
+      test: ["CMD", "kong", "health"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    depends_on:
+      - supabase-db
+    networks:
+      - portal_formations_network
+
+  supabase-auth:
+    image: supabase/gotrue:v2.99.0
+    container_name: portal_formations_auth
+    ports:
+      - "9999:9999"
+    environment:
+      GOTRUE_API_HOST: 0.0.0.0
+      GOTRUE_API_PORT: 9999
+      API_EXTERNAL_URL: ${API_EXTERNAL_URL:-http://localhost:8000}
+      GOTRUE_DB_DRIVER: postgres
+      GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:${POSTGRES_PASSWORD}@supabase-db:5432/postgres
+      GOTRUE_SITE_URL: ${SITE_URL:-http://localhost:3000}
+      GOTRUE_JWT_SECRET: ${JWT_SECRET}
+      GOTRUE_JWT_EXP: ${JWT_EXP:-3600}
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: ${ENABLE_EMAIL_SIGNUP:-true}
+      GOTRUE_EXTERNAL_PHONE_ENABLED: ${ENABLE_PHONE_SIGNUP:-false}
+    depends_on:
+      supabase-db:
+        condition: service_healthy
+    networks:
+      - portal_formations_network
+
+  supabase-rest:
+    image: postgrest/postgrest:v11.2.0
+    container_name: portal_formations_rest
+    environment:
+      PGRST_DB_URI: postgres://authenticator:${POSTGRES_PASSWORD}@supabase-db:5432/postgres
+      PGRST_DB_SCHEMAS: ${PGRST_DB_SCHEMAS:-public,storage,graphql_public}
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: ${JWT_SECRET}
+    depends_on:
+      supabase-db:
+        condition: service_healthy
+    networks:
+      - portal_formations_network
+
+  supabase-storage:
+    image: supabase/storage-api:v1.7.1
+    container_name: portal_formations_storage
+    ports:
+      - "5000:5000"
+    environment:
+      ANON_KEY: ${ANON_KEY}
+      SERVICE_KEY: ${SERVICE_ROLE_KEY}
+      POSTGRES_HOST: supabase-db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: postgres
+      POSTGRES_USER: supabase_storage_admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGRST_HOST: http://supabase-rest:3000
+      FILE_SIZE_LIMIT: 52428800
+      STORAGE_BACKEND: file
+      FILE_STORAGE_BACKEND_PATH: /var/lib/storage
+    volumes:
+      - supabase_storage_data:/var/lib/storage
+    depends_on:
+      supabase-db:
+        condition: service_healthy
+      supabase-rest:
+        condition: service_healthy
+    networks:
+      - portal_formations_network
+
+  supabase-realtime:
+    image: supabase/realtime:v2.25.35.0
+    container_name: portal_formations_realtime
+    ports:
+      - "4000:4000"
+    environment:
+      PORT: 4000
+      DB_HOST: supabase-db
+      DB_PORT: 5432
+      DB_USER: supabase_realtime_admin
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: postgres
+      API_JWT_SECRET: ${JWT_SECRET}
+    depends_on:
+      supabase-db:
+        condition: service_healthy
+    networks:
+      - portal_formations_network
+
+  # Backend Express
+  backend:
+    build:
+      context: ./server
+      dockerfile: ../docker/backend/Dockerfile
+    container_name: portal_formations_backend
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      VITE_SUPABASE_URL: ${VITE_SUPABASE_URL:-http://supabase-kong:8000}
+      VITE_SUPABASE_ANON_KEY: ${ANON_KEY}
+      SUPABASE_URL: ${VITE_SUPABASE_URL:-http://supabase-kong:8000}
+      SUPABASE_ANON_KEY: ${ANON_KEY}
+    depends_on:
+      supabase-kong:
+        condition: service_healthy
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    networks:
+      - portal_formations_network
+    restart: unless-stopped
+
+  # Frontend React
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    container_name: portal_formations_frontend
+    ports:
+      - "80:80"
+    environment:
+      VITE_SUPABASE_URL: ${VITE_SUPABASE_URL:-http://localhost:8000}
+      VITE_SUPABASE_ANON_KEY: ${ANON_KEY}
+    depends_on:
+      - backend
+      - supabase-kong
+    networks:
+      - portal_formations_network
+    restart: unless-stopped
+
+volumes:
+  supabase_db_data:
+    driver: local
+  supabase_storage_data:
+    driver: local
+
+networks:
+  portal_formations_network:
+    driver: bridge

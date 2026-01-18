@@ -5,6 +5,7 @@ import { RichTextEditor } from './RichTextEditor'
 import { ChevronDown, ChevronUp, Presentation, RefreshCw, ChevronsDownUp, Gamepad2 } from 'lucide-react'
 import { GameRenderer } from './GameRenderer'
 import { useAuth } from '../hooks/useAuth'
+import { useGammaPresentation } from '../hooks/useGammaPresentation'
 
 interface ChapterViewerProps {
   itemId: string
@@ -12,6 +13,7 @@ interface ChapterViewerProps {
 
 export function ChapterViewer({ itemId }: ChapterViewerProps) {
   const { profile } = useAuth()
+  const { openGammaPresentation } = useGammaPresentation()
   const [chapters, setChapters] = useState<Chapter[]>([])
   const [loading, setLoading] = useState(true)
   const [expandedChapters, setExpandedChapters] = useState<Set<string>>(new Set())
@@ -232,41 +234,104 @@ export function ChapterViewer({ itemId }: ChapterViewerProps) {
   }
 
   const openPresentation = async () => {
-    // Récupérer le courseId depuis l'item si pas déjà chargé
-    let finalCourseId = courseId
-    
-    if (!finalCourseId) {
-      const { data: itemData } = await supabase
+    try {
+      // D'abord, vérifier si l'élément actuel a une présentation Gamma
+      if (itemId) {
+        const { data: currentItem } = await supabase
+          .from('items')
+          .select('asset_path')
+          .eq('id', itemId)
+          .single()
+
+        // Si l'élément a une présentation Gamma (URL commençant par https://), l'ouvrir en mode présentation intégré
+        if (currentItem?.asset_path && currentItem.asset_path.startsWith('https://')) {
+          // Récupérer aussi les URLs PDF/PPTX si disponibles
+          const { data: itemWithUrls } = await supabase
+            .from('items')
+            .select('asset_path, pdf_url, pptx_url')
+            .eq('id', itemId)
+            .single()
+          
+          openGammaPresentation({
+            gammaUrl: itemWithUrls?.asset_path || currentItem.asset_path,
+            pdfUrl: (itemWithUrls as any)?.pdf_url,
+            pptxUrl: (itemWithUrls as any)?.pptx_url,
+          })
+          return
+        }
+      }
+
+      // Récupérer le courseId depuis l'item si pas déjà chargé
+      let finalCourseId = courseId
+      
+      if (!finalCourseId) {
+        const { data: itemData } = await supabase
+          .from('items')
+          .select(`
+            id,
+            module_id,
+            modules (
+              id,
+              course_id
+            )
+          `)
+          .eq('id', itemId)
+          .single()
+        
+        if (itemData?.modules?.course_id) {
+          finalCourseId = itemData.modules.course_id
+        } else {
+          alert('Impossible de récupérer l\'ID du cours.')
+          return
+        }
+      }
+
+      // Vérifier s'il existe une présentation Gamma pour ce cours
+      const { data: itemsWithGamma } = await supabase
         .from('items')
         .select(`
           id,
-          module_id,
-          modules (
-            id,
-            course_id
-          )
+          asset_path,
+          modules!inner(course_id)
         `)
-        .eq('id', itemId)
+        .eq('modules.course_id', finalCourseId)
+        .not('asset_path', 'is', null)
+        .like('asset_path', 'https://%')
+        .limit(1)
         .single()
-      
-      if (itemData?.modules?.course_id) {
-        finalCourseId = itemData.modules.course_id
-      } else {
-        alert('Impossible de récupérer l\'ID du cours.')
+
+      // Si une présentation Gamma existe, l'ouvrir en mode présentation intégré
+      if (itemsWithGamma?.asset_path) {
+        openGammaPresentation({
+          gammaUrl: itemsWithGamma.asset_path,
+          pdfUrl: (itemsWithGamma as any).pdf_url,
+          pptxUrl: (itemsWithGamma as any).pptx_url,
+        })
         return
       }
-    }
-    
-    // Ouvrir la présentation dans une nouvelle fenêtre
-    const presentationUrl = `${window.location.origin}/presentation/${finalCourseId}`
-    const presentationWindow = window.open(
-      presentationUrl,
-      'presentation',
-      'width=1920,height=1080,fullscreen=yes,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no'
-    )
-    
-    if (!presentationWindow) {
-      alert('Veuillez autoriser les popups pour ouvrir la présentation dans une nouvelle fenêtre.')
+      
+      // Sinon, utiliser le comportement par défaut (présentation des chapitres)
+      const presentationUrl = `${window.location.origin}/presentation/${finalCourseId}`
+      const presentationWindow = window.open(
+        presentationUrl,
+        'presentation',
+        'width=1920,height=1080,fullscreen=yes,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no'
+      )
+      
+      if (!presentationWindow) {
+        alert('Veuillez autoriser les popups pour ouvrir la présentation dans une nouvelle fenêtre.')
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'ouverture de la présentation:', error)
+      // Fallback vers le comportement par défaut en cas d'erreur
+      if (courseId) {
+        const presentationUrl = `${window.location.origin}/presentation/${courseId}`
+        window.open(
+          presentationUrl,
+          'presentation',
+          'width=1920,height=1080,fullscreen=yes,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no'
+        )
+      }
     }
   }
 

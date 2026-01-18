@@ -14,6 +14,8 @@ import { Eye, EyeOff, X, BookOpen, FileText, Download, Menu, List } from 'lucide
 import { Lexique } from './Lexique'
 import { getCurrentUserRole } from '../lib/queries/userRole'
 import { CourseResourcesViewer } from '../components/CourseResourcesViewer'
+import { CourseGammaSlides } from '../components/CourseGammaSlides'
+import { ErrorBoundary } from '../components/ErrorBoundary'
 
 interface ModuleWithItems extends Module {
   items: Item[]
@@ -1050,6 +1052,15 @@ export function CourseView() {
                         )
                       })}
                     </div>
+                  </div>
+                )}
+
+                {/* Présentations Gamma disponibles - avec gestion d'erreur */}
+                {courseId && (
+                  <div className="mb-6">
+                    <ErrorBoundary fallback={null}>
+                      <CourseGammaSlides courseId={courseId} />
+                    </ErrorBoundary>
                   </div>
                 )}
 

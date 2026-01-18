@@ -1402,19 +1402,59 @@ export function AdminCourseEdit() {
                             </button>
                           </div>
                           <button
-                            onClick={(e) => {
+                            onClick={async (e) => {
                               e.stopPropagation()
                               e.preventDefault()
-                              // Ouvrir la présentation dans une nouvelle fenêtre
-                              const presentationUrl = `${window.location.origin}/presentation/${courseId}`
-                              const presentationWindow = window.open(
-                                presentationUrl,
-                                'presentation',
-                                'width=1920,height=1080,fullscreen=yes,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no'
-                              )
                               
-                              if (!presentationWindow) {
-                                alert('Veuillez autoriser les popups pour ouvrir la présentation dans une nouvelle fenêtre.')
+                              try {
+                                // Vérifier s'il existe une présentation Gamma pour ce cours
+                                const { data: itemsWithGamma } = await supabase
+                                  .from('items')
+                                  .select(`
+                                    id,
+                                    asset_path,
+                                    modules!inner(course_id)
+                                  `)
+                                  .eq('modules.course_id', courseId)
+                                  .not('asset_path', 'is', null)
+                                  .like('asset_path', 'https://%')
+                                  .limit(1)
+                                  .single()
+
+                                // Si une présentation Gamma existe, l'ouvrir
+                                if (itemsWithGamma?.asset_path) {
+                                  const presentationWindow = window.open(
+                                    itemsWithGamma.asset_path,
+                                    'presentation',
+                                    'width=1920,height=1080,fullscreen=yes,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no'
+                                  )
+                                  
+                                  if (!presentationWindow) {
+                                    alert('Veuillez autoriser les popups pour ouvrir la présentation dans une nouvelle fenêtre.')
+                                  }
+                                  return
+                                }
+
+                                // Sinon, utiliser le comportement par défaut
+                                const presentationUrl = `${window.location.origin}/presentation/${courseId}`
+                                const presentationWindow = window.open(
+                                  presentationUrl,
+                                  'presentation',
+                                  'width=1920,height=1080,fullscreen=yes,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no'
+                                )
+                                
+                                if (!presentationWindow) {
+                                  alert('Veuillez autoriser les popups pour ouvrir la présentation dans une nouvelle fenêtre.')
+                                }
+                              } catch (error) {
+                                console.error('Erreur lors de l\'ouverture de la présentation:', error)
+                                // Fallback vers le comportement par défaut
+                                const presentationUrl = `${window.location.origin}/presentation/${courseId}`
+                                window.open(
+                                  presentationUrl,
+                                  'presentation',
+                                  'width=1920,height=1080,fullscreen=yes,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no'
+                                )
                               }
                             }}
                             onMouseDown={(e) => {

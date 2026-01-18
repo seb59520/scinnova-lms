@@ -33,4 +33,4 @@ CREATE POLICY "session_members_manage" ON session_members
     )
   );
 
-SELECT 'Politiques session_members corrigées' as status;
+SELECT 'Politiques session_members corrigées' as status;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            

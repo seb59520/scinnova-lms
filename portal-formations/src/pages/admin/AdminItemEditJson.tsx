@@ -3,10 +3,12 @@ import { useParams, useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Item } from '../../types/database'
-import { Save, Upload, Download, Code, Eye, ArrowLeft, Sparkles } from 'lucide-react'
+import { Save, Upload, Download, Code, Eye, ArrowLeft, Sparkles, ExternalLink, Presentation } from 'lucide-react'
+import { useGammaPresentation } from '../../hooks/useGammaPresentation'
 import { ReactItemRenderer } from '../../components/ReactItemRenderer'
 import { generateAndUploadSlide } from '../../lib/slideGenerator'
 import { generateSlideWithExternalAPI } from '../../lib/slideGeneratorAdvanced'
+import { generateGamma, formatSlideContentForGamma } from '../../lib/gammaApi'
 
 export interface ChapterJson {
   title: string
@@ -55,6 +57,8 @@ export interface ItemJson {
   chapters?: ChapterJson[] // Chapitres intégrés dans le JSON
   asset_path?: string
   external_url?: string
+  pdf_url?: string
+  pptx_url?: string
   theme?: {
     primaryColor?: string
     secondaryColor?: string
@@ -80,7 +84,7 @@ export function AdminItemEditJson() {
   const [previewMode, setPreviewMode] = useState(false)
   const [moduleTitle, setModuleTitle] = useState<string>('')
   const [generatingSlide, setGeneratingSlide] = useState(false)
-  const [useAdvancedGeneration, setUseAdvancedGeneration] = useState(false)
+  const { openGammaPresentation } = useGammaPresentation()
 
   useEffect(() => {
     if (!isNew && itemId) {
@@ -144,8 +148,13 @@ export function AdminItemEditJson() {
       // Construire le JSON
       const content = itemData.content || {}
       const theme = (content as any).theme || undefined
-      // Retirer le theme du content pour la structure JSON
-      const { theme: _, ...contentWithoutTheme } = content as any
+      // Retirer le theme et les URLs Gamma du content pour la structure JSON
+      const { theme: _, gamma_url: __, gamma_pdf_url: ___, gamma_pptx_url: ____, ...contentWithoutTheme } = content as any
+      
+      // Récupérer les URLs Gamma depuis les colonnes ou depuis le content (fallback)
+      const gammaUrl = itemData.asset_path || (content as any).gamma_url
+      const pdfUrl = (itemData as any).pdf_url || (content as any).gamma_pdf_url
+      const pptxUrl = (itemData as any).pptx_url || (content as any).gamma_pptx_url
       
       const itemJson: ItemJson = {
         type: itemData.type as ItemJson['type'],
@@ -153,8 +162,10 @@ export function AdminItemEditJson() {
         position: itemData.position,
         published: itemData.published,
         content: contentWithoutTheme,
-        asset_path: itemData.asset_path || undefined,
+        asset_path: gammaUrl || itemData.asset_path || undefined,
         external_url: itemData.external_url || undefined,
+        pdf_url: pdfUrl || undefined,
+        pptx_url: pptxUrl || undefined,
         theme: theme,
         chapters: (chaptersData || []).map(ch => ({
           title: ch.title,
@@ -233,6 +244,18 @@ export function AdminItemEditJson() {
         // Stocker le theme dans le content pour compatibilité
         contentData.theme = parsedJson.theme
       }
+      
+      // Stocker aussi les URLs Gamma dans le content si les colonnes n'existent pas encore
+      // Cela permet de persister les données même si la migration n'est pas appliquée
+      if (parsedJson.pdf_url) {
+        contentData.gamma_pdf_url = parsedJson.pdf_url
+      }
+      if (parsedJson.pptx_url) {
+        contentData.gamma_pptx_url = parsedJson.pptx_url
+      }
+      if (parsedJson.asset_path && parsedJson.asset_path.startsWith('https://')) {
+        contentData.gamma_url = parsedJson.asset_path
+      }
 
       const itemData = {
         module_id: moduleId,
@@ -243,6 +266,8 @@ export function AdminItemEditJson() {
         content: contentData,
         asset_path: parsedJson.asset_path || null,
         external_url: parsedJson.external_url || null,
+        pdf_url: parsedJson.pdf_url || null,
+        pptx_url: parsedJson.pptx_url || null,
         updated_at: new Date().toISOString()
       }
 
@@ -432,8 +457,14 @@ export function AdminItemEditJson() {
   }
 
   const handleGenerateSlide = async () => {
-    if (!parsedJson || parsedJson.type !== 'slide') {
-      setError('Cette fonctionnalité est uniquement disponible pour les slides.')
+    if (!parsedJson) {
+      setError('Veuillez d\'abord charger un JSON valide.')
+      return
+    }
+
+    // Permettre la génération pour les types 'slide' et 'resource'
+    if (parsedJson.type !== 'slide' && parsedJson.type !== 'resource') {
+      setError('Cette fonctionnalité est disponible pour les slides et les ressources.')
       return
     }
 
@@ -604,90 +635,132 @@ export function AdminItemEditJson() {
         slideContent
       })
 
-      // Préparer le contexte pour Gemini
-      const courseContext = {
-        courseTitle: courseData?.title || undefined,
-        courseDescription: courseData?.description || undefined,
-        moduleTitle: moduleData?.title || undefined,
-        slidePosition: parsedJson.position,
-        totalSlides: previousSlides.length + 1,
-        previousDesigns: [] // Pour l'instant vide, pourrait être enrichi avec les designs précédents
-      }
+      // Formater le contenu pour Gamma
+      const gammaInputText = formatSlideContentForGamma(
+        slideContent.title,
+        parsedJson.content,
+        slideContent.on_screen,
+        slideContent.speaker_notes
+      )
 
-      // Générer le design avec Gemini d'abord
-      const { generateSlideDesign } = await import('../../lib/slideGenerator')
-      const design = await generateSlideDesign(slideContent, courseContext)
-
-      // Générer et uploader la slide (avancée ou standard)
-      let assetPath: string
-      if (useAdvancedGeneration) {
-        try {
-          // Essayer d'abord avec l'API externe (htmlcsstoimage.com)
-          assetPath = await generateSlideWithExternalAPI(
-            slideContent,
-            design,
-            courseId,
-            moduleId!,
-            itemId || undefined
-          )
-        } catch (error) {
-          console.warn('⚠️ Génération avancée échouée, fallback vers standard:', error)
-          // Fallback vers génération standard
-          assetPath = await generateAndUploadSlide(
-            slideContent,
-            courseId,
-            moduleId!,
-            itemId || undefined,
-            courseContext
-          )
+      // Ajouter le contexte du cours si disponible
+      let additionalInstructions = ''
+      if (courseData?.title) {
+        additionalInstructions += `Contexte: Cours "${courseData.title}"`
+        if (courseData.description) {
+          additionalInstructions += ` - ${courseData.description.substring(0, 200)}`
         }
-      } else {
-        // Génération standard avec Canvas
-        assetPath = await generateAndUploadSlide(
-          slideContent,
-          courseId,
-          moduleId!,
-          itemId || undefined,
-          courseContext
-        )
+      }
+      if (moduleData?.title) {
+        additionalInstructions += ` | Module: "${moduleData.title}"`
       }
 
-      // Vérifier que l'upload a bien réussi avant de mettre à jour le JSON
-      if (!assetPath) {
-        throw new Error('Le chemin de l\'asset est vide après l\'upload')
+      // Générer la présentation avec Gamma
+      const gammaResult = await generateGamma({
+        inputText: gammaInputText,
+        textMode: 'generate',
+        format: 'presentation',
+        numCards: 1, // Une seule slide pour cet élément
+        cardSplit: 'auto',
+        additionalInstructions: additionalInstructions || undefined,
+        textOptions: {
+          amount: 'detailed',
+          tone: 'professionnel, pédagogique',
+          language: 'fr',
+        },
+        imageOptions: {
+          source: 'aiGenerated',
+        },
+      })
+
+      if (gammaResult.status === 'failed') {
+        throw new Error(gammaResult.error || 'La génération Gamma a échoué')
       }
 
-      // Vérifier que le fichier est accessible via son URL publique
-      // (plus fiable que list() qui peut avoir des problèmes de timing)
-      try {
-        const { data: urlData } = supabase.storage
-          .from('course-assets')
-          .getPublicUrl(assetPath)
-
-        if (!urlData?.publicUrl) {
-          console.warn('⚠️ Impossible de générer l\'URL publique, mais l\'upload a réussi')
-        } else {
-          console.log('✅ URL publique générée:', urlData.publicUrl)
-          
-          // Optionnel : vérifier que l'URL est accessible (mais cela peut échouer à cause du cache)
-          // On fait confiance à l'upload qui a réussi
-        }
-      } catch (checkError) {
-        console.warn('⚠️ Impossible de vérifier l\'URL publique:', checkError)
-        // On continue quand même car l'upload a réussi
+      if (!gammaResult.gammaUrl) {
+        throw new Error('Aucune URL Gamma retournée')
       }
 
-      // Mettre à jour le JSON avec le chemin de l'asset seulement si tout est OK
+      // Stocker l'URL Gamma dans asset_path (ou créer un champ dédié si nécessaire)
+      // Pour l'instant, on stocke l'URL Gamma dans asset_path
       const updatedJson: ItemJson = {
         ...parsedJson,
-        asset_path: assetPath
+        asset_path: gammaResult.gammaUrl,
+        // Optionnel : stocker aussi les autres URLs si disponibles
+        ...(gammaResult.pdfUrl && { pdf_url: gammaResult.pdfUrl }),
+        ...(gammaResult.pptxUrl && { pptx_url: gammaResult.pptxUrl }),
       }
 
       setParsedJson(updatedJson)
       setJsonContent(JSON.stringify(updatedJson, null, 2))
       setError('')
       
-      console.log('✅ Slide générée et JSON mis à jour avec succès')
+      console.log('✅ Présentation Gamma générée avec succès:', {
+        gammaUrl: gammaResult.gammaUrl,
+        pdfUrl: gammaResult.pdfUrl,
+        pptxUrl: gammaResult.pptxUrl,
+      })
+
+      // Sauvegarder automatiquement pour persister les données
+      console.log('💾 Sauvegarde automatique de la présentation Gamma...')
+      try {
+        const moduleId = item?.module_id || moduleIdFromUrl
+        if (!moduleId) {
+          console.warn('⚠️ Module ID manquant, impossible de sauvegarder automatiquement')
+          return
+        }
+
+        const contentData = { ...(updatedJson.content || {}) }
+        if (updatedJson.theme) {
+          contentData.theme = updatedJson.theme
+        }
+        
+        // Stocker aussi les URLs Gamma dans le content comme fallback
+        if (updatedJson.pdf_url) {
+          contentData.gamma_pdf_url = updatedJson.pdf_url
+        }
+        if (updatedJson.pptx_url) {
+          contentData.gamma_pptx_url = updatedJson.pptx_url
+        }
+        if (updatedJson.asset_path && updatedJson.asset_path.startsWith('https://')) {
+          contentData.gamma_url = updatedJson.asset_path
+        }
+
+        const itemData: any = {
+          module_id: moduleId,
+          type: updatedJson.type,
+          title: updatedJson.title.trim(),
+          position: updatedJson.position,
+          published: updatedJson.published !== false,
+          content: contentData,
+          asset_path: updatedJson.asset_path || null,
+          external_url: updatedJson.external_url || null,
+          updated_at: new Date().toISOString()
+        }
+        
+        // Ajouter les colonnes Gamma si elles existent (ne pas échouer si elles n'existent pas)
+        if (updatedJson.pdf_url) {
+          itemData.pdf_url = updatedJson.pdf_url
+        }
+        if (updatedJson.pptx_url) {
+          itemData.pptx_url = updatedJson.pptx_url
+        }
+
+        const { error: saveError } = await supabase
+          .from('items')
+          .update(itemData)
+          .eq('id', itemId)
+
+        if (saveError) {
+          console.error('❌ Erreur lors de la sauvegarde automatique:', saveError)
+          setError(`Présentation générée mais erreur de sauvegarde: ${saveError.message}. Veuillez sauvegarder manuellement.`)
+        } else {
+          console.log('✅ Présentation Gamma sauvegardée avec succès dans la base de données')
+        }
+      } catch (saveErr: any) {
+        console.error('❌ Erreur lors de la sauvegarde automatique:', saveErr)
+        setError(`Présentation générée mais erreur de sauvegarde: ${saveErr.message}. Veuillez sauvegarder manuellement.`)
+      }
     } catch (error: any) {
       console.error('❌ Erreur lors de la génération de la slide:', error)
       setError(`Erreur lors de la génération: ${error.message || 'Erreur inconnue'}`)
@@ -922,36 +995,23 @@ export function AdminItemEditJson() {
                 <span>Exporter</span>
               </button>
               <div className="flex items-center space-x-2">
-                {parsedJson?.type === 'slide' && (
-                  <label className="flex items-center space-x-1 text-xs text-gray-600 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={useAdvancedGeneration}
-                      onChange={(e) => setUseAdvancedGeneration(e.target.checked)}
-                      className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
-                    />
-                    <span>Design avancé</span>
-                  </label>
-                )}
                 <button
                   onClick={handleGenerateSlide}
-                  disabled={generatingSlide || !parsedJson || isNew || parsedJson?.type !== 'slide'}
+                  disabled={generatingSlide || !parsedJson || isNew || (parsedJson?.type !== 'slide' && parsedJson?.type !== 'resource')}
                   className="inline-flex items-center justify-center space-x-2 px-4 !h-10 py-0 rounded-md font-medium transition-colors bg-purple-600 hover:bg-purple-700 text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-purple-600 min-w-[140px]"
                   title={
                     !parsedJson
                       ? "Importez d'abord un JSON"
                       : isNew
                         ? "Sauvegardez d'abord l'élément"
-                        : parsedJson?.type !== 'slide'
-                          ? "Le type doit être 'slide' pour générer une slide"
-                          : useAdvancedGeneration
-                            ? "Générer avec design avancé (HTML/CSS)"
-                            : "Générer la slide avec IA (Gemini + Canvas)"
+                        : (parsedJson?.type !== 'slide' && parsedJson?.type !== 'resource')
+                          ? "Le type doit être 'slide' ou 'resource' pour générer une présentation"
+                          : "Générer la présentation avec Gamma (API Gamma)"
                   }
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>
-                    {generatingSlide ? 'Génération...' : useAdvancedGeneration ? 'Générer slide avancée' : 'Générer slide IA'}
+                    {generatingSlide ? 'Génération...' : 'Générer slide IA (Gamma)'}
                   </span>
                 </button>
               </div>
@@ -974,6 +1034,76 @@ export function AdminItemEditJson() {
           {error && (
             <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
               {error}
+            </div>
+          )}
+
+          {/* Afficher la présentation Gamma si elle existe */}
+          {parsedJson?.asset_path && parsedJson.asset_path.startsWith('https://') && (
+            <div className="mb-4 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <Presentation className="w-6 h-6 text-purple-600" />
+                  <div>
+                    <h3 className="font-semibold text-gray-900">Présentation Gamma générée</h3>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Votre présentation a été générée avec succès
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => {
+                      if (parsedJson?.asset_path) {
+                        openGammaPresentation({
+                          gammaUrl: parsedJson.asset_path,
+                          pdfUrl: parsedJson.pdf_url,
+                          pptxUrl: parsedJson.pptx_url,
+                        })
+                      }
+                    }}
+                    className="inline-flex items-center space-x-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                  >
+                    <Presentation className="w-4 h-4" />
+                    <span>Mode présentation</span>
+                  </button>
+                  <a
+                    href={parsedJson.asset_path}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center space-x-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    <span>Ouvrir dans un nouvel onglet</span>
+                  </a>
+                </div>
+              </div>
+              {parsedJson.pdf_url && (
+                <div className="mt-3 pt-3 border-t border-purple-200">
+                  <a
+                    href={parsedJson.pdf_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-purple-600 hover:text-purple-700 inline-flex items-center space-x-1"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Télécharger le PDF</span>
+                  </a>
+                  {parsedJson.pptx_url && (
+                    <>
+                      <span className="mx-2 text-gray-400">•</span>
+                      <a
+                        href={parsedJson.pptx_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-purple-600 hover:text-purple-700 inline-flex items-center space-x-1"
+                      >
+                        <Download className="w-4 h-4" />
+                        <span>Télécharger le PPTX</span>
+                      </a>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
