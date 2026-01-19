@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useSessionRealtime } from '../../hooks/useSessionRealtime';
@@ -9,7 +9,7 @@ import { supabase } from '../../lib/supabaseClient';
 import type { Session, Course } from '../../types/database';
 import {
   LayoutDashboard, Users, FileText, HelpCircle, Clock, BookOpen,
-  Play, Pause, Square, Coffee, Send, X, ChevronLeft, Radio,
+  Play, Pause, Square, Coffee, Send, X, ChevronLeft, ChevronDown, ChevronUp, Radio,
   BarChart3, PenTool, MessageSquare, Settings, AlertTriangle, ClipboardCheck,
   UserPlus, Trash2, Search, User
 } from 'lucide-react';
@@ -816,19 +816,247 @@ function ProjectsTab({ sessionId }: { sessionId: string }) {
 }
 
 function QuizTab({ sessionId }: { sessionId: string }) {
+  const { user } = useAuth();
+  const [quizResponses, setQuizResponses] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [quizTypeFilter, setQuizTypeFilter] = useState<string>('introduction_python');
+  const [expandedResponse, setExpandedResponse] = useState<string | null>(null);
+  const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
+
+  // Charger les réponses initiales
+  useEffect(() => {
+    loadResponses();
+  }, [sessionId, quizTypeFilter]);
+
+  // Configurer le canal temps réel
+  useEffect(() => {
+    if (!sessionId) return;
+
+    const channel = supabase.channel(`quiz-responses:${sessionId}`, {
+      config: { broadcast: { self: false } }
+    });
+
+    // Écouter les mises à jour de réponses
+    channel.on('broadcast', { event: 'quiz_response_updated' }, (payload) => {
+      loadResponses(); // Recharger les réponses
+    });
+
+    // Écouter les changements dans la table
+    channel.on('postgres_changes', {
+      event: '*',
+      schema: 'public',
+      table: 'user_responses'
+    }, () => {
+      loadResponses();
+    });
+
+    channel.subscribe();
+    channelRef.current = channel;
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, [sessionId]);
+
+  const loadResponses = async () => {
+    if (!sessionId) return;
+
+    try {
+      setLoading(true);
+
+      // Récupérer les membres de la session
+      const { data: sessionMembers } = await supabase
+        .from('session_members')
+        .select('user_id')
+        .eq('session_id', sessionId)
+        .eq('role', 'learner');
+
+      if (!sessionMembers || sessionMembers.length === 0) {
+        setQuizResponses([]);
+        setLoading(false);
+        return;
+      }
+
+      const userIds = sessionMembers.map(m => m.user_id);
+
+      // Récupérer les réponses
+      const { data, error } = await supabase
+        .from('user_responses')
+        .select(`
+          *,
+          profiles (
+            id,
+            full_name,
+            role
+          )
+        `)
+        .in('user_id', userIds)
+        .eq('quiz_type', quizTypeFilter)
+        .order('updated_at', { ascending: false });
+
+      if (error) throw error;
+      setQuizResponses((data || []) as any[]);
+    } catch (error) {
+      console.error('Erreur lors du chargement des réponses:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getCompletionStats = () => {
+    const total = quizResponses.length;
+    const completed = quizResponses.filter(r => {
+      const responses = r.responses || {};
+      // Vérifier si toutes les questions ont des réponses (on suppose 4 questions pour le quiz Python)
+      return Object.keys(responses).length >= 3 && 
+             Object.values(responses).every((v: any) => v && v.trim().length > 0);
+    }).length;
+    return { total, completed, percentage: total > 0 ? Math.round((completed / total) * 100) : 0 };
+  };
+
+  const stats = getCompletionStats();
+
   return (
-    <div className="bg-white rounded-xl shadow p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="font-semibold text-gray-900">Quiz & Évaluations</h3>
+    <div className="space-y-6">
+      <div className="bg-white rounded-xl shadow p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="font-semibold text-gray-900 text-xl mb-2">Suivi des quiz en temps réel</h3>
+            <p className="text-sm text-gray-600">
+              Suivez l'évolution du remplissage des quiz par vos apprenants
+            </p>
+          </div>
+          <select
+            value={quizTypeFilter}
+            onChange={(e) => setQuizTypeFilter(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="introduction_python">Quiz Python - Module 0</option>
+            <option value="introduction_big_data">Quiz Big Data</option>
+            <option value="all">Tous les quiz</option>
+          </select>
+        </div>
+
+        {/* Statistiques */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="text-sm text-blue-600 mb-1">Total de réponses</div>
+            <div className="text-2xl font-bold text-blue-900">{stats.total}</div>
+          </div>
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="text-sm text-green-600 mb-1">Quiz complétés</div>
+            <div className="text-2xl font-bold text-green-900">{stats.completed}</div>
+          </div>
+          <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+            <div className="text-sm text-purple-600 mb-1">Taux de complétion</div>
+            <div className="text-2xl font-bold text-purple-900">{stats.percentage}%</div>
+          </div>
+        </div>
+
+        {/* Liste des réponses */}
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Chargement des réponses...</p>
+          </div>
+        ) : quizResponses.length === 0 ? (
+          <div className="text-center py-12">
+            <MessageSquare className="h-16 w-16 mx-auto text-gray-300 mb-4" />
+            <p className="text-gray-500 mb-4">Aucune réponse pour le moment</p>
+            <p className="text-sm text-gray-400">
+              Les réponses apparaîtront ici en temps réel lorsque les apprenants commenceront à remplir le quiz.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {quizResponses.map((response) => {
+              const responses = response.responses || {};
+              const answeredCount = Object.keys(responses).filter(k => responses[k]?.trim().length > 0).length;
+              const totalQuestions = 4; // Nombre de questions dans le quiz Python
+              const isComplete = answeredCount === totalQuestions;
+
+              return (
+                <div
+                  key={response.id}
+                  className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <div
+                    className="p-6 cursor-pointer"
+                    onClick={() => setExpandedResponse(expandedResponse === response.id ? null : response.id)}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <User className="w-5 h-5 text-gray-400" />
+                          <h4 className="text-lg font-semibold text-gray-900">
+                            {response.profiles?.full_name || 'Utilisateur anonyme'}
+                          </h4>
+                          {isComplete && (
+                            <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">
+                              ✓ Complété
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                          <div className="flex items-center gap-1">
+                            <Clock className="w-4 h-4" />
+                            {new Date(response.updated_at).toLocaleTimeString('fr-FR', {
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-32 bg-gray-200 rounded-full h-2">
+                              <div
+                                className="bg-blue-600 h-2 rounded-full transition-all"
+                                style={{ width: `${(answeredCount / totalQuestions) * 100}%` }}
+                              />
+                            </div>
+                            <span className="text-xs text-gray-500">
+                              {answeredCount}/{totalQuestions} questions
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <button>
+                        {expandedResponse === response.id ? (
+                          <ChevronUp className="w-5 h-5 text-gray-400" />
+                        ) : (
+                          <ChevronDown className="w-5 h-5 text-gray-400" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {expandedResponse === response.id && (
+                    <div className="border-t border-gray-200 p-6 space-y-4">
+                      {Object.entries(responses).map(([questionId, answer]: [string, any]) => (
+                        <div key={questionId} className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                          <h5 className="text-sm font-semibold text-gray-700 mb-2">
+                            Question: {questionId}
+                          </h5>
+                          <p className="text-gray-800 whitespace-pre-wrap">
+                            {answer || <span className="text-gray-400 italic">Pas encore répondu</span>}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
-      <div className="text-center py-12">
-        <HelpCircle className="h-16 w-16 mx-auto text-gray-300 mb-4" />
-        <p className="text-gray-500 mb-4">Gérez les quiz de cette session</p>
+
+      <div className="bg-white rounded-xl shadow p-6">
+        <h4 className="font-semibold text-gray-900 mb-4">Autres actions</h4>
         <Link
           to={`/trainer/sessions/${sessionId}/quiz-responses`}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
-          Voir les réponses aux quiz
+          <FileText className="w-4 h-4" />
+          Voir toutes les réponses aux quiz
         </Link>
       </div>
     </div>

@@ -1,0 +1,34 @@
+{
+  "type": "game",
+  "title": "Quiz d'introduction - Python les fondamentaux",
+  "position": 0,
+  "published": true,
+  "content": {
+    "gameType": "introduction-quiz",
+    "quizType": "introduction_python",
+    "description": "Ce quiz nous permet de mieux vous connaître et d'adapter le contenu du cours à vos besoins. Vos réponses nous aideront à comprendre votre niveau actuel, vos attentes et les situations professionnelles dans lesquelles vous pourrez appliquer ce que vous apprendrez.",
+    "instructions": "Répondez honnêtement à toutes les questions. Il n'y a pas de bonne ou mauvaise réponse. Prenez le temps de réfléchir à vos réponses.",
+    "questions": [
+      {
+        "id": "niveau_python",
+        "label": "Quel est votre niveau actuel en Python ? Décrivez votre expérience (débutant, quelques bases, intermédiaire, avancé) et donnez des exemples concrets de ce que vous savez faire ou avez déjà fait avec Python.",
+        "placeholder": "Exemple : Je suis débutant, j'ai suivi quelques tutoriels en ligne mais je n'ai jamais créé de projet complet. Je connais les bases comme les variables, les boucles et les conditions..."
+      },
+      {
+        "id": "attentes_formation",
+        "label": "Quelles sont vos attentes pour cette formation sur Python les fondamentaux ? Que souhaitez-vous apprendre ou maîtriser à la fin de ce cours ?",
+        "placeholder": "Exemple : Je souhaite être capable de créer des scripts Python pour automatiser des tâches répétitives dans mon travail, comprendre le code Python que je rencontre, et être autonome pour développer de petits projets..."
+      },
+      {
+        "id": "situations_professionnelles",
+        "label": "Avez-vous des situations professionnelles concrètes dans lesquelles vous pourrez appliquer ce que vous apprendrez dans ce module ? Décrivez ces situations (métier, contexte, tâches à automatiser ou problèmes à résoudre).",
+        "placeholder": "Exemple : Je travaille dans l'analyse de données et je dois souvent traiter des fichiers CSV. Je souhaite automatiser ces traitements avec Python. Aussi, je dois parfois analyser des logs de serveurs et je pense que Python pourrait m'aider..."
+      },
+      {
+        "id": "difficultes_anticipees",
+        "label": "Quelles sont les difficultés que vous anticipez ou avez déjà rencontrées avec Python ? Y a-t-il des concepts particuliers qui vous semblent complexes ou des erreurs que vous faites souvent ?",
+        "placeholder": "Exemple : J'ai souvent des problèmes avec les erreurs de syntaxe, je ne comprends pas toujours les messages d'erreur. Les listes et dictionnaires me semblent compliqués, surtout quand il faut les manipuler..."
+      }
+    ]
+  }
+}

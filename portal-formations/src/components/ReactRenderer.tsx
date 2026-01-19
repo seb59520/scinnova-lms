@@ -13,12 +13,13 @@ import { TimelineGame } from './TimelineGame'
 import { CategoryGame } from './CategoryGame'
 import { QuizGame } from './QuizGame'
 import { IntroductionQuiz } from './IntroductionQuiz'
+import { SessionIntroductionQuiz } from './SessionIntroductionQuiz'
 import { SlideBlock } from './SlideBlock'
 import { ContextBlock } from './ContextBlock'
 import { TitanicJsonUploader } from './TitanicJsonUploader'
 import { supabase } from '../lib/supabaseClient'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { ChevronDown, ChevronUp, ChevronRight, Gamepad2, FileText, Presentation, PenTool, Code, ArrowRight, ExternalLink } from 'lucide-react'
 
 // Vérifie si le body TipTap contient du contenu substantiel
@@ -43,16 +44,10 @@ interface ReactRendererProps {
 }
 
 export function ReactRenderer({ courseJson }: ReactRendererProps) {
-  // État pour gérer l'expansion des modules (dépliés par défaut pour voir le contenu)
-  // Initialiser avec tous les modules dépliés
+  // État pour gérer l'expansion des modules (repliés par défaut)
+  // Initialiser avec tous les modules repliés (Set vide)
   const [expandedModules, setExpandedModules] = useState<Set<number>>(() => {
-    const allModules = new Set<number>()
-    if (courseJson.modules) {
-      courseJson.modules.forEach((_, index) => {
-        allModules.add(index)
-      })
-    }
-    return allModules
+    return new Set<number>()
   })
 
   const toggleModule = (moduleIndex: number) => {
@@ -1496,19 +1491,43 @@ function renderGame(item: CourseJson['modules'][0]['items'][0], theme: any) {
 
   if (gameType === 'introduction-quiz') {
     const questions = item.content.questions || []
+    const quizType = item.content.quizType || 'introduction_python'
 
-    return (
-      <div className="space-y-4">
-        <IntroductionQuiz
-          questions={questions}
-          title={item.title}
-          description={item.content.description || item.content.instructions}
-          onSave={(answers) => {
-            console.log('Réponses sauvegardées:', answers)
-          }}
-        />
-      </div>
-    )
+    // Wrapper component pour détecter la session
+    const QuizWrapper = () => {
+      const { sessionId } = useParams<{ sessionId?: string }>()
+      
+      if (sessionId) {
+        return (
+          <div className="space-y-4">
+            <SessionIntroductionQuiz
+              questions={questions}
+              title={item.title}
+              description={item.content.description || item.content.instructions}
+              quizType={quizType}
+              onSave={(answers) => {
+                console.log('Réponses sauvegardées:', answers)
+              }}
+            />
+          </div>
+        )
+      }
+
+      return (
+        <div className="space-y-4">
+          <IntroductionQuiz
+            questions={questions}
+            title={item.title}
+            description={item.content.description || item.content.instructions}
+            onSave={(answers) => {
+              console.log('Réponses sauvegardées:', answers)
+            }}
+          />
+        </div>
+      )
+    }
+
+    return <QuizWrapper />
   }
 
   return (
