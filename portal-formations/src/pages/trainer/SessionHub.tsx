@@ -13,6 +13,7 @@ import {
   BarChart3, PenTool, MessageSquare, Settings, AlertTriangle, ClipboardCheck,
   UserPlus, Trash2, Search, User
 } from 'lucide-react';
+import { FillableDocumentsSubmissionsTracker } from '../../components/FillableDocumentsSubmissionsTracker';
 
 type TabId = 'dashboard' | 'learners' | 'gradebook' | 'projects' | 'quiz' | 'time' | 'documents';
 
@@ -101,7 +102,7 @@ export function SessionHub() {
     return (
       <div className="min-h-screen bg-gray-50">
         <TrainerHeader />
-        <div className="pt-24 flex items-center justify-center">
+        <div className="pt-12 flex items-center justify-center">
           <p className="text-gray-500">Chargement...</p>
         </div>
       </div>
@@ -112,7 +113,7 @@ export function SessionHub() {
     return (
       <div className="min-h-screen bg-gray-50">
         <TrainerHeader />
-        <div className="pt-24 flex items-center justify-center">
+        <div className="pt-12 flex items-center justify-center">
           <p className="text-red-500">Session non trouvée</p>
         </div>
       </div>
@@ -134,7 +135,7 @@ export function SessionHub() {
       <TrainerHeader />
 
       {/* Session Header */}
-      <div className="pt-24 bg-white border-b">
+      <div className="pt-12 bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -314,7 +315,7 @@ export function SessionHub() {
         )}
 
         {activeTab === 'documents' && (
-          <DocumentsTab sessionId={sessionId} />
+          <DocumentsTab sessionId={sessionId} courseId={session.course_id} />
         )}
       </div>
     </div>
@@ -1082,29 +1083,24 @@ function TimeTrackingTab({ sessionId }: { sessionId: string }) {
   );
 }
 
-function DocumentsTab({ sessionId }: { sessionId: string }) {
+function DocumentsTab({ sessionId, courseId }: { sessionId: string; courseId: string }) {
   return (
-    <div className="bg-white rounded-xl shadow p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="font-semibold text-gray-900">Documents</h3>
-      </div>
-      <div className="grid grid-cols-3 gap-4">
-        <div className="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
-          <BookOpen className="h-8 w-8 text-blue-500 mb-2" />
-          <h4 className="font-medium">Convention</h4>
-          <p className="text-sm text-gray-500">Convention de formation</p>
-        </div>
-        <div className="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
-          <FileText className="h-8 w-8 text-green-500 mb-2" />
-          <h4 className="font-medium">Émargement</h4>
-          <p className="text-sm text-gray-500">Feuille de présence</p>
-        </div>
-        <div className="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
-          <FileText className="h-8 w-8 text-purple-500 mb-2" />
-          <h4 className="font-medium">Syllabus</h4>
-          <p className="text-sm text-gray-500">Programme détaillé</p>
+    <div className="space-y-6">
+      <div className="bg-white rounded-xl shadow p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="font-semibold text-gray-900 text-xl mb-2">Suivi des soumissions</h3>
+            <p className="text-sm text-gray-600">
+              Suivez quels apprenants ont soumis les documents remplissables (questionnaires, formulaires, etc.)
+            </p>
+          </div>
         </div>
       </div>
+      
+      <FillableDocumentsSubmissionsTracker 
+        sessionId={sessionId}
+        courseId={courseId}
+      />
     </div>
   );
 }

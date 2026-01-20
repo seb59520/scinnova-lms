@@ -25,6 +25,7 @@ export interface FillableDocumentSubmission {
   id: string
   fillable_document_id: string
   user_id: string
+  session_id: string | null
   submitted_file_path: string
   submitted_file_name: string
   submitted_file_size: number | null

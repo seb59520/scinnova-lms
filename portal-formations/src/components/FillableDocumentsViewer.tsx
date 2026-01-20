@@ -228,12 +228,42 @@ export function FillableDocumentsViewer({ courseId }: FillableDocumentsViewerPro
         throw uploadError
       }
 
+      // Récupérer le session_id depuis l'enrollment ou via la fonction SQL
+      let sessionId: string | null = null
+      
+      // Essayer d'abord de récupérer depuis l'enrollment
+      const { data: enrollmentData } = await supabase
+        .from('enrollments')
+        .select('session_id')
+        .eq('user_id', user.id)
+        .eq('course_id', courseId)
+        .eq('status', 'active')
+        .maybeSingle()
+      
+      if (enrollmentData?.session_id) {
+        sessionId = enrollmentData.session_id
+      } else {
+        // Sinon, utiliser la fonction SQL get_user_session_for_course
+        // Cette fonction retourne directement un UUID (ou NULL)
+        const { data: sessionData, error: sessionError } = await supabase
+          .rpc('get_user_session_for_course', {
+            p_user_id: user.id,
+            p_course_id: courseId
+          })
+        
+        if (!sessionError && sessionData) {
+          // La fonction RPC retourne directement l'UUID
+          sessionId = sessionData as string | null
+        }
+      }
+
       // Créer l'entrée dans la table fillable_document_submissions
       const { data: submissionData, error: submissionError } = await supabase
         .from('fillable_document_submissions')
         .insert({
           fillable_document_id: doc.id,
           user_id: user.id,
+          session_id: sessionId,
           submitted_file_path: fileName,
           submitted_file_name: file.name,
           submitted_file_size: file.size,
