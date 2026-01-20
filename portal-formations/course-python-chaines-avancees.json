@@ -1,0 +1,939 @@
+{
+  "title": "Les chaînes de caractères avancées",
+  "description": "Découvrez les méthodes avancées de manipulation des chaînes de caractères en Python : formatage avec f-strings, expressions régulières, encodage, méthodes spécialisées et techniques avancées.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3776AB",
+    "secondaryColor": "#FFD43B",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Méthodes avancées de manipulation des chaînes",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Introduction aux chaînes avancées",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Introduction aux méthodes avancées de manipulation des chaînes de caractères en Python."
+          },
+          "chapters": [
+            {
+              "title": "Introduction",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔤 Méthodes avancées de manipulation des chaînes" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Python offre de nombreuses méthodes avancées pour manipuler les chaînes de caractères au-delà des opérations de base. Ce cours vous permettra de maîtriser ces techniques essentielles." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Objectifs d'apprentissage" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Maîtriser le formatage avancé avec f-strings" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Utiliser les expressions régulières (regex)" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Comprendre l'encodage et le décodage" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Manipuler les chaînes avec des méthodes spécialisées" }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Formatage avancé avec f-strings",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez à utiliser les f-strings pour un formatage puissant et lisible."
+          },
+          "chapters": [
+            {
+              "title": "Formatage avec f-strings",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "💬 Formatage avancé avec f-strings" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Les f-strings (Python 3.6+) permettent un formatage puissant et lisible :" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Formatage de base\nnom = \"Alice\"\nage = 30\nmessage = f\"{nom} a {age} ans\"\nprint(message)  # Alice a 30 ans\n\n# Formatage numérique\nprix = 19.99\nprint(f\"Prix: {prix:.2f}€\")  # Prix: 19.99€\nprint(f\"Prix: {prix:>10.2f}\")  # Aligné à droite\n\n# Expressions dans les f-strings\nx, y = 5, 10\nprint(f\"{x} + {y} = {x + y}\")  # 5 + 10 = 15\n\n# Formatage de dates\nfrom datetime import datetime\nnow = datetime.now()\nprint(f\"Date: {now:%Y-%m-%d %H:%M:%S}\")"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.3 Méthodes de recherche et remplacement",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Découvrez les méthodes de recherche et remplacement dans les chaînes."
+          },
+          "chapters": [
+            {
+              "title": "Recherche et remplacement",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔍 Méthodes de recherche et remplacement" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "texte = \"Python est un langage de programmation Python\"\n\n# Recherche\nprint(texte.find(\"Python\"))      # 0 (première occurrence)\nprint(texte.rfind(\"Python\"))     # 33 (dernière occurrence)\nprint(texte.index(\"est\"))        # 7\nprint(\"Python\" in texte)         # True\n\n# Remplacement\nnouveau = texte.replace(\"Python\", \"Java\", 1)  # Remplace seulement la première\nprint(nouveau)  # \"Java est un langage de programmation Python\"\n\n# Comptage\nprint(texte.count(\"Python\"))    # 2\n\n# Vérification de préfixe/suffixe\nemail = \"user@example.com\"\nprint(email.startswith(\"user\"))  # True\nprint(email.endswith(\".com\"))    # True"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.4 Méthodes de transformation",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Apprenez les méthodes de transformation des chaînes : casse, justification, etc."
+          },
+          "chapters": [
+            {
+              "title": "Transformation de chaînes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔄 Méthodes de transformation" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "texte = \"  Python Programming  \"\n\n# Suppression d'espaces\nprint(repr(texte.strip()))        # 'Python Programming'\nprint(repr(texte.lstrip()))       # 'Python Programming  '\nprint(repr(texte.rstrip()))       # '  Python Programming'\n\n# Transformation de casse\nprint(\"Hello World\".upper())      # HELLO WORLD\nprint(\"Hello World\".lower())      # hello world\nprint(\"hello world\".capitalize()) # Hello world\nprint(\"hello world\".title())      # Hello World\nprint(\"Hello World\".swapcase())   # hELLO wORLD\n\n# Justification\nprint(\"Python\".ljust(10, \"-\"))   # Python----\nprint(\"Python\".rjust(10, \"-\"))   # ----Python\nprint(\"Python\".center(10, \"-\"))  # --Python--"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.5 Partition et split avancés",
+          "position": 4,
+          "published": true,
+          "content": {
+            "description": "Maîtrisez les méthodes de partition et split pour diviser les chaînes."
+          },
+          "chapters": [
+            {
+              "title": "Partition et split",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "✂️ Partition et split avancés" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "texte = \"nom:prenom:age:ville\"\n\n# Split simple\nparts = texte.split(\":\")\nprint(parts)  # ['nom', 'prenom', 'age', 'ville']\n\n# Split avec limite\nparts = texte.split(\":\", 2)\nprint(parts)  # ['nom', 'prenom', 'age:ville']\n\n# Splitlines pour les lignes\nmulti_ligne = \"ligne1\\nligne2\\nligne3\"\nprint(multi_ligne.splitlines())  # ['ligne1', 'ligne2', 'ligne3']\n\n# Partition (divise en 3 parties)\nresult = \"user@example.com\".partition(\"@\")\nprint(result)  # ('user', '@', 'example.com')\n\n# Rpartition (partition depuis la droite)\nresult = \"file.txt.backup\".rpartition(\".\")\nprint(result)  # ('file.txt', '.', 'backup')"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.6 Méthodes de vérification",
+          "position": 5,
+          "published": true,
+          "content": {
+            "description": "Apprenez à vérifier le type et le contenu des chaînes."
+          },
+          "chapters": [
+            {
+              "title": "Vérification de chaînes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "✅ Méthodes de vérification" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Vérification du type de caractères\nprint(\"123\".isdigit())        # True\nprint(\"abc123\".isalnum())      # True (alphanumérique)\nprint(\"Hello\".isalpha())       # True (lettres uniquement)\nprint(\"   \".isspace())         # True\nprint(\"Hello\".isupper())       # False\nprint(\"HELLO\".isupper())       # True\nprint(\"hello\".islower())       # True\nprint(\"Hello World\".istitle()) # True\n\n# Vérification d'encodage\nprint(\"café\".isascii())        # False (contient é)\nprint(\"cafe\".isascii())        # True\n\n# Vérification d'identifiant Python valide\nprint(\"variable_name\".isidentifier())  # True\nprint(\"123variable\".isidentifier())    # False\nprint(\"class\".isidentifier())          # True (mais mot réservé)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.7 Expressions régulières (regex)",
+          "position": 6,
+          "published": true,
+          "content": {
+            "description": "Introduction aux expressions régulières pour la recherche et le remplacement complexes."
+          },
+          "chapters": [
+            {
+              "title": "Expressions régulières",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔎 Expressions régulières (regex)" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Le module `re` permet d'utiliser des expressions régulières :" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "import re\n\ntexte = \"Contactez-nous au 01-23-45-67-89 ou 06.12.34.56.78\"\n\n# Recherche simple\npattern = r\"\\d{2}\"  # 2 chiffres consécutifs\nmatches = re.findall(pattern, texte)\nprint(matches)  # ['01', '23', '45', '67', '89', '06', '12', '34', '56', '78']\n\n# Recherche avec groupes\npattern = r\"(\\d{2})[-.](\\d{2})[-.](\\d{2})\"\nmatch = re.search(pattern, texte)\nif match:\n    print(match.group())      # '01-23-45'\n    print(match.group(1))      # '01'\n    print(match.groups())      # ('01', '23', '45')\n\n# Remplacement\nnouveau = re.sub(r\"\\d{2}\", \"XX\", texte)\nprint(nouveau)  # \"Contactez-nous au XX-XX-XX-XX-XX ou XX.XX.XX.XX.XX\""
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Patterns regex courants" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "import re\n\n# Email\nemail_pattern = r\"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\"\nemail = \"user@example.com\"\nprint(re.match(email_pattern, email))  # Match object\n\n# Numéro de téléphone français\nphone_pattern = r\"0[1-9]([-. ]?[0-9]{2}){4}\"\nphone = \"01-23-45-67-89\"\nprint(re.match(phone_pattern, phone))  # Match object\n\n# Date (format JJ/MM/AAAA)\ndate_pattern = r\"\\d{2}/\\d{2}/\\d{4}\"\ndate = \"25/12/2024\"\nprint(re.match(date_pattern, date))  # Match object\n\n# Extraction de mots\ntexte = \"Python3, Java8, C++17\"\nmots = re.findall(r\"[A-Za-z]+\\d*\", texte)\nprint(mots)  # ['Python3', 'Java8', 'C17']\n\n# Split avec regex\ntexte = \"mot1, mot2; mot3. mot4\"\nparts = re.split(r\"[,;.]\\s*\", texte)\nprint(parts)  # ['mot1', 'mot2', 'mot3', 'mot4']"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.8 Encodage et décodage",
+          "position": 7,
+          "published": true,
+          "content": {
+            "description": "Comprenez l'encodage et le décodage des chaînes de caractères."
+          },
+          "chapters": [
+            {
+              "title": "Encodage et décodage",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔤 Encodage et décodage" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Encodage UTF-8 (par défaut)\ntexte = \"café\"\nencoded = texte.encode(\"utf-8\")\nprint(encoded)  # b'caf\\xc3\\xa9'\n\n# Décodage\ndecoded = encoded.decode(\"utf-8\")\nprint(decoded)  # café\n\n# Autres encodages\nlatin1 = texte.encode(\"latin-1\")\nprint(latin1)  # b'caf\\xe9'\n\n# Gestion des erreurs\nmalformed = b'caf\\xc3'\ntry:\n    decoded = malformed.decode(\"utf-8\")\nexcept UnicodeDecodeError:\n    decoded = malformed.decode(\"utf-8\", errors=\"ignore\")\n    print(decoded)  # caf\n\n# Encodage avec gestion d'erreurs\ntexte = \"Hello\\u00e9\"\nencoded = texte.encode(\"ascii\", errors=\"replace\")\nprint(encoded)  # b'Hello?'"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.9 Méthodes translate et maketrans",
+          "position": 8,
+          "published": true,
+          "content": {
+            "description": "Utilisez translate et maketrans pour des remplacements efficaces."
+          },
+          "chapters": [
+            {
+              "title": "Translate et maketrans",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔄 Méthodes translate et maketrans" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Pour des remplacements de caractères efficaces :" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Création d'une table de traduction\ntable = str.maketrans(\"aeiou\", \"12345\")\ntexte = \"hello world\"\nresult = texte.translate(table)\nprint(result)  # h2ll4 w4rld\n\n# Suppression de caractères\ntable = str.maketrans(\"\", \"\", \"aeiou\")\ntexte = \"hello world\"\nresult = texte.translate(table)\nprint(result)  # hll wrld\n\n# Traduction complexe\noriginal = \"abc\"\nreplacement = \"xyz\"\nto_delete = \"d\"\ntable = str.maketrans(original, replacement, to_delete)\ntexte = \"abcd\"\nresult = texte.translate(table)\nprint(result)  # xyzd (mais d est supprimé)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 1 : Formatage de texte",
+          "position": 9,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice : Formatage de texte" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créez une fonction qui formate un message de bienvenue avec le nom et l'âge d'une personne." }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "Instructions :" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez une fonction `formater_bienvenue(nom, age)` qui retourne une chaîne formatée avec f-string au format : \"Bienvenue {nom}, vous avez {age} ans !\"" }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "def formater_bienvenue(nom, age):\n    return f\"Bienvenue {nom}, vous avez {age} ans !\"\n\n# Test\nprint(formater_bienvenue(\"Alice\", 30))\n# Bienvenue Alice, vous avez 30 ans !\n\nprint(formater_bienvenue(\"Bob\", 25))\n# Bienvenue Bob, vous avez 25 ans !"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 2 : Nettoyage de texte",
+          "position": 10,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice : Nettoyage de texte" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créez une fonction qui nettoie un texte en supprimant les espaces superflus et en mettant en forme." }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "Instructions :" }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Supprime les espaces en début et fin" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Remplace les espaces multiples par un seul espace" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Met la première lettre en majuscule" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "import re\n\ndef nettoyer_texte(texte):\n    texte = texte.strip()\n    texte = re.sub(r'\\s+', ' ', texte)\n    return texte.capitalize()\n\n# Test\nprint(nettoyer_texte(\"  bonjour   le   monde  \"))\n# Bonjour le monde\n\nprint(nettoyer_texte(\"PYTHON   PROGRAMMING\"))\n# Python programming"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 3 : Validation d'email",
+          "position": 11,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice : Validation d'email" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créez une fonction qui valide une adresse email avec regex." }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "Instructions :" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez une fonction `valider_email(email)` qui retourne True si l'email est valide, False sinon. Utilisez une expression régulière." }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "import re\n\ndef valider_email(email):\n    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'\n    return bool(re.match(pattern, email))\n\n# Test\nprint(valider_email(\"user@example.com\"))  # True\nprint(valider_email(\"invalid.email\"))     # False\nprint(valider_email(\"test@domain.co.uk\")) # True"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 4 : Extraction de nombres",
+          "position": 12,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice : Extraction de nombres" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Extrayez tous les nombres d'une chaîne de caractères." }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "Instructions :" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez une fonction `extraire_nombres(texte)` qui retourne une liste de tous les nombres (entiers) trouvés dans le texte." }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "import re\n\ndef extraire_nombres(texte):\n    pattern = r'\\d+'\n    matches = re.findall(pattern, texte)\n    return [int(m) for m in matches]\n\n# Test\nprint(extraire_nombres(\"J'ai 5 pommes et 3 oranges\"))\n# [5, 3]\n\nprint(extraire_nombres(\"Prix: 19.99€, quantité: 42\"))\n# [19, 99, 42]"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 5 : Chiffrement simple",
+          "position": 13,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice : Chiffrement simple" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créez une fonction de chiffrement simple avec translate." }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "Instructions :" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez une fonction `chiffrer_cesar(texte, decalage)` qui décale chaque lettre de l'alphabet de `decalage` positions (chiffrement de César)." }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "def chiffrer_cesar(texte, decalage):\n    alphabet = \"ABCDEFGHIJKLMNOPQRSTUVWXYZ\"\n    decale = alphabet[decalage:] + alphabet[:decalage]\n    table = str.maketrans(alphabet, decale)\n    return texte.upper().translate(table)\n\n# Test\nprint(chiffrer_cesar(\"HELLO\", 3))  # KHOOR\nprint(chiffrer_cesar(\"WORLD\", 5))  # BTWQI"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "game",
+          "title": "Quiz : Chaînes de caractères avancées",
+          "position": 14,
+          "published": true,
+          "content": {
+            "gameType": "quiz",
+            "description": "Testez vos connaissances sur les méthodes avancées de manipulation des chaînes en Python",
+            "instructions": "Répondez aux questions suivantes. Vous devez obtenir au moins 7 bonnes réponses pour réussir le quiz.",
+            "scoring": {
+              "totalQuestions": 10,
+              "pointsPerQuestion": 1,
+              "passingScore": 7
+            },
+            "levels": [
+              {
+                "level": 1,
+                "name": "Quiz principal",
+                "questions": [
+                  {
+                    "id": "q1",
+                    "type": "mcq",
+                    "prompt": "Quelle méthode est la plus moderne pour formater des chaînes en Python 3.6+ ?",
+                    "options": [
+                      "f-strings",
+                      "format()",
+                      "Opérateur %",
+                      "concaténation avec +"
+                    ],
+                    "answer": "f-strings",
+                    "explanation": "Les f-strings (f\"...\") sont la méthode la plus moderne et recommandée depuis Python 3.6. Elles sont plus lisibles et performantes que format() ou l'opérateur %.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q2",
+                    "type": "mcq",
+                    "prompt": "Quelle méthode permet de trouver la dernière occurrence d'une sous-chaîne ?",
+                    "options": [
+                      "find()",
+                      "rfind()",
+                      "index()",
+                      "search()"
+                    ],
+                    "answer": "rfind()",
+                    "explanation": "rfind() recherche depuis la droite (right) et retourne la position de la dernière occurrence. find() retourne la première occurrence.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q3",
+                    "type": "mcq",
+                    "prompt": "Quelle est la différence entre split() et partition() ?",
+                    "options": [
+                      "split() divise en plusieurs parties, partition() en exactement 3",
+                      "partition() divise en plusieurs parties, split() en exactement 3",
+                      "Ils sont identiques",
+                      "split() ne fonctionne qu'avec des regex"
+                    ],
+                    "answer": "split() divise en plusieurs parties, partition() en exactement 3",
+                    "explanation": "split() divise une chaîne en plusieurs parties selon un séparateur. partition() divise toujours en exactement 3 parties : (avant, séparateur, après), même si le séparateur n'est pas trouvé.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q4",
+                    "type": "mcq",
+                    "prompt": "Quel module Python est utilisé pour les expressions régulières ?",
+                    "options": [
+                      "regex",
+                      "re",
+                      "string",
+                      "pattern"
+                    ],
+                    "answer": "re",
+                    "explanation": "Le module 're' est le module standard de Python pour les expressions régulières. Il fournit des fonctions comme match(), search(), findall(), sub(), etc.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q5",
+                    "type": "mcq",
+                    "prompt": "Quelle méthode est la plus efficace pour remplacer plusieurs caractères différents ?",
+                    "options": [
+                      "Plusieurs appels à replace()",
+                      "translate() avec maketrans()",
+                      "sub() avec regex",
+                      "Aucune différence"
+                    ],
+                    "answer": "translate() avec maketrans()",
+                    "explanation": "translate() avec maketrans() est plus efficace car il crée une table de traduction une seule fois et l'applique en une passe, contrairement à plusieurs appels à replace() qui nécessitent plusieurs passes.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q6",
+                    "type": "mcq",
+                    "prompt": "Quel encodage est utilisé par défaut en Python 3 pour les chaînes ?",
+                    "options": [
+                      "ASCII",
+                      "UTF-8",
+                      "Latin-1",
+                      "CP1252"
+                    ],
+                    "answer": "UTF-8",
+                    "explanation": "Python 3 utilise UTF-8 par défaut pour l'encodage des chaînes de caractères, ce qui permet de gérer tous les caractères Unicode.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q7",
+                    "type": "mcq",
+                    "prompt": "Que retourne 'Hello World'.istitle() ?",
+                    "options": [
+                      "True",
+                      "False",
+                      "Erreur",
+                      "None"
+                    ],
+                    "answer": "True",
+                    "explanation": "istitle() retourne True si la chaîne est en format titre (chaque mot commence par une majuscule). 'Hello World' respecte ce format.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q8",
+                    "type": "mcq",
+                    "prompt": "Quelle expression régulière correspond à un ou plusieurs chiffres ?",
+                    "options": [
+                      "\\d",
+                      "\\d+",
+                      "\\d*",
+                      "[0-9]"
+                    ],
+                    "answer": "\\d+",
+                    "explanation": "\\d+ correspond à un ou plusieurs chiffres. \\d correspond à un seul chiffre, \\d* à zéro ou plusieurs, et [0-9] à un seul chiffre (équivalent à \\d).",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q9",
+                    "type": "mcq",
+                    "prompt": "Quelle méthode permet de joindre une liste de chaînes avec un séparateur ?",
+                    "options": [
+                      "join()",
+                      "concat()",
+                      "merge()",
+                      "combine()"
+                    ],
+                    "answer": "join()",
+                    "explanation": "La méthode join() est appelée sur le séparateur et prend une liste en argument. Exemple: ', '.join(['a', 'b', 'c']) retourne 'a, b, c'.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q10",
+                    "type": "mcq",
+                    "prompt": "Quelle est la meilleure pratique pour vérifier si une sous-chaîne existe ?",
+                    "options": [
+                      "texte.find('mot') != -1",
+                      "'mot' in texte",
+                      "texte.index('mot') >= 0",
+                      "texte.contains('mot')"
+                    ],
+                    "answer": "'mot' in texte",
+                    "explanation": "L'opérateur 'in' est la méthode la plus Pythonique et lisible pour vérifier l'existence d'une sous-chaîne. Il est plus clair que find() != -1.",
+                    "difficulty": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

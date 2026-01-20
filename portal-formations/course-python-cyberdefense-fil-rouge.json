@@ -1,0 +1,912 @@
+{
+  "title": "Fil Rouge Python - Détection d'intrusion cyberdéfense",
+  "slug": "python-cyberdefense-fil-rouge",
+  "description": "Fil rouge complet pour apprendre Python en contexte cyberdéfense. Construisez progressivement un outil de surveillance de sécurité capable d'analyser des logs, détecter des comportements suspects et produire des alertes.",
+  "duration": "7 étapes progressives",
+  "level": "Débutant à Intermédiaire",
+  "published": true,
+  "theme": {
+    "primaryColor": "#DC2626",
+    "secondaryColor": "#991B1B",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Introduction au fil rouge",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#DC2626",
+        "secondaryColor": "#991B1B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Présentation du scénario",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez le contexte et l'objectif du fil rouge."
+          },
+          "chapters": [
+            {
+              "title": "Le scénario : Analyste junior en cyberdéfense",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔐 Fil Rouge Python - Cyberdéfense" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Vous êtes " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "analyste junior en cyberdéfense" },
+                      { "type": "text", "text": ". Une entreprise fictive vous confie les logs de ses systèmes. Des incidents de sécurité sont suspectés. Votre mission : comprendre, analyser, détecter et alerter." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🎯 Objectif pédagogique global" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Construire progressivement un outil Python de surveillance de sécurité, capable de :" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Analyser des logs" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Détecter des comportements suspects" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Produire des alertes" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Automatiser une surveillance basique" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🧩 Contexte scénarisé" }]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          { "type": "text", "marks": [{ "type": "bold" }], "text": "Important : " },
+                          { "type": "text", "text": "L'objectif n'est pas \"faire de la cyber\", mais maîtriser Python DANS un environnement cyber. Chaque étape vous apprend des concepts Python fondamentaux tout en résolvant un problème de sécurité réaliste." }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "📋 Structure du fil rouge" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "text" },
+                    "content": [{ "type": "text", "text": "┌─────────┬──────────────────────────────────────────────────────────┐\n│ Étape   │  Mission                                                  │\n├─────────┼──────────────────────────────────────────────────────────┤\n│ 🟢 1    │ Comprendre les logs (fondations Python)                  │\n│ 🟢 2    │ Identifier les IP suspectes (dictionnaires)              │\n│ 🟡 3    │ Détection temporelle (logique métier)                    │\n│ 🟡 4    │ Règles de détection (mini IDS)                           │\n│ 🟡 5    │ Génération d'alertes (écriture fichiers)                 │\n│ 🔵 6    │ Automatisation de la surveillance                        │\n│ 🔵 7    │ Analyse globale & rapport final                          │\n└─────────┴──────────────────────────────────────────────────────────┘" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "📁 Structure du projet" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Créez un dossier dédié pour ce projet :" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "text" },
+                    "content": [{ "type": "text", "text": "cyberdefense-fil-rouge/\n├── data/\n│   └── auth.log              # Fichier de logs d'authentification\n├── etape1_lire_logs.py       # Étape 1\n├── etape2_ip_suspectes.py    # Étape 2\n├── etape3_detection_temporelle.py  # Étape 3\n├── etape4_regles_detection.py     # Étape 4\n├── etape5_generation_alertes.py   # Étape 5\n├── etape6_automatisation.py       # Étape 6\n├── etape7_rapport_final.py         # Étape 7\n├── solutions/                      # Solutions (à consulter après)\n│   ├── solution_etape1.py\n│   ├── solution_etape2.py\n│   └── ...\n└── README.md                        # Guide du projet" }]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "🟢 Étape 1 - Comprendre les logs",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#059669"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Mission : Lire et comprendre des logs bruts",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Première étape : lire un fichier de logs et extraire des informations basiques."
+          },
+          "chapters": [
+            {
+              "title": "Objectifs de l'étape 1",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🟢 Étape 1 - Comprendre les logs" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🎯 Mission" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Lire et comprendre des logs bruts d'authentification." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "📂 Données" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Fichier auth.log (simplifié) avec le format suivant :" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "text" },
+                    "content": [{ "type": "text", "text": "2026-01-10 09:12:45 IP=192.168.1.10 STATUS=FAIL USER=admin\n2026-01-10 09:13:02 IP=192.168.1.10 STATUS=FAIL USER=admin\n2026-01-10 09:15:30 IP=192.168.1.25 STATUS=SUCCESS USER=alice\n2026-01-10 09:16:12 IP=192.168.1.10 STATUS=FAIL USER=root\n2026-01-10 10:22:45 IP=192.168.1.50 STATUS=SUCCESS USER=bob" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🐍 Python appris" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "open(), read(), split()" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Variables" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Boucles for" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Conditions if" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🧪 Exercice" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Lire le fichier auth.log" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Afficher chaque tentative échouée (STATUS=FAIL)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Compter le nombre total d'échecs" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "✅ Objectif atteint" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "À la fin de cette étape, vous saurez lire et exploiter un fichier réel." }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Code à réaliser",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💻 Exercice Étape 1" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Créez le fichier etape1_lire_logs.py et implémentez la logique suivante :" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# ===========================================\n# ÉTAPE 1 - COMPRENDRE LES LOGS\n# ===========================================\n# Mission : Lire le fichier auth.log et identifier\n#           les tentatives d'authentification échouées\n\n# TODO 1 : Ouvrir le fichier data/auth.log en lecture\n# TODO 2 : Lire toutes les lignes\n# TODO 3 : Pour chaque ligne :\n#          - Vérifier si STATUS=FAIL\n#          - Si oui, afficher la ligne\n#          - Compter le nombre d'échecs\n# TODO 4 : Afficher le total d'échecs\n\nprint(\"🔐 Analyse des logs d'authentification\")\nprint(\"=\" * 50)\n\n# Votre code ici\n\nprint(\"\\n✅ Analyse terminée\")" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "💡 Indices" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Utilisez open('data/auth.log', 'r') pour ouvrir le fichier" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Utilisez .readlines() pour lire toutes les lignes" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Utilisez 'STATUS=FAIL' in ligne pour vérifier" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Initialisez un compteur à 0 et incrémentez-le" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "✅ Checklist" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Le fichier est ouvert correctement" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Toutes les lignes sont lues" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Les tentatives échouées sont affichées" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "☐ Le nombre total d'échecs est affiché" }]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "🟢 Étape 2 - Identifier les IP suspectes",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#059669"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Mission : Repérer les IP qui échouent trop souvent",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Détecter les attaques par force brute en comptant les échecs par IP."
+          },
+          "chapters": [
+            {
+              "title": "Objectifs de l'étape 2",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🟢 Étape 2 - Identifier les IP suspectes" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🎯 Mission" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Repérer les IP qui échouent trop souvent → détection de brute force." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🐍 Python appris" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Dictionnaires {ip: compteur}" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Incrémentation" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Comparaisons" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Extraction de données depuis une chaîne" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🧪 Exercice" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Compter les échecs par IP" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Afficher les IP avec +5 tentatives échouées" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "💡 Déclic clé" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Python sert à observer un comportement et identifier des patterns suspects." }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Code à réaliser",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💻 Exercice Étape 2" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Créez le fichier etape2_ip_suspectes.py :" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# ===========================================\n# ÉTAPE 2 - IDENTIFIER LES IP SUSPECTES\n# ===========================================\n# Mission : Détecter les attaques par force brute\n#           en comptant les échecs par IP\n\n# TODO 1 : Créer un dictionnaire pour compter les échecs par IP\n# TODO 2 : Pour chaque ligne avec STATUS=FAIL :\n#          - Extraire l'IP (IP=192.168.1.10)\n#          - Incrémenter le compteur pour cette IP\n# TODO 3 : Afficher les IP avec 5 échecs ou plus\n\nprint(\"🔍 Détection des IP suspectes\")\nprint(\"=\" * 50)\n\n# Votre code ici\n\nprint(\"\\n✅ Analyse terminée\")" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "💡 Indices" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Utilisez un dictionnaire : echecs_par_ip = {}" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Pour extraire l'IP : cherchez 'IP=' dans la ligne, puis récupérez ce qui suit" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Utilisez .get(ip, 0) + 1 pour incrémenter" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Parcourez le dictionnaire avec .items() pour afficher" }]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "🟡 Étape 3 - Détection temporelle",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#F59E0B",
+        "secondaryColor": "#D97706"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Mission : Détecter les connexions hors heures normales",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Analyser les horaires des connexions pour détecter des activités suspectes."
+          },
+          "chapters": [
+            {
+              "title": "Objectifs de l'étape 3",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🟡 Étape 3 - Détection temporelle" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🎯 Mission" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Détecter des connexions en dehors des heures normales (08h-18h)." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🐍 Python appris" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Découpage de date/heure (split)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Conditions imbriquées" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Logique métier" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🧪 Exercice" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Extraire l'heure de chaque ligne de log" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Vérifier si l'heure est entre 08h et 18h" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Alerter si tentative hors plage" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "💡 Ici, Python devient outil de décision" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Code à réaliser",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💻 Exercice Étape 3" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# ===========================================\n# ÉTAPE 3 - DÉTECTION TEMPORELLE\n# ===========================================\n# Mission : Détecter les connexions hors heures normales\n\n# Heures normales : 08h00 - 18h00\nHEURE_DEBUT = 8\nHEURE_FIN = 18\n\n# TODO 1 : Pour chaque ligne de log :\n#          - Extraire la date et l'heure (format : 2026-01-10 09:12:45)\n#          - Extraire l'heure (09)\n#          - Convertir en nombre entier\n# TODO 2 : Vérifier si l'heure est < 8 ou >= 18\n# TODO 3 : Si oui, afficher une alerte\n\nprint(\"⏰ Détection des connexions hors heures normales\")\nprint(\"=\" * 50)\n\n# Votre code ici\n\nprint(\"\\n✅ Analyse terminée\")" }]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "🟡 Étape 4 - Règles de détection",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#F59E0B",
+        "secondaryColor": "#D97706"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Mission : Créer un moteur de règles simple",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Structurer le code avec des fonctions pour créer un mini IDS (Intrusion Detection System)."
+          },
+          "chapters": [
+            {
+              "title": "Objectifs de l'étape 4",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🟡 Étape 4 - Règles de détection (mini IDS)" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🎯 Mission" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Créer un moteur de règles simple." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🧠 Exemples de règles" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "+5 échecs → suspect" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Connexion de nuit → suspect" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "User = admin → critique" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🐍 Python appris" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Fonctions" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Structuration du code" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Listes de règles" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "💡 Introduction à la Blue Team" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Code à réaliser",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💻 Exercice Étape 4" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# ===========================================\n# ÉTAPE 4 - RÈGLES DE DÉTECTION (MINI IDS)\n# ===========================================\n# Mission : Créer un moteur de règles de détection\n\n# TODO 1 : Créer une fonction est_suspect(ligne, echecs_par_ip)\n#          qui retourne True si la ligne est suspecte\n# TODO 2 : Implémenter les règles :\n#          - Règle 1 : +5 échecs pour cette IP\n#          - Règle 2 : Connexion hors heures (8h-18h)\n#          - Règle 3 : Tentative sur USER=admin\n# TODO 3 : Appliquer ces règles à chaque ligne\n\nprint(\"🛡️ Moteur de détection d'intrusion\")\nprint(\"=\" * 50)\n\n# Votre code ici\n\ndef est_suspect(ligne, echecs_par_ip):\n    \"\"\"\n    Vérifie si une ligne de log est suspecte selon les règles.\n    Retourne True si suspect, False sinon.\n    \"\"\"\n    # TODO : Implémenter les règles\n    return False\n\nprint(\"\\n✅ Analyse terminée\")" }]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "🟡 Étape 5 - Génération d'alertes",
+      "position": 5,
+      "theme": {
+        "primaryColor": "#F59E0B",
+        "secondaryColor": "#D97706"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Mission : Produire un rapport d'alerte exploitable",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Générer un fichier d'alertes formaté pour le SOC (Security Operations Center)."
+          },
+          "chapters": [
+            {
+              "title": "Objectifs de l'étape 5",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🟡 Étape 5 - Génération d'alertes" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🎯 Mission" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Produire un rapport d'alerte exploitable." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🐍 Python appris" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Écriture de fichiers" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Formatage de texte" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Fonctions réutilisables" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🧪 Exercice" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Générer alertes.txt" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Une alerte = une ligne claire" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "📌 Compétence clé SOC" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Code à réaliser",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💻 Exercice Étape 5" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# ===========================================\n# ÉTAPE 5 - GÉNÉRATION D'ALERTES\n# ===========================================\n# Mission : Produire un fichier d'alertes pour le SOC\n\n# TODO 1 : Créer une fonction generer_alerte(ligne, raison)\n#          qui formate une alerte\n# TODO 2 : Collecter toutes les alertes dans une liste\n# TODO 3 : Écrire toutes les alertes dans alertes.txt\n#          Format : [DATE] [NIVEAU] [RAISON] - [DÉTAILS]\n\nprint(\"🚨 Génération du rapport d'alertes\")\nprint(\"=\" * 50)\n\n# Votre code ici\n\nprint(\"\\n✅ Rapport généré : alertes.txt\")" }]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "🔵 Étape 6 - Automatisation",
+      "position": 6,
+      "theme": {
+        "primaryColor": "#3B82F6",
+        "secondaryColor": "#2563EB"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Mission : Surveiller les logs en continu",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Créer un script qui surveille les logs en temps réel."
+          },
+          "chapters": [
+            {
+              "title": "Objectifs de l'étape 6",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔵 Étape 6 - Automatisation de la surveillance" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🎯 Mission" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Surveiller les logs en continu." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🐍 Python appris" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "while True" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "time.sleep()" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Scripts autonomes" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🧪 Exercice" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Vérifier le log toutes les 30 secondes" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Nouvelle ligne → analyse" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "⚠️ Introduction aux scripts long-running" }]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Code à réaliser",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💻 Exercice Étape 6" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# ===========================================\n# ÉTAPE 6 - AUTOMATISATION DE LA SURVEILLANCE\n# ===========================================\n# Mission : Surveiller les logs en continu\nimport time\n\n# TODO 1 : Créer une boucle while True\n# TODO 2 : Lire le fichier de logs\n# TODO 3 : Comparer avec la dernière position lue\n# TODO 4 : Analyser uniquement les nouvelles lignes\n# TODO 5 : Attendre 30 secondes avant la prochaine vérification\n\nprint(\"🔄 Surveillance en continu activée\")\nprint(\"Appuyez sur Ctrl+C pour arrêter\")\nprint(\"=\" * 50)\n\n# Votre code ici\n\n# Indice : Utilisez .tell() pour connaître la position dans le fichier" }]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "🔵 Étape 7 - Rapport final",
+      "position": 7,
+      "theme": {
+        "primaryColor": "#3B82F6",
+        "secondaryColor": "#2563EB"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Mission : Produire une synthèse de sécurité",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Créer un rapport complet avec statistiques et recommandations."
+          },
+          "chapters": [
+            {
+              "title": "Objectifs de l'étape 7",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🔵 Étape 7 - Analyse globale & rapport final" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🎯 Mission" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Produire une synthèse de sécurité." }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🐍 Python appris" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Statistiques simples" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Structuration du code" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Lisibilité et propreté" }]}]}
+                  ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🧪 Exercice" }]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Nombre d'attaques détectées" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "IP les plus dangereuses" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Heures critiques" }]}]}
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Code à réaliser",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "💻 Exercice Étape 7" }]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [{ "type": "text", "text": "# ===========================================\n# ÉTAPE 7 - ANALYSE GLOBALE & RAPPORT FINAL\n# ===========================================\n# Mission : Produire une synthèse de sécurité complète\n\n# TODO 1 : Compiler toutes les statistiques\n#          - Nombre total d'alertes\n#          - IP les plus suspectes (top 5)\n#          - Heures avec le plus d'activité suspecte\n#          - Utilisateurs ciblés\n# TODO 2 : Générer un rapport texte formaté\n# TODO 3 : Sauvegarder dans rapport_securite.txt\n\nprint(\"📊 Génération du rapport de sécurité\")\nprint(\"=\" * 50)\n\n# Votre code ici\n\nprint(\"\\n✅ Rapport généré : rapport_securite.txt\")" }]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Bonus et conclusion",
+      "position": 8,
+      "theme": {
+        "primaryColor": "#8B5CF6",
+        "secondaryColor": "#7C3AED"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Félicitations et bonus",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Récapitulatif et idées pour aller plus loin."
+          },
+          "chapters": [
+            {
+              "title": "Ce que vous maîtrisez maintenant",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "🎉 Félicitations !" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [{ "type": "text", "text": "Vous avez terminé le fil rouge Python en cyberdéfense !" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "✅ Compétences acquises" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Python fondamental" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Lecture / écriture de fichiers" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Structures de données (listes, dictionnaires)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Fonctions propres" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Logique cyberdéfense" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Automatisation" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "✅ Esprit analyste sécurité" }]}]}
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "🧪 Bonus (optionnels)" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ajouter une liste noire d'IP" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Générer un CSV pour Excel" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ajouter un score de danger (0-100)" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Simuler une attaque pour tester" }]}]},
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Créer une interface graphique simple (Tkinter)" }]}]}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

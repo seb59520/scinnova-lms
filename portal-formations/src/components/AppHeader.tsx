@@ -63,95 +63,85 @@ export function AppHeader({
     .slice(0, 2);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow">
-      <div className="w-full px-2 sm:px-3">
-        <div className="flex justify-between items-center py-4">
-          {/* Left side - Logo, Title and back button */}
-          <div className="flex items-center space-x-4 flex-1">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between gap-4 py-3">
+          <div className="flex items-center gap-4 min-w-0">
             {showBackButton && (
               <Link
                 to={backTo}
-                className="text-blue-600 hover:text-blue-500 flex items-center"
+                className="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors"
               >
                 ← {backLabel}
               </Link>
             )}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center gap-3 min-w-0">
               <img 
                 src={logoScinnova} 
                 alt="SCINNOVA" 
-                className="h-16 w-auto"
+                className="h-10 w-auto rounded-lg border border-slate-100 bg-white object-contain p-1 shadow-sm"
               />
-              <div className="text-center">
-                <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
+              <div className="min-w-0">
+                <p className="text-[11px] uppercase tracking-[0.3em] text-slate-400">Portal Formations</p>
+                <h1 className="text-lg font-semibold text-slate-900 truncate">{title}</h1>
               </div>
             </div>
-            {children}
+            {children && <div className="hidden lg:block">{children}</div>}
           </div>
 
-          {/* Right side - User menu */}
-          <div className="flex items-center space-x-4">
-            {/* Centre de notifications */}
+          <div className="flex items-center gap-3">
             <NotificationCenter />
-            
+
             {isAdmin && (
               <Link
                 to="/admin/documentation"
-                className="text-sm text-gray-600 hover:text-gray-900 hidden md:block"
+                className="hidden text-sm text-slate-600 hover:text-slate-900 md:inline-flex"
                 title="Documentation (Admin)"
               >
                 Documentation
               </Link>
             )}
 
-            {/* User menu dropdown */}
             <div className="relative">
               <button
                 onClick={() => setShowMenu(!showMenu)}
-                className="flex items-center gap-3 rounded-lg px-4 py-2 hover:bg-gray-100 transition-colors"
+                className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white/80 px-3 py-2 text-sm font-medium text-slate-600 shadow-sm transition hover:border-slate-300"
                 aria-label="Menu utilisateur"
               >
-                {/* Avatar */}
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">
                   {userInitials}
                 </div>
-
-                {/* User info - hidden on mobile */}
                 <div className="hidden text-left md:block">
-                  <p className="text-sm font-medium text-gray-900">{displayName}</p>
-                  <p className="text-xs text-gray-500">{roleLabel}</p>
+                  <p className="text-sm font-semibold text-slate-900 leading-none">{displayName}</p>
+                  <p className="text-xs text-slate-500">{roleLabel}</p>
                 </div>
-
-                <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform ${showMenu ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`h-4 w-4 text-slate-500 transition ${showMenu ? 'rotate-180' : ''}`} />
               </button>
 
-              {/* Dropdown menu */}
               {showMenu && (
                 <>
                   <div
                     className="fixed inset-0 z-10"
                     onClick={() => setShowMenu(false)}
                   />
-                  <div className="absolute right-0 z-20 mt-2 w-56 rounded-lg border border-gray-200 bg-white shadow-lg">
-                    {/* User info section */}
-                    <div className="p-4 border-b border-gray-200">
-                      <p className="text-sm font-medium text-gray-900">{displayName}</p>
-                      <p className="text-xs text-gray-500 truncate">{user?.email}</p>
-                      <p className="text-xs text-gray-400 mt-1">{roleLabel}</p>
+                  <div className="absolute right-0 z-20 mt-2 w-60 rounded-2xl border border-slate-200 bg-white/95 shadow-xl backdrop-blur">
+                    <div className="border-b border-slate-100 p-4">
+                      <p className="text-sm font-semibold text-slate-900">{displayName}</p>
+                      <p className="text-xs text-slate-500 truncate">{user?.email}</p>
+                      <p className="text-xs text-slate-400 mt-1">{roleLabel}</p>
                       {org && !isAdmin && (
-                        <div className="mt-2 flex items-center gap-1.5 text-xs text-gray-500">
+                        <div className="mt-2 flex items-center gap-1.5 text-xs text-slate-500">
                           <Building2 className="w-3 h-3" />
                           <span className="truncate">{org.name}</span>
                         </div>
                       )}
                     </div>
 
-                    {/* Menu items */}
                     <div className="p-2">
                       <Link
                         to="/landing"
                         onClick={() => setShowMenu(false)}
-                        className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                        className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-50"
                       >
                         <Home className="h-4 w-4" />
                         Page d'accueil
@@ -159,7 +149,7 @@ export function AppHeader({
                       <Link
                         to="/profile"
                         onClick={() => setShowMenu(false)}
-                        className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                        className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-50"
                       >
                         <User className="h-4 w-4" />
                         Mon profil
@@ -168,17 +158,17 @@ export function AppHeader({
                         <Link
                           to="/admin"
                           onClick={() => setShowMenu(false)}
-                          className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                          className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-50"
                         >
                           <Settings className="h-4 w-4" />
                           Administration
                         </Link>
                       )}
-                      <div className="border-t border-gray-200 my-2" />
+                      <div className="my-2 border-t border-slate-100" />
                       <button
                         onClick={handleSignOut}
                         disabled={signingOut}
-                        className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
                       >
                         <LogOut className="h-4 w-4" />
                         {signingOut ? 'Déconnexion...' : 'Déconnexion'}
@@ -194,4 +184,3 @@ export function AppHeader({
     </header>
   );
 }
-

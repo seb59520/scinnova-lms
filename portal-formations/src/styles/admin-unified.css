@@ -1,17 +1,3 @@
-/* Masquer les headers internes des composants admin dans AdminUnified */
-.admin-unified header {
-  display: none !important;
-}
-
-.admin-unified h1 {
-  display: none !important;
-}
-
-/* Afficher les headers simplifiés dans AdminUnified */
-.admin-unified .admin-unified-header {
-  display: block !important;
-}
-
 /* Utiliser toute la largeur de l'écran */
 .admin-unified {
   width: 100% !important;
@@ -22,4 +8,3 @@
   width: 100% !important;
   max-width: 100% !important;
 }
-

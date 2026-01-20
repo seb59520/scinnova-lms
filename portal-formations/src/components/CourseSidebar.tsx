@@ -13,9 +13,20 @@ interface CourseSidebarProps {
   selectedModuleIndex?: number | null
   directTps?: CourseAllTp[]
   tpBatches?: TpBatchWithItems[]
+  fullHeight?: boolean
 }
 
-export function CourseSidebar({ courseJson, onClose, sidebarWidth = 256, minWidth = 200, onModuleSelect, selectedModuleIndex, directTps = [], tpBatches = [] }: CourseSidebarProps) {
+export function CourseSidebar({ 
+  courseJson, 
+  onClose, 
+  sidebarWidth = 256, 
+  minWidth = 200, 
+  onModuleSelect, 
+  selectedModuleIndex, 
+  directTps = [], 
+  tpBatches = [],
+  fullHeight = true
+}: CourseSidebarProps) {
   const { courseId } = useParams<{ courseId: string }>()
   const location = useLocation()
   const [expandedModules, setExpandedModules] = useState<Set<number>>(new Set()) // Par défaut, tous fermés
@@ -125,9 +136,17 @@ export function CourseSidebar({ courseJson, onClose, sidebarWidth = 256, minWidt
     }
   }
 
+  const containerStyle = fullHeight
+    ? { height: '100vh', overflow: 'hidden' as const }
+    : { height: '100%', maxHeight: 'calc(100vh - 8rem)', overflow: 'hidden' as const, borderRadius: '1.5rem' }
+
+  const scrollStyle = fullHeight
+    ? { height: '100%', overflowY: 'auto' as const }
+    : { maxHeight: 'calc(100vh - 12rem)', overflowY: 'auto' as const }
+
   return (
-    <div className="w-full bg-white border-r border-gray-200 h-full flex flex-col shadow-lg" style={{ height: '100vh', overflow: 'hidden' }}>
-      <div className="flex-1 overflow-y-auto" style={{ height: '100%', overflowY: 'auto' }}>
+    <div className={`w-full bg-white ${fullHeight ? 'border-r border-gray-200' : 'border border-gray-200'} flex flex-col shadow-lg`} style={containerStyle}>
+      <div className="flex-1" style={scrollStyle}>
         <div className="p-4">
         {!isMinimized && (
           <div className="flex items-center justify-between mb-4">
@@ -539,4 +558,3 @@ export function CourseSidebar({ courseJson, onClose, sidebarWidth = 256, minWidt
     </div>
   )
 }
-

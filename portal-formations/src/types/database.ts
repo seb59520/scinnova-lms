@@ -4,6 +4,7 @@ export interface Profile {
   id: string;
   role: UserRole;
   full_name: string | null;
+  student_id?: string | null;
   is_active?: boolean;
   created_at: string;
 }

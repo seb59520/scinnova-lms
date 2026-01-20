@@ -7,6 +7,7 @@ import { Save, Plus, Edit, Trash2, GripVertical, ChevronUp, ChevronDown, Code, P
 import { LinkedInPostModal } from '../../components/LinkedInPostModal'
 import { ImageUploadCarousel } from '../../components/ImageUploadCarousel'
 import { CourseResourcesManager } from '../../components/CourseResourcesManager'
+import { FillableDocumentsManager } from '../../components/FillableDocumentsManager'
 
 interface ModuleWithItems extends Module {
   items: Item[]
@@ -1712,6 +1713,13 @@ export function AdminCourseEdit() {
           {!isNew && courseId && (
             <div className="bg-white shadow rounded-lg p-6">
               <CourseResourcesManager courseId={courseId} />
+            </div>
+          )}
+
+          {/* Documents à compléter */}
+          {!isNew && courseId && (
+            <div className="bg-white shadow rounded-lg p-6 mt-6">
+              <FillableDocumentsManager courseId={courseId} />
             </div>
           )}
         </div>

@@ -1,0 +1,1709 @@
+{
+  "title": "Les boucles en Python",
+  "description": "Cours complet sur les boucles en Python : boucle for, boucle while, parcours de séquences, contrôle de flux avec break et continue, boucles imbriquées, et cas d'usage pratiques. Apprenez à maîtriser les structures de contrôle itératives essentielles en programmation.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3776AB",
+    "secondaryColor": "#FFD43B",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Introduction aux boucles",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Qu'est-ce qu'une boucle ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez le concept de boucle et pourquoi elles sont essentielles en programmation."
+          },
+          "chapters": [
+            {
+              "title": "Définition et utilité",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔄 Qu'est-ce qu'une boucle ?" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Une boucle est une structure de contrôle qui permet d'" },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "exécuter un bloc de code plusieurs fois" },
+                      { "type": "text", "text": " de manière répétée. C'est l'un des concepts fondamentaux de la programmation." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Pourquoi utiliser des boucles ?" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Éviter la répétition de code" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Parcourir des collections (listes, tuples, dictionnaires)" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Répéter une action jusqu'à ce qu'une condition soit remplie" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Automatiser des tâches répétitives" }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Types de boucles en Python" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Python propose deux types principaux de boucles :" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "for" },
+                              { "type": "text", "text": " : Pour parcourir une séquence (liste, tuple, chaîne, etc.) ou un nombre défini d'itérations" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "while" },
+                              { "type": "text", "text": " : Pour répéter un bloc tant qu'une condition est vraie" }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Exemple simple" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Sans boucle (répétitif)\nprint(\"Bonjour\")\nprint(\"Bonjour\")\nprint(\"Bonjour\")\nprint(\"Bonjour\")\nprint(\"Bonjour\")\n\n# Avec boucle (élégant)\nfor i in range(5):\n    print(\"Bonjour\")\n\n# Résultat dans les deux cas :\n# Bonjour\n# Bonjour\n# Bonjour\n# Bonjour\n# Bonjour"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.2 La boucle for",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez à utiliser la boucle for pour parcourir des séquences."
+          },
+          "chapters": [
+            {
+              "title": "Syntaxe de base",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔁 La boucle for" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Syntaxe" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "for variable in sequence:\n    # bloc de code à exécuter\n    pass"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Parcourir une liste" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "fruits = [\"pomme\", \"banane\", \"orange\"]\n\nfor fruit in fruits:\n    print(fruit)\n\n# Résultat :\n# pomme\n# banane\n# orange"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Parcourir une chaîne" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "mot = \"Python\"\n\nfor lettre in mot:\n    print(lettre)\n\n# Résultat :\n# P\n# y\n# t\n# h\n# o\n# n"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Parcourir un tuple" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "coordonnees = (10, 20, 30)\n\nfor coord in coordonnees:\n    print(coord)\n\n# Résultat :\n# 10\n# 20\n# 30"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.3 La fonction range()",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Découvrez la fonction range() pour générer des séquences de nombres."
+          },
+          "chapters": [
+            {
+              "title": "Utilisation de range",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔢 La fonction range()" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "La fonction " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "range()" },
+                      { "type": "text", "text": " génère une séquence de nombres entiers. Elle est très utile avec les boucles for." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "range(stop)" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Génère de 0 à stop-1\nfor i in range(5):\n    print(i)\n\n# Résultat :\n# 0\n# 1\n# 2\n# 3\n# 4"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "range(start, stop)" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Génère de start à stop-1\nfor i in range(2, 6):\n    print(i)\n\n# Résultat :\n# 2\n# 3\n# 4\n# 5"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "range(start, stop, step)" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Génère de start à stop-1 avec un pas de step\nfor i in range(0, 10, 2):\n    print(i)\n\n# Résultat :\n# 0\n# 2\n# 4\n# 6\n# 8\n\n# Pas négatif (compte à rebours)\nfor i in range(10, 0, -1):\n    print(i)\n\n# Résultat :\n# 10\n# 9\n# 8\n# ...\n# 1"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Accéder aux éléments d'une liste par index" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "fruits = [\"pomme\", \"banane\", \"orange\"]\n\n# Parcourir avec l'index\nfor i in range(len(fruits)):\n    print(f\"Index {i}: {fruits[i]}\")\n\n# Résultat :\n# Index 0: pomme\n# Index 1: banane\n# Index 2: orange"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : Boucle for avancée",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 enumerate() et zip()",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à utiliser enumerate() et zip() pour des parcours plus élégants."
+          },
+          "chapters": [
+            {
+              "title": "enumerate() - Parcourir avec index",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "📊 enumerate() et zip()" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "enumerate() - Obtenir l'index et la valeur" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "fruits = [\"pomme\", \"banane\", \"orange\"]\n\n# Méthode classique\nfor i in range(len(fruits)):\n    print(f\"{i}: {fruits[i]}\")\n\n# Méthode avec enumerate() (plus élégante)\nfor index, fruit in enumerate(fruits):\n    print(f\"{index}: {fruit}\")\n\n# Résultat dans les deux cas :\n# 0: pomme\n# 1: banane\n# 2: orange\n\n# Commencer l'index à 1\nfor index, fruit in enumerate(fruits, start=1):\n    print(f\"{index}: {fruit}\")\n\n# Résultat :\n# 1: pomme\n# 2: banane\n# 3: orange"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "zip() - Parcourir plusieurs séquences simultanément" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "noms = [\"Alice\", \"Bob\", \"Charlie\"]\nages = [25, 30, 35]\n\n# Parcourir deux listes en même temps\nfor nom, age in zip(noms, ages):\n    print(f\"{nom} a {age} ans\")\n\n# Résultat :\n# Alice a 25 ans\n# Bob a 30 ans\n# Charlie a 35 ans\n\n# Avec trois listes ou plus\nvilles = [\"Paris\", \"Lyon\", \"Marseille\"]\nfor nom, age, ville in zip(noms, ages, villes):\n    print(f\"{nom}, {age} ans, habite à {ville}\")"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Parcourir les dictionnaires",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Découvrez comment parcourir les dictionnaires avec for."
+          },
+          "chapters": [
+            {
+              "title": "Parcours de dictionnaires",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "📚 Parcourir les dictionnaires" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Parcourir les clés" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25, \"ville\": \"Paris\"}\n\n# Par défaut, on parcourt les clés\nfor cle in personne:\n    print(cle)\n\n# Ou explicitement\nfor cle in personne.keys():\n    print(cle)\n\n# Résultat :\n# nom\n# age\n# ville"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Parcourir les valeurs" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25, \"ville\": \"Paris\"}\n\nfor valeur in personne.values():\n    print(valeur)\n\n# Résultat :\n# Alice\n# 25\n# Paris"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Parcourir les paires clé-valeur" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25, \"ville\": \"Paris\"}\n\nfor cle, valeur in personne.items():\n    print(f\"{cle}: {valeur}\")\n\n# Résultat :\n# nom: Alice\n# age: 25\n# ville: Paris"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.3 break et continue",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Apprenez à contrôler le flux d'exécution avec break et continue."
+          },
+          "chapters": [
+            {
+              "title": "Contrôle de flux",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "⏸️ break et continue" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "break - Sortir de la boucle" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Chercher un élément et s'arrêter quand on le trouve\nfruits = [\"pomme\", \"banane\", \"orange\", \"kiwi\"]\n\nfor fruit in fruits:\n    if fruit == \"orange\":\n        print(f\"Trouvé : {fruit}\")\n        break  # Sort de la boucle immédiatement\n    print(f\"Recherche... {fruit}\")\n\n# Résultat :\n# Recherche... pomme\n# Recherche... banane\n# Trouvé : orange\n# (kiwi n'est pas traité)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "continue - Passer à l'itération suivante" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Afficher seulement les nombres pairs\nfor i in range(10):\n    if i % 2 != 0:  # Si impair\n        continue  # Passe à l'itération suivante\n    print(i)\n\n# Résultat :\n# 0\n# 2\n# 4\n# 6\n# 8"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Exemple combiné" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "nombres = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n\nfor nombre in nombres:\n    if nombre % 2 == 0:\n        continue  # Ignore les pairs\n    if nombre > 7:\n        break  # S'arrête si > 7\n    print(nombre)\n\n# Résultat :\n# 1\n# 3\n# 5\n# 7"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : La boucle while",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Syntaxe et utilisation",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez la syntaxe de la boucle while et quand l'utiliser."
+          },
+          "chapters": [
+            {
+              "title": "Boucle while",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔄 La boucle while" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Syntaxe" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "while condition:\n    # bloc de code à exécuter\n    # tant que condition est True\n    pass"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Exemple simple" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "compteur = 0\n\nwhile compteur < 5:\n    print(f\"Compteur: {compteur}\")\n    compteur += 1  # Important : modifier la condition\n\n# Résultat :\n# Compteur: 0\n# Compteur: 1\n# Compteur: 2\n# Compteur: 3\n# Compteur: 4"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "⚠️ Attention aux boucles infinies" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ❌ Boucle infinie (ne jamais faire !)\n# compteur = 0\n# while compteur < 5:\n#     print(compteur)\n#     # Oubli d'incrémenter compteur → boucle infinie !\n\n# ✅ Correct\ncompteur = 0\nwhile compteur < 5:\n    print(compteur)\n    compteur += 1  # Ne pas oublier !"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Quand utiliser while vs for ?" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "for" },
+                              { "type": "text", "text": " : Quand on connaît le nombre d'itérations ou qu'on parcourt une séquence" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "while" },
+                              { "type": "text", "text": " : Quand on ne connaît pas le nombre d'itérations à l'avance (attente d'une condition)" }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Cas d'usage de while",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Découvrez des exemples pratiques d'utilisation de while."
+          },
+          "chapters": [
+            {
+              "title": "Exemples pratiques",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "💡 Cas d'usage de while" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Saisie utilisateur jusqu'à une valeur valide" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Demander un nombre entre 1 et 10\nwhile True:\n    nombre = int(input(\"Entrez un nombre entre 1 et 10: \"))\n    if 1 <= nombre <= 10:\n        print(f\"Parfait ! Vous avez choisi {nombre}\")\n        break\n    else:\n        print(\"Nombre invalide, réessayez.\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Menu interactif" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "while True:\n    print(\"\\n=== Menu ===\")\n    print(\"1. Option 1\")\n    print(\"2. Option 2\")\n    print(\"3. Quitter\")\n    \n    choix = input(\"Votre choix: \")\n    \n    if choix == \"1\":\n        print(\"Vous avez choisi l'option 1\")\n    elif choix == \"2\":\n        print(\"Vous avez choisi l'option 2\")\n    elif choix == \"3\":\n        print(\"Au revoir !\")\n        break\n    else:\n        print(\"Choix invalide\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Tant qu'une liste n'est pas vide" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "pile = [1, 2, 3, 4, 5]\n\nwhile pile:  # Tant que la liste n'est pas vide\n    element = pile.pop()\n    print(f\"Élément retiré: {element}\")\n\n# Résultat :\n# Élément retiré: 5\n# Élément retiré: 4\n# Élément retiré: 3\n# Élément retiré: 2\n# Élément retiré: 1"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : Boucles imbriquées et cas avancés",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Boucles imbriquées",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à utiliser des boucles à l'intérieur d'autres boucles."
+          },
+          "chapters": [
+            {
+              "title": "Boucles imbriquées",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔀 Boucles imbriquées" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "On peut placer une boucle à l'intérieur d'une autre boucle. C'est très utile pour travailler avec des structures multidimensionnelles." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Exemple : Table de multiplication" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Table de multiplication 5x5\nfor i in range(1, 6):\n    for j in range(1, 6):\n        produit = i * j\n        print(f\"{i} x {j} = {produit}\", end=\"\\t\")\n    print()  # Nouvelle ligne après chaque ligne de la table\n\n# Résultat :\n# 1 x 1 = 1    1 x 2 = 2    1 x 3 = 3    1 x 4 = 4    1 x 5 = 5\n# 2 x 1 = 2    2 x 2 = 4    2 x 3 = 6    2 x 4 = 8    2 x 5 = 10\n# ..."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Exemple : Liste de listes" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "matrice = [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n]\n\n# Parcourir chaque ligne\nfor ligne in matrice:\n    # Parcourir chaque élément de la ligne\n    for element in ligne:\n        print(element, end=\" \")\n    print()  # Nouvelle ligne\n\n# Résultat :\n# 1 2 3\n# 4 5 6\n# 7 8 9"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "break dans les boucles imbriquées" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# break sort seulement de la boucle la plus proche\nfor i in range(3):\n    for j in range(3):\n        if j == 1:\n            break  # Sort seulement de la boucle j\n        print(f\"i={i}, j={j}\")\n\n# Résultat :\n# i=0, j=0\n# i=1, j=0\n# i=2, j=0"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "4.2 Listes en compréhension",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Découvrez les listes en compréhension, une façon élégante de créer des listes avec des boucles."
+          },
+          "chapters": [
+            {
+              "title": "Listes en compréhension",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "✨ Listes en compréhension" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Les listes en compréhension permettent de créer des listes de manière concise et élégante, en remplaçant souvent une boucle for." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Syntaxe de base" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Méthode classique\ncarres = []\nfor i in range(5):\n    carres.append(i ** 2)\nprint(carres)  # [0, 1, 4, 9, 16]\n\n# Avec liste en compréhension (plus concise)\ncarres = [i ** 2 for i in range(5)]\nprint(carres)  # [0, 1, 4, 9, 16]"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Avec condition (filtrage)" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Nombres pairs seulement\npairs = [i for i in range(10) if i % 2 == 0]\nprint(pairs)  # [0, 2, 4, 6, 8]\n\n# Nombres supérieurs à 5\nsuperieurs = [i for i in range(10) if i > 5]\nprint(superieurs)  # [6, 7, 8, 9]"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Avec transformation conditionnelle" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# \"pair\" si pair, \"impair\" sinon\nresultats = [\"pair\" if i % 2 == 0 else \"impair\" for i in range(5)]\nprint(resultats)  # ['pair', 'impair', 'pair', 'impair', 'pair']"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : Exercices pratiques",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "exercise",
+          "title": "Exercice 1 : Somme des nombres",
+          "position": 0,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice 1 : Calculer la somme" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez un programme qui calcule la somme de tous les nombres de 1 à 100 en utilisant une boucle for." }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Résultat attendu : 5050" }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "somme = 0\n\nfor i in range(1, 101):\n    somme += i\n\nprint(f\"La somme de 1 à 100 est : {somme}\")\n# La somme de 1 à 100 est : 5050"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 2 : Compteur de voyelles",
+          "position": 1,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice 2 : Compter les voyelles" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez une fonction qui compte le nombre de voyelles (a, e, i, o, u) dans une chaîne de caractères." }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Test avec \"Bonjour\" → devrait retourner 3"
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "def compter_voyelles(texte):\n    voyelles = \"aeiouAEIOU\"\n    compteur = 0\n    \n    for lettre in texte:\n        if lettre in voyelles:\n            compteur += 1\n    \n    return compteur\n\n# Test\nresultat = compter_voyelles(\"Bonjour\")\nprint(f\"Nombre de voyelles: {resultat}\")  # Nombre de voyelles: 3"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 3 : Table de multiplication",
+          "position": 2,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice 3 : Table de multiplication" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez un programme qui affiche la table de multiplication de 7 (de 1 à 10) en utilisant une boucle for." }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Format attendu :" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "text" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "7 x 1 = 7\n7 x 2 = 14\n7 x 3 = 21\n..."
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "nombre = 7\n\nfor i in range(1, 11):\n    produit = nombre * i\n    print(f\"{nombre} x {i} = {produit}\")\n\n# Résultat :\n# 7 x 1 = 7\n# 7 x 2 = 14\n# 7 x 3 = 21\n# ..."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 4 : Nombre premier",
+          "position": 3,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice 4 : Vérifier si un nombre est premier" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez une fonction qui vérifie si un nombre est premier (divisible uniquement par 1 et lui-même). Utilisez une boucle for avec break pour optimiser." }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "def est_premier(n):\n    if n < 2:\n        return False\n    \n    for i in range(2, int(n ** 0.5) + 1):\n        if n % i == 0:\n            return False\n    \n    return True\n\n# Tests\nprint(est_premier(7))   # True\nprint(est_premier(10))   # False\nprint(est_premier(17))   # True"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 5 : Saisie avec validation",
+          "position": 4,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice 5 : Saisie utilisateur avec while" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez un programme qui demande à l'utilisateur d'entrer un nombre positif. Le programme continue à demander jusqu'à ce qu'un nombre positif soit entré. Utilisez une boucle while." }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "while True:\n    try:\n        nombre = float(input(\"Entrez un nombre positif: \"))\n        if nombre > 0:\n            print(f\"Parfait ! Vous avez entré {nombre}\")\n            break\n        else:\n            print(\"Le nombre doit être positif. Réessayez.\")\n    except ValueError:\n        print(\"Veuillez entrer un nombre valide.\")"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 6 : Quiz final",
+      "position": 5,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "game",
+          "title": "Quiz : Les boucles en Python",
+          "position": 0,
+          "published": true,
+          "content": {
+            "gameType": "quiz",
+            "description": "Testez vos connaissances sur les boucles en Python avec ce quiz complet.",
+            "instructions": "Répondez aux questions pour valider votre compréhension des boucles for, while, et des concepts avancés.",
+            "objectives": [
+              "Comprendre la syntaxe des boucles for et while",
+              "Maîtriser range(), enumerate() et zip()",
+              "Connaître break et continue",
+              "Savoir utiliser les boucles dans des cas pratiques"
+            ],
+            "scoring": {
+              "totalQuestions": 15,
+              "pointsPerQuestion": 1,
+              "passingScore": 10,
+              "levels": {
+                "0-9": "Bases à renforcer - Revoyez les concepts fondamentaux",
+                "10-12": "Bon niveau - Vous maîtrisez les boucles",
+                "13-15": "Excellent niveau - Très bonne compréhension"
+              }
+            },
+            "levels": [
+              {
+                "level": 1,
+                "name": "Niveau 1 - Fondamentaux",
+                "description": "Questions sur les bases des boucles",
+                "questions": [
+                  {
+                    "id": "q1-for-syntax",
+                    "type": "mcq",
+                    "prompt": "Quelle est la syntaxe correcte d'une boucle for en Python ?",
+                    "options": [
+                      "for i in range(10) { ... }",
+                      "for i in range(10): ...",
+                      "for (i = 0; i < 10; i++) { ... }",
+                      "for i from 0 to 10: ..."
+                    ],
+                    "answer": "for i in range(10): ...",
+                    "explanation": "En Python, la syntaxe est 'for variable in sequence:' avec un deux-points et une indentation pour le bloc.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q2-range",
+                    "type": "mcq",
+                    "prompt": "Que retourne range(5) ?",
+                    "options": [
+                      "[0, 1, 2, 3, 4, 5]",
+                      "[1, 2, 3, 4, 5]",
+                      "Une séquence de 0 à 4 (non une liste)",
+                      "[0, 1, 2, 3, 4]"
+                    ],
+                    "answer": "Une séquence de 0 à 4 (non une liste)",
+                    "explanation": "range(5) génère une séquence de 0 à 4 (5 éléments). Ce n'est pas une liste mais un objet range, mais il peut être utilisé dans une boucle for.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q3-while",
+                    "type": "mcq",
+                    "prompt": "Quand utiliser une boucle while plutôt qu'une boucle for ?",
+                    "options": [
+                      "Jamais, for est toujours meilleur",
+                      "Quand on ne connaît pas le nombre d'itérations à l'avance",
+                      "Quand on parcourt une liste",
+                      "Quand on veut itérer exactement 10 fois"
+                    ],
+                    "answer": "Quand on ne connaît pas le nombre d'itérations à l'avance",
+                    "explanation": "while est idéal quand on ne sait pas combien d'itérations seront nécessaires, par exemple pour une saisie utilisateur ou une condition complexe.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q4-parcours-liste",
+                    "type": "mcq",
+                    "prompt": "Comment parcourir tous les éléments d'une liste 'fruits' ?",
+                    "options": [
+                      "for i in fruits:",
+                      "for fruits in i:",
+                      "for i in range(fruits):",
+                      "while fruits:"
+                    ],
+                    "answer": "for i in fruits:",
+                    "explanation": "La syntaxe 'for variable in sequence:' permet de parcourir directement les éléments d'une liste.",
+                    "difficulty": 1
+                  }
+                ]
+              },
+              {
+                "level": 2,
+                "name": "Niveau 2 - Opérations avancées",
+                "description": "Questions sur range(), enumerate(), break, continue",
+                "questions": [
+                  {
+                    "id": "q5-range-start-stop",
+                    "type": "mcq",
+                    "prompt": "Que génère range(2, 6) ?",
+                    "options": [
+                      "[2, 3, 4, 5, 6]",
+                      "[2, 3, 4, 5]",
+                      "[0, 1, 2, 3, 4, 5]",
+                      "[1, 2, 3, 4, 5]"
+                    ],
+                    "answer": "[2, 3, 4, 5]",
+                    "explanation": "range(start, stop) génère de start (inclus) à stop (exclus), donc range(2, 6) donne 2, 3, 4, 5.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q6-enumerate",
+                    "type": "mcq",
+                    "prompt": "Que retourne enumerate(['a', 'b', 'c']) dans une boucle ?",
+                    "options": [
+                      "Les valeurs seulement : 'a', 'b', 'c'",
+                      "Les index seulement : 0, 1, 2",
+                      "Des tuples (index, valeur) : (0, 'a'), (1, 'b'), (2, 'c')",
+                      "Rien, c'est une erreur"
+                    ],
+                    "answer": "Des tuples (index, valeur) : (0, 'a'), (1, 'b'), (2, 'c')",
+                    "explanation": "enumerate() retourne des tuples (index, valeur) pour chaque élément, très utile pour avoir l'index et la valeur en même temps.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q7-break",
+                    "type": "true-false",
+                    "prompt": "break permet de sortir complètement de la boucle et continuer après la boucle",
+                    "answer": true,
+                    "explanation": "Vrai. break sort immédiatement de la boucle (la plus proche si boucles imbriquées) et l'exécution continue après la boucle.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q8-continue",
+                    "type": "true-false",
+                    "prompt": "continue passe à l'itération suivante de la boucle en ignorant le reste du bloc",
+                    "answer": true,
+                    "explanation": "Vrai. continue saute le reste du bloc de la boucle et passe directement à l'itération suivante.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q9-zip",
+                    "type": "mcq",
+                    "prompt": "Que fait zip(['a', 'b'], [1, 2]) dans une boucle for ?",
+                    "options": [
+                      "Combine les listes en une seule",
+                      "Retourne des tuples (élément1, élément2) : ('a', 1), ('b', 2)",
+                      "Multiplie les éléments",
+                      "C'est une erreur"
+                    ],
+                    "answer": "Retourne des tuples (élément1, élément2) : ('a', 1), ('b', 2)",
+                    "explanation": "zip() combine plusieurs séquences en retournant des tuples d'éléments correspondants, très utile pour parcourir plusieurs listes simultanément.",
+                    "difficulty": 2
+                  }
+                ]
+              },
+              {
+                "level": 3,
+                "name": "Niveau 3 - Cas pratiques",
+                "description": "Questions sur l'utilisation pratique et les cas avancés",
+                "questions": [
+                  {
+                    "id": "q10-boucle-infinie",
+                    "type": "true-false",
+                    "prompt": "Une boucle while True avec un break est une bonne pratique pour une saisie utilisateur",
+                    "answer": true,
+                    "explanation": "Vrai. 'while True:' avec un 'break' conditionnel est une pratique courante et propre pour une saisie utilisateur avec validation.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q11-dictionnaire",
+                    "type": "mcq",
+                    "prompt": "Comment parcourir les paires clé-valeur d'un dictionnaire 'd' ?",
+                    "options": [
+                      "for key, value in d:",
+                      "for key, value in d.items():",
+                      "for key in d.values():",
+                      "for value in d.keys():"
+                    ],
+                    "answer": "for key, value in d.items():",
+                    "explanation": "d.items() retourne les paires (clé, valeur) d'un dictionnaire, permettant de les déballer dans une boucle for.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q12-boucles-imbriquees",
+                    "type": "mcq",
+                    "prompt": "Dans des boucles imbriquées, break sort de :",
+                    "options": [
+                      "Toutes les boucles",
+                      "Seulement la boucle la plus interne",
+                      "Seulement la boucle la plus externe",
+                      "C'est une erreur"
+                    ],
+                    "answer": "Seulement la boucle la plus interne",
+                    "explanation": "break sort seulement de la boucle la plus proche (la plus interne). Pour sortir de plusieurs niveaux, il faut utiliser d'autres techniques.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q13-comprehension",
+                    "type": "mcq",
+                    "prompt": "Quelle est l'équivalent en liste en compréhension de : [i*2 for i in range(5)] ?",
+                    "options": [
+                      "result = []\nfor i in range(5):\n    result.append(i*2)",
+                      "result = range(5) * 2",
+                      "result = [i for i in range(5)]",
+                      "Aucun équivalent"
+                    ],
+                    "answer": "result = []\nfor i in range(5):\n    result.append(i*2)",
+                    "explanation": "Les listes en compréhension sont un raccourci syntaxique. [i*2 for i in range(5)] est équivalent à créer une liste vide et y ajouter i*2 pour chaque i.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q14-while-vs-for",
+                    "type": "mcq",
+                    "prompt": "Quelle boucle est la plus appropriée pour parcourir une liste connue ?",
+                    "options": [
+                      "while",
+                      "for",
+                      "Les deux sont équivalents",
+                      "Aucune"
+                    ],
+                    "answer": "for",
+                    "explanation": "for est généralement préféré pour parcourir des séquences connues (listes, tuples, chaînes) car plus lisible et moins sujet aux erreurs.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q15-range-step",
+                    "type": "mcq",
+                    "prompt": "Que génère range(0, 10, 2) ?",
+                    "options": [
+                      "[0, 2, 4, 6, 8, 10]",
+                      "[0, 2, 4, 6, 8]",
+                      "[2, 4, 6, 8, 10]",
+                      "[1, 3, 5, 7, 9]"
+                    ],
+                    "answer": "[0, 2, 4, 6, 8]",
+                    "explanation": "range(start, stop, step) génère de start à stop-1 avec un pas de step. range(0, 10, 2) donne 0, 2, 4, 6, 8.",
+                    "difficulty": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 7 : TP - Gestionnaire de tâches",
+      "position": 6,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "exercise",
+          "title": "TP : Créer un gestionnaire de tâches",
+          "position": 0,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "🎯 TP : Gestionnaire de tâches" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créez un programme de gestionnaire de tâches en ligne de commande qui utilise les boucles pour gérer une liste de tâches." }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "Fonctionnalités requises :" }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Afficher un menu avec les options suivantes :" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    { "type": "text", "text": "1. Ajouter une tâche" }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    { "type": "text", "text": "2. Afficher toutes les tâches" }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    { "type": "text", "text": "3. Marquer une tâche comme terminée" }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    { "type": "text", "text": "4. Supprimer une tâche" }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    { "type": "text", "text": "5. Quitter" }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Utiliser une boucle " },
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "while" },
+                            { "type": "text", "text": " pour afficher le menu en continu jusqu'à ce que l'utilisateur choisisse de quitter" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Utiliser une boucle " },
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "for" },
+                            { "type": "text", "text": " avec " },
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "enumerate()" },
+                            { "type": "text", "text": " pour afficher les tâches avec leur numéro" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Stocker les tâches dans une liste de dictionnaires avec les clés : 'description' et 'terminee' (booléen)" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "Exemple d'utilisation :" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "text" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "=== Gestionnaire de tâches ===\n1. Ajouter une tâche\n2. Afficher toutes les tâches\n3. Marquer une tâche comme terminée\n4. Supprimer une tâche\n5. Quitter\nVotre choix: 1\nDescription de la tâche: Faire les courses\nTâche ajoutée !\n\n=== Gestionnaire de tâches ===\n..."
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Gestionnaire de tâches\ntaches = []\n\nwhile True:\n    print(\"\\n=== Gestionnaire de tâches ===\")\n    print(\"1. Ajouter une tâche\")\n    print(\"2. Afficher toutes les tâches\")\n    print(\"3. Marquer une tâche comme terminée\")\n    print(\"4. Supprimer une tâche\")\n    print(\"5. Quitter\")\n    \n    choix = input(\"Votre choix: \")\n    \n    if choix == \"1\":\n        description = input(\"Description de la tâche: \")\n        taches.append({\"description\": description, \"terminee\": False})\n        print(\"Tâche ajoutée !\")\n    \n    elif choix == \"2\":\n        if not taches:\n            print(\"Aucune tâche.\")\n        else:\n            print(\"\\n=== Liste des tâches ===\")\n            for index, tache in enumerate(taches, start=1):\n                statut = \"✓\" if tache[\"terminee\"] else \"○\"\n                print(f\"{index}. {statut} {tache['description']}\")\n    \n    elif choix == \"3\":\n        if not taches:\n            print(\"Aucune tâche.\")\n        else:\n            print(\"\\n=== Liste des tâches ===\")\n            for index, tache in enumerate(taches, start=1):\n                statut = \"✓\" if tache[\"terminee\"] else \"○\"\n                print(f\"{index}. {statut} {tache['description']}\")\n            \n            try:\n                num = int(input(\"\\nNuméro de la tâche à marquer comme terminée: \"))\n                if 1 <= num <= len(taches):\n                    taches[num - 1][\"terminee\"] = True\n                    print(\"Tâche marquée comme terminée !\")\n                else:\n                    print(\"Numéro invalide.\")\n            except ValueError:\n                print(\"Veuillez entrer un nombre valide.\")\n    \n    elif choix == \"4\":\n        if not taches:\n            print(\"Aucune tâche.\")\n        else:\n            print(\"\\n=== Liste des tâches ===\")\n            for index, tache in enumerate(taches, start=1):\n                statut = \"✓\" if tache[\"terminee\"] else \"○\"\n                print(f\"{index}. {statut} {tache['description']}\")\n            \n            try:\n                num = int(input(\"\\nNuméro de la tâche à supprimer: \"))\n                if 1 <= num <= len(taches):\n                    tache_supprimee = taches.pop(num - 1)\n                    print(f\"Tâche '{tache_supprimee['description']}' supprimée !\")\n                else:\n                    print(\"Numéro invalide.\")\n            except ValueError:\n                print(\"Veuillez entrer un nombre valide.\")\n    \n    elif choix == \"5\":\n        print(\"Au revoir !\")\n        break\n    \n    else:\n        print(\"Choix invalide. Veuillez choisir entre 1 et 5.\")"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -59,6 +59,328 @@ export function AdminCoursesContent() {
   const [presentationChapters, setPresentationChapters] = useState<Chapter[]>([])
   const [presentationInitialIndex, setPresentationInitialIndex] = useState(0)
   const [presentationCourseId, setPresentationCourseId] = useState<string | undefined>(undefined)
+  const compactPrimaryButton = 'inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-blue-700'
+  const compactSecondaryButton = 'inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 shadow-sm transition hover:border-slate-300 hover:text-slate-900'
+
+  const renderCourseCard = (course: Course, layout: 'grid' | 'list') => {
+    const allItems = courseItems[course.id] || []
+    const items = showTpInMainList ? allItems : allItems.filter(item => item.type !== 'tp')
+    const hasItems = items.length > 0
+    const isExpanded = expandedCourses.has(course.id)
+    const tpCount = items.filter(item => item.type === 'tp').length
+    const exerciseCount = items.filter(item => item.type === 'exercise').length
+    const thumbnailUrl = getCourseThumbnailUrl(course)
+
+    const thumbnail = thumbnailUrl ? (
+      <img
+        src={thumbnailUrl}
+        alt={course.title}
+        className="w-full h-full object-cover"
+        onError={(e) => {
+          e.currentTarget.style.display = 'none'
+        }}
+      />
+    ) : (
+      <div className="w-full h-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+        <BookOpen className="w-8 h-8 text-white" />
+      </div>
+    )
+
+    const badges = (
+      <div className="flex flex-wrap gap-2 text-xs font-medium">
+        <span
+          className={`inline-flex items-center px-2 py-0.5 rounded ${
+            course.status === 'published'
+              ? 'bg-green-100 text-green-700'
+              : 'bg-yellow-100 text-yellow-700'
+          }`}
+        >
+          {course.status === 'published' ? 'Publié' : 'Brouillon'}
+        </span>
+        <span
+          className={`inline-flex items-center px-2 py-0.5 rounded ${
+            course.access_type === 'free'
+              ? 'bg-blue-100 text-blue-700'
+              : course.access_type === 'paid'
+                ? 'bg-purple-100 text-purple-700'
+                : 'bg-gray-100 text-gray-700'
+          }`}
+        >
+          {course.access_type === 'free'
+            ? 'Gratuit'
+            : course.access_type === 'paid'
+              ? 'Payant'
+              : 'Invitation'}
+        </span>
+        {course.price_cents && (
+          <span className="inline-flex items-center px-2 py-0.5 rounded bg-gray-100 text-gray-700">
+            <DollarSign className="w-3 h-3 mr-1" />
+            {(course.price_cents / 100).toFixed(2)}€
+          </span>
+        )}
+      </div>
+    )
+
+    const programsBlock = coursePrograms[course.id] && coursePrograms[course.id].length > 0 ? (
+      <div>
+        <div className="flex items-center gap-1.5 mb-1.5">
+          <Layers className="w-3.5 h-3.5 text-gray-400" />
+          <span className="text-xs font-medium text-gray-500">Programmes</span>
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {coursePrograms[course.id]?.map((program) => (
+            <Link
+              key={program.id}
+              to={`/admin/programs/${program.id}`}
+              className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {program.title}
+            </Link>
+          ))}
+        </div>
+      </div>
+    ) : null
+
+    const metaRow = (
+      <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-gray-500">
+        <span className="flex items-center gap-1.5">
+          <Calendar className="w-3.5 h-3.5" />
+          Créé le{' '}
+          {new Date(course.created_at).toLocaleDateString('fr-FR', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+          })}
+        </span>
+        {hasItems && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              toggleCourseExpansion(course.id)
+            }}
+            className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 font-semibold text-blue-700 transition hover:border-blue-300 hover:bg-blue-100"
+            title={`${isExpanded ? 'Masquer' : 'Afficher'} les TP/exercices`}
+          >
+            {isExpanded ? (
+              <ChevronDown className="w-3.5 h-3.5" />
+            ) : (
+              <ChevronRight className="w-3.5 h-3.5" />
+            )}
+            <span className="bg-blue-600 text-white px-2 py-0.5 rounded text-xs font-semibold">
+              {items.length} {items.length > 1 ? 'items' : 'item'}
+            </span>
+          </button>
+        )}
+      </div>
+    )
+
+    const actions = (
+      <div className={`flex flex-wrap gap-2 ${layout === 'grid' ? 'pt-4 border-t border-gray-100' : 'mt-4'}`}>
+        <Link
+          to={`/admin/courses/${course.id}`}
+          className={`flex-1 justify-center ${compactPrimaryButton}`}
+        >
+          <Edit className="w-3.5 h-3.5" />
+          Modifier
+        </Link>
+        <Link
+          to={`/courses/${course.id}`}
+          className={compactSecondaryButton}
+          title="Voir"
+        >
+          <Eye className="w-3.5 h-3.5" />
+        </Link>
+        <Link
+          to={`/admin/courses/${course.id}/enrollments`}
+          className={compactSecondaryButton}
+          title="Inscriptions"
+        >
+          <Users className="w-3.5 h-3.5" />
+        </Link>
+        <Link
+          to={`/admin/courses/${course.id}/submissions`}
+          className={compactSecondaryButton}
+          title="Soumissions"
+        >
+          <FileText className="w-3.5 h-3.5" />
+        </Link>
+        <button
+          onClick={() => handleOpenPresentation(course.id)}
+          className={compactSecondaryButton}
+          title="Ouvrir la présentation de tous les chapitres du cours"
+        >
+          <Presentation className="w-3.5 h-3.5" />
+          Présentation
+        </button>
+        <div className="relative">
+          <button
+            onClick={() => setOpenMenuId(openMenuId === course.id ? null : course.id)}
+            className={compactSecondaryButton}
+            title="Plus d'options"
+          >
+            <MoreVertical className="w-3.5 h-3.5" />
+          </button>
+          {openMenuId === course.id && (
+            <>
+              <div className="fixed inset-0 z-10" onClick={() => setOpenMenuId(null)} />
+              <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20">
+                <Link
+                  to={`/admin/courses/${course.id}/json`}
+                  onClick={() => setOpenMenuId(null)}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                >
+                  <Code className="w-4 h-4" />
+                  Éditer en JSON
+                </Link>
+                <button
+                  onClick={() => {
+                    handleDuplicateCourse(course)
+                    setOpenMenuId(null)
+                  }}
+                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                >
+                  <Copy className="w-4 h-4" />
+                  Dupliquer
+                </button>
+                <button
+                  onClick={() => {
+                    handleDeleteCourse(course.id)
+                    setOpenMenuId(null)
+                  }}
+                  className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Supprimer
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    )
+
+    const itemsSummary = hasItems ? (
+      <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-3 space-y-3 mt-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-semibold text-blue-700">
+          <div className="flex flex-wrap gap-2">
+            {tpCount > 0 && (
+              <span className="inline-flex items-center rounded-full bg-white/70 px-2 py-0.5">
+                TP : {tpCount}
+              </span>
+            )}
+            {exerciseCount > 0 && (
+              <span className="inline-flex items-center rounded-full bg-white/70 px-2 py-0.5">
+                Exercices : {exerciseCount}
+              </span>
+            )}
+          </div>
+          <span className="text-[11px] font-medium text-blue-600">
+            {items.length} {items.length > 1 ? 'contenus liés' : 'contenu lié'}
+          </span>
+        </div>
+        {isExpanded && (
+          <div className="space-y-2">
+            {items.map((item) => (
+              <Link
+                key={item.id}
+                to={`/items/${item.id}`}
+                className="flex items-center gap-2 rounded-xl bg-white/90 p-2 text-sm text-gray-700 transition hover:bg-white"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex-shrink-0">
+                  {item.type === 'tp' ? (
+                    <Code className="w-4 h-4 text-purple-600" />
+                  ) : (
+                    <PenTool className="w-4 h-4 text-blue-600" />
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-medium text-gray-900 truncate">
+                    {item.title}
+                  </div>
+                  {item.module_title && (
+                    <div className="text-xs text-gray-500 truncate">
+                      {item.isDirectAssociation ? (
+                        <span className="text-blue-600 font-medium">🔗 {item.module_title}</span>
+                      ) : (
+                        `Module : ${item.module_title}`
+                      )}
+                    </div>
+                  )}
+                </div>
+                <span
+                  className={`text-xs px-2 py-0.5 rounded ${
+                    item.type === 'tp'
+                      ? 'bg-purple-100 text-purple-700'
+                      : 'bg-blue-100 text-blue-700'
+                  }`}
+                >
+                  {item.type === 'tp' ? 'TP' : 'Exercice'}
+                </span>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    ) : null
+
+    if (layout === 'grid') {
+      return (
+        <div
+          key={course.id}
+          className="bg-white rounded-lg border border-gray-200 hover:shadow-md transition-shadow overflow-hidden flex flex-col"
+        >
+          <div className="w-full h-48 bg-gray-100 overflow-hidden">{thumbnail}</div>
+          <div className="p-5 flex-1 flex flex-col gap-4">
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-gray-900 break-words">
+                {course.title}
+              </h3>
+              <p className="text-sm text-gray-600 line-clamp-3">
+                {course.description || 'Aucune description'}
+              </p>
+            </div>
+            {badges}
+            {programsBlock}
+            {metaRow}
+            {actions}
+            {itemsSummary}
+          </div>
+        </div>
+      )
+    }
+
+    return (
+      <div
+        key={course.id}
+        className="p-4 sm:p-6 hover:bg-gray-50 transition-colors"
+      >
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          <div className="flex items-start gap-4 flex-1 min-w-0">
+            <div className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 border-gray-200 shadow-sm">
+              {thumbnail}
+            </div>
+            <div className="flex-1 min-w-0 space-y-2">
+              <h3 className="text-base font-semibold text-gray-900 truncate">
+                {course.title}
+              </h3>
+              <p className="text-sm text-gray-600 line-clamp-3">
+                {course.description || 'Aucune description disponible.'}
+              </p>
+              {badges}
+              {programsBlock}
+              {metaRow}
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-2 mt-4">
+          {actions}
+        </div>
+        {itemsSummary}
+      </div>
+    )
+  }
 
   useEffect(() => {
     fetchCourses()
@@ -564,14 +886,14 @@ export function AdminCoursesContent() {
         <div className="flex items-center gap-3">
           <Link
             to="/admin/courses/ai-generator"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
+            className="inline-flex items-center gap-2 rounded-xl bg-purple-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-purple-700"
           >
             <Sparkles className="w-4 h-4" />
             Générer avec IA
           </Link>
           <Link
             to="/admin/courses/new/json"
-            className="btn-primary inline-flex items-center gap-2 text-sm"
+            className={compactPrimaryButton}
           >
             <Plus className="w-4 h-4" />
             Nouvelle formation
@@ -751,7 +1073,7 @@ export function AdminCoursesContent() {
           <p className="text-gray-500 text-sm mb-6">
             Commencez par créer votre première formation.
           </p>
-          <Link to="/admin/courses/new/json" className="btn-primary inline-flex items-center gap-2">
+          <Link to="/admin/courses/new/json" className={compactPrimaryButton}>
             <Plus className="w-4 h-4" />
             Créer la première formation
           </Link>
@@ -798,19 +1120,21 @@ export function AdminCoursesContent() {
                   {viewMode === 'grid' ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {coursesInGroup.map((course) => {
-                        // Filtrer les TP si le toggle est désactivé
                         const allItems = courseItems[course.id] || []
-                        const items = showTpInMainList 
-                          ? allItems 
+                        const items = showTpInMainList
+                          ? allItems
                           : allItems.filter(item => item.type !== 'tp')
                         const hasItems = items.length > 0
                         const isExpanded = expandedCourses.has(course.id)
-                        
+                        const tpCount = items.filter(item => item.type === 'tp').length
+                        const exerciseCount = items.filter(item => item.type === 'exercise').length
                         const thumbnailUrl = getCourseThumbnailUrl(course)
-                        
+
                         return (
-                          <div key={course.id} className="bg-white rounded-lg border border-gray-200 hover:shadow-md transition-shadow overflow-hidden flex flex-col">
-                            {/* Vignette de la formation */}
+                          <div
+                            key={course.id}
+                            className="bg-white rounded-lg border border-gray-200 hover:shadow-md transition-shadow overflow-hidden flex flex-col"
+                          >
                             {thumbnailUrl ? (
                               <div className="w-full h-48 bg-gray-100 overflow-hidden">
                                 <img
@@ -818,7 +1142,6 @@ export function AdminCoursesContent() {
                                   alt={course.title}
                                   className="w-full h-full object-cover"
                                   onError={(e) => {
-                                    // Si l'image ne charge pas, cacher l'élément
                                     e.currentTarget.style.display = 'none'
                                   }}
                                 />
@@ -828,131 +1151,131 @@ export function AdminCoursesContent() {
                                 <BookOpen className="w-16 h-16 text-gray-400" />
                               </div>
                             )}
-                            
-                            <div className="p-5 flex-1 flex flex-col">
-                              <div className="flex items-start justify-between mb-3">
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center gap-2 mb-2">
-                                    <h3 className="text-lg font-semibold text-gray-900 break-words line-clamp-2 flex-1">
-                                      {course.title}
-                                    </h3>
-                                    {hasItems && (
-                                      <button
-                                        onClick={(e) => {
-                                          e.stopPropagation()
-                                          toggleCourseExpansion(course.id)
-                                        }}
-                                        className="flex-shrink-0 flex items-center gap-1.5 px-2.5 py-1.5 text-gray-700 hover:text-gray-900 hover:bg-blue-50 rounded-md transition-colors text-xs font-medium border border-blue-300 bg-blue-50 shadow-sm"
-                                        title={`${isExpanded ? 'Masquer' : 'Afficher'} les TP/exercices`}
-                                      >
-                                        {isExpanded ? (
-                                          <ChevronDown className="w-4 h-4 text-blue-600" />
-                                        ) : (
-                                          <ChevronRight className="w-4 h-4 text-blue-600" />
-                                        )}
-                                        <span className="bg-blue-600 text-white px-2 py-0.5 rounded text-xs font-semibold">
-                                          {items.length} {items.length > 1 ? 'items' : 'item'}
-                                        </span>
-                                      </button>
-                                    )}
+
+                            <div className="p-5 flex-1 flex flex-col gap-4">
+                              <div className="space-y-2">
+                                <h3 className="text-lg font-semibold text-gray-900 break-words">
+                                  {course.title}
+                                </h3>
+                                <p className="text-sm text-gray-600 line-clamp-3">
+                                  {course.description || 'Aucune description'}
+                                </p>
+                              </div>
+
+                              <div className="flex flex-wrap gap-2 text-xs font-medium">
+                                <span
+                                  className={`inline-flex items-center px-2 py-0.5 rounded ${
+                                    course.status === 'published'
+                                      ? 'bg-green-100 text-green-700'
+                                      : 'bg-yellow-100 text-yellow-700'
+                                  }`}
+                                >
+                                  {course.status === 'published' ? 'Publié' : 'Brouillon'}
+                                </span>
+                                <span
+                                  className={`inline-flex items-center px-2 py-0.5 rounded ${
+                                    course.access_type === 'free'
+                                      ? 'bg-blue-100 text-blue-700'
+                                      : course.access_type === 'paid'
+                                        ? 'bg-purple-100 text-purple-700'
+                                        : 'bg-gray-100 text-gray-700'
+                                  }`}
+                                >
+                                  {course.access_type === 'free'
+                                    ? 'Gratuit'
+                                    : course.access_type === 'paid'
+                                      ? 'Payant'
+                                      : 'Invitation'}
+                                </span>
+                                {course.price_cents && (
+                                  <span className="inline-flex items-center px-2 py-0.5 rounded bg-gray-100 text-gray-700">
+                                    <DollarSign className="w-3 h-3 mr-1" />
+                                    {(course.price_cents / 100).toFixed(2)}€
+                                  </span>
+                                )}
+                              </div>
+
+                              {coursePrograms[course.id] && coursePrograms[course.id].length > 0 && (
+                                <div>
+                                  <div className="flex items-center gap-1.5 mb-1.5">
+                                    <Layers className="w-3.5 h-3.5 text-gray-400" />
+                                    <span className="text-xs font-medium text-gray-500">Programmes</span>
                                   </div>
-                    <div className="flex flex-wrap gap-2">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                        course.status === 'published'
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-yellow-100 text-yellow-700'
-                      }`}>
-                        {course.status === 'published' ? 'Publié' : 'Brouillon'}
-                      </span>
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                        course.access_type === 'free'
-                          ? 'bg-blue-100 text-blue-700'
-                          : course.access_type === 'paid'
-                            ? 'bg-purple-100 text-purple-700'
-                            : 'bg-gray-100 text-gray-700'
-                      }`}>
-                        {course.access_type === 'free' ? 'Gratuit' :
-                         course.access_type === 'paid' ? 'Payant' : 'Invitation'}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                                  <div className="flex flex-wrap gap-1.5">
+                                    {coursePrograms[course.id].map((program) => (
+                                      <Link
+                                        key={program.id}
+                                        to={`/admin/programs/${program.id}`}
+                                        className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-colors"
+                                        onClick={(e) => e.stopPropagation()}
+                                      >
+                                        {program.title}
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
 
-                <p className="text-sm text-gray-600 line-clamp-2 mb-4 flex-1">
-                  {course.description || 'Aucune description'}
-                </p>
+                              <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-gray-500">
+                                <span className="flex items-center gap-1.5">
+                                  <Calendar className="w-3.5 h-3.5" />
+                                  Créé le{' '}
+                                  {new Date(course.created_at).toLocaleDateString('fr-FR', {
+                                    day: 'numeric',
+                                    month: 'short',
+                                    year: 'numeric'
+                                  })}
+                                </span>
+                                {hasItems && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      toggleCourseExpansion(course.id)
+                                    }}
+                                    className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 font-semibold text-blue-700 transition hover:border-blue-300 hover:bg-blue-100"
+                                  >
+                                    {isExpanded ? (
+                                      <ChevronDown className="w-3.5 h-3.5" />
+                                    ) : (
+                                      <ChevronRight className="w-3.5 h-3.5" />
+                                    )}
+                                    {isExpanded ? 'Masquer le détail' : 'Voir TP / exercices'}
+                                  </button>
+                                )}
+                              </div>
 
-                {/* Programmes associés */}
-                {coursePrograms[course.id] && coursePrograms[course.id].length > 0 && (
-                  <div className="mb-4">
-                    <div className="flex items-center gap-1.5 mb-1.5">
-                      <Layers className="w-3.5 h-3.5 text-gray-400" />
-                      <span className="text-xs font-medium text-gray-500">Programmes :</span>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {coursePrograms[course.id].map((program) => (
-                        <Link
-                          key={program.id}
-                          to={`/admin/programs/${program.id}`}
-                          className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-colors"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          {program.title}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <div className="space-y-2 mb-4 text-xs text-gray-500">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-3.5 h-3.5" />
-                    <span>Créé le {new Date(course.created_at).toLocaleDateString('fr-FR', {
-                      day: 'numeric',
-                      month: 'short',
-                      year: 'numeric'
-                    })}</span>
-                  </div>
-                  {course.price_cents && (
-                    <div className="flex items-center gap-2">
-                      <DollarSign className="w-3.5 h-3.5" />
-                      <span>{(course.price_cents / 100).toFixed(2)}€</span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex flex-wrap gap-2 pt-4 border-t border-gray-100">
-                  <Link
-                    to={`/admin/courses/${course.id}`}
-                    className="flex-1 btn-primary text-sm text-center inline-flex items-center justify-center gap-1.5"
+                              <div className="flex flex-wrap gap-2 pt-4 border-t border-gray-100">
+                                <Link
+                                  to={`/admin/courses/${course.id}`}
+                                  className={`flex-1 justify-center ${compactPrimaryButton}`}
                   >
                     <Edit className="w-3.5 h-3.5" />
                     Modifier
                   </Link>
                   <Link
                     to={`/courses/${course.id}`}
-                    className="btn-secondary text-sm inline-flex items-center gap-1.5"
+                    className={compactSecondaryButton}
                     title="Voir"
                   >
                     <Eye className="w-3.5 h-3.5" />
                   </Link>
                   <Link
                     to={`/admin/courses/${course.id}/enrollments`}
-                    className="btn-secondary text-sm inline-flex items-center gap-1.5"
+                    className={compactSecondaryButton}
                     title="Inscriptions"
                   >
                     <Users className="w-3.5 h-3.5" />
                   </Link>
                   <Link
                     to={`/admin/courses/${course.id}/submissions`}
-                    className="btn-secondary text-sm inline-flex items-center gap-1.5"
+                    className={compactSecondaryButton}
                     title="Soumissions"
                   >
                     <FileText className="w-3.5 h-3.5" />
                   </Link>
                   <button
                     onClick={() => handleOpenPresentation(course.id)}
-                    className="btn-secondary text-sm inline-flex items-center gap-1.5"
+                    className={compactSecondaryButton}
                     title="Ouvrir la présentation de tous les chapitres du cours"
                   >
                     <Presentation className="w-3.5 h-3.5" />
@@ -961,7 +1284,7 @@ export function AdminCoursesContent() {
                   <div className="relative">
                     <button
                       onClick={() => setOpenMenuId(openMenuId === course.id ? null : course.id)}
-                      className="btn-secondary text-sm inline-flex items-center gap-1.5"
+                      className={compactSecondaryButton}
                       title="Plus d'options"
                     >
                       <MoreVertical className="w-3.5 h-3.5" />
@@ -1006,53 +1329,72 @@ export function AdminCoursesContent() {
                     )}
                   </div>
                 </div>
-
-                {/* TP et Exercices associés */}
-                {hasItems && isExpanded && (
-                  <div className="mt-4 pt-4 border-t border-gray-200">
-                    <div className="space-y-2">
-                      {items.map((item) => (
-                        <Link
-                          key={item.id}
-                          to={`/items/${item.id}`}
-                          className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-50 transition-colors group"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <div className="flex-shrink-0">
-                            {item.type === 'tp' ? (
-                              <Code className="w-4 h-4 text-purple-600" />
-                            ) : (
-                              <PenTool className="w-4 h-4 text-blue-600" />
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="text-sm font-medium text-gray-900 group-hover:text-blue-600 truncate">
-                              {item.title}
+                              {hasItems && (
+                                <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-3 space-y-3">
+                                  <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-semibold text-blue-700">
+                                    <div className="flex flex-wrap gap-2">
+                                      {tpCount > 0 && (
+                                        <span className="inline-flex items-center rounded-full bg-white/70 px-2 py-0.5">
+                                          TP : {tpCount}
+                                        </span>
+                                      )}
+                                      {exerciseCount > 0 && (
+                                        <span className="inline-flex items-center rounded-full bg-white/70 px-2 py-0.5">
+                                          Exercices : {exerciseCount}
+                                        </span>
+                                      )}
+                                    </div>
+                                    <span className="text-[11px] font-medium text-blue-600">
+                                      {items.length} {items.length > 1 ? 'contenus liés' : 'contenu lié'}
+                                    </span>
+                                  </div>
+                                  {isExpanded && (
+                                    <div className="space-y-2">
+                                      {items.map((item) => (
+                                        <Link
+                                          key={item.id}
+                                          to={`/items/${item.id}`}
+                                          className="flex items-center gap-2 rounded-xl bg-white/90 p-2 text-sm text-gray-700 transition hover:bg-white"
+                                          onClick={(e) => e.stopPropagation()}
+                                        >
+                                          <div className="flex-shrink-0">
+                                            {item.type === 'tp' ? (
+                                              <Code className="w-4 h-4 text-purple-600" />
+                                            ) : (
+                                              <PenTool className="w-4 h-4 text-blue-600" />
+                                            )}
+                                          </div>
+                                          <div className="flex-1 min-w-0">
+                                            <div className="font-medium text-gray-900 truncate">
+                                              {item.title}
+                                            </div>
+                                            {item.module_title && (
+                                              <div className="text-xs text-gray-500 truncate">
+                                                {item.isDirectAssociation ? (
+                                                  <span className="text-blue-600 font-medium">🔗 {item.module_title}</span>
+                                                ) : (
+                                                  `Module : ${item.module_title}`
+                                                )}
+                                              </div>
+                                            )}
+                                          </div>
+                                          <span
+                                            className={`text-xs px-2 py-0.5 rounded ${
+                                              item.type === 'tp'
+                                                ? 'bg-purple-100 text-purple-700'
+                                                : 'bg-blue-100 text-blue-700'
+                                            }`}
+                                          >
+                                            {item.type === 'tp' ? 'TP' : 'Exercice'}
+                                          </span>
+                                        </Link>
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                              )}
                             </div>
-                            {item.module_title && (
-                              <div className="text-xs text-gray-500 truncate">
-                                {item.isDirectAssociation ? (
-                                  <span className="text-blue-600 font-medium">🔗 {item.module_title}</span>
-                                ) : (
-                                  `Module: ${item.module_title}`
-                                )}
-                              </div>
-                            )}
                           </div>
-                          <span className={`text-xs px-2 py-0.5 rounded ${
-                            item.type === 'tp'
-                              ? 'bg-purple-100 text-purple-700'
-                              : 'bg-blue-100 text-blue-700'
-                          }`}>
-                            {item.type === 'tp' ? 'TP' : 'Exercice'}
-                          </span>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
                         )
                       })}
                     </div>
@@ -1060,16 +1402,17 @@ export function AdminCoursesContent() {
                     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
                       <div className="divide-y divide-gray-200">
                         {coursesInGroup.map((course) => {
-                          // Filtrer les TP si le toggle est désactivé
                           const allItems = courseItems[course.id] || []
-                          const items = showTpInMainList 
-                            ? allItems 
+                          const items = showTpInMainList
+                            ? allItems
                             : allItems.filter(item => item.type !== 'tp')
                           const hasItems = items.length > 0
                           const isExpanded = expandedCourses.has(course.id)
-                          
+                          const tpCount = items.filter(item => item.type === 'tp').length
+                          const exerciseCount = items.filter(item => item.type === 'exercise').length
+
                           const thumbnailUrl = getCourseThumbnailUrl(course)
-                          
+
                           return (
                             <div 
                               key={course.id} 
@@ -1100,57 +1443,45 @@ export function AdminCoursesContent() {
                                   )}
                                   <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2 flex-wrap mb-2">
-                                      <div className="flex items-center gap-2 flex-1 min-w-0">
-                                        <h3 className="text-base font-semibold text-gray-900 truncate">
-                                          {course.title}
-                                        </h3>
-                                        {hasItems && (
-                                          <button
-                                            onClick={(e) => {
-                                              e.stopPropagation()
-                                              toggleCourseExpansion(course.id)
-                                            }}
-                                            className="flex-shrink-0 flex items-center gap-1.5 px-2.5 py-1.5 text-gray-700 hover:text-gray-900 hover:bg-blue-50 rounded-md transition-colors text-xs font-medium border border-blue-300 bg-blue-50 shadow-sm"
-                                            title={`${isExpanded ? 'Masquer' : 'Afficher'} les TP/exercices`}
-                                          >
-                                            {isExpanded ? (
-                                              <ChevronDown className="w-4 h-4 text-blue-600" />
-                                            ) : (
-                                              <ChevronRight className="w-4 h-4 text-blue-600" />
-                                            )}
-                                            <span className="bg-blue-600 text-white px-2 py-0.5 rounded text-xs font-semibold">
-                                              {items.length} {items.length > 1 ? 'items' : 'item'}
-                                            </span>
-                                          </button>
-                                        )}
-                                      </div>
-                                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                                      course.status === 'published'
-                                        ? 'bg-green-100 text-green-700'
-                                        : 'bg-yellow-100 text-yellow-700'
-                                    }`}>
-                                      {course.status === 'published' ? 'Publié' : 'Brouillon'}
-                                    </span>
-                                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                                      course.access_type === 'free'
-                                        ? 'bg-blue-100 text-blue-700'
-                                        : course.access_type === 'paid'
-                                          ? 'bg-purple-100 text-purple-700'
-                                          : 'bg-gray-100 text-gray-700'
-                                    }`}>
-                                      {course.access_type === 'free' ? 'Gratuit' :
-                                       course.access_type === 'paid' ? 'Payant' : 'Invitation'}
-                                    </span>
-                                    {course.price_cents && (
-                                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700">
-                                        <DollarSign className="w-3 h-3 mr-1" />
-                                        {(course.price_cents / 100).toFixed(2)}€
+                                      <h3 className="text-base font-semibold text-gray-900 truncate flex-1">
+                                        {course.title}
+                                      </h3>
+                                    </div>
+                                    <p className="text-sm text-gray-600 line-clamp-3 mb-2">
+                                      {course.description || 'Aucune description disponible.'}
+                                    </p>
+                                    <div className="flex flex-wrap gap-2 text-xs font-medium mb-2">
+                                      <span
+                                        className={`inline-flex items-center px-2 py-0.5 rounded ${
+                                          course.status === 'published'
+                                            ? 'bg-green-100 text-green-700'
+                                            : 'bg-yellow-100 text-yellow-700'
+                                        }`}
+                                      >
+                                        {course.status === 'published' ? 'Publié' : 'Brouillon'}
                                       </span>
-                                    )}
-                                  </div>
-                                  <p className="text-sm text-gray-600 line-clamp-2 mb-2">
-                                    {course.description || 'Aucune description disponible.'}
-                                  </p>
+                                      <span
+                                        className={`inline-flex items-center px-2 py-0.5 rounded ${
+                                          course.access_type === 'free'
+                                            ? 'bg-blue-100 text-blue-700'
+                                            : course.access_type === 'paid'
+                                              ? 'bg-purple-100 text-purple-700'
+                                              : 'bg-gray-100 text-gray-700'
+                                        }`}
+                                      >
+                                        {course.access_type === 'free'
+                                          ? 'Gratuit'
+                                          : course.access_type === 'paid'
+                                            ? 'Payant'
+                                            : 'Invitation'}
+                                      </span>
+                                      {course.price_cents && (
+                                        <span className="inline-flex items-center px-2 py-0.5 rounded bg-gray-100 text-gray-700">
+                                          <DollarSign className="w-3 h-3 mr-1" />
+                                          {(course.price_cents / 100).toFixed(2)}€
+                                        </span>
+                                      )}
+                                    </div>
                                   {/* Programmes associés */}
                                   {coursePrograms[course.id] && coursePrograms[course.id].length > 0 && (
                                     <div className="mb-2">
@@ -1172,15 +1503,33 @@ export function AdminCoursesContent() {
                                       </div>
                                     </div>
                                   )}
-                                  <div className="flex items-center gap-4 text-xs text-gray-500">
-                                    <span className="flex items-center gap-1.5">
-                                      <Calendar className="w-3.5 h-3.5" />
-                                      Créé le {new Date(course.created_at).toLocaleDateString('fr-FR', {
-                                        day: 'numeric',
-                                        month: 'short',
-                                        year: 'numeric'
-                                      })}
-                                    </span>
+                                    <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-gray-500">
+                                      <span className="flex items-center gap-1.5">
+                                        <Calendar className="w-3.5 h-3.5" />
+                                        Créé le{' '}
+                                        {new Date(course.created_at).toLocaleDateString('fr-FR', {
+                                          day: 'numeric',
+                                          month: 'short',
+                                          year: 'numeric'
+                                        })}
+                                      </span>
+                                      {hasItems && (
+                                        <button
+                                          onClick={(e) => {
+                                            e.stopPropagation()
+                                            toggleCourseExpansion(course.id)
+                                          }}
+                                          className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 font-semibold text-blue-700 transition hover:border-blue-300 hover:bg-blue-100"
+                                        >
+                                          {isExpanded ? (
+                                            <ChevronDown className="w-3.5 h-3.5" />
+                                          ) : (
+                                            <ChevronRight className="w-3.5 h-3.5" />
+                                          )}
+                                          {isExpanded ? 'Masquer le détail' : 'Voir TP / exercices'}
+                                        </button>
+                                      )}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -1188,35 +1537,35 @@ export function AdminCoursesContent() {
                               <div className="flex items-center gap-2 flex-shrink-0 sm:ml-4">
                                 <Link
                                   to={`/admin/courses/${course.id}`}
-                                  className="btn-primary text-sm inline-flex items-center gap-1.5"
+                                  className={compactPrimaryButton}
                                 >
                                   <Edit className="w-3.5 h-3.5" />
                                   Modifier
                                 </Link>
                                 <Link
                                   to={`/courses/${course.id}`}
-                                  className="btn-secondary text-sm inline-flex items-center gap-1.5"
+                                  className={compactSecondaryButton}
                                   title="Voir"
                                 >
                                   <Eye className="w-3.5 h-3.5" />
                                 </Link>
                                 <Link
                                   to={`/admin/courses/${course.id}/enrollments`}
-                                  className="btn-secondary text-sm inline-flex items-center gap-1.5"
+                                  className={compactSecondaryButton}
                                   title="Inscriptions"
                                 >
                                   <Users className="w-3.5 h-3.5" />
                                 </Link>
                                 <Link
                                   to={`/admin/courses/${course.id}/submissions`}
-                                  className="btn-secondary text-sm inline-flex items-center gap-1.5"
+                                  className={compactSecondaryButton}
                                   title="Soumissions"
                                 >
                                   <FileText className="w-3.5 h-3.5" />
                                 </Link>
                                 <button
                                   onClick={() => handleOpenPresentation(course.id)}
-                                  className="btn-secondary text-sm inline-flex items-center gap-1.5"
+                                  className={compactSecondaryButton}
                                   title="Ouvrir la présentation de tous les chapitres du cours"
                                 >
                                   <Presentation className="w-3.5 h-3.5" />
@@ -1225,7 +1574,7 @@ export function AdminCoursesContent() {
                                 <div className="relative">
                                   <button
                                     onClick={() => setOpenMenuId(openMenuId === course.id ? null : course.id)}
-                                    className="btn-secondary text-sm inline-flex items-center gap-1.5"
+                                    className={compactSecondaryButton}
                                     title="Plus d'options"
                                   >
                                     <MoreVertical className="w-3.5 h-3.5" />
@@ -1271,52 +1620,71 @@ export function AdminCoursesContent() {
                                 </div>
                               </div>
 
-                              {/* TP et Exercices associés */}
-                              {hasItems && isExpanded && (
-                                <div className="mt-4 pt-4 border-t border-gray-200">
-                                  <div className="space-y-2">
-                                    {items.map((item) => (
-                                      <Link
-                                        key={item.id}
-                                        to={`/items/${item.id}`}
-                                        className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-50 transition-colors group ml-16"
-                                        onClick={(e) => e.stopPropagation()}
-                                      >
-                                        <div className="flex-shrink-0">
-                                          {item.type === 'tp' ? (
-                                            <Code className="w-4 h-4 text-purple-600" />
-                                          ) : (
-                                            <PenTool className="w-4 h-4 text-blue-600" />
-                                          )}
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                          <div className="text-sm font-medium text-gray-900 group-hover:text-blue-600 truncate">
-                                            {item.title}
-                                          </div>
-                                        {item.module_title && (
-                                          <div className="text-xs text-gray-500 truncate">
-                                            {item.isDirectAssociation ? (
-                                              <span className="text-blue-600 font-medium">🔗 {item.module_title}</span>
+                              {hasItems && (
+                                <div className="mt-4 rounded-2xl border border-blue-100 bg-blue-50/60 p-3 space-y-3">
+                                  <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-semibold text-blue-700">
+                                    <div className="flex flex-wrap gap-2">
+                                      {tpCount > 0 && (
+                                        <span className="inline-flex items-center rounded-full bg-white/70 px-2 py-0.5">
+                                          TP : {tpCount}
+                                        </span>
+                                      )}
+                                      {exerciseCount > 0 && (
+                                        <span className="inline-flex items-center rounded-full bg-white/70 px-2 py-0.5">
+                                          Exercices : {exerciseCount}
+                                        </span>
+                                      )}
+                                    </div>
+                                    <span className="text-[11px] font-medium text-blue-600">
+                                      {items.length} {items.length > 1 ? 'contenus liés' : 'contenu lié'}
+                                    </span>
+                                  </div>
+                                  {isExpanded && (
+                                    <div className="space-y-2">
+                                      {items.map((item) => (
+                                        <Link
+                                          key={item.id}
+                                          to={`/items/${item.id}`}
+                                          className="ml-0 flex items-center gap-2 rounded-xl bg-white/90 p-2 text-sm text-gray-700 transition hover:bg-white sm:ml-16"
+                                          onClick={(e) => e.stopPropagation()}
+                                        >
+                                          <div className="flex-shrink-0">
+                                            {item.type === 'tp' ? (
+                                              <Code className="w-4 h-4 text-purple-600" />
                                             ) : (
-                                              `Module: ${item.module_title}`
+                                              <PenTool className="w-4 h-4 text-blue-600" />
                                             )}
                                           </div>
-                                        )}
-                                        </div>
-                                        <span className={`text-xs px-2 py-0.5 rounded ${
-                                          item.type === 'tp'
-                                            ? 'bg-purple-100 text-purple-700'
-                                            : 'bg-blue-100 text-blue-700'
-                                        }`}>
-                                          {item.type === 'tp' ? 'TP' : 'Exercice'}
-                                        </span>
-                                      </Link>
-                                    ))}
-                                  </div>
+                                          <div className="flex-1 min-w-0">
+                                            <div className="text-sm font-medium text-gray-900 truncate">
+                                              {item.title}
+                                            </div>
+                                            {item.module_title && (
+                                              <div className="text-xs text-gray-500 truncate">
+                                                {item.isDirectAssociation ? (
+                                                  <span className="text-blue-600 font-medium">🔗 {item.module_title}</span>
+                                                ) : (
+                                                  `Module : ${item.module_title}`
+                                                )}
+                                              </div>
+                                            )}
+                                          </div>
+                                          <span
+                                            className={`text-xs px-2 py-0.5 rounded ${
+                                              item.type === 'tp'
+                                                ? 'bg-purple-100 text-purple-700'
+                                                : 'bg-blue-100 text-blue-700'
+                                            }`}
+                                          >
+                                            {item.type === 'tp' ? 'TP' : 'Exercice'}
+                                          </span>
+                                        </Link>
+                                      ))}
+                                    </div>
+                                  )}
                                 </div>
                               )}
                             </div>
-                          </div>
                         )
                         })}
                       </div>
@@ -1331,4 +1699,3 @@ export function AdminCoursesContent() {
     </div>
   )
 }
-

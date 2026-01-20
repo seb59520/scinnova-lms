@@ -1,0 +1,23 @@
+# Fichiers générés par les scripts
+alertes.txt
+rapport_securite.txt
+*.pyc
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Fichiers de logs générés (optionnel, si vous voulez garder les logs)
+# *.log
+
+# Environnements virtuels
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

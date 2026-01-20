@@ -1,0 +1,1799 @@
+{
+  "title": "Les dictionnaires en Python",
+  "description": "Cours complet sur les dictionnaires en Python : définition, création, manipulation, accès aux éléments, méthodes, dictionnaires imbriqués, et cas d'usage pratiques. Apprenez à maîtriser cette structure de données clé-valeur essentielle en programmation.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3776AB",
+    "secondaryColor": "#FFD43B",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Introduction aux dictionnaires",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Qu'est-ce qu'un dictionnaire ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez ce qu'est un dictionnaire, ses caractéristiques principales et pourquoi l'utiliser."
+          },
+          "chapters": [
+            {
+              "title": "Définition et caractéristiques",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "📚 Qu'est-ce qu'un dictionnaire ?" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Un dictionnaire est une " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "structure de données qui stocke des paires clé-valeur" },
+                      { "type": "text", "text": ". C'est une collection non ordonnée (avant Python 3.7), mutable et indexée par des clés." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Caractéristiques principales" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Clé-valeur" },
+                              { "type": "text", "text": " : Chaque élément est une paire (clé, valeur)" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Mutable" },
+                              { "type": "text", "text": " : On peut ajouter, modifier et supprimer des éléments" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Clés uniques" },
+                              { "type": "text", "text": " : Chaque clé doit être unique dans le dictionnaire" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Clés immuables" },
+                              { "type": "text", "text": " : Les clés doivent être de type immuable (str, int, tuple, etc.)" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Valeurs hétérogènes" },
+                              { "type": "text", "text": " : Les valeurs peuvent être de n'importe quel type" }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Analogie avec un vrai dictionnaire" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Comme un dictionnaire de langue où vous cherchez un " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "mot (clé)" },
+                      { "type": "text", "text": " pour trouver sa " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "définition (valeur)" },
+                      { "type": "text", "text": "." }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Exemple simple\npersonne = {\n    \"nom\": \"Alice\",\n    \"age\": 25,\n    \"ville\": \"Paris\"\n}\n\n# La clé \"nom\" correspond à la valeur \"Alice\"\n# La clé \"age\" correspond à la valeur 25\n# La clé \"ville\" correspond à la valeur \"Paris\""
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Créer un dictionnaire",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez les différentes façons de créer un dictionnaire en Python."
+          },
+          "chapters": [
+            {
+              "title": "Méthodes de création",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔨 Créer un dictionnaire" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthode 1 : Avec des accolades {}" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Dictionnaire avec des paires clé:valeur\npersonne = {\n    \"nom\": \"Alice\",\n    \"age\": 25,\n    \"ville\": \"Paris\"\n}\n\nprint(personne)  # {'nom': 'Alice', 'age': 25, 'ville': 'Paris'}\nprint(type(personne))  # <class 'dict'>"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthode 2 : Dictionnaire vide" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Dictionnaire vide\nvide = {}\nprint(vide)  # {}\nprint(type(vide))  # <class 'dict'>\n\n# Ou avec dict()\nvide2 = dict()\nprint(vide2)  # {}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthode 3 : Avec dict()" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Avec des arguments nommés\npersonne = dict(nom=\"Alice\", age=25, ville=\"Paris\")\nprint(personne)  # {'nom': 'Alice', 'age': 25, 'ville': 'Paris'}\n\n# Avec une liste de tuples\npersonne2 = dict([(\"nom\", \"Bob\"), (\"age\", 30), (\"ville\", \"Lyon\")])\nprint(personne2)  # {'nom': 'Bob', 'age': 30, 'ville': 'Lyon'}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthode 4 : Dict comprehension" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Créer un dictionnaire à partir d'une liste\nnombres = [1, 2, 3, 4, 5]\ncarres = {n: n**2 for n in nombres}\nprint(carres)  # {1: 1, 2: 4, 3: 9, 4: 16, 5: 25}\n\n# Avec condition\npairs = {n: n*2 for n in range(10) if n % 2 == 0}\nprint(pairs)  # {0: 0, 2: 4, 4: 8, 6: 12, 8: 16}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Types de clés valides" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ✅ Clés valides (immuables)\nd = {\n    \"string\": \"valeur1\",      # Chaîne\n    42: \"valeur2\",              # Entier\n    (1, 2): \"valeur3\",          # Tuple\n    True: \"valeur4\"             # Booléen\n}\n\n# ❌ Clés invalides (mutables)\n# d = {\n#     [1, 2]: \"valeur\"  # Erreur : list is unhashable\n#     {1: 2}: \"valeur\"  # Erreur : dict is unhashable\n# }"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : Accès et manipulation",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Accéder aux valeurs",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à accéder aux valeurs d'un dictionnaire par leur clé."
+          },
+          "chapters": [
+            {
+              "title": "Accès aux valeurs",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔍 Accéder aux valeurs" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Accès avec crochets []" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25, \"ville\": \"Paris\"}\n\n# Accéder à une valeur par sa clé\nprint(personne[\"nom\"])   # Alice\nprint(personne[\"age\"])    # 25\nprint(personne[\"ville\"])  # Paris\n\n# ⚠️ Si la clé n'existe pas, une erreur est levée\n# print(personne[\"pays\"])  # KeyError: 'pays'"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Accès avec get() (sécurisé)" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25}\n\n# get() retourne None si la clé n'existe pas\nprint(personne.get(\"nom\"))    # Alice\nprint(personne.get(\"pays\"))    # None (pas d'erreur)\n\n# get() avec valeur par défaut\nprint(personne.get(\"pays\", \"Inconnu\"))  # Inconnu\nprint(personne.get(\"age\", 0))            # 25 (la clé existe)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Vérifier l'existence d'une clé" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25}\n\n# Avec 'in'\nif \"nom\" in personne:\n    print(\"La clé 'nom' existe\")\n\nif \"pays\" not in personne:\n    print(\"La clé 'pays' n'existe pas\")\n\n# Avec get()\nif personne.get(\"age\") is not None:\n    print(\"La clé 'age' existe\")"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Modifier et ajouter",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez à modifier et ajouter des éléments dans un dictionnaire."
+          },
+          "chapters": [
+            {
+              "title": "Modification et ajout",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "✏️ Modifier et ajouter" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Modifier une valeur existante" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25}\n\n# Modifier une valeur\npersonne[\"age\"] = 26\nprint(personne)  # {'nom': 'Alice', 'age': 26}\n\n# Modifier plusieurs valeurs\npersonne[\"age\"] = 27\npersonne[\"ville\"] = \"Lyon\"\nprint(personne)  # {'nom': 'Alice', 'age': 27, 'ville': 'Lyon'}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Ajouter un nouvel élément" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25}\n\n# Ajouter une nouvelle paire clé-valeur\npersonne[\"ville\"] = \"Paris\"\nprint(personne)  # {'nom': 'Alice', 'age': 25, 'ville': 'Paris'}\n\n# Ajouter plusieurs éléments\npersonne[\"pays\"] = \"France\"\npersonne[\"email\"] = \"alice@example.com\"\nprint(personne)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "update() - Mettre à jour plusieurs éléments" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25}\n\n# Mettre à jour avec un autre dictionnaire\nmodifications = {\"age\": 26, \"ville\": \"Paris\"}\npersonne.update(modifications)\nprint(personne)  # {'nom': 'Alice', 'age': 26, 'ville': 'Paris'}\n\n# Ou directement\npersonne.update({\"pays\": \"France\", \"email\": \"alice@example.com\"})\nprint(personne)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "setdefault() - Ajouter seulement si la clé n'existe pas" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\"}\n\n# Ajoute seulement si la clé n'existe pas\npersonne.setdefault(\"age\", 25)\nprint(personne)  # {'nom': 'Alice', 'age': 25}\n\n# Ne modifie pas si la clé existe déjà\npersonne.setdefault(\"age\", 30)\nprint(personne)  # {'nom': 'Alice', 'age': 25} (inchangé)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.3 Supprimer des éléments",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Apprenez à supprimer des éléments d'un dictionnaire."
+          },
+          "chapters": [
+            {
+              "title": "Suppression d'éléments",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🗑️ Supprimer des éléments" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "del - Supprimer une clé" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25, \"ville\": \"Paris\"}\n\n# Supprimer une clé\ndel personne[\"ville\"]\nprint(personne)  # {'nom': 'Alice', 'age': 25}\n\n# ⚠️ Erreur si la clé n'existe pas\n# del personne[\"pays\"]  # KeyError: 'pays'"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "pop() - Supprimer et retourner la valeur" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25, \"ville\": \"Paris\"}\n\n# Supprimer et récupérer la valeur\nville = personne.pop(\"ville\")\nprint(ville)     # Paris\nprint(personne)  # {'nom': 'Alice', 'age': 25}\n\n# Avec valeur par défaut si la clé n'existe pas\npays = personne.pop(\"pays\", \"Inconnu\")\nprint(pays)  # Inconnu (pas d'erreur)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "popitem() - Supprimer et retourner la dernière paire" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25, \"ville\": \"Paris\"}\n\n# Supprimer et retourner la dernière paire (clé, valeur)\ncle, valeur = personne.popitem()\nprint(f\"Clé: {cle}, Valeur: {valeur}\")\nprint(personne)  # Dictionnaire sans cette paire"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "clear() - Vider le dictionnaire" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25}\n\n# Vider complètement le dictionnaire\npersonne.clear()\nprint(personne)  # {}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : Parcours et méthodes",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Parcourir un dictionnaire",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à parcourir un dictionnaire avec différentes méthodes."
+          },
+          "chapters": [
+            {
+              "title": "Parcours de dictionnaires",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔄 Parcourir un dictionnaire" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Parcourir les clés" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25, \"ville\": \"Paris\"}\n\n# Par défaut, on parcourt les clés\nfor cle in personne:\n    print(cle)\n\n# Ou explicitement avec keys()\nfor cle in personne.keys():\n    print(cle)\n\n# Résultat dans les deux cas :\n# nom\n# age\n# ville"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Parcourir les valeurs" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25, \"ville\": \"Paris\"}\n\nfor valeur in personne.values():\n    print(valeur)\n\n# Résultat :\n# Alice\n# 25\n# Paris"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Parcourir les paires clé-valeur" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25, \"ville\": \"Paris\"}\n\n# Avec items()\nfor cle, valeur in personne.items():\n    print(f\"{cle}: {valeur}\")\n\n# Résultat :\n# nom: Alice\n# age: 25\n# ville: Paris"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Parcourir avec enumerate()" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25, \"ville\": \"Paris\"}\n\n# Parcourir avec index\nfor index, (cle, valeur) in enumerate(personne.items()):\n    print(f\"{index}: {cle} = {valeur}\")\n\n# Résultat :\n# 0: nom = Alice\n# 1: age = 25\n# 2: ville = Paris"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Méthodes utiles",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Découvrez les méthodes les plus utiles des dictionnaires."
+          },
+          "chapters": [
+            {
+              "title": "Méthodes des dictionnaires",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🛠️ Méthodes utiles" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "len() - Nombre d'éléments" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25, \"ville\": \"Paris\"}\nprint(len(personne))  # 3\n\nvide = {}\nprint(len(vide))  # 0"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "copy() - Copie superficielle" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "original = {\"nom\": \"Alice\", \"age\": 25}\n\n# Copie\ncopie = original.copy()\nprint(copie)  # {'nom': 'Alice', 'age': 25}\n\n# Modifier la copie ne modifie pas l'original\ncopie[\"age\"] = 30\nprint(original)  # {'nom': 'Alice', 'age': 25}\nprint(copie)     # {'nom': 'Alice', 'age': 30}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "fromkeys() - Créer un dictionnaire avec des clés" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Créer un dictionnaire avec des clés et une valeur par défaut\ncles = [\"nom\", \"age\", \"ville\"]\nd = dict.fromkeys(cles, \"Inconnu\")\nprint(d)  # {'nom': 'Inconnu', 'age': 'Inconnu', 'ville': 'Inconnu'}\n\n# Avec valeur par défaut None\nd2 = dict.fromkeys(cles)\nprint(d2)  # {'nom': None, 'age': None, 'ville': None}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Vérifications" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "personne = {\"nom\": \"Alice\", \"age\": 25}\n\n# Vérifier si une clé existe\nprint(\"nom\" in personne)        # True\nprint(\"pays\" not in personne)  # True\n\n# Vérifier si une valeur existe\nprint(25 in personne.values())  # True\nprint(\"Alice\" in personne.values())  # True"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : Dictionnaires imbriqués et cas avancés",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Dictionnaires imbriqués",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à travailler avec des dictionnaires contenant d'autres dictionnaires."
+          },
+          "chapters": [
+            {
+              "title": "Dictionnaires imbriqués",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔀 Dictionnaires imbriqués" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Un dictionnaire peut contenir d'autres dictionnaires comme valeurs. C'est très utile pour représenter des structures de données complexes." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Exemple : Données d'étudiants" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "etudiants = {\n    \"alice\": {\n        \"age\": 20,\n        \"notes\": [15, 18, 16],\n        \"ville\": \"Paris\"\n    },\n    \"bob\": {\n        \"age\": 21,\n        \"notes\": [12, 14, 13],\n        \"ville\": \"Lyon\"\n    }\n}\n\n# Accéder aux données\nprint(etudiants[\"alice\"][\"age\"])           # 20\nprint(etudiants[\"alice\"][\"notes\"][0])        # 15\nprint(etudiants[\"bob\"][\"ville\"])            # Lyon"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Modifier un dictionnaire imbriqué" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "etudiants = {\n    \"alice\": {\"age\": 20, \"notes\": [15, 18]}\n}\n\n# Modifier une valeur imbriquée\netudiants[\"alice\"][\"age\"] = 21\n\n# Ajouter une nouvelle clé\netudiants[\"alice\"][\"ville\"] = \"Paris\"\n\n# Ajouter un nouvel étudiant\netudiants[\"charlie\"] = {\"age\": 22, \"notes\": [16, 17]}\n\nprint(etudiants)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Parcourir des dictionnaires imbriqués" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "etudiants = {\n    \"alice\": {\"age\": 20, \"notes\": [15, 18]},\n    \"bob\": {\"age\": 21, \"notes\": [12, 14]}\n}\n\n# Parcourir les étudiants\nfor nom, infos in etudiants.items():\n    print(f\"\\nÉtudiant: {nom}\")\n    for cle, valeur in infos.items():\n        print(f\"  {cle}: {valeur}\")"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "4.2 Fusion de dictionnaires",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez à fusionner plusieurs dictionnaires."
+          },
+          "chapters": [
+            {
+              "title": "Fusion de dictionnaires",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔗 Fusionner des dictionnaires" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthode 1 : update()" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "d1 = {\"a\": 1, \"b\": 2}\nd2 = {\"c\": 3, \"d\": 4}\n\n# update() modifie d1\nd1.update(d2)\nprint(d1)  # {'a': 1, 'b': 2, 'c': 3, 'd': 4}\nprint(d2)  # {'c': 3, 'd': 4} (inchangé)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthode 2 : ** (Python 3.5+)" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "d1 = {\"a\": 1, \"b\": 2}\nd2 = {\"c\": 3, \"d\": 4}\n\n# Créer un nouveau dictionnaire (ne modifie pas d1 ni d2)\nd3 = {**d1, **d2}\nprint(d3)  # {'a': 1, 'b': 2, 'c': 3, 'd': 4}\nprint(d1)  # {'a': 1, 'b': 2} (inchangé)\nprint(d2)  # {'c': 3, 'd': 4} (inchangé)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthode 3 : | (Python 3.9+)" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "d1 = {\"a\": 1, \"b\": 2}\nd2 = {\"c\": 3, \"d\": 4}\n\n# Opérateur | (union)\nd3 = d1 | d2\nprint(d3)  # {'a': 1, 'b': 2, 'c': 3, 'd': 4}\n\n# Avec conflit (d2 écrase d1)\nd1 = {\"a\": 1, \"b\": 2}\nd2 = {\"b\": 3, \"c\": 4}\nd3 = d1 | d2\nprint(d3)  # {'a': 1, 'b': 3, 'c': 4}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : Exercices pratiques",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "exercise",
+          "title": "Exercice 1 : Créer et accéder",
+          "position": 0,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice 1 : Créer et accéder à un dictionnaire" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créez un dictionnaire représentant une personne avec les clés suivantes :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "\"nom\" : \"Alice\"" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "\"age\" : 25" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "\"ville\" : \"Paris\"" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Ensuite, affichez chaque clé et sa valeur en utilisant une boucle." }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Créer le dictionnaire\npersonne = {\n    \"nom\": \"Alice\",\n    \"age\": 25,\n    \"ville\": \"Paris\"\n}\n\n# Parcourir et afficher\nfor cle, valeur in personne.items():\n    print(f\"{cle}: {valeur}\")\n\n# Résultat :\n# nom: Alice\n# age: 25\n# ville: Paris"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 2 : Compteur de mots",
+          "position": 1,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice 2 : Compteur de mots" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez une fonction qui prend une liste de mots en paramètre et retourne un dictionnaire où chaque clé est un mot et chaque valeur est le nombre de fois que ce mot apparaît dans la liste." }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Test avec [\"pomme\", \"banane\", \"pomme\", \"orange\", \"banane\", \"pomme\"]\n# Résultat attendu : {\"pomme\": 3, \"banane\": 2, \"orange\": 1}"
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "def compter_mots(mots):\n    compteur = {}\n    \n    for mot in mots:\n        if mot in compteur:\n            compteur[mot] += 1\n        else:\n            compteur[mot] = 1\n    \n    return compteur\n\n# Version avec get()\ndef compter_mots_v2(mots):\n    compteur = {}\n    for mot in mots:\n        compteur[mot] = compteur.get(mot, 0) + 1\n    return compteur\n\n# Test\nmots = [\"pomme\", \"banane\", \"pomme\", \"orange\", \"banane\", \"pomme\"]\nresultat = compter_mots(mots)\nprint(resultat)  # {'pomme': 3, 'banane': 2, 'orange': 1}"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 3 : Inverser un dictionnaire",
+          "position": 2,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice 3 : Inverser un dictionnaire" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez une fonction qui inverse un dictionnaire : les clés deviennent les valeurs et les valeurs deviennent les clés." }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "⚠️ Attention : Assurez-vous que les valeurs originales sont uniques (sinon certaines clés seront perdues)." }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Test avec {\"a\": 1, \"b\": 2, \"c\": 3}\n# Résultat attendu : {1: \"a\", 2: \"b\", 3: \"c\"}"
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "def inverser_dict(d):\n    \"\"\"Inverse un dictionnaire (clés ↔ valeurs).\"\"\"\n    inverse = {}\n    \n    for cle, valeur in d.items():\n        inverse[valeur] = cle\n    \n    return inverse\n\n# Test\nd = {\"a\": 1, \"b\": 2, \"c\": 3}\nresultat = inverser_dict(d)\nprint(resultat)  # {1: 'a', 2: 'b', 3: 'c'}\n\n# Version avec dict comprehension\ninverse = {valeur: cle for cle, valeur in d.items()}\nprint(inverse)  # {1: 'a', 2: 'b', 3: 'c'}"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 4 : Filtrer un dictionnaire",
+          "position": 3,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice 4 : Filtrer un dictionnaire" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez une fonction qui prend un dictionnaire et un seuil en paramètres, et retourne un nouveau dictionnaire contenant uniquement les paires dont la valeur est supérieure au seuil." }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Test avec {\"a\": 10, \"b\": 5, \"c\": 15, \"d\": 3} et seuil = 7\n# Résultat attendu : {\"a\": 10, \"c\": 15}"
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "def filtrer_dict(d, seuil):\n    \"\"\"Filtre un dictionnaire en gardant les valeurs > seuil.\"\"\"\n    resultat = {}\n    \n    for cle, valeur in d.items():\n        if valeur > seuil:\n            resultat[cle] = valeur\n    \n    return resultat\n\n# Version avec dict comprehension\ndef filtrer_dict_v2(d, seuil):\n    return {cle: valeur for cle, valeur in d.items() if valeur > seuil}\n\n# Test\nd = {\"a\": 10, \"b\": 5, \"c\": 15, \"d\": 3}\nresultat = filtrer_dict(d, 7)\nprint(resultat)  # {'a': 10, 'c': 15}"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 5 : Dictionnaire d'étudiants",
+          "position": 4,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice 5 : Gérer un dictionnaire d'étudiants" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créez un dictionnaire d'étudiants où chaque clé est le nom de l'étudiant et chaque valeur est un dictionnaire contenant :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "\"age\" : un entier" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "\"notes\" : une liste de notes" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez une fonction qui calcule la moyenne de chaque étudiant et l'ajoute au dictionnaire avec la clé \"moyenne\"." }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "def calculer_moyennes(etudiants):\n    \"\"\"Calcule et ajoute la moyenne de chaque étudiant.\"\"\"\n    for nom, infos in etudiants.items():\n        notes = infos[\"notes\"]\n        if notes:  # Si la liste n'est pas vide\n            moyenne = sum(notes) / len(notes)\n            infos[\"moyenne\"] = round(moyenne, 2)\n        else:\n            infos[\"moyenne\"] = 0\n    \n    return etudiants\n\n# Test\netudiants = {\n    \"alice\": {\"age\": 20, \"notes\": [15, 18, 16]},\n    \"bob\": {\"age\": 21, \"notes\": [12, 14, 13]},\n    \"charlie\": {\"age\": 22, \"notes\": [10, 11, 12]}\n}\n\netudiants = calculer_moyennes(etudiants)\n\nfor nom, infos in etudiants.items():\n    print(f\"{nom}: moyenne = {infos['moyenne']}\")\n\n# Résultat :\n# alice: moyenne = 16.33\n# bob: moyenne = 13.0\n# charlie: moyenne = 11.0"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 6 : Quiz final",
+      "position": 5,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "game",
+          "title": "Quiz : Les dictionnaires en Python",
+          "position": 0,
+          "published": true,
+          "content": {
+            "gameType": "quiz",
+            "description": "Testez vos connaissances sur les dictionnaires en Python avec ce quiz complet.",
+            "instructions": "Répondez aux questions pour valider votre compréhension des dictionnaires, leurs méthodes et leurs cas d'usage.",
+            "objectives": [
+              "Comprendre la structure clé-valeur des dictionnaires",
+              "Maîtriser la création et la manipulation",
+              "Connaître les méthodes principales",
+              "Savoir utiliser les dictionnaires dans des cas pratiques"
+            ],
+            "scoring": {
+              "totalQuestions": 15,
+              "pointsPerQuestion": 1,
+              "passingScore": 10,
+              "levels": {
+                "0-9": "Bases à renforcer - Revoyez les concepts fondamentaux",
+                "10-12": "Bon niveau - Vous maîtrisez les dictionnaires",
+                "13-15": "Excellent niveau - Très bonne compréhension"
+              }
+            },
+            "levels": [
+              {
+                "level": 1,
+                "name": "Niveau 1 - Fondamentaux",
+                "description": "Questions sur les bases des dictionnaires",
+                "questions": [
+                  {
+                    "id": "q1-definition",
+                    "type": "mcq",
+                    "prompt": "Qu'est-ce qu'un dictionnaire en Python ?",
+                    "options": [
+                      "Une liste ordonnée d'éléments",
+                      "Une structure de données qui stocke des paires clé-valeur",
+                      "Un type de données immuable",
+                      "Une fonction pour chercher des mots"
+                    ],
+                    "answer": "Une structure de données qui stocke des paires clé-valeur",
+                    "explanation": "Un dictionnaire est une collection de paires clé-valeur, où chaque clé est associée à une valeur. C'est une structure mutable et très flexible.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q2-creation",
+                    "type": "mcq",
+                    "prompt": "Quelle est la syntaxe correcte pour créer un dictionnaire vide ?",
+                    "options": [
+                      "d = []",
+                      "d = {}",
+                      "d = ()",
+                      "d = None"
+                    ],
+                    "answer": "d = {}",
+                    "explanation": "Un dictionnaire vide se crée avec des accolades vides : {}. [] crée une liste vide, () crée un tuple vide.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q3-acces",
+                    "type": "mcq",
+                    "prompt": "Comment accéder à la valeur associée à la clé \"nom\" dans le dictionnaire d = {\"nom\": \"Alice\"} ?",
+                    "options": [
+                      "d.nom",
+                      "d[\"nom\"]",
+                      "d.get(\"nom\")",
+                      "Les deux dernières réponses sont correctes"
+                    ],
+                    "answer": "Les deux dernières réponses sont correctes",
+                    "explanation": "On peut utiliser d[\"nom\"] ou d.get(\"nom\"). La méthode get() est plus sûre car elle retourne None si la clé n'existe pas au lieu de lever une erreur.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q4-cles",
+                    "type": "true-false",
+                    "prompt": "Les clés d'un dictionnaire doivent être uniques",
+                    "answer": true,
+                    "explanation": "Vrai. Chaque clé dans un dictionnaire doit être unique. Si on ajoute une clé qui existe déjà, elle écrase la valeur précédente.",
+                    "difficulty": 1
+                  }
+                ]
+              },
+              {
+                "level": 2,
+                "name": "Niveau 2 - Manipulation",
+                "description": "Questions sur la manipulation des dictionnaires",
+                "questions": [
+                  {
+                    "id": "q5-modification",
+                    "type": "mcq",
+                    "prompt": "Comment modifier la valeur associée à la clé \"age\" dans un dictionnaire d ?",
+                    "options": [
+                      "d.age = 25",
+                      "d[\"age\"] = 25",
+                      "d.modify(\"age\", 25)",
+                      "On ne peut pas modifier un dictionnaire"
+                    ],
+                    "answer": "d[\"age\"] = 25",
+                    "explanation": "On modifie une valeur avec d[\"age\"] = 25. Si la clé existe, elle est modifiée. Si elle n'existe pas, elle est ajoutée.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q6-suppression",
+                    "type": "mcq",
+                    "prompt": "Quelle méthode supprime une clé et retourne sa valeur ?",
+                    "options": [
+                      "del d[\"cle\"]",
+                      "d.remove(\"cle\")",
+                      "d.pop(\"cle\")",
+                      "d.delete(\"cle\")"
+                    ],
+                    "answer": "d.pop(\"cle\")",
+                    "explanation": "pop() supprime la clé et retourne sa valeur. del supprime sans retourner, et remove() n'existe pas pour les dictionnaires.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q7-parcours",
+                    "type": "mcq",
+                    "prompt": "Comment parcourir toutes les paires clé-valeur d'un dictionnaire d ?",
+                    "options": [
+                      "for cle in d:",
+                      "for cle, valeur in d.items():",
+                      "for valeur in d.values():",
+                      "Toutes les réponses sont possibles selon le besoin"
+                    ],
+                    "answer": "for cle, valeur in d.items():",
+                    "explanation": "d.items() retourne les paires (clé, valeur). On peut les déballer avec for cle, valeur in d.items().",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q8-get",
+                    "type": "mcq",
+                    "prompt": "Que retourne d.get(\"cle\", \"defaut\") si la clé \"cle\" n'existe pas dans d ?",
+                    "options": [
+                      "None",
+                      "\"defaut\"",
+                      "Une erreur",
+                      "Un dictionnaire vide"
+                    ],
+                    "answer": "\"defaut\"",
+                    "explanation": "get() retourne la valeur par défaut (deuxième argument) si la clé n'existe pas. C'est plus sûr que d[\"cle\"] qui lèverait une erreur.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q9-update",
+                    "type": "true-false",
+                    "prompt": "La méthode update() modifie le dictionnaire original",
+                    "answer": true,
+                    "explanation": "Vrai. update() modifie le dictionnaire sur lequel elle est appelée. Elle fusionne les éléments d'un autre dictionnaire dans celui-ci.",
+                    "difficulty": 2
+                  }
+                ]
+              },
+              {
+                "level": 3,
+                "name": "Niveau 3 - Cas avancés",
+                "description": "Questions sur les cas d'usage avancés",
+                "questions": [
+                  {
+                    "id": "q10-cles-types",
+                    "type": "mcq",
+                    "prompt": "Quels types peuvent être utilisés comme clés dans un dictionnaire ?",
+                    "options": [
+                      "Seulement les chaînes de caractères",
+                      "Tous les types immutables (str, int, tuple, etc.)",
+                      "Tous les types (y compris list et dict)",
+                      "Seulement les nombres"
+                    ],
+                    "answer": "Tous les types immutables (str, int, tuple, etc.)",
+                    "explanation": "Les clés doivent être de type immuable (hashable). Les listes et dictionnaires sont mutables et ne peuvent pas être des clés.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q11-imbrique",
+                    "type": "mcq",
+                    "prompt": "Comment accéder à la valeur \"Paris\" dans d = {\"personne\": {\"nom\": \"Alice\", \"ville\": \"Paris\"}} ?",
+                    "options": [
+                      "d[\"personne\"][\"ville\"]",
+                      "d.personne.ville",
+                      "d[\"ville\"]",
+                      "d.get(\"personne\").get(\"ville\")"
+                    ],
+                    "answer": "d[\"personne\"][\"ville\"]",
+                    "explanation": "Pour accéder à une valeur dans un dictionnaire imbriqué, on utilise plusieurs niveaux de crochets : d[\"personne\"][\"ville\"].",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q12-comprehension",
+                    "type": "mcq",
+                    "prompt": "Quelle est la syntaxe correcte pour une dict comprehension qui crée {n: n*2 for n in range(5)} ?",
+                    "options": [
+                      "{n: n*2 for n in range(5)}",
+                      "[n: n*2 for n in range(5)]",
+                      "(n: n*2 for n in range(5))",
+                      "{n*2 for n in range(5)}"
+                    ],
+                    "answer": "{n: n*2 for n in range(5)}",
+                    "explanation": "La syntaxe d'une dict comprehension est {cle: valeur for ...}. Cela crée un dictionnaire de manière concise.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q13-fusion",
+                    "type": "mcq",
+                    "prompt": "Comment fusionner deux dictionnaires d1 et d2 en créant un nouveau dictionnaire (sans modifier d1 ni d2) ?",
+                    "options": [
+                      "d1.update(d2)",
+                      "d3 = {**d1, **d2}",
+                      "d3 = d1 + d2",
+                      "d3 = d1 | d2 (Python 3.9+)"
+                    ],
+                    "answer": "d3 = {**d1, **d2}",
+                    "explanation": "{**d1, **d2} crée un nouveau dictionnaire. update() modifie d1, et | fonctionne aussi en Python 3.9+ mais {**d1, **d2} est plus universel.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q14-setdefault",
+                    "type": "mcq",
+                    "prompt": "Que fait d.setdefault(\"cle\", \"valeur\") ?",
+                    "options": [
+                      "Modifie toujours la valeur de \"cle\"",
+                      "Ajoute \"cle\" avec \"valeur\" seulement si \"cle\" n'existe pas",
+                      "Supprime la clé \"cle\"",
+                      "Retourne toujours None"
+                    ],
+                    "answer": "Ajoute \"cle\" avec \"valeur\" seulement si \"cle\" n'existe pas",
+                    "explanation": "setdefault() ajoute la clé avec la valeur seulement si la clé n'existe pas déjà. Si elle existe, elle ne fait rien.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q15-copy",
+                    "type": "true-false",
+                    "prompt": "d.copy() crée une copie profonde (deep copy) du dictionnaire",
+                    "answer": false,
+                    "explanation": "Faux. copy() crée une copie superficielle (shallow copy). Les dictionnaires imbriqués ne sont pas copiés en profondeur. Pour une copie profonde, utilisez copy.deepcopy().",
+                    "difficulty": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 7 : TP - Système de gestion de bibliothèque",
+      "position": 6,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "exercise",
+          "title": "TP : Système de gestion de bibliothèque",
+          "position": 0,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "🎯 TP : Système de gestion de bibliothèque" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créez un système de gestion de bibliothèque en ligne de commande qui utilise des dictionnaires pour stocker les informations sur les livres et les emprunteurs." }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "Structure de données :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Un dictionnaire " },
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "livres" },
+                            { "type": "text", "text": " où chaque clé est un ID de livre et chaque valeur est un dictionnaire contenant :" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    { "type": "text", "text": "\"titre\" : titre du livre" }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    { "type": "text", "text": "\"auteur\" : nom de l'auteur" }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    { "type": "text", "text": "\"disponible\" : booléen (True si disponible, False si emprunté)" }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    { "type": "text", "text": "\"emprunteur\" : nom de l'emprunteur (None si disponible)" }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [
+                    { "type": "text", "text": "Fonctionnalités requises :" }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Menu avec les options suivantes :" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    { "type": "text", "text": "1. Ajouter un livre" }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    { "type": "text", "text": "2. Afficher tous les livres" }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    { "type": "text", "text": "3. Emprunter un livre" }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    { "type": "text", "text": "4. Retourner un livre" }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    { "type": "text", "text": "5. Afficher les livres disponibles" }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "content": [
+                                    { "type": "text", "text": "6. Quitter" }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Utiliser une boucle " },
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "while" },
+                            { "type": "text", "text": " pour le menu" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Utiliser des boucles " },
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "for" },
+                            { "type": "text", "text": " avec " },
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "items()" },
+                            { "type": "text", "text": " pour parcourir les dictionnaires" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Gérer les cas d'erreur (livre déjà emprunté, livre inexistant, etc.)" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Système de gestion de bibliothèque\nlivres = {}\ncompteur_id = 1\n\nwhile True:\n    print(\"\\n=== Gestion de Bibliothèque ===\")\n    print(\"1. Ajouter un livre\")\n    print(\"2. Afficher tous les livres\")\n    print(\"3. Emprunter un livre\")\n    print(\"4. Retourner un livre\")\n    print(\"5. Afficher les livres disponibles\")\n    print(\"6. Quitter\")\n    \n    choix = input(\"Votre choix: \")\n    \n    if choix == \"1\":\n        titre = input(\"Titre du livre: \")\n        auteur = input(\"Auteur: \")\n        \n        livre_id = compteur_id\n        livres[livre_id] = {\n            \"titre\": titre,\n            \"auteur\": auteur,\n            \"disponible\": True,\n            \"emprunteur\": None\n        }\n        compteur_id += 1\n        print(f\"Livre ajouté avec l'ID {livre_id} !\")\n    \n    elif choix == \"2\":\n        if not livres:\n            print(\"Aucun livre dans la bibliothèque.\")\n        else:\n            print(\"\\n=== Liste des livres ===\")\n            for livre_id, infos in livres.items():\n                statut = \"Disponible\" if infos[\"disponible\"] else f\"Emprunté par {infos['emprunteur']}\"\n                print(f\"ID {livre_id}: {infos['titre']} par {infos['auteur']} - {statut}\")\n    \n    elif choix == \"3\":\n        if not livres:\n            print(\"Aucun livre dans la bibliothèque.\")\n        else:\n            print(\"\\n=== Livres disponibles ===\")\n            disponibles = {id: livre for id, livre in livres.items() if livre[\"disponible\"]}\n            \n            if not disponibles:\n                print(\"Aucun livre disponible.\")\n            else:\n                for livre_id, infos in disponibles.items():\n                    print(f\"ID {livre_id}: {infos['titre']} par {infos['auteur']}\")\n                \n                try:\n                    livre_id = int(input(\"\\nID du livre à emprunter: \"))\n                    if livre_id in livres:\n                        livre = livres[livre_id]\n                        if livre[\"disponible\"]:\n                            emprunteur = input(\"Nom de l'emprunteur: \")\n                            livre[\"disponible\"] = False\n                            livre[\"emprunteur\"] = emprunteur\n                            print(f\"Livre '{livre['titre']}' emprunté par {emprunteur} !\")\n                        else:\n                            print(\"Ce livre est déjà emprunté.\")\n                    else:\n                        print(\"ID de livre invalide.\")\n                except ValueError:\n                    print(\"Veuillez entrer un nombre valide.\")\n    \n    elif choix == \"4\":\n        if not livres:\n            print(\"Aucun livre dans la bibliothèque.\")\n        else:\n            try:\n                livre_id = int(input(\"ID du livre à retourner: \"))\n                if livre_id in livres:\n                    livre = livres[livre_id]\n                    if not livre[\"disponible\"]:\n                        livre[\"disponible\"] = True\n                        emprunteur = livre[\"emprunteur\"]\n                        livre[\"emprunteur\"] = None\n                        print(f\"Livre '{livre['titre']}' retourné par {emprunteur} !\")\n                    else:\n                        print(\"Ce livre est déjà disponible.\")\n                else:\n                    print(\"ID de livre invalide.\")\n            except ValueError:\n                print(\"Veuillez entrer un nombre valide.\")\n    \n    elif choix == \"5\":\n        disponibles = {id: livre for id, livre in livres.items() if livre[\"disponible\"]}\n        \n        if not disponibles:\n            print(\"Aucun livre disponible.\")\n        else:\n            print(\"\\n=== Livres disponibles ===\")\n            for livre_id, infos in disponibles.items():\n                print(f\"ID {livre_id}: {infos['titre']} par {infos['auteur']}\")\n    \n    elif choix == \"6\":\n        print(\"Au revoir !\")\n        break\n    \n    else:\n        print(\"Choix invalide. Veuillez choisir entre 1 et 6.\")"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

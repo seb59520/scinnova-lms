@@ -291,6 +291,24 @@ function AddResourceModal({ courseId, onClose, onSuccess, nextPosition }: AddRes
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // Fonction pour sanitizer le nom de fichier (supprime les caractères invalides)
+  const sanitizeFileName = (fileName: string): string => {
+    // Extraire l'extension
+    const lastDot = fileName.lastIndexOf('.')
+    const nameWithoutExt = lastDot > 0 ? fileName.substring(0, lastDot) : fileName
+    const extension = lastDot > 0 ? fileName.substring(lastDot) : ''
+    
+    // Normaliser les caractères accentués
+    const normalized = nameWithoutExt
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // Supprimer les diacritiques
+      .replace(/[^a-zA-Z0-9._-]/g, '-') // Remplacer les caractères spéciaux par des tirets
+      .replace(/-+/g, '-') // Remplacer les tirets multiples par un seul
+      .replace(/^-|-$/g, '') // Supprimer les tirets en début/fin
+    
+    return normalized + extension
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
@@ -307,7 +325,8 @@ function AddResourceModal({ courseId, onClose, onSuccess, nextPosition }: AddRes
       // Upload du fichier si c'est un fichier
       if ((resourceType === 'file' || resourceType === 'document') && file) {
         const fileExt = file.name.split('.').pop()
-        const fileName = `${courseId}/${Date.now()}-${file.name}`
+        const sanitizedName = sanitizeFileName(file.name)
+        const fileName = `${courseId}/${Date.now()}-${sanitizedName}`
 
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from('course-resources')

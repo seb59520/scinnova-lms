@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 3001;
 
 // Middlewares globaux
 app.use(cors()); // Autorise les requêtes cross-origin
+app.options('*', cors()); // Répond aux préflight OPTIONS
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -40,4 +41,3 @@ app.listen(PORT, () => {
 });
 
 export default app;
-

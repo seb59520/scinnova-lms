@@ -1,0 +1,595 @@
+{
+  "type": "resource",
+  "title": "Le typage dynamique en Python et la fonction type()",
+  "position": 0,
+  "published": true,
+  "content": {
+    "description": "Comprendre le typage dynamique en Python, comment Python détermine automatiquement les types, et comment utiliser la fonction type() pour vérifier le type d'une valeur ou variable."
+  },
+  "chapters": [
+    {
+      "title": "Qu'est-ce que le typage dynamique ?",
+      "position": 0,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 1 },
+            "content": [
+              { "type": "text", "text": "🧠 Le typage dynamique en Python" }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 2 },
+            "content": [
+              { "type": "text", "text": "📌 Qu'est-ce que le typage dynamique ?" }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "marks": [{ "type": "bold" }], "text": "Python est un langage à typage dynamique." }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "👉 Cela signifie que :" }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Tu ne déclares pas le type d'une variable à l'avance" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Python détermine automatiquement le type à l'exécution" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Une même variable peut changer de type au cours du programme" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "Contrairement à des langages comme Java ou C, il n'est pas nécessaire d'écrire :" }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": { "language": "java" },
+            "content": [
+              {
+                "type": "text",
+                "text": "int x = 10;"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "En Python, la valeur détermine le type, pas le nom de la variable." }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "title": "Exemple : une variable qui change de type",
+      "position": 1,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 1 },
+            "content": [
+              { "type": "text", "text": "🔁 Exemple : une variable qui change de type" }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": { "language": "python" },
+            "content": [
+              {
+                "type": "text",
+                "text": "x = 10\nprint(type(x))  # <class 'int'>"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "👉 Ici :" }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "x contient un nombre entier" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Python reconnaît automatiquement le type int" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "horizontalRule"
+          },
+          {
+            "type": "codeBlock",
+            "attrs": { "language": "python" },
+            "content": [
+              {
+                "type": "text",
+                "text": "x = \"texte\"\nprint(type(x))  # <class 'str'>"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "👉 Maintenant :" }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "x contient une chaîne de caractères" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Le type devient str" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "horizontalRule"
+          },
+          {
+            "type": "codeBlock",
+            "attrs": { "language": "python" },
+            "content": [
+              {
+                "type": "text",
+                "text": "x = 3.14\nprint(type(x))  # <class 'float'>"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "👉 Enfin :" }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "x contient un nombre décimal" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Le type devient float" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "marks": [{ "type": "bold" }], "text": "📌 Conclusion importante :" }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "Une variable n'a pas un type fixe en Python, c'est la valeur stockée qui a un type." }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "title": "Attention pour les débutants",
+      "position": 2,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 1 },
+            "content": [
+              { "type": "text", "text": "⚠️ Attention pour les débutants" }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "Même si c'est très pratique, le typage dynamique peut provoquer des erreurs à l'exécution si on mélange des types incompatibles." }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "Exemple :" }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": { "language": "python" },
+            "content": [
+              {
+                "type": "text",
+                "text": "x = 10\nx = x + \"5\"  # ❌ Erreur : int + str"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "➡️ Python ne peut pas additionner un entier et une chaîne." }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "title": "La fonction type()",
+      "position": 3,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 1 },
+            "content": [
+              { "type": "text", "text": "🔍 La fonction type()" }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 2 },
+            "content": [
+              { "type": "text", "text": "📌 À quoi sert type() ?" }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "La fonction type() permet de connaître le type exact d'une valeur ou d'une variable." }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 2 },
+            "content": [
+              { "type": "text", "text": "📘 Syntaxe :" }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": { "language": "python" },
+            "content": [
+              {
+                "type": "text",
+                "text": "type(valeur_ou_variable)"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "title": "Exemples avec type()",
+      "position": 4,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 1 },
+            "content": [
+              { "type": "text", "text": "🔎 Exemples simples" }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": { "language": "python" },
+            "content": [
+              {
+                "type": "text",
+                "text": "print(type(42))\n# <class 'int'>\n\n➡️ 42 est un entier"
+              }
+            ]
+          },
+          {
+            "type": "horizontalRule"
+          },
+          {
+            "type": "codeBlock",
+            "attrs": { "language": "python" },
+            "content": [
+              {
+                "type": "text",
+                "text": "print(type(3.14))\n# <class 'float'>\n\n➡️ 3.14 est un nombre décimal"
+              }
+            ]
+          },
+          {
+            "type": "horizontalRule"
+          },
+          {
+            "type": "codeBlock",
+            "attrs": { "language": "python" },
+            "content": [
+              {
+                "type": "text",
+                "text": "print(type(\"hello\"))\n# <class 'str'>\n\n➡️ \"hello\" est une chaîne de caractères"
+              }
+            ]
+          },
+          {
+            "type": "horizontalRule"
+          },
+          {
+            "type": "codeBlock",
+            "attrs": { "language": "python" },
+            "content": [
+              {
+                "type": "text",
+                "text": "print(type(True))\n# <class 'bool'>\n\n➡️ True est un booléen"
+              }
+            ]
+          },
+          {
+            "type": "horizontalRule"
+          },
+          {
+            "type": "codeBlock",
+            "attrs": { "language": "python" },
+            "content": [
+              {
+                "type": "text",
+                "text": "print(type([1, 2, 3]))\n# <class 'list'>\n\n➡️ [1, 2, 3] est une liste"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "title": "Pourquoi <class 'int'> ?",
+      "position": 5,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 1 },
+            "content": [
+              { "type": "text", "text": "🧩 Pourquoi <class 'int'> ?" }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "Quand Python affiche :" }
+            ]
+          },
+          {
+            "type": "codeBlock",
+            "attrs": { "language": "python" },
+            "content": [
+              {
+                "type": "text",
+                "text": "<class 'int'>"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "Cela signifie :" }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "int est une classe" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Les nombres entiers sont des objets" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Python est un langage orienté objet" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "👉 Même les nombres, les chaînes et les booléens sont des objets." }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "title": "Synthèse",
+      "position": 6,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 1 },
+            "content": [
+              { "type": "text", "text": "✅ À retenir (synthèse)" }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "✔ Python est dynamiquement typé" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "✔ Le type est déterminé automatiquement à l'exécution" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "✔ Une variable peut changer de type" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "✔ type() permet de vérifier le type d'une valeur ou variable" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "✔ Tout en Python est un objet" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

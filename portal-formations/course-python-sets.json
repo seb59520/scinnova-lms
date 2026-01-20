@@ -1,0 +1,1254 @@
+{
+  "title": "Les ensembles (set) en Python",
+  "description": "Cours complet sur les ensembles (set) en Python : définition, création, manipulation, opérations ensemblistes, et cas d'usage pratiques. Apprenez à utiliser efficacement cette structure de données pour gérer des collections d'éléments uniques.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3776AB",
+    "secondaryColor": "#FFD43B",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Introduction aux ensembles",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Qu'est-ce qu'un ensemble (set) ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez ce qu'est un ensemble, ses caractéristiques principales et pourquoi l'utiliser."
+          },
+          "chapters": [
+            {
+              "title": "Définition et caractéristiques",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔢 Qu'est-ce qu'un ensemble (set) ?" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Un ensemble (set) est une " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "collection non ordonnée d'éléments uniques" },
+                      { "type": "text", "text": " en Python. Il permet de stocker plusieurs éléments sans doublons et sans ordre particulier." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Caractéristiques principales" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Non ordonné" },
+                              { "type": "text", "text": " : Les éléments n'ont pas d'ordre défini" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Éléments uniques" },
+                              { "type": "text", "text": " : Chaque élément ne peut apparaître qu'une seule fois" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Mutable" },
+                              { "type": "text", "text": " : On peut ajouter ou supprimer des éléments" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Hashable" },
+                              { "type": "text", "text": " : Les éléments doivent être immuables (int, str, tuple, etc.)" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Pas d'indexation" },
+                              { "type": "text", "text": " : On ne peut pas accéder aux éléments par index" }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Set vs Liste vs Tuple" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Liste : ordonnée, mutable, autorise les doublons\nma_liste = [1, 2, 2, 3]\nprint(ma_liste)  # [1, 2, 2, 3]\n\n# Tuple : ordonné, immuable, autorise les doublons\nmon_tuple = (1, 2, 2, 3)\nprint(mon_tuple)  # (1, 2, 2, 3)\n\n# Set : non ordonné, mutable, éléments uniques\nmon_set = {1, 2, 2, 3}\nprint(mon_set)  # {1, 2, 3} - les doublons sont automatiquement supprimés"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Quand utiliser un ensemble ?" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Pour supprimer automatiquement les doublons d'une liste" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Pour tester rapidement l'appartenance d'un élément (très rapide)" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Pour effectuer des opérations ensemblistes (union, intersection, différence)" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Pour gérer des collections où l'ordre n'a pas d'importance" }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Créer un ensemble",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez les différentes façons de créer un ensemble en Python."
+          },
+          "chapters": [
+            {
+              "title": "Méthodes de création",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔨 Créer un ensemble" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthode 1 : Avec des accolades {}" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Ensemble avec plusieurs éléments\nfruits = {\"pomme\", \"banane\", \"orange\"}\nprint(fruits)  # {'pomme', 'banane', 'orange'} ou autre ordre\nprint(type(fruits))  # <class 'set'>"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthode 2 : Ensemble vide" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "⚠️ Attention : Pour créer un ensemble vide, il faut utiliser " },
+                      { "type": "text", "marks": [{ "type": "code" }], "text": "set()" },
+                      { "type": "text", "text": " et non " },
+                      { "type": "text", "marks": [{ "type": "code" }], "text": "{}" },
+                      { "type": "text", "text": " (qui crée un dictionnaire vide) !" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ❌ Ceci est un dictionnaire, pas un ensemble\nvide_dict = {}\nprint(type(vide_dict))  # <class 'dict'>\n\n# ✅ Ceci est un ensemble vide\nvide_set = set()\nprint(type(vide_set))  # <class 'set'>\nprint(vide_set)  # set()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthode 3 : À partir d'une liste" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Convertir une liste en ensemble (supprime les doublons)\nma_liste = [1, 2, 2, 3, 3, 3, 4]\nmon_set = set(ma_liste)\nprint(mon_set)  # {1, 2, 3, 4}\n\n# Convertir une chaîne en ensemble (chaque caractère devient un élément)\nmon_set2 = set(\"hello\")\nprint(mon_set2)  # {'h', 'e', 'l', 'o'} - le 'l' n'apparaît qu'une fois"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthode 4 : Avec set() et un itérable" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# À partir d'un tuple\nmon_tuple = (1, 2, 3, 2)\nmon_set = set(mon_tuple)\nprint(mon_set)  # {1, 2, 3}\n\n# À partir d'une chaîne\nmon_set2 = set(\"python\")\nprint(mon_set2)  # {'p', 'y', 't', 'h', 'o', 'n'}\n\n# À partir d'une range\nmon_set3 = set(range(5))\nprint(mon_set3)  # {0, 1, 2, 3, 4}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Éléments autorisés dans un set" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Les éléments d'un ensemble doivent être " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "hashables" },
+                      { "type": "text", "text": " (immuables) :" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ✅ Types autorisés\nmon_set1 = {1, 2, 3}  # int\nmon_set2 = {\"a\", \"b\", \"c\"}  # str\nmon_set3 = {(1, 2), (3, 4)}  # tuple\nmon_set4 = {1, \"hello\", (1, 2)}  # mixte\n\n# ❌ Types non autorisés (mutables)\n# mon_set5 = {[1, 2], [3, 4]}  # TypeError: unhashable type: 'list'\n# mon_set6 = {{1, 2}, {3, 4}}  # TypeError: unhashable type: 'set'\n# mon_set7 = {{\"a\": 1}, {\"b\": 2}}  # TypeError: unhashable type: 'dict'"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : Manipulation des ensembles",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Ajouter et supprimer des éléments",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à ajouter et supprimer des éléments dans un ensemble."
+          },
+          "chapters": [
+            {
+              "title": "Méthodes d'ajout et de suppression",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "➕➖ Ajouter et supprimer des éléments" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Ajouter un élément : add()" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "fruits = {\"pomme\", \"banane\"}\n\n# Ajouter un élément\nfruits.add(\"orange\")\nprint(fruits)  # {'pomme', 'banane', 'orange'}\n\n# Ajouter un élément déjà présent (ne fait rien)\nfruits.add(\"pomme\")\nprint(fruits)  # {'pomme', 'banane', 'orange'} - pas de doublon"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Ajouter plusieurs éléments : update()" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "fruits = {\"pomme\", \"banane\"}\n\n# Ajouter plusieurs éléments depuis un itérable\nfruits.update([\"orange\", \"kiwi\", \"pomme\"])\nprint(fruits)  # {'pomme', 'banane', 'orange', 'kiwi'}\n\n# Ajouter depuis un autre ensemble\nautres_fruits = {\"mangue\", \"ananas\"}\nfruits.update(autres_fruits)\nprint(fruits)  # {'pomme', 'banane', 'orange', 'kiwi', 'mangue', 'ananas'}\n\n# Ajouter depuis une chaîne (chaque caractère devient un élément)\nfruits.update(\"cerise\")\nprint(fruits)  # Contient maintenant 'c', 'e', 'r', 'i', 's' en plus"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Supprimer un élément : remove() et discard()" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "fruits = {\"pomme\", \"banane\", \"orange\"}\n\n# remove() : lève une erreur si l'élément n'existe pas\nfruits.remove(\"banane\")\nprint(fruits)  # {'pomme', 'orange'}\n# fruits.remove(\"kiwi\")  # KeyError: 'kiwi'\n\n# discard() : ne fait rien si l'élément n'existe pas (pas d'erreur)\nfruits.discard(\"orange\")\nprint(fruits)  # {'pomme'}\nfruits.discard(\"kiwi\")  # Pas d'erreur, ne fait rien\nprint(fruits)  # {'pomme'}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Supprimer un élément aléatoire : pop()" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "fruits = {\"pomme\", \"banane\", \"orange\"}\n\n# pop() : supprime et retourne un élément (aléatoire car non ordonné)\nelement = fruits.pop()\nprint(f\"Élément supprimé: {element}\")  # Un élément au hasard\nprint(fruits)  # Les deux éléments restants\n\n# Sur un ensemble vide, pop() lève une erreur\nvide = set()\n# vide.pop()  # KeyError: 'pop from an empty set'"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Vider un ensemble : clear()" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "fruits = {\"pomme\", \"banane\", \"orange\"}\n\n# clear() : supprime tous les éléments\nfruits.clear()\nprint(fruits)  # set()"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Vérifier l'appartenance et parcourir",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez à vérifier si un élément appartient à un ensemble et à parcourir un ensemble."
+          },
+          "chapters": [
+            {
+              "title": "Appartenance et parcours",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔍 Vérifier l'appartenance et parcourir" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Vérifier l'appartenance : in et not in" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "La vérification d'appartenance dans un set est " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "très rapide" },
+                      { "type": "text", "text": " (O(1) en moyenne), beaucoup plus rapide que dans une liste (O(n))." }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "fruits = {\"pomme\", \"banane\", \"orange\"}\n\n# Vérifier si un élément est dans l'ensemble\nprint(\"pomme\" in fruits)     # True\nprint(\"kiwi\" in fruits)       # False\nprint(\"kiwi\" not in fruits)   # True\n\n# Utilisation dans une condition\nif \"banane\" in fruits:\n    print(\"La banane est disponible\")\nelse:\n    print(\"La banane n'est pas disponible\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Parcourir un ensemble" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "fruits = {\"pomme\", \"banane\", \"orange\"}\n\n# Parcourir avec une boucle for\nfor fruit in fruits:\n    print(fruit)\n# L'ordre d'affichage peut varier car les sets sont non ordonnés\n\n# Parcourir avec une liste en compréhension\nfruits_majuscules = {fruit.upper() for fruit in fruits}\nprint(fruits_majuscules)  # {'POMME', 'BANANE', 'ORANGE'}\n\n# Obtenir la longueur d'un ensemble\nprint(len(fruits))  # 3"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Convertir un ensemble en liste ou tuple" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "fruits = {\"pomme\", \"banane\", \"orange\"}\n\n# Convertir en liste\nliste_fruits = list(fruits)\nprint(liste_fruits)  # ['pomme', 'banane', 'orange'] ou autre ordre\n\n# Convertir en tuple\ntuple_fruits = tuple(fruits)\nprint(tuple_fruits)  # ('pomme', 'banane', 'orange') ou autre ordre\n\n# Convertir en liste triée\nliste_triee = sorted(fruits)\nprint(liste_triee)  # ['banane', 'orange', 'pomme'] - ordre alphabétique"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : Opérations ensemblistes",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Union, intersection, différence",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez les opérations ensemblistes classiques : union, intersection et différence."
+          },
+          "chapters": [
+            {
+              "title": "Opérations ensemblistes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔗 Opérations ensemblistes" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Union (| ou union())" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "L'union de deux ensembles contient tous les éléments présents dans au moins un des deux ensembles." }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "set1 = {1, 2, 3}\nset2 = {3, 4, 5}\n\n# Méthode 1 : avec l'opérateur |\nunion1 = set1 | set2\nprint(union1)  # {1, 2, 3, 4, 5}\n\n# Méthode 2 : avec la méthode union()\nunion2 = set1.union(set2)\nprint(union2)  # {1, 2, 3, 4, 5}\n\n# Union avec plusieurs ensembles\nset3 = {5, 6, 7}\nunion3 = set1 | set2 | set3\nprint(union3)  # {1, 2, 3, 4, 5, 6, 7}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Intersection (& ou intersection())" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "L'intersection de deux ensembles contient uniquement les éléments présents dans les deux ensembles." }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "set1 = {1, 2, 3, 4}\nset2 = {3, 4, 5, 6}\n\n# Méthode 1 : avec l'opérateur &\nintersection1 = set1 & set2\nprint(intersection1)  # {3, 4}\n\n# Méthode 2 : avec la méthode intersection()\nintersection2 = set1.intersection(set2)\nprint(intersection2)  # {3, 4}\n\n# Intersection avec plusieurs ensembles\nset3 = {4, 5, 6}\nintersection3 = set1 & set2 & set3\nprint(intersection3)  # {4}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Différence (- ou difference())" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "La différence de deux ensembles contient les éléments du premier ensemble qui ne sont pas dans le second." }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "set1 = {1, 2, 3, 4}\nset2 = {3, 4, 5, 6}\n\n# Méthode 1 : avec l'opérateur -\ndifference1 = set1 - set2\nprint(difference1)  # {1, 2}\n\n# Méthode 2 : avec la méthode difference()\ndifference2 = set1.difference(set2)\nprint(difference2)  # {1, 2}\n\n# La différence n'est pas commutative\ndifference3 = set2 - set1\nprint(difference3)  # {5, 6} - différent de set1 - set2"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Différence symétrique (^ ou symmetric_difference())" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "La différence symétrique contient les éléments présents dans un seul des deux ensembles (pas dans les deux)." }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "set1 = {1, 2, 3, 4}\nset2 = {3, 4, 5, 6}\n\n# Méthode 1 : avec l'opérateur ^\nsym_diff1 = set1 ^ set2\nprint(sym_diff1)  # {1, 2, 5, 6}\n\n# Méthode 2 : avec la méthode symmetric_difference()\nsym_diff2 = set1.symmetric_difference(set2)\nprint(sym_diff2)  # {1, 2, 5, 6}\n\n# La différence symétrique est commutative\nsym_diff3 = set2 ^ set1\nprint(sym_diff3)  # {1, 2, 5, 6} - même résultat"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Relations entre ensembles",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez à vérifier les relations entre ensembles : sous-ensemble, sur-ensemble, disjoint."
+          },
+          "chapters": [
+            {
+              "title": "Relations ensemblistes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔗 Relations entre ensembles" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Sous-ensemble (<= ou issubset())" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "set1 = {1, 2, 3}\nset2 = {1, 2, 3, 4, 5}\n\n# Vérifier si set1 est un sous-ensemble de set2\nprint(set1 <= set2)  # True\nprint(set1.issubset(set2))  # True\n\n# Sous-ensemble strict (<)\nprint(set1 < set2)  # True (set1 est strictement inclus dans set2)\nprint(set1 < set1)  # False (un ensemble n'est pas strictement inclus dans lui-même)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Sur-ensemble (>= ou issuperset())" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "set1 = {1, 2, 3, 4, 5}\nset2 = {1, 2, 3}\n\n# Vérifier si set1 est un sur-ensemble de set2\nprint(set1 >= set2)  # True\nprint(set1.issuperset(set2))  # True\n\n# Sur-ensemble strict (>)\nprint(set1 > set2)  # True\nprint(set1 > set1)  # False"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Ensembles disjoints (isdisjoint())" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "set1 = {1, 2, 3}\nset2 = {4, 5, 6}\nset3 = {3, 4, 5}\n\n# Vérifier si deux ensembles sont disjoints (aucun élément commun)\nprint(set1.isdisjoint(set2))  # True\nprint(set1.isdisjoint(set3))  # False (3 est commun)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : Exercices pratiques",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "exercise",
+          "title": "Exercice 1 : Supprimer les doublons",
+          "position": 0,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice : Supprimer les doublons" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez une fonction " },
+                    { "type": "text", "marks": [{ "type": "code" }], "text": "supprimer_doublons(liste)" },
+                    { "type": "text", "text": " qui prend une liste en paramètre et retourne une nouvelle liste sans doublons, en conservant l'ordre d'apparition des éléments." }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Exemple :" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Entrée : [1, 2, 2, 3, 3, 3, 4, 5, 5]\n# Sortie : [1, 2, 3, 4, 5]"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "💡 Indice : Utilisez un set pour suivre les éléments déjà vus." }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "def supprimer_doublons(liste):\n    \"\"\"Supprime les doublons d'une liste en conservant l'ordre.\"\"\"\n    vus = set()  # Ensemble pour suivre les éléments déjà vus\n    resultat = []\n    \n    for element in liste:\n        if element not in vus:\n            vus.add(element)\n            resultat.append(element)\n    \n    return resultat\n\n# Test\nma_liste = [1, 2, 2, 3, 3, 3, 4, 5, 5]\nresultat = supprimer_doublons(ma_liste)\nprint(resultat)  # [1, 2, 3, 4, 5]\n\n# Alternative plus concise (mais ne conserve pas l'ordre dans Python < 3.7)\n# def supprimer_doublons(liste):\n#     return list(dict.fromkeys(liste))  # Python 3.7+ conserve l'ordre"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 2 : Éléments communs",
+          "position": 1,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice : Éléments communs" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez une fonction " },
+                    { "type": "text", "marks": [{ "type": "code" }], "text": "elements_communs(liste1, liste2)" },
+                    { "type": "text", "text": " qui prend deux listes en paramètre et retourne un ensemble contenant les éléments présents dans les deux listes." }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Exemple :" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Entrée :\n# liste1 = [1, 2, 3, 4, 5]\n# liste2 = [4, 5, 6, 7, 8]\n# Sortie : {4, 5}"
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "def elements_communs(liste1, liste2):\n    \"\"\"Retourne les éléments communs à deux listes.\"\"\"\n    set1 = set(liste1)\n    set2 = set(liste2)\n    return set1 & set2  # Intersection\n\n# Test\nliste1 = [1, 2, 3, 4, 5]\nliste2 = [4, 5, 6, 7, 8]\nresultat = elements_communs(liste1, liste2)\nprint(resultat)  # {4, 5}\n\n# Alternative avec intersection()\n# def elements_communs(liste1, liste2):\n#     return set(liste1).intersection(set(liste2))"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 3 : Gestion d'abonnés",
+          "position": 2,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice : Gestion d'abonnés" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Vous gérez les abonnés à deux newsletters différentes. Écrivez un programme qui :" }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Crée deux ensembles d'abonnés : " },
+                            { "type": "text", "marks": [{ "type": "code" }], "text": "newsletter_tech" },
+                            { "type": "text", "text": " et " },
+                            { "type": "text", "marks": [{ "type": "code" }], "text": "newsletter_business" },
+                            { "type": "text", "text": " (avec au moins 5 emails chacun)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Affiche le nombre total d'abonnés uniques (union)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Affiche les abonnés qui reçoivent les deux newsletters (intersection)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Affiche les abonnés qui reçoivent uniquement la newsletter tech (différence)" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Affiche les abonnés qui reçoivent une seule newsletter (différence symétrique)" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Création des ensembles d'abonnés\nnewsletter_tech = {\"alice@example.com\", \"bob@example.com\", \"charlie@example.com\", \"david@example.com\", \"eve@example.com\"}\nnewsletter_business = {\"charlie@example.com\", \"david@example.com\", \"frank@example.com\", \"grace@example.com\", \"henry@example.com\"}\n\n# 1. Nombre total d'abonnés uniques (union)\nabonnes_uniques = newsletter_tech | newsletter_business\nprint(f\"Nombre total d'abonnés uniques: {len(abonnes_uniques)}\")\nprint(f\"Abonnés uniques: {abonnes_uniques}\")\n\n# 2. Abonnés qui reçoivent les deux newsletters (intersection)\nabonnes_les_deux = newsletter_tech & newsletter_business\nprint(f\"\\nAbonnés aux deux newsletters: {abonnes_les_deux}\")\n\n# 3. Abonnés uniquement à la newsletter tech (différence)\nuniquement_tech = newsletter_tech - newsletter_business\nprint(f\"\\nAbonnés uniquement à la newsletter tech: {uniquement_tech}\")\n\n# 4. Abonnés qui reçoivent une seule newsletter (différence symétrique)\nune_seule = newsletter_tech ^ newsletter_business\nprint(f\"\\nAbonnés à une seule newsletter: {une_seule}\")"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : Quiz final",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "game",
+          "title": "Quiz : Les ensembles (set) en Python",
+          "position": 0,
+          "published": true,
+          "content": {
+            "gameType": "quiz",
+            "description": "Testez vos connaissances sur les ensembles (set) en Python avec ce quiz complet.",
+            "instructions": "Répondez aux questions pour valider votre compréhension des ensembles.",
+            "objectives": [
+              "Comprendre les caractéristiques des ensembles",
+              "Maîtriser la création et la manipulation des ensembles",
+              "Connaître les opérations ensemblistes",
+              "Savoir utiliser les ensembles dans des cas pratiques"
+            ],
+            "scoring": {
+              "totalQuestions": 15,
+              "pointsPerQuestion": 1,
+              "passingScore": 10,
+              "levels": {
+                "0-9": "Bases à renforcer - Revoyez les concepts fondamentaux",
+                "10-12": "Bon niveau - Vous maîtrisez les ensembles",
+                "13-15": "Excellent niveau - Très bonne compréhension"
+              }
+            },
+            "levels": [
+              {
+                "level": 1,
+                "name": "Niveau 1 - Fondamentaux",
+                "description": "Questions sur les bases des ensembles",
+                "questions": [
+                  {
+                    "id": "q1-definition",
+                    "type": "mcq",
+                    "prompt": "Quelle est la principale caractéristique d'un ensemble (set) ?",
+                    "options": [
+                      "Il est ordonné",
+                      "Il contient uniquement des éléments uniques",
+                      "Il peut contenir des listes",
+                      "Il est immuable"
+                    ],
+                    "answer": "Il contient uniquement des éléments uniques",
+                    "explanation": "Un ensemble contient uniquement des éléments uniques. Les doublons sont automatiquement supprimés lors de la création.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q2-creation-vide",
+                    "type": "mcq",
+                    "prompt": "Comment créer un ensemble vide ?",
+                    "options": [
+                      "{}",
+                      "set()",
+                      "[]",
+                      "()"
+                    ],
+                    "answer": "set()",
+                    "explanation": "Pour créer un ensemble vide, il faut utiliser set(). {} crée un dictionnaire vide, pas un ensemble.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q3-doublons",
+                    "type": "mcq",
+                    "prompt": "Que retourne set([1, 2, 2, 3, 3, 3]) ?",
+                    "options": [
+                      "{1, 2, 2, 3, 3, 3}",
+                      "{1, 2, 3}",
+                      "[1, 2, 3]",
+                      "Erreur"
+                    ],
+                    "answer": "{1, 2, 3}",
+                    "explanation": "Les ensembles suppriment automatiquement les doublons. set([1, 2, 2, 3, 3, 3]) retourne {1, 2, 3}.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q4-hashable",
+                    "type": "true-false",
+                    "prompt": "On peut mettre une liste dans un ensemble",
+                    "answer": false,
+                    "explanation": "Faux. Les listes sont mutables (non hashables) et ne peuvent pas être éléments d'un ensemble. Seuls les types immuables (int, str, tuple, etc.) peuvent être dans un ensemble.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q5-ordre",
+                    "type": "true-false",
+                    "prompt": "Les ensembles sont ordonnés en Python",
+                    "answer": false,
+                    "explanation": "Faux. Les ensembles sont non ordonnés. L'ordre d'affichage peut varier et ne doit pas être considéré comme garanti.",
+                    "difficulty": 1
+                  }
+                ]
+              },
+              {
+                "level": 2,
+                "name": "Niveau 2 - Manipulation",
+                "description": "Questions sur les opérations avec les ensembles",
+                "questions": [
+                  {
+                    "id": "q6-add",
+                    "type": "mcq",
+                    "prompt": "Quelle méthode permet d'ajouter un élément à un ensemble ?",
+                    "options": [
+                      "append()",
+                      "add()",
+                      "insert()",
+                      "push()"
+                    ],
+                    "answer": "add()",
+                    "explanation": "La méthode add() permet d'ajouter un élément à un ensemble. append() et insert() sont des méthodes de liste, pas d'ensemble.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q7-remove",
+                    "type": "mcq",
+                    "prompt": "Quelle est la différence entre remove() et discard() ?",
+                    "options": [
+                      "Aucune différence",
+                      "remove() lève une erreur si l'élément n'existe pas, discard() non",
+                      "discard() lève une erreur si l'élément n'existe pas, remove() non",
+                      "remove() supprime tous les éléments, discard() un seul"
+                    ],
+                    "answer": "remove() lève une erreur si l'élément n'existe pas, discard() non",
+                    "explanation": "remove() lève une KeyError si l'élément n'existe pas, tandis que discard() ne fait rien et ne lève pas d'erreur.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q8-appartenance",
+                    "type": "true-false",
+                    "prompt": "La vérification d'appartenance (in) est plus rapide dans un set que dans une liste",
+                    "answer": true,
+                    "explanation": "Vrai. La vérification d'appartenance dans un set est O(1) en moyenne (très rapide), tandis que dans une liste c'est O(n) (doit parcourir tous les éléments).",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q9-update",
+                    "type": "mcq",
+                    "prompt": "Que fait la méthode update() sur un ensemble ?",
+                    "options": [
+                      "Met à jour un élément existant",
+                      "Ajoute plusieurs éléments depuis un itérable",
+                      "Supprime tous les éléments",
+                      "Trie les éléments"
+                    ],
+                    "answer": "Ajoute plusieurs éléments depuis un itérable",
+                    "explanation": "update() ajoute plusieurs éléments à un ensemble depuis un itérable (liste, tuple, autre ensemble, etc.).",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q10-pop",
+                    "type": "mcq",
+                    "prompt": "Que fait pop() sur un ensemble ?",
+                    "options": [
+                      "Supprime le premier élément",
+                      "Supprime le dernier élément",
+                      "Supprime et retourne un élément aléatoire",
+                      "Supprime tous les éléments"
+                    ],
+                    "answer": "Supprime et retourne un élément aléatoire",
+                    "explanation": "pop() supprime et retourne un élément aléatoire (car les ensembles sont non ordonnés).",
+                    "difficulty": 2
+                  }
+                ]
+              },
+              {
+                "level": 3,
+                "name": "Niveau 3 - Opérations ensemblistes",
+                "description": "Questions sur les opérations ensemblistes avancées",
+                "questions": [
+                  {
+                    "id": "q11-union",
+                    "type": "mcq",
+                    "prompt": "Que retourne {1, 2, 3} | {3, 4, 5} ?",
+                    "options": [
+                      "{3}",
+                      "{1, 2, 3, 4, 5}",
+                      "{1, 2}",
+                      "Erreur"
+                    ],
+                    "answer": "{1, 2, 3, 4, 5}",
+                    "explanation": "L'opérateur | fait l'union de deux ensembles, contenant tous les éléments présents dans au moins un des deux ensembles.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q12-intersection",
+                    "type": "mcq",
+                    "prompt": "Que retourne {1, 2, 3, 4} & {3, 4, 5, 6} ?",
+                    "options": [
+                      "{1, 2, 3, 4, 5, 6}",
+                      "{3, 4}",
+                      "{1, 2}",
+                      "{5, 6}"
+                    ],
+                    "answer": "{3, 4}",
+                    "explanation": "L'opérateur & fait l'intersection de deux ensembles, contenant uniquement les éléments présents dans les deux ensembles.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q13-difference",
+                    "type": "mcq",
+                    "prompt": "Que retourne {1, 2, 3, 4} - {3, 4, 5} ?",
+                    "options": [
+                      "{1, 2}",
+                      "{5}",
+                      "{1, 2, 3, 4, 5}",
+                      "{3, 4}"
+                    ],
+                    "answer": "{1, 2}",
+                    "explanation": "L'opérateur - fait la différence, contenant les éléments du premier ensemble qui ne sont pas dans le second.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q14-symmetric-difference",
+                    "type": "mcq",
+                    "prompt": "Que retourne {1, 2, 3} ^ {3, 4, 5} ?",
+                    "options": [
+                      "{1, 2, 4, 5}",
+                      "{3}",
+                      "{1, 2, 3, 4, 5}",
+                      "{1, 2}"
+                    ],
+                    "answer": "{1, 2, 4, 5}",
+                    "explanation": "L'opérateur ^ fait la différence symétrique, contenant les éléments présents dans un seul des deux ensembles (pas dans les deux).",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q15-subset",
+                    "type": "true-false",
+                    "prompt": "L'expression {1, 2} <= {1, 2, 3} retourne True",
+                    "answer": true,
+                    "explanation": "Vrai. L'opérateur <= vérifie si le premier ensemble est un sous-ensemble du second. {1, 2} est bien un sous-ensemble de {1, 2, 3}.",
+                    "difficulty": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

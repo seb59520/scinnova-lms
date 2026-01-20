@@ -8,9 +8,11 @@ import { Link } from 'react-router-dom'
 
 interface CreateUserForm {
   email: string
+  studentId: string
   password: string
   fullName: string
   role: UserRole
+  useStudentId: boolean // Nouveau champ pour choisir entre email et identifiant
 }
 
 export function AdminUsers() {
@@ -24,9 +26,11 @@ export function AdminUsers() {
   const [editingRole, setEditingRole] = useState<string | null>(null)
   const [formData, setFormData] = useState<CreateUserForm>({
     email: '',
+    studentId: '',
     password: '',
     fullName: '',
     role: 'student',
+    useStudentId: false,
   })
   const [creating, setCreating] = useState(false)
 
@@ -62,9 +66,66 @@ export function AdminUsers() {
     setSuccess('')
 
     try {
+      // Si c'est un étudiant avec identifiant, utiliser la Edge Function
+      if (formData.useStudentId && formData.studentId) {
+        // Vérifier que l'utilisateur est authentifié
+        const { data: { session } } = await supabase.auth.getSession()
+        if (!session) {
+          throw new Error('Vous devez être connecté pour créer un utilisateur')
+        }
+
+        // Appeler la Edge Function pour créer l'utilisateur avec l'API Admin
+        // Utiliser supabase.functions.invoke() qui gère automatiquement l'authentification
+        console.log('Calling create-student-user function with:', {
+          studentId: formData.studentId,
+          hasSession: !!session,
+          hasToken: !!session?.access_token,
+        })
+        
+        const { data: functionData, error: functionError } = await supabase.functions.invoke('create-student-user', {
+          body: {
+            studentId: formData.studentId,
+            password: formData.password,
+            fullName: formData.fullName,
+            role: formData.role,
+          },
+        })
+
+        if (functionError) {
+          console.error('Edge Function error:', functionError)
+          throw new Error(functionError.message || `Erreur lors de l'appel de la fonction: ${functionError}`)
+        }
+
+        if (!functionData) {
+          throw new Error('Aucune donnée retournée par la fonction')
+        }
+
+        if (!functionData || !functionData.success) {
+          throw new Error(functionData?.error || 'Erreur lors de la création de l\'étudiant')
+        }
+
+        const successMessage = `Étudiant ${formData.studentId} créé avec succès. Identifiant: ${formData.studentId}, Mot de passe: ${formData.password}`
+        setSuccess(successMessage)
+        setFormData({
+          email: '',
+          studentId: '',
+          password: '',
+          fullName: '',
+          role: 'student',
+          useStudentId: false,
+        })
+        setShowCreateForm(false)
+        await fetchUsers()
+        return
+      }
+
+      // Pour les utilisateurs normaux (avec email), utiliser la méthode classique
+      if (!formData.email) {
+        throw new Error('Email requis pour les utilisateurs normaux')
+      }
+
       // Étape 1: Créer l'utilisateur via signUp
       // Note: Cela nécessite que l'email confirmation soit désactivée dans Supabase
-      // ou que vous utilisiez une Edge Function avec l'API Admin
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -116,12 +177,16 @@ export function AdminUsers() {
         }
       }
 
-      setSuccess(`Utilisateur ${formData.email} créé avec succès avec le rôle ${formData.role}`)
+      const successMessage = `Utilisateur ${formData.email} créé avec succès avec le rôle ${formData.role}`
+      
+      setSuccess(successMessage)
       setFormData({
         email: '',
+        studentId: '',
         password: '',
         fullName: '',
         role: 'student',
+        useStudentId: false,
       })
       setShowCreateForm(false)
       await fetchUsers()
@@ -217,7 +282,8 @@ export function AdminUsers() {
 
   const filteredUsers = users.filter(user =>
     user.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.id.toLowerCase().includes(searchTerm.toLowerCase())
+    user.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (user.student_id && user.student_id.toLowerCase().includes(searchTerm.toLowerCase()))
   )
 
   const getRoleBadgeColor = (role: UserRole) => {
@@ -305,21 +371,73 @@ export function AdminUsers() {
             <div className="mb-6 p-6 bg-white rounded-lg shadow">
               <h2 className="text-xl font-semibold mb-4">Créer un nouvel utilisateur</h2>
               <form onSubmit={handleCreateUser} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                      Email <span className="text-red-500">*</span>
-                    </label>
+                <div className="mb-4">
+                  <label className="flex items-center gap-2 cursor-pointer">
                     <input
-                      id="email"
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="input-field w-full"
-                      placeholder="exemple@email.com"
+                      type="checkbox"
+                      checked={formData.useStudentId}
+                      onChange={(e) => {
+                        setFormData({ 
+                          ...formData, 
+                          useStudentId: e.target.checked,
+                          email: e.target.checked ? '' : formData.email,
+                          studentId: e.target.checked ? formData.studentId : '',
+                          role: e.target.checked ? 'student' : formData.role
+                        })
+                      }}
+                      className="rounded"
                     />
-                  </div>
+                    <span className="text-sm font-medium text-gray-700">
+                      Créer un étudiant avec identifiant (sans email)
+                    </span>
+                  </label>
+                  <p className="text-xs text-gray-500 mt-1 ml-6">
+                    Si coché, l'étudiant pourra se connecter avec son identifiant et mot de passe
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {formData.useStudentId ? (
+                    <div>
+                      <label htmlFor="studentId" className="block text-sm font-medium text-gray-700 mb-1">
+                        Identifiant étudiant <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        id="studentId"
+                        type="text"
+                        required
+                        value={formData.studentId}
+                        onChange={(e) => {
+                          // Validation côté client : seulement lettres, chiffres, tirets et underscores
+                          const value = e.target.value
+                          if (value === '' || /^[a-zA-Z0-9_-]+$/.test(value)) {
+                            setFormData({ ...formData, studentId: value })
+                          }
+                        }}
+                        className="input-field w-full"
+                        placeholder="ex: ETU001, STUDENT123"
+                        title="L'identifiant ne peut contenir que des lettres, chiffres, tirets et underscores"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        L'étudiant utilisera cet identifiant pour se connecter
+                      </p>
+                    </div>
+                  ) : (
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                        Email <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        id="email"
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="input-field w-full"
+                        placeholder="exemple@email.com"
+                      />
+                    </div>
+                  )}
 
                   <div>
                     <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
@@ -335,6 +453,11 @@ export function AdminUsers() {
                       className="input-field w-full"
                       placeholder="Minimum 6 caractères"
                     />
+                    {formData.useStudentId && (
+                      <p className="text-xs text-gray-500 mt-1">
+                        Notez ce mot de passe, vous devrez le communiquer à l'étudiant
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -361,11 +484,17 @@ export function AdminUsers() {
                       value={formData.role}
                       onChange={(e) => setFormData({ ...formData, role: e.target.value as UserRole })}
                       className="input-field w-full"
+                      disabled={formData.useStudentId}
                     >
                       <option value="student">Étudiant</option>
                       <option value="instructor">Formateur</option>
                       <option value="admin">Administrateur</option>
                     </select>
+                    {formData.useStudentId && (
+                      <p className="text-xs text-gray-500 mt-1">
+                        Les étudiants avec identifiant sont automatiquement en rôle "Étudiant"
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -381,7 +510,14 @@ export function AdminUsers() {
                     type="button"
                     onClick={() => {
                       setShowCreateForm(false)
-                      setFormData({ email: '', password: '', fullName: '', role: 'student' })
+                      setFormData({ 
+                        email: '', 
+                        studentId: '',
+                        password: '', 
+                        fullName: '', 
+                        role: 'student',
+                        useStudentId: false
+                      })
                     }}
                     className="btn-secondary"
                   >
@@ -425,6 +561,9 @@ export function AdminUsers() {
                     ID
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Identifiant étudiant
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Rôle
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -441,7 +580,7 @@ export function AdminUsers() {
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredUsers.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
+                    <td colSpan={7} className="px-6 py-8 text-center text-gray-500">
                       {searchTerm ? 'Aucun utilisateur trouvé' : 'Aucun utilisateur'}
                     </td>
                   </tr>
@@ -462,6 +601,17 @@ export function AdminUsers() {
                           <div className="text-sm text-gray-500 font-mono text-xs">
                             {user.id.substring(0, 8)}...
                           </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {user.student_id ? (
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-medium text-blue-700 bg-blue-50 px-2 py-1 rounded">
+                                {user.student_id}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-sm text-gray-400">-</span>
+                          )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           {editingRole === user.id ? (
@@ -565,4 +715,3 @@ export function AdminUsers() {
     </div>
   )
 }
-

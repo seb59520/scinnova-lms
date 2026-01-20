@@ -1,0 +1,727 @@
+{
+  "title": "Les fonctions en Python",
+  "description": "Cours complet et détaillé sur les fonctions en Python pour débutants : chaque ligne de code est commentée, avec des explications approfondies de chaque concept, étape par étape.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3776AB",
+    "secondaryColor": "#FFD43B",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Introduction aux fonctions",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Qu'est-ce qu'une fonction ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez ce qu'est une fonction avec des explications détaillées pour débutants complets."
+          },
+          "chapters": [
+            {
+              "title": "Définition et utilité",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🔧 Qu'est-ce qu'une fonction ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Une fonction est un bloc de code réutilisable qui effectue une tâche spécifique. Imaginez une fonction comme une machine à café : vous mettez des ingrédients (paramètres), elle fait le travail, et vous récupérez un café (valeur de retour)."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple détaillé : Code répétitif vs Fonction"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Voici un exemple concret qui montre la différence entre du code répétitif et l'utilisation d'une fonction :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : SANS FONCTION (code répétitif)\n# ============================================\n# Problème : On répète exactement le même code 3 fois\n# Si on veut changer le message, il faut modifier 3 lignes !\n\n# Ligne 1 : Affiche \"Bonjour Alice\"\n# print() est une fonction built-in de Python qui affiche du texte\nprint(\"Bonjour Alice\")\n\n# Ligne 2 : Affiche \"Bonjour Bob\"\n# Même code, juste le nom change\nprint(\"Bonjour Bob\")\n\n# Ligne 3 : Affiche \"Bonjour Charlie\"\n# Encore le même code répété\nprint(\"Bonjour Charlie\")\n\n# ============================================\n# EXEMPLE 2 : AVEC FONCTION (code réutilisable)\n# ============================================\n# Solution : On définit la fonction UNE SEULE FOIS\n# Ensuite, on peut l'utiliser autant de fois qu'on veut\n\n# DÉFINITION DE LA FONCTION\n# -------------------------\n# 'def' est le mot-clé Python pour définir une fonction\n# C'est comme dire \"Je vais créer une nouvelle fonction\"\ndef dire_bonjour(nom):\n    # Cette ligne est à l'intérieur de la fonction (indentée de 4 espaces)\n    # f\"...\" est une f-string (format string) introduite en Python 3.6+\n    # Elle permet d'insérer des variables dans une chaîne avec {variable}\n    # Ici, {nom} sera remplacé par la valeur passée lors de l'appel\n    # Exemple : si nom = \"Alice\", alors f\"Bonjour {nom}\" devient \"Bonjour Alice\"\n    print(f\"Bonjour {nom}\")\n\n# UTILISATION DE LA FONCTION\n# --------------------------\n# Maintenant, on peut utiliser la fonction avec différents noms\n\n# Appel 1 : On passe \"Alice\" comme argument\n# Python fait : nom = \"Alice\", puis exécute print(f\"Bonjour {nom}\")\n# Résultat : \"Bonjour Alice\" est affiché\ndire_bonjour(\"Alice\")\n\n# Appel 2 : On passe \"Bob\" comme argument\n# Python fait : nom = \"Bob\", puis exécute print(f\"Bonjour {nom}\")\n# Résultat : \"Bonjour Bob\" est affiché\ndire_bonjour(\"Bob\")\n\n# Appel 3 : On passe \"Charlie\" comme argument\n# Python fait : nom = \"Charlie\", puis exécute print(f\"Bonjour {nom}\")\n# Résultat : \"Bonjour Charlie\" est affiché\ndire_bonjour(\"Charlie\")\n\n# AVANTAGE : Si on veut changer le message, on modifie UNE SEULE ligne !\n# Par exemple, changer \"Bonjour\" en \"Salut\" dans la fonction\n# Tous les appels utiliseront automatiquement le nouveau message"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Explication ligne par ligne"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "def dire_bonjour(nom): - On définit une fonction nommée 'dire_bonjour' qui accepte un paramètre 'nom'. Le ':' indique le début du corps de la fonction."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "print(f\"Bonjour {nom}\") - À l'intérieur de la fonction, on affiche un message. Le 'f' avant les guillemets permet d'insérer {nom} dans le texte."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "dire_bonjour(\"Alice\") - On appelle la fonction en lui passant \"Alice\" comme argument. Python remplace 'nom' par \"Alice\" et exécute le code."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Définir et appeler une fonction - Guide complet",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez la syntaxe complète pour définir et appeler une fonction, avec chaque élément expliqué en détail ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Syntaxe complète expliquée",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📝 Définir et appeler une fonction - Guide complet"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Fonction simple sans paramètres"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Commençons par le cas le plus simple : une fonction qui ne prend aucun paramètre."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Fonction sans paramètres\n# ============================================\n\n# DÉFINITION DE LA FONCTION\n# -------------------------\n# Ligne 1 : 'def' est le mot-clé Python pour définir une fonction\n#           C'est comme dire \"Je vais créer une nouvelle fonction\"\n# Ligne 2 : 'saluer' est le nom que nous donnons à notre fonction\n#           Vous pouvez choisir n'importe quel nom (sauf les mots réservés)\n#           Convention : utiliser snake_case (mots séparés par _)\n# Ligne 3 : '()' indique qu'il n'y a pas de paramètres (les parenthèses sont vides)\n# Ligne 4 : ':' est obligatoire et indique le début du corps de la fonction\ndef saluer():\n    # Ligne 5 : Docstring - documentation de la fonction (optionnel mais recommandé)\n    #           Les triple guillemets \"\"\" permettent d'écrire sur plusieurs lignes\n    #           Cette documentation explique ce que fait la fonction\n    \"\"\"\n    Affiche un message de salutation.\n    Cette fonction ne prend aucun paramètre et affiche simplement \"Bonjour !\"\n    \"\"\"\n    \n    # Ligne 6 : Le corps de la fonction commence ici (indenté de 4 espaces)\n    #           L'indentation est CRUCIALE en Python : elle indique que ce code\n    #           fait partie de la fonction 'saluer'\n    #           'print()' est une fonction built-in de Python qui affiche du texte\n    print(\"Bonjour !\")\n\n# ============================================\n# APPEL DE LA FONCTION\n# ============================================\n# Ligne 7 : On appelle la fonction en écrivant son nom suivi de '()'\n#           Les parenthèses sont obligatoires, même s'il n'y a pas de paramètres\n#           Sans les parenthèses, Python pense que vous référencez la fonction,\n#           mais ne l'exécute pas\nsaluer()\n# Résultat : Affiche \"Bonjour !\" dans la console\n\n# ERREUR COURANTE :\n# saluer  (sans parenthèses) ne fait RIEN, juste référence la fonction\n# saluer() (avec parenthèses) EXÉCUTE la fonction"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Fonction avec un paramètre"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Maintenant, voyons comment passer des informations à une fonction via des paramètres :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Fonction avec un paramètre\n# ============================================\n\n# DÉFINITION DE LA FONCTION\n# -------------------------\n# Ligne 1 : 'def' : mot-clé pour définir une fonction\n# Ligne 2 : 'saluer_personne' : nom de la fonction (snake_case)\n# Ligne 3 : '(nom)' : paramètre unique de type chaîne de caractères\n#           'nom' est une variable qui recevra la valeur passée lors de l'appel\n#           Vous pouvez l'appeler comme vous voulez (prenom, personne, etc.)\n# Ligne 4 : ':' : début du corps de la fonction (obligatoire)\ndef saluer_personne(nom):\n    # Docstring expliquant ce que fait la fonction\n    # C'est une bonne pratique de documenter vos fonctions\n    \"\"\"\n    Salue une personne par son nom.\n    \n    Args:\n        nom (str): Le nom de la personne à saluer\n    \"\"\"\n    \n    # Corps de la fonction\n    # f\"...\" est une f-string (format string) introduite en Python 3.6+\n    # Elle permet d'insérer des variables dans une chaîne avec {variable}\n    # Ici, {nom} sera remplacé par la valeur passée lors de l'appel\n    # Exemple : si nom = \"Alice\", alors f\"Bonjour {nom} !\" devient \"Bonjour Alice !\"\n    print(f\"Bonjour {nom} !\")\n\n# ============================================\n# APPELS DE LA FONCTION\n# ============================================\n\n# Appel 1 : On passe la chaîne \"Alice\" comme argument\n# Python fait les étapes suivantes :\n#   1. Prend la valeur \"Alice\"\n#   2. L'assigne à la variable 'nom' dans la fonction\n#   3. Exécute le code de la fonction avec nom = \"Alice\"\n#   4. Affiche \"Bonjour Alice !\"\nsaluer_personne(\"Alice\")\n# Résultat affiché : Bonjour Alice !\n\n# Appel 2 : On passe une autre chaîne\n# Même processus : nom = \"Bob\", puis affiche \"Bonjour Bob !\"\nsaluer_personne(\"Bob\")\n# Résultat affiché : Bonjour Bob !\n\n# Appel 3 : On peut aussi passer une variable\n# Ligne 1 : On crée une variable 'prenom' qui contient \"Charlie\"\nprenom = \"Charlie\"\n\n# Ligne 2 : On appelle la fonction avec la variable 'prenom'\n# Python prend la VALEUR de 'prenom' (qui est \"Charlie\")\n# et l'assigne à 'nom' dans la fonction\nsaluer_personne(prenom)\n# Résultat affiché : Bonjour Charlie !\n\n# IMPORTANT : La variable 'nom' dans la fonction est différente de 'prenom'\n# Ce sont deux variables distinctes, même si elles contiennent la même valeur"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Fonction avec valeur de retour"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Les fonctions peuvent aussi retourner des valeurs que vous pouvez utiliser dans votre code :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Fonction avec valeur de retour\n# ============================================\n\n# DÉFINITION DE LA FONCTION\n# -------------------------\n# Cette fonction prend deux paramètres et RETOURNE un résultat\n# 'return' permet de renvoyer une valeur à celui qui appelle la fonction\ndef additionner(a, b):\n    # Docstring expliquant la fonction\n    \"\"\"\n    Additionne deux nombres.\n    \n    Args:\n        a (int ou float): Premier nombre à additionner\n        b (int ou float): Deuxième nombre à additionner\n    \n    Returns:\n        int ou float: La somme de a et b\n    \"\"\"\n    \n    # 'return' est le mot-clé qui permet de retourner une valeur\n    # Ici, on retourne le résultat de l'addition a + b\n    # Après 'return', la fonction s'arrête IMMÉDIATEMENT\n    # Même s'il y a du code après, il ne sera JAMAIS exécuté\n    return a + b\n    \n    # Cette ligne ne sera JAMAIS exécutée car elle est après 'return'\n    # print(\"Ceci ne s'affichera jamais\")\n\n# ============================================\n# UTILISATION DE LA FONCTION\n# ============================================\n\n# Appel 1 : On appelle la fonction et on stocke le résultat dans une variable\n# Python exécute les étapes suivantes :\n#   1. a = 5, b = 3 (assignation des arguments aux paramètres)\n#   2. Calcule a + b = 5 + 3 = 8\n#   3. Retourne 8 avec 'return'\n#   4. La valeur 8 est assignée à la variable 'resultat'\nresultat = additionner(5, 3)\n# Maintenant, 'resultat' contient la valeur 8\n\n# On affiche le contenu de 'resultat'\nprint(resultat)\n# Résultat affiché : 8\n\n# Appel 2 : On peut utiliser directement le résultat dans une expression\n# Python calcule d'abord additionner(10, 20) = 30\n# Puis multiplie 30 * 2 = 60\nresultat_multiplie = additionner(10, 20) * 2\nprint(resultat_multiplie)\n# Résultat affiché : 60\n\n# Appel 3 : On peut aussi appeler la fonction sans stocker le résultat\n# Mais dans ce cas, on ne peut pas utiliser la valeur retournée\nadditionner(7, 8)\n# Le résultat (15) est calculé mais PERDU car non stocké dans une variable\n# C'est généralement une erreur : pourquoi calculer si on n'utilise pas le résultat ?\n\n# Appel 4 : Fonction sans 'return' retourne None\ndef afficher_sans_retour(message):\n    print(message)\n    # Pas de 'return', donc la fonction retourne None automatiquement\n\nretour = afficher_sans_retour(\"Hello\")\nprint(f\"Valeur retournée : {retour}\")\n# Résultat affiché :\n# Hello\n# Valeur retournée : None"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : Paramètres et arguments",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Paramètres et arguments",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Comprenez la différence entre paramètres et arguments, avec des explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Paramètres vs Arguments",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📌 Paramètres et arguments"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Les "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "paramètres"
+                      },
+                      {
+                        "type": "text",
+                        "text": " sont les variables définies dans la signature de la fonction. Les "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ],
+                        "text": "arguments"
+                      },
+                      {
+                        "type": "text",
+                        "text": " sont les valeurs passées lors de l'appel."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# DIFFÉRENCE ENTRE PARAMÈTRES ET ARGUMENTS\n# ============================================\n\n# DÉFINITION DE LA FONCTION\n# -------------------------\n# 'a' et 'b' sont des PARAMÈTRES\n# Ce sont des variables définies dans la signature de la fonction\n# Elles attendent de recevoir des valeurs lors de l'appel\ndef multiplier(a, b):\n    # Docstring expliquant la fonction\n    \"\"\"\n    Multiplie deux nombres.\n    \n    Args:\n        a (int ou float): Premier nombre (PARAMÈTRE)\n        b (int ou float): Deuxième nombre (PARAMÈTRE)\n    \n    Returns:\n        int ou float: Le produit de a et b\n    \"\"\"\n    \n    # Corps de la fonction\n    # On utilise les paramètres 'a' et 'b' pour faire le calcul\n    # 'return' retourne le résultat de la multiplication\n    return a * b\n\n# ============================================\n# APPEL DE LA FONCTION\n# ============================================\n\n# '5' et '3' sont des ARGUMENTS\n# Ce sont les valeurs RÉELLES qu'on passe à la fonction\n# Python assigne : a = 5, b = 3\nresultat = multiplier(5, 3)\n# Résultat : a * b = 5 * 3 = 15\n# La variable 'resultat' contient maintenant 15\n\n# Affichage du résultat\nprint(resultat)\n# Résultat affiché : 15\n\n# ============================================\n# EXEMPLE AVEC PLUSIEURS PARAMÈTRES\n# ============================================\n\n# Fonction avec 3 paramètres\ndef presenter(nom, age, ville):\n    \"\"\"\n    Présente une personne avec son nom, âge et ville.\n    \n    Args:\n        nom (str): Le nom de la personne (PARAMÈTRE)\n        age (int): L'âge de la personne (PARAMÈTRE)\n        ville (str): La ville de résidence (PARAMÈTRE)\n    \n    Returns:\n        str: Une chaîne de présentation\n    \"\"\"\n    \n    # f-string pour formater la présentation\n    # Les paramètres nom, age, ville sont utilisés ici\n    return f\"{nom}, {age} ans, habite à {ville}\"\n\n# Appel avec arguments positionnels\n# Python assigne dans l'ordre : nom=\"Alice\", age=30, ville=\"Paris\"\n# L'ORDRE est important avec les arguments positionnels !\nmessage1 = presenter(\"Alice\", 30, \"Paris\")\nprint(message1)\n# Résultat affiché : Alice, 30 ans, habite à Paris\n\n# Appel avec arguments nommés (plus lisible)\n# L'ordre n'est plus important car on spécifie le nom de chaque paramètre\n# Python assigne : nom=\"Bob\", ville=\"Lyon\", age=25\nmessage2 = presenter(nom=\"Bob\", ville=\"Lyon\", age=25)\nprint(message2)\n# Résultat affiché : Bob, 25 ans, habite à Lyon\n\n# IMPORTANT : \n# - PARAMÈTRES = variables dans la définition (a, b, nom, age, ville)\n# - ARGUMENTS = valeurs passées lors de l'appel (5, 3, \"Alice\", 30, \"Paris\")"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Arguments par défaut",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Utilisez des valeurs par défaut pour rendre certains paramètres optionnels, avec explications détaillées."
+          },
+          "chapters": [
+            {
+              "title": "Valeurs par défaut",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "⚙️ Arguments par défaut"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Les arguments par défaut permettent de rendre certains paramètres optionnels. Si vous ne fournissez pas de valeur, la valeur par défaut est utilisée."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Fonction avec un paramètre par défaut\n# ============================================\n\n# DÉFINITION DE LA FONCTION\n# -------------------------\n# 'nom' est un paramètre OBLIGATOIRE (pas de valeur par défaut)\n# 'message' est un paramètre OPTIONNEL avec valeur par défaut \"Bonjour\"\n# Si on n'utilise pas 'message' lors de l'appel, il prendra la valeur \"Bonjour\"\ndef saluer(nom, message=\"Bonjour\"):\n    \"\"\"\n    Salue une personne avec un message personnalisable.\n    \n    Args:\n        nom (str): Le nom de la personne (OBLIGATOIRE)\n        message (str): Le message de salutation (OPTIONNEL, défaut=\"Bonjour\")\n    \"\"\"\n    \n    # f-string utilisant les deux paramètres\n    print(f\"{message} {nom} !\")\n\n# ============================================\n# UTILISATIONS DE LA FONCTION\n# ============================================\n\n# Appel 1 : Utilisation avec valeur par défaut\n# On ne passe que 'nom', 'message' prend sa valeur par défaut \"Bonjour\"\n# Python fait : nom=\"Alice\", message=\"Bonjour\" (valeur par défaut)\nsaluer(\"Alice\")\n# Résultat affiché : Bonjour Alice !\n\n# Appel 2 : Surcharge de la valeur par défaut\n# On passe les deux arguments, donc 'message' prend la valeur \"Salut\"\n# Python fait : nom=\"Bob\", message=\"Salut\"\nsaluer(\"Bob\", \"Salut\")\n# Résultat affiché : Salut Bob !\n\n# ============================================\n# EXEMPLE 2 : Plusieurs paramètres par défaut\n# ============================================\n\ndef creer_profil(nom, age=18, ville=\"Inconnue\", actif=True):\n    \"\"\"\n    Crée un profil utilisateur avec des valeurs par défaut.\n    \n    Args:\n        nom (str): Le nom (OBLIGATOIRE)\n        age (int): L'âge (OPTIONNEL, défaut=18)\n        ville (str): La ville (OPTIONNEL, défaut=\"Inconnue\")\n        actif (bool): Statut actif (OPTIONNEL, défaut=True)\n    \n    Returns:\n        dict: Un dictionnaire contenant le profil\n    \"\"\"\n    \n    # Retourne un dictionnaire avec toutes les informations\n    return {\n        \"nom\": nom,      # Utilise la valeur passée\n        \"age\": age,      # Utilise la valeur passée ou 18 par défaut\n        \"ville\": ville,  # Utilise la valeur passée ou \"Inconnue\" par défaut\n        \"actif\": actif   # Utilise la valeur passée ou True par défaut\n    }\n\n# ============================================\n# DIFFÉRENTES FAÇONS D'APPELER LA FONCTION\n# ============================================\n\n# Appel 1 : Tous les paramètres par défaut sauf 'nom'\n# Python fait : nom=\"Alice\", age=18, ville=\"Inconnue\", actif=True\nprofil1 = creer_profil(\"Alice\")\nprint(profil1)\n# Résultat : {'nom': 'Alice', 'age': 18, 'ville': 'Inconnue', 'actif': True}\n\n# Appel 2 : Spécifier 'nom' et 'age', le reste par défaut\n# Python fait : nom=\"Bob\", age=25, ville=\"Inconnue\", actif=True\nprofil2 = creer_profil(\"Bob\", 25)\nprint(profil2)\n# Résultat : {'nom': 'Bob', 'age': 25, 'ville': 'Inconnue', 'actif': True}\n\n# Appel 3 : Spécifier 'nom' et 'ville' avec arguments nommés\n# Python fait : nom=\"Charlie\", age=18 (défaut), ville=\"Paris\", actif=True (défaut)\nprofil3 = creer_profil(\"Charlie\", ville=\"Paris\")\nprint(profil3)\n# Résultat : {'nom': 'Charlie', 'age': 18, 'ville': 'Paris', 'actif': True}\n\n# Appel 4 : Tous les paramètres spécifiés\n# Python fait : nom=\"Diana\", age=30, ville=\"Lyon\", actif=False\nprofil4 = creer_profil(\"Diana\", 30, \"Lyon\", False)\nprint(profil4)\n# Résultat : {'nom': 'Diana', 'age': 30, 'ville': 'Lyon', 'actif': False}\n\n# ============================================\n# ⚠️ RÈGLE IMPORTANTE\n# ============================================\n# Les paramètres SANS valeur par défaut doivent TOUJOURS\n# précéder ceux AVEC valeur par défaut\n\n# ✅ CORRECT : paramètre obligatoire avant paramètre optionnel\ndef fonction_correcte(a, b=10):\n    return a + b\n\n# ❌ ERREUR : SyntaxError - paramètre optionnel avant paramètre obligatoire\n# def fonction_erreur(a=10, b):  # Cette ligne causerait une erreur\n#     return a + b"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : Valeurs de retour et portée",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Valeurs de retour",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à retourner des valeurs depuis une fonction avec return, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Instruction return",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {"level": 1},
+                    "content": [{"type": "text", "text": "↩️ Valeurs de retour"}]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {"language": "python"},
+                    "content": [{
+                      "type": "text",
+                      "text": "# ============================================\n# EXEMPLE 1 : Fonction avec return\n# ============================================\n\n# DÉFINITION DE LA FONCTION\n# -------------------------\n# Cette fonction prend un paramètre 'x' et retourne son carré\n# 'return' est le mot-clé qui permet de retourner une valeur\ndef calculer_carre(x):\n    # Docstring expliquant la fonction\n    \"\"\"\n    Calcule le carré d'un nombre.\n    \n    Args:\n        x (int ou float): Le nombre à élever au carré\n    \n    Returns:\n        int ou float: Le carré de x (x * x)\n    \"\"\"\n    \n    # 'return' retourne le résultat du calcul x * x\n    # Après 'return', la fonction s'arrête immédiatement\n    # Toute valeur après 'return' dans cette fonction ne sera jamais exécutée\n    return x * x\n\n# ============================================\n# UTILISATION DE LA FONCTION\n# ============================================\n\n# Appel de la fonction avec l'argument 5\n# Python fait : x = 5, puis calcule x * x = 5 * 5 = 25\n# La fonction retourne 25, qui est stocké dans 'resultat'\nresultat = calculer_carre(5)\n\n# Affichage du résultat\nprint(resultat)\n# Résultat affiché : 25\n\n# ============================================\n# EXEMPLE 2 : Fonction sans return (retourne None)\n# ============================================\n\n# Fonction qui affiche mais ne retourne rien explicitement\ndef afficher_message(message):\n    # Cette fonction affiche le message\n    print(message)\n    # Pas de 'return' explicite, donc la fonction retourne None automatiquement\n    # None est la valeur par défaut retournée par une fonction sans 'return'\n\n# Appel de la fonction\n# La fonction affiche \"Hello\" mais retourne None\nretour = afficher_message(\"Hello\")\n# 'retour' contient maintenant None\n\n# Affichage de la valeur retournée\nprint(f\"Valeur retournée : {retour}\")\n# Résultat affiché :\n# Hello\n# Valeur retournée : None\n\n# ============================================\n# EXEMPLE 3 : Return multiple (retourne un tuple)\n# ============================================\n\n# Fonction qui retourne plusieurs valeurs\ndef diviser(a, b):\n    \"\"\"\n    Divise a par b et retourne le quotient et le reste.\n    \n    Args:\n        a (int): Le dividende\n        b (int): Le diviseur\n    \n    Returns:\n        tuple: (quotient, reste)\n    \"\"\"\n    # Calcul du quotient (division entière avec //)\n    # Exemple : 17 // 5 = 3 (combien de fois 5 va dans 17)\n    quotient = a // b\n    \n    # Calcul du reste (modulo avec %)\n    # Exemple : 17 % 5 = 2 (ce qui reste après la division)\n    reste = a % b\n    \n    # Return de plusieurs valeurs (Python les regroupe en un tuple)\n    # Équivalent à : return (quotient, reste)\n    return quotient, reste\n\n# Appel de la fonction\n# Python retourne un tuple (3, 2) qui est déballé dans q et r\nq, r = diviser(17, 5)\n\n# Affichage des résultats\nprint(f\"Quotient: {q}, Reste: {r}\")\n# Résultat affiché : Quotient: 3, Reste: 2\n\n# ============================================\n# EXEMPLE 4 : Return conditionnel\n# ============================================\n\n# Fonction qui retourne True ou False selon une condition\ndef est_pair(n):\n    \"\"\"\n    Vérifie si un nombre est pair.\n    \n    Args:\n        n (int): Le nombre à vérifier\n    \n    Returns:\n        bool: True si n est pair, False sinon\n    \"\"\"\n    # Si n modulo 2 est égal à 0, alors n est pair\n    if n % 2 == 0:\n        # Retourne True et arrête la fonction\n        return True\n    # Si on arrive ici, n n'est pas pair\n    # Retourne False explicitement\n    return False\n\n# Version simplifiée (plus Pythonique)\ndef est_pair_simple(n):\n    # Retourne directement le résultat de la comparaison\n    # n % 2 == 0 est True si n est pair, False sinon\n    return n % 2 == 0\n\n# Tests\nprint(est_pair(4))   # True\nprint(est_pair(5))   # False\nprint(est_pair_simple(4))   # True\nprint(est_pair_simple(5))   # False"
+                    }]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Portée des variables (scope)",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Comprenez la portée des variables : locales, globales et nonlocal, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Portée des variables",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {"level": 1},
+                    "content": [{"type": "text", "text": "🌐 Portée des variables"}]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {"type": "text", "text": "La portée (scope) détermine où une variable est accessible dans le code. En Python, il existe trois types de portée : locale, globale et nonlocal."}
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {"language": "python"},
+                    "content": [{
+                      "type": "text",
+                      "text": "# ============================================\n# EXEMPLE 1 : Variable globale vs locale\n# ============================================\n\n# Variable GLOBALE définie au niveau du module (fichier)\n# Elle est accessible partout dans le fichier\nx = 10\n\n# Définition d'une fonction\ndef fonction_locale():\n    # Variable LOCALE définie dans la fonction\n    # Elle masque (cache) la variable globale 'x'\n    # Cette variable 'x' n'existe QUE dans cette fonction\n    x = 20\n    \n    # Affichage de la variable locale\n    print(f\"Local: {x}\")\n    # Résultat affiché : Local: 20\n\n# Appel de la fonction\nfonction_locale()\n\n# Affichage de la variable globale (non modifiée)\nprint(f\"Global: {x}\")\n# Résultat affiché : Global: 10\n# La variable globale n'a PAS été modifiée par la fonction\n\n# ============================================\n# EXEMPLE 2 : Modifier une variable globale\n# ============================================\n\n# Variable globale\ny = 5\n\n# Fonction qui modifie la variable globale\ndef modifier_globale():\n    # 'global' est le mot-clé qui permet de modifier une variable globale\n    # SANS 'global', Python créerait une variable locale 'y'\n    # AVEC 'global', Python modifie la variable globale 'y'\n    global y\n    \n    # Modification de la variable globale\n    y = 15\n    \n    # Affichage de la valeur modifiée\n    print(f\"Modifié: {y}\")\n    # Résultat affiché : Modifié: 15\n\n# Appel de la fonction\nmodifier_globale()\n\n# Affichage de la variable globale (maintenant modifiée)\nprint(f\"Global: {y}\")\n# Résultat affiché : Global: 15\n# La variable globale A ÉTÉ modifiée par la fonction\n\n# ============================================\n# EXEMPLE 3 : Variable nonlocal (fonction imbriquée)\n# ============================================\n\n# Fonction externe (parente)\ndef fonction_externe():\n    # Variable dans la fonction externe\n    # Elle n'est PAS globale, mais accessible aux fonctions imbriquées\n    z = 100\n    \n    # Fonction interne (imbriquée)\n    def fonction_interne():\n        # 'nonlocal' permet de modifier la variable de la fonction parente\n        # SANS 'nonlocal', Python créerait une variable locale 'z'\n        # AVEC 'nonlocal', Python modifie la variable 'z' de fonction_externe\n        nonlocal z\n        \n        # Modification de la variable de la fonction parente\n        z = 200\n        \n        # Affichage de la valeur modifiée\n        print(f\"Interne: {z}\")\n        # Résultat affiché : Interne: 200\n    \n    # Appel de la fonction interne\n    fonction_interne()\n    \n    # Affichage de la variable (modifiée par la fonction interne)\n    print(f\"Externe: {z}\")\n    # Résultat affiché : Externe: 200\n    # La variable 'z' de fonction_externe A ÉTÉ modifiée\n\n# Appel de la fonction externe\nfonction_externe()\n\n# ============================================\n# RÉCAPITULATIF DES RÈGLES DE PORTÉE\n# ============================================\n# 1. Variable LOCALE : définie dans une fonction, accessible uniquement dans cette fonction\n# 2. Variable GLOBALE : définie au niveau du module, accessible partout (utiliser 'global' pour modifier)\n# 3. Variable NONLOCAL : dans une fonction imbriquée, référence la variable de la fonction parente (utiliser 'nonlocal' pour modifier)"
+                    }]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : Fonctions avancées",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Fonctions lambda",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Créez des fonctions anonymes courtes avec lambda, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Fonctions lambda",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {"level": 1},
+                    "content": [{"type": "text", "text": "λ Fonctions lambda"}]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {"type": "text", "text": "Les fonctions lambda sont des fonctions anonymes (sans nom) utilisées pour des opérations courtes et simples. Elles sont très utiles avec map(), filter(), et sorted()."}
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {"language": "python"},
+                    "content": [{
+                      "type": "text",
+                      "text": "# ============================================\n# EXEMPLE 1 : Fonction classique vs Lambda\n# ============================================\n\n# Fonction classique avec 'def'\ndef carre(x):\n    # Retourne le carré de x\n    return x * x\n\n# Fonction lambda équivalente\n# Syntaxe : lambda arguments: expression\n# 'lambda' est le mot-clé\n# 'x' est l'argument (paramètre)\n# ':' sépare les arguments de l'expression\n# 'x * x' est l'expression retournée (pas besoin de 'return')\ncarre_lambda = lambda x: x * x\n\n# Les deux fonctions sont équivalentes\nprint(carre(5))           # 25\nprint(carre_lambda(5))    # 25\n\n# ============================================\n# EXEMPLE 2 : Lambda avec map()\n# ============================================\n\n# Liste de nombres\nnombres = [1, 2, 3, 4, 5]\n\n# map() applique une fonction à chaque élément d'une séquence\n# map(fonction, séquence) retourne un objet map (itérable)\n# list() convertit l'objet map en liste\n# lambda x: x ** 2 élève chaque nombre au carré\ncarres = list(map(lambda x: x ** 2, nombres))\n# Équivalent à : [1**2, 2**2, 3**2, 4**2, 5**2] = [1, 4, 9, 16, 25]\nprint(carres)\n# Résultat affiché : [1, 4, 9, 16, 25]\n\n# ============================================\n# EXEMPLE 3 : Lambda avec filter()\n# ============================================\n\n# filter() filtre une séquence selon une condition\n# filter(fonction, séquence) retourne un objet filter\n# lambda x: x % 2 == 0 vérifie si x est pair (reste de division par 2 = 0)\npairs = list(filter(lambda x: x % 2 == 0, nombres))\n# Garde seulement les éléments où x % 2 == 0 est True\n# Équivalent à : [2, 4] (1, 3, 5 sont impairs donc exclus)\nprint(pairs)\n# Résultat affiché : [2, 4]\n\n# ============================================\n# EXEMPLE 4 : Lambda avec sorted()\n# ============================================\n\n# Liste de tuples (nom, âge)\npersonnes = [(\"Alice\", 30), (\"Bob\", 25), (\"Charlie\", 35)]\n\n# sorted() trie une séquence selon une clé\n# key=lambda p: p[1] signifie \"trier selon le 2ème élément (index 1) du tuple\"\n# p[1] est l'âge de chaque personne\n# Le tri se fait par ordre croissant d'âge\ntriees = sorted(personnes, key=lambda p: p[1])\n# Résultat : [('Bob', 25), ('Alice', 30), ('Charlie', 35)]\nprint(triees)\n# Résultat affiché : [('Bob', 25), ('Alice', 30), ('Charlie', 35)]\n\n# ============================================\n# EXEMPLE 5 : Lambda avec plusieurs arguments\n# ============================================\n\n# Lambda avec deux paramètres\n# Syntaxe : lambda arg1, arg2: expression\nadditionner = lambda a, b: a + b\n\n# Appel de la fonction lambda\nresultat = additionner(3, 5)\nprint(resultat)\n# Résultat affiché : 8\n\n# ============================================\n# QUAND UTILISER LAMBDA ?\n# ============================================\n# ✅ Pour des fonctions courtes et simples (une ligne)\n# ✅ Avec map(), filter(), sorted()\n# ❌ Éviter pour des fonctions complexes (préférer 'def')"
+                    }]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "4.2 Fonctions récursives",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Créez des fonctions qui s'appellent elles-mêmes pour résoudre des problèmes récursifs, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Récursivité",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {"level": 1},
+                    "content": [{"type": "text", "text": "🔄 Fonctions récursives"}]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {"type": "text", "text": "Une fonction récursive est une fonction qui s'appelle elle-même. Elle doit avoir un cas de base pour éviter une récursion infinie."}
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {"language": "python"},
+                    "content": [{
+                      "type": "text",
+                      "text": "# ============================================\n# EXEMPLE 1 : Factorielle (n!)\n# ============================================\n# Factorielle de n = n * (n-1) * (n-2) * ... * 2 * 1\n# Exemple : 5! = 5 * 4 * 3 * 2 * 1 = 120\n\ndef factorielle(n):\n    \"\"\"\n    Calcule la factorielle de n de manière récursive.\n    \n    Args:\n        n (int): Le nombre dont on calcule la factorielle\n    \n    Returns:\n        int: La factorielle de n\n    \"\"\"\n    # CAS DE BASE : condition qui arrête la récursion\n    # Si n <= 1, on retourne 1 (0! = 1! = 1)\n    # SANS ce cas de base, la fonction s'appellerait indéfiniment !\n    if n <= 1:\n        return 1\n    \n    # APPEL RÉCURSIF : la fonction s'appelle elle-même\n    # factorielle(n) = n * factorielle(n-1)\n    # Exemple : factorielle(5) = 5 * factorielle(4)\n    #           factorielle(4) = 4 * factorielle(3)\n    #           ... jusqu'à factorielle(1) = 1\n    return n * factorielle(n - 1)\n\n# Appel de la fonction\n# factorielle(5) = 5 * factorielle(4)\n#                = 5 * 4 * factorielle(3)\n#                = 5 * 4 * 3 * factorielle(2)\n#                = 5 * 4 * 3 * 2 * factorielle(1)\n#                = 5 * 4 * 3 * 2 * 1\n#                = 120\nresultat = factorielle(5)\nprint(resultat)\n# Résultat affiché : 120\n\n# ============================================\n# EXEMPLE 2 : Suite de Fibonacci\n# ============================================\n# Fibonacci : F(0)=0, F(1)=1, F(n)=F(n-1)+F(n-2)\n# Série : 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...\n\ndef fibonacci(n):\n    \"\"\"\n    Calcule le n-ième nombre de Fibonacci de manière récursive.\n    \n    Args:\n        n (int): La position dans la suite\n    \n    Returns:\n        int: Le n-ième nombre de Fibonacci\n    \"\"\"\n    # CAS DE BASE : F(0) = 0, F(1) = 1\n    if n <= 1:\n        return n\n    \n    # APPEL RÉCURSIF : F(n) = F(n-1) + F(n-2)\n    # La fonction s'appelle deux fois (moins efficace mais plus simple)\n    return fibonacci(n - 1) + fibonacci(n - 2)\n\n# Calcul des 10 premiers nombres de Fibonacci\n# List comprehension : [fibonacci(i) for i in range(10)]\n# Pour chaque i de 0 à 9, calcule fibonacci(i)\nfib_nombres = [fibonacci(i) for i in range(10)]\nprint(fib_nombres)\n# Résultat affiché : [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n\n# ============================================\n# EXEMPLE 3 : Somme récursive d'une liste\n# ============================================\n\ndef somme_recursive(liste):\n    \"\"\"\n    Calcule la somme d'une liste de manière récursive.\n    \n    Args:\n        liste (list): Liste de nombres\n    \n    Returns:\n        int ou float: La somme des éléments\n    \"\"\"\n    # CAS DE BASE : si la liste est vide, la somme est 0\n    if not liste:\n        return 0\n    \n    # APPEL RÉCURSIF : somme = premier élément + somme du reste\n    # liste[0] : premier élément\n    # liste[1:] : tous les éléments sauf le premier (slice)\n    # Exemple : [1, 2, 3, 4, 5] -> 1 + somme_recursive([2, 3, 4, 5])\n    return liste[0] + somme_recursive(liste[1:])\n\n# Appel de la fonction\n# somme_recursive([1, 2, 3, 4, 5])\n# = 1 + somme_recursive([2, 3, 4, 5])\n# = 1 + 2 + somme_recursive([3, 4, 5])\n# = 1 + 2 + 3 + somme_recursive([4, 5])\n# = 1 + 2 + 3 + 4 + somme_recursive([5])\n# = 1 + 2 + 3 + 4 + 5 + somme_recursive([])\n# = 1 + 2 + 3 + 4 + 5 + 0\n# = 15\nresultat = somme_recursive([1, 2, 3, 4, 5])\nprint(resultat)\n# Résultat affiché : 15\n\n# ============================================\n# ⚠️ ATTENTION À LA RÉCURSION INFINIE\n# ============================================\n# TOUJOURS définir un cas de base pour arrêter la récursion !\n# Sinon, la fonction s'appellera indéfiniment et causera une erreur"
+                    }]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : Documentation et bonnes pratiques",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "5.1 Docstrings",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Documentez vos fonctions avec des docstrings pour améliorer la lisibilité, avec explications détaillées."
+          },
+          "chapters": [
+            {
+              "title": "Documentation des fonctions",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {"level": 1},
+                    "content": [{"type": "text", "text": "📖 Docstrings"}]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {"language": "python"},
+                    "content": [{
+                      "type": "text",
+                      "text": "# ============================================\n# EXEMPLE 1 : Docstring simple\n# ============================================\n\n# Fonction avec une docstring simple (une ligne)\ndef additionner(a, b):\n    # Docstring : chaîne entre triple guillemets juste après 'def'\n    # Elle décrit brièvement ce que fait la fonction\n    \"\"\"Additionne deux nombres.\"\"\"\n    \n    # Corps de la fonction\n    return a + b\n\n# ============================================\n# EXEMPLE 2 : Docstring détaillée (style Google)\n# ============================================\n\ndef calculer_moyenne(nombres):\n    # Docstring détaillée sur plusieurs lignes\n    # Style Google : description, Args, Returns, Raises, Example\n    \"\"\"\n    Calcule la moyenne d'une liste de nombres.\n    \n    Cette fonction prend une liste de nombres, calcule leur somme,\n    puis divise par le nombre d'éléments pour obtenir la moyenne.\n    \n    Args:\n        nombres (list): Liste de nombres à moyenner.\n                        Peut contenir des int ou float.\n    \n    Returns:\n        float: La moyenne des nombres.\n               Si la liste est vide, lève une ValueError.\n    \n    Raises:\n        ValueError: Si la liste est vide.\n                   Le message d'erreur sera \"La liste ne peut pas être vide\"\n    \n    Example:\n        >>> calculer_moyenne([1, 2, 3, 4, 5])\n        3.0\n        >>> calculer_moyenne([10, 20, 30])\n        20.0\n    \"\"\"\n    \n    # Vérification que la liste n'est pas vide\n    # 'not liste' est True si la liste est vide\n    if not nombres:\n        # Lève une exception ValueError avec un message explicite\n        raise ValueError(\"La liste ne peut pas être vide\")\n    \n    # Calcul de la moyenne\n    # sum(nombres) : somme de tous les éléments\n    # len(nombres) : nombre d'éléments\n    # Division pour obtenir la moyenne\n    return sum(nombres) / len(nombres)\n\n# ============================================\n# ACCÈS À LA DOCSTRING\n# ============================================\n\n# Accès via l'attribut __doc__\n# Chaque fonction a un attribut __doc__ qui contient sa docstring\nprint(calculer_moyenne.__doc__)\n# Affiche la docstring complète\n\n# Accès via help()\n# help() affiche la docstring de manière formatée\nhelp(calculer_moyenne)\n# Affiche la documentation formatée dans la console"
+                    }]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "5.2 Annotations de type",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Ajoutez des annotations de type pour améliorer la lisibilité et la maintenance, avec explications détaillées."
+          },
+          "chapters": [
+            {
+              "title": "Type hints",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {"level": 1},
+                    "content": [{"type": "text", "text": "🏷️ Annotations de type"}]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {"language": "python"},
+                    "content": [{
+                      "type": "text",
+                      "text": "# ============================================\n# EXEMPLE 1 : Annotations de type simples\n# ============================================\n\n# Import du module typing pour les types complexes\nfrom typing import List, Dict, Optional, Union\n\n# Fonction avec annotations de type simples\n# Syntaxe : def nom(param: type) -> type_retour:\n# 'a: int' signifie que 'a' doit être un entier\n# 'b: int' signifie que 'b' doit être un entier\n# '-> int' signifie que la fonction retourne un entier\ndef additionner(a: int, b: int) -> int:\n    \"\"\"\n    Additionne deux entiers.\n    \n    Args:\n        a: Premier entier\n        b: Deuxième entier\n    \n    Returns:\n        La somme de a et b (entier)\n    \"\"\"\n    return a + b\n\n# ============================================\n# EXEMPLE 2 : Types complexes (listes)\n# ============================================\n\n# List[int] signifie \"liste d'entiers\"\n# -> float signifie que la fonction retourne un float\ndef traiter_liste(nombres: List[int]) -> float:\n    \"\"\"\n    Calcule la moyenne d'une liste d'entiers.\n    \n    Args:\n        nombres: Liste d'entiers\n    \n    Returns:\n        La moyenne (float)\n    \"\"\"\n    # sum() additionne tous les éléments\n    # len() donne le nombre d'éléments\n    # Division pour obtenir la moyenne (résultat en float)\n    return sum(nombres) / len(nombres)\n\n# ============================================\n# EXEMPLE 3 : Types optionnels\n# ============================================\n\n# Optional[str] signifie \"str ou None\"\n# Équivalent à Union[str, None]\ndef trouver_nom(age: int) -> Optional[str]:\n    \"\"\"\n    Trouve un nom selon l'âge.\n    \n    Args:\n        age: L'âge de la personne\n    \n    Returns:\n        Le nom si trouvé, None sinon\n    \"\"\"\n    # Si l'âge est 30, retourne \"Alice\"\n    if age == 30:\n        return \"Alice\"\n    # Sinon, retourne None\n    return None\n\n# ============================================\n# EXEMPLE 4 : Dictionnaires\n# ============================================\n\n# Dict[str, any] signifie \"dictionnaire avec clés str et valeurs de n'importe quel type\"\ndef creer_profil(nom: str, age: int) -> Dict[str, any]:\n    \"\"\"\n    Crée un profil utilisateur.\n    \n    Args:\n        nom: Le nom (str)\n        age: L'âge (int)\n    \n    Returns:\n        Un dictionnaire contenant le profil\n    \"\"\"\n    # Retourne un dictionnaire\n    return {\"nom\": nom, \"age\": age}\n\n# ============================================\n# EXEMPLE 5 : Union de types\n# ============================================\n\n# Union[int, str] signifie \"int OU str\"\ndef convertir(valeur: Union[int, str]) -> str:\n    \"\"\"\n    Convertit une valeur en chaîne de caractères.\n    \n    Args:\n        valeur: Un entier ou une chaîne\n    \n    Returns:\n        La valeur convertie en chaîne\n    \"\"\"\n    # str() convertit n'importe quelle valeur en chaîne\n    return str(valeur)\n\n# ============================================\n# NOTE IMPORTANTE\n# ============================================\n# Les annotations de type ne sont PAS vérifiées à l'exécution\n# Elles servent uniquement à :\n# - Améliorer la lisibilité du code\n# - Aider les IDE (autocomplétion, détection d'erreurs)\n# - Permettre l'utilisation d'outils comme mypy pour vérifier les types"
+                    }]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 6 : Exercices pratiques",
+      "position": 5,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "exercise",
+          "title": "Exercice 1 : Fonction de calcul",
+          "position": 0,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {"level": 1},
+                  "content": [{"type": "text", "text": "📝 Exercice : Fonction de calcul"}]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {"type": "text", "text": "Créez une fonction qui calcule l'aire d'un rectangle avec validation."}
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {"level": 1},
+                  "content": [{"type": "text", "text": "✅ Correction"}]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {"language": "python"},
+                  "content": [{
+                    "type": "text",
+                    "text": "# ============================================\n# CORRECTION : Fonction calculer_aire_rectangle\n# ============================================\n\ndef calculer_aire_rectangle(longueur, largeur):\n    \"\"\"\n    Calcule l'aire d'un rectangle.\n    \n    Args:\n        longueur (float): Longueur du rectangle (doit être positive)\n        largeur (float): Largeur du rectangle (doit être positive)\n    \n    Returns:\n        float: L'aire du rectangle (longueur × largeur)\n    \n    Raises:\n        ValueError: Si longueur ou largeur est négative.\n                   Le message sera \"Les dimensions doivent être positives\"\n    \"\"\"\n    # VALIDATION : Vérifier que les dimensions sont positives\n    # 'or' signifie \"OU\" : si longueur < 0 OU largeur < 0\n    if longueur < 0 or largeur < 0:\n        # Lève une exception avec un message explicite\n        raise ValueError(\"Les dimensions doivent être positives\")\n    \n    # CALCUL : Aire = longueur × largeur\n    # Retourne le résultat du calcul\n    return longueur * largeur\n\n# ============================================\n# TESTS DE LA FONCTION\n# ============================================\n\n# Test 1 : Dimensions positives\n# Python fait : longueur=5, largeur=3\n# Calcul : 5 * 3 = 15\nresultat1 = calculer_aire_rectangle(5, 3)\nprint(resultat1)\n# Résultat affiché : 15\n\n# Test 2 : Dimensions décimales\n# Python fait : longueur=10.5, largeur=2\n# Calcul : 10.5 * 2 = 21.0\nresultat2 = calculer_aire_rectangle(10.5, 2)\nprint(resultat2)\n# Résultat affiché : 21.0\n\n# Test 3 : Dimension négative (doit lever une erreur)\n# calculer_aire_rectangle(-5, 3)\n# Résultat : ValueError: Les dimensions doivent être positives"
+                  }]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

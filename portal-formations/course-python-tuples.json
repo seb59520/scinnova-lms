@@ -1,0 +1,1220 @@
+{
+  "title": "Les tuples en Python",
+  "description": "Cours complet sur les tuples en Python : définition, création, manipulation, opérations, et cas d'usage pratiques. Apprenez à utiliser efficacement cette structure de données immuable.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3776AB",
+    "secondaryColor": "#FFD43B",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Introduction aux tuples",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Qu'est-ce qu'un tuple ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez ce qu'est un tuple, ses caractéristiques principales et pourquoi l'utiliser."
+          },
+          "chapters": [
+            {
+              "title": "Définition et caractéristiques",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "📦 Qu'est-ce qu'un tuple ?" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Un tuple est une " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "structure de données ordonnée et immuable" },
+                      { "type": "text", "text": " en Python. Il permet de stocker plusieurs éléments de manière séquentielle." }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Caractéristiques principales" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Immuable (immutable)" },
+                              { "type": "text", "text": " : Une fois créé, un tuple ne peut pas être modifié" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Ordonné" },
+                              { "type": "text", "text": " : Les éléments conservent leur ordre d'insertion" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Indexable" },
+                              { "type": "text", "text": " : On peut accéder aux éléments par leur index" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Hétérogène" },
+                              { "type": "text", "text": " : Peut contenir différents types de données" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Autorise les doublons" },
+                              { "type": "text", "text": " : Peut contenir plusieurs fois la même valeur" }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Tuple vs Liste" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "La principale différence entre un tuple et une liste est que le tuple est " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "immuable" },
+                      { "type": "text", "text": " alors que la liste est " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "mutable" },
+                      { "type": "text", "text": "." }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Liste (mutable) - peut être modifiée\nma_liste = [1, 2, 3]\nma_liste[0] = 10  # ✅ OK\nprint(ma_liste)  # [10, 2, 3]\n\n# Tuple (immuable) - ne peut pas être modifié\nmon_tuple = (1, 2, 3)\nmon_tuple[0] = 10  # ❌ Erreur : 'tuple' object does not support item assignment"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Quand utiliser un tuple ?" }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Pour stocker des données qui ne doivent pas changer (coordonnées GPS, dates, etc.)" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Pour retourner plusieurs valeurs depuis une fonction" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Pour utiliser comme clé dans un dictionnaire (les listes ne peuvent pas)" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Pour des performances légèrement meilleures que les listes (légèrement plus rapide)" }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Créer un tuple",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez les différentes façons de créer un tuple en Python."
+          },
+          "chapters": [
+            {
+              "title": "Méthodes de création",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔨 Créer un tuple" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthode 1 : Avec des parenthèses" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Tuple avec plusieurs éléments\ncoordonnees = (10, 20)\nprint(coordonnees)  # (10, 20)\nprint(type(coordonnees))  # <class 'tuple'>"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthode 2 : Sans parenthèses (tuple packing)" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Python reconnaît automatiquement un tuple\npoint = 10, 20, 30\nprint(point)  # (10, 20, 30)\nprint(type(point))  # <class 'tuple'>"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthode 3 : Tuple vide" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Tuple vide\nvide = ()\nprint(vide)  # ()\nprint(type(vide))  # <class 'tuple'>"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthode 4 : Tuple avec un seul élément" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "⚠️ Attention : Pour créer un tuple avec un seul élément, il faut ajouter une virgule !" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ❌ Ceci n'est PAS un tuple, c'est un int\npas_un_tuple = (42)\nprint(type(pas_un_tuple))  # <class 'int'>\n\n# ✅ Ceci est un tuple\nun_tuple = (42,)\nprint(type(un_tuple))  # <class 'tuple'>\nprint(un_tuple)  # (42,)\n\n# Alternative sans parenthèses\nun_tuple2 = 42,\nprint(type(un_tuple2))  # <class 'tuple'>"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthode 5 : À partir d'une liste" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Convertir une liste en tuple\nma_liste = [1, 2, 3, 4]\nmon_tuple = tuple(ma_liste)\nprint(mon_tuple)  # (1, 2, 3, 4)\nprint(type(mon_tuple))  # <class 'tuple'>"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Exemples de tuples" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Tuple de nombres\nnombres = (1, 2, 3, 4, 5)\n\n# Tuple de chaînes\nfruits = (\"pomme\", \"banane\", \"orange\")\n\n# Tuple mixte (hétérogène)\npersonne = (\"Alice\", 25, 1.70, True)\n\n# Tuple de tuples (imbriqué)\npoints = ((0, 0), (1, 1), (2, 2))\n\n# Tuple vide\nvide = ()"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : Accès et manipulation",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Accéder aux éléments d'un tuple",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à accéder aux éléments d'un tuple par index, avec le slicing, et à déballer un tuple."
+          },
+          "chapters": [
+            {
+              "title": "Accès par index",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔍 Accéder aux éléments d'un tuple" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Accès par index positif" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "fruits = (\"pomme\", \"banane\", \"orange\", \"kiwi\")\n\n# Premier élément (index 0)\nprint(fruits[0])  # pomme\n\n# Deuxième élément (index 1)\nprint(fruits[1])  # banane\n\n# Dernier élément (index 3)\nprint(fruits[3])  # kiwi"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Accès par index négatif" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "fruits = (\"pomme\", \"banane\", \"orange\", \"kiwi\")\n\n# Dernier élément\nprint(fruits[-1])  # kiwi\n\n# Avant-dernier élément\nprint(fruits[-2])  # orange\n\n# Premier élément (depuis la fin)\nprint(fruits[-4])  # pomme"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Slicing (tranches)" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "nombres = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)\n\n# Éléments de l'index 2 à 5 (exclus)\nprint(nombres[2:5])  # (2, 3, 4)\n\n# Du début jusqu'à l'index 3 (exclus)\nprint(nombres[:3])  # (0, 1, 2)\n\n# De l'index 5 jusqu'à la fin\nprint(nombres[5:])  # (5, 6, 7, 8, 9)\n\n# Tous les éléments\nprint(nombres[:])  # (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)\n\n# Avec pas (step)\nprint(nombres[::2])  # (0, 2, 4, 6, 8) - un sur deux\nprint(nombres[::-1])  # (9, 8, 7, 6, 5, 4, 3, 2, 1, 0) - inversé"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Tuple unpacking (déballage)" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Le tuple unpacking permet d'assigner les éléments d'un tuple à plusieurs variables en une seule ligne." }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Déballage simple\ncoordonnees = (10, 20)\nx, y = coordonnees\nprint(x)  # 10\nprint(y)  # 20\n\n# Déballage avec plusieurs éléments\npersonne = (\"Alice\", 25, \"Paris\")\nnom, age, ville = personne\nprint(nom)   # Alice\nprint(age)   # 25\nprint(ville) # Paris\n\n# Déballage partiel avec *\nnombres = (1, 2, 3, 4, 5)\npremier, *reste, dernier = nombres\nprint(premier)  # 1\nprint(reste)    # [2, 3, 4]\nprint(dernier)  # 5"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Accès aux tuples imbriqués" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Tuple de tuples\npoints = ((0, 0), (1, 1), (2, 2))\n\n# Accéder au premier point\nprint(points[0])      # (0, 0)\n\n# Accéder à la coordonnée x du premier point\nprint(points[0][0])   # 0\n\n# Accéder à la coordonnée y du deuxième point\nprint(points[1][1])   # 1"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Opérations sur les tuples",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Découvrez les opérations possibles sur les tuples : concaténation, répétition, vérification d'appartenance, et méthodes disponibles."
+          },
+          "chapters": [
+            {
+              "title": "Opérations de base",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "⚙️ Opérations sur les tuples" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Concaténation (+)" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "tuple1 = (1, 2, 3)\ntuple2 = (4, 5, 6)\n\n# Concaténer deux tuples\nresultat = tuple1 + tuple2\nprint(resultat)  # (1, 2, 3, 4, 5, 6)\n\n# Note : cela crée un NOUVEAU tuple, ne modifie pas les originaux"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Répétition (*)" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "mon_tuple = (1, 2)\n\n# Répéter le tuple 3 fois\nrepetition = mon_tuple * 3\nprint(repetition)  # (1, 2, 1, 2, 1, 2)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Vérification d'appartenance (in)" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "fruits = (\"pomme\", \"banane\", \"orange\")\n\n# Vérifier si un élément est dans le tuple\nprint(\"pomme\" in fruits)    # True\nprint(\"kiwi\" in fruits)     # False\nprint(\"kiwi\" not in fruits) # True"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Longueur d'un tuple (len)" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "nombres = (1, 2, 3, 4, 5)\nprint(len(nombres))  # 5\n\nvide = ()\nprint(len(vide))  # 0"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Méthodes disponibles sur les tuples" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Les tuples ont peu de méthodes car ils sont immuables. Voici les principales :" }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [
+                      { "type": "text", "text": "count() - Compter les occurrences" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "nombres = (1, 2, 3, 2, 4, 2, 5)\n\n# Compter combien de fois 2 apparaît\nprint(nombres.count(2))  # 3\nprint(nombres.count(10)) # 0 (n'apparaît pas)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [
+                      { "type": "text", "text": "index() - Trouver l'index d'un élément" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "fruits = (\"pomme\", \"banane\", \"orange\", \"banane\")\n\n# Trouver l'index de la première occurrence\nprint(fruits.index(\"banane\"))  # 1\n\n# Trouver l'index avec une plage de recherche\nprint(fruits.index(\"banane\", 2))  # 3 (cherche à partir de l'index 2)\n\n# Si l'élément n'existe pas, une erreur est levée\n# fruits.index(\"kiwi\")  # ValueError: tuple.index(x): x not in tuple"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Comparaison de tuples" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Les tuples peuvent être comparés élément par élément\nprint((1, 2, 3) < (1, 2, 4))  # True\nprint((1, 2, 3) < (1, 3, 2))  # True (2 < 3)\nprint((1, 2) < (1, 2, 3))     # True (tuple plus court est \"plus petit\")\nprint((1, 2, 3) == (1, 2, 3))  # True\nprint((1, 2, 3) != (1, 2, 4))  # True"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : Cas d'usage pratiques",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Retourner plusieurs valeurs",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à utiliser les tuples pour retourner plusieurs valeurs depuis une fonction."
+          },
+          "chapters": [
+            {
+              "title": "Fonctions avec plusieurs valeurs de retour",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🔄 Retourner plusieurs valeurs avec un tuple" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "En Python, une fonction peut retourner plusieurs valeurs en utilisant un tuple. C'est très pratique et élégant !" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "def diviser(a, b):\n    \"\"\"Divise deux nombres et retourne le quotient et le reste.\"\"\"\n    quotient = a // b\n    reste = a % b\n    return quotient, reste  # Retourne un tuple\n\n# Utilisation\nresultat = diviser(17, 5)\nprint(resultat)        # (3, 2)\nprint(type(resultat))  # <class 'tuple'>\n\n# Déballage direct\nq, r = diviser(17, 5)\nprint(f\"Quotient: {q}, Reste: {r}\")  # Quotient: 3, Reste: 2"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Exemple : Calculer min et max" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "def min_max(nombres):\n    \"\"\"Retourne le minimum et le maximum d'une liste de nombres.\"\"\"\n    if not nombres:\n        return None, None\n    return min(nombres), max(nombres)\n\n# Utilisation\nvaleurs = [3, 1, 4, 1, 5, 9, 2, 6]\nmini, maxi = min_max(valeurs)\nprint(f\"Min: {mini}, Max: {maxi}\")  # Min: 1, Max: 9"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Exemple : Coordonnées GPS" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "def obtenir_position():\n    \"\"\"Simule la récupération d'une position GPS.\"\"\"\n    latitude = 48.8566\n    longitude = 2.3522\n    altitude = 35.0\n    return latitude, longitude, altitude\n\n# Utilisation\nlat, lon, alt = obtenir_position()\nprint(f\"Latitude: {lat}, Longitude: {lon}, Altitude: {alt}m\")\n# Latitude: 48.8566, Longitude: 2.3522, Altitude: 35.0m"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Tuples comme clés de dictionnaire",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Découvrez comment utiliser les tuples comme clés dans les dictionnaires Python."
+          },
+          "chapters": [
+            {
+              "title": "Tuples immuables comme clés",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [
+                      { "type": "text", "text": "🗝️ Tuples comme clés de dictionnaire" }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      { "type": "text", "text": "Les tuples sont " },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "immuables" },
+                      { "type": "text", "text": ", ce qui les rend utilisables comme clés dans un dictionnaire. Les listes, qui sont mutables, ne peuvent pas être utilisées comme clés." }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ✅ Tuple comme clé - OK\ncoordonnees_ville = {\n    (48.8566, 2.3522): \"Paris\",\n    (40.7128, -74.0060): \"New York\",\n    (51.5074, -0.1278): \"Londres\"\n}\n\nprint(coordonnees_ville[(48.8566, 2.3522)])  # Paris\n\n# ❌ Liste comme clé - ERREUR\n# ma_liste = [1, 2, 3]\n# dico = {ma_liste: \"valeur\"}  # TypeError: unhashable type: 'list'"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Exemple : Grille de jeu" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Utiliser des tuples (ligne, colonne) comme clés pour une grille\ngrille = {\n    (0, 0): \"X\",\n    (0, 1): \"O\",\n    (0, 2): \"X\",\n    (1, 0): \"O\",\n    (1, 1): \"X\",\n    (1, 2): \"O\",\n    (2, 0): \"X\",\n    (2, 1): \"O\",\n    (2, 2): \"X\"\n}\n\n# Accéder à une case\nprint(grille[(1, 1)])  # X\n\n# Parcourir la grille\nfor (ligne, colonne), valeur in grille.items():\n    print(f\"Case ({ligne}, {colonne}): {valeur}\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [
+                      { "type": "text", "text": "Exemple : Cache de résultats" }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": { "language": "python" },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Cache pour stocker des résultats de calculs\ncache = {}\n\ndef calculer(a, b, c):\n    # Utiliser le tuple (a, b, c) comme clé\n    if (a, b, c) in cache:\n        print(\"Résultat depuis le cache\")\n        return cache[(a, b, c)]\n    \n    # Calcul coûteux\n    resultat = a * b + c\n    cache[(a, b, c)] = resultat\n    return resultat\n\nprint(calculer(2, 3, 4))  # 10 (calculé)\nprint(calculer(2, 3, 4))  # 10 (depuis le cache)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : Exercices pratiques",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "exercise",
+          "title": "Exercice 1 : Manipulation de tuples",
+          "position": 0,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice : Manipulation de tuples" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez un programme Python qui :" }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Crée un tuple contenant les nombres de 1 à 10" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Affiche le premier et le dernier élément" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Affiche les 3 premiers éléments" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Affiche les 3 derniers éléments" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Vérifie si le nombre 5 est dans le tuple" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Créer un tuple contenant les nombres de 1 à 10\nnombres = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)\n\n# Afficher le premier et le dernier élément\nprint(f\"Premier: {nombres[0]}, Dernier: {nombres[-1]}\")\n# Premier: 1, Dernier: 10\n\n# Afficher les 3 premiers éléments\nprint(nombres[:3])  # (1, 2, 3)\n\n# Afficher les 3 derniers éléments\nprint(nombres[-3:])  # (8, 9, 10)\n\n# Vérifier si 5 est dans le tuple\nif 5 in nombres:\n    print(\"5 est dans le tuple\")\nelse:\n    print(\"5 n'est pas dans le tuple\")\n# 5 est dans le tuple"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 2 : Fonction avec tuple",
+          "position": 1,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "📝 Exercice : Fonction retournant un tuple" }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Écrivez une fonction `calculer_stats()` qui prend une liste de nombres en paramètre et retourne un tuple contenant :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "La somme des nombres" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "La moyenne" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Le minimum" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Le maximum" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Testez votre fonction avec la liste [10, 20, 30, 40, 50]." }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [
+                    { "type": "text", "text": "✅ Correction" }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": { "language": "python" },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "def calculer_stats(nombres):\n    \"\"\"Calcule la somme, moyenne, min et max d'une liste de nombres.\"\"\"\n    if not nombres:\n        return 0, 0, None, None\n    \n    somme = sum(nombres)\n    moyenne = somme / len(nombres)\n    minimum = min(nombres)\n    maximum = max(nombres)\n    \n    return somme, moyenne, minimum, maximum\n\n# Test\nvaleurs = [10, 20, 30, 40, 50]\nsomme, moyenne, mini, maxi = calculer_stats(valeurs)\n\nprint(f\"Somme: {somme}\")      # Somme: 150\nprint(f\"Moyenne: {moyenne}\")  # Moyenne: 30.0\nprint(f\"Minimum: {mini}\")     # Minimum: 10\nprint(f\"Maximum: {maxi}\")     # Maximum: 50"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : Quiz final",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "game",
+          "title": "Quiz : Les tuples en Python",
+          "position": 0,
+          "published": true,
+          "content": {
+            "gameType": "quiz",
+            "description": "Testez vos connaissances sur les tuples en Python avec ce quiz complet.",
+            "instructions": "Répondez aux questions pour valider votre compréhension des tuples.",
+            "objectives": [
+              "Comprendre les caractéristiques des tuples",
+              "Maîtriser la création et l'accès aux tuples",
+              "Connaître les opérations possibles",
+              "Savoir utiliser les tuples dans des cas pratiques"
+            ],
+            "scoring": {
+              "totalQuestions": 12,
+              "pointsPerQuestion": 1,
+              "passingScore": 8,
+              "levels": {
+                "0-7": "Bases à renforcer - Revoyez les concepts fondamentaux",
+                "8-10": "Bon niveau - Vous maîtrisez les tuples",
+                "11-12": "Excellent niveau - Très bonne compréhension"
+              }
+            },
+            "levels": [
+              {
+                "level": 1,
+                "name": "Niveau 1 - Fondamentaux",
+                "description": "Questions sur les bases des tuples",
+                "questions": [
+                  {
+                    "id": "q1-definition",
+                    "type": "mcq",
+                    "prompt": "Quelle est la principale caractéristique d'un tuple ?",
+                    "options": [
+                      "Il est mutable (modifiable)",
+                      "Il est immuable (non modifiable)",
+                      "Il ne peut contenir que des nombres",
+                      "Il est toujours vide"
+                    ],
+                    "answer": "Il est immuable (non modifiable)",
+                    "explanation": "Un tuple est immuable, ce qui signifie qu'une fois créé, il ne peut pas être modifié. C'est la principale différence avec une liste.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q2-creation",
+                    "type": "mcq",
+                    "prompt": "Comment créer un tuple avec un seul élément ?",
+                    "options": [
+                      "(42)",
+                      "(42,)",
+                      "[42]",
+                      "{42}"
+                    ],
+                    "answer": "(42,)",
+                    "explanation": "Pour créer un tuple avec un seul élément, il faut ajouter une virgule : (42,). Sans la virgule, (42) est simplement un entier entre parenthèses.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q3-acces",
+                    "type": "mcq",
+                    "prompt": "Quel code accède correctement au dernier élément du tuple t = (1, 2, 3, 4) ?",
+                    "options": [
+                      "t[4]",
+                      "t[-1]",
+                      "t.last",
+                      "t.end"
+                    ],
+                    "answer": "t[-1]",
+                    "explanation": "En Python, on peut utiliser des index négatifs pour accéder aux éléments depuis la fin. t[-1] accède au dernier élément.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q4-unpacking",
+                    "type": "true-false",
+                    "prompt": "Le code suivant est correct : x, y = (10, 20)",
+                    "answer": true,
+                    "explanation": "Vrai. C'est du tuple unpacking (déballage). Les valeurs du tuple sont assignées aux variables x et y respectivement.",
+                    "difficulty": 1
+                  }
+                ]
+              },
+              {
+                "level": 2,
+                "name": "Niveau 2 - Opérations",
+                "description": "Questions sur les opérations avec les tuples",
+                "questions": [
+                  {
+                    "id": "q5-concatenation",
+                    "type": "mcq",
+                    "prompt": "Que retourne (1, 2) + (3, 4) ?",
+                    "options": [
+                      "(1, 2, 3, 4)",
+                      "(4, 6)",
+                      "Erreur",
+                      "(1, 2)"
+                    ],
+                    "answer": "(1, 2, 3, 4)",
+                    "explanation": "L'opérateur + concatène les tuples, créant un nouveau tuple contenant tous les éléments des deux tuples.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q6-modification",
+                    "type": "true-false",
+                    "prompt": "On peut modifier un élément d'un tuple avec t[0] = 10",
+                    "answer": false,
+                    "explanation": "Faux. Les tuples sont immuables, on ne peut pas modifier leurs éléments. Cela lèvera une erreur : 'tuple' object does not support item assignment.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q7-methodes",
+                    "type": "mcq",
+                    "prompt": "Quelle méthode permet de compter les occurrences d'un élément dans un tuple ?",
+                    "options": [
+                      "count()",
+                      "find()",
+                      "occurrences()",
+                      "number()"
+                    ],
+                    "answer": "count()",
+                    "explanation": "La méthode count() retourne le nombre d'occurrences d'un élément dans le tuple. Par exemple : (1, 2, 2, 3).count(2) retourne 2.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q8-slicing",
+                    "type": "mcq",
+                    "prompt": "Que retourne (0, 1, 2, 3, 4)[1:4] ?",
+                    "options": [
+                      "(1, 2, 3)",
+                      "(1, 2, 3, 4)",
+                      "(0, 1, 2, 3)",
+                      "(0, 1, 2)"
+                    ],
+                    "answer": "(1, 2, 3)",
+                    "explanation": "Le slicing [1:4] prend les éléments de l'index 1 (inclus) à l'index 4 (exclus), donc les éléments aux indices 1, 2 et 3.",
+                    "difficulty": 2
+                  }
+                ]
+              },
+              {
+                "level": 3,
+                "name": "Niveau 3 - Cas d'usage",
+                "description": "Questions sur l'utilisation pratique des tuples",
+                "questions": [
+                  {
+                    "id": "q9-retour-fonction",
+                    "type": "true-false",
+                    "prompt": "Une fonction Python peut retourner plusieurs valeurs en utilisant un tuple",
+                    "answer": true,
+                    "explanation": "Vrai. En Python, on peut retourner plusieurs valeurs avec return a, b, ce qui crée implicitement un tuple. On peut ensuite déballer avec x, y = fonction().",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q10-dictionnaire",
+                    "type": "true-false",
+                    "prompt": "On peut utiliser un tuple comme clé dans un dictionnaire",
+                    "answer": true,
+                    "explanation": "Vrai. Les tuples sont immuables (hashable), donc ils peuvent être utilisés comme clés de dictionnaire. Les listes, qui sont mutables, ne le peuvent pas.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q11-liste-cle",
+                    "type": "true-false",
+                    "prompt": "On peut utiliser une liste comme clé dans un dictionnaire",
+                    "answer": false,
+                    "explanation": "Faux. Les listes sont mutables (non hashable) et ne peuvent pas être utilisées comme clés de dictionnaire. Cela lèvera une TypeError.",
+                    "difficulty": 3
+                  },
+                  {
+                    "id": "q12-performance",
+                    "type": "mcq",
+                    "prompt": "Pourquoi utiliser un tuple plutôt qu'une liste dans certains cas ?",
+                    "options": [
+                      "Les tuples sont toujours plus rapides",
+                      "Les tuples garantissent que les données ne seront pas modifiées",
+                      "Les tuples prennent moins de mémoire",
+                      "Les tuples peuvent contenir plus d'éléments"
+                    ],
+                    "answer": "Les tuples garantissent que les données ne seront pas modifiées",
+                    "explanation": "La principale raison d'utiliser un tuple est de garantir l'immuabilité des données. C'est utile pour des données qui ne doivent pas changer (coordonnées, dates, etc.).",
+                    "difficulty": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

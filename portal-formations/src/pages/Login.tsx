@@ -14,6 +14,7 @@ export function Login() {
   const { signIn, signInWithGoogle, user, loading: authLoading } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
+  const [isStudentId, setIsStudentId] = useState(false)
 
   const from = location.state?.from?.pathname || '/app'
 
@@ -29,7 +30,31 @@ export function Login() {
     setLoading(true)
     setError('')
 
-    const { error: signInError } = await signIn(email, password)
+    let emailToUse = email
+
+    // Si c'est un identifiant étudiant, récupérer l'email correspondant
+    if (isStudentId && email) {
+      try {
+        const { supabase } = await import('../lib/supabaseClient')
+        const { data, error: rpcError } = await supabase.rpc('get_user_email_by_student_id', {
+          p_student_id: email.trim()
+        })
+
+        if (rpcError || !data) {
+          setError('Identifiant étudiant introuvable')
+          setLoading(false)
+          return
+        }
+
+        emailToUse = data
+      } catch (err: any) {
+        setError('Erreur lors de la recherche de l\'identifiant')
+        setLoading(false)
+        return
+      }
+    }
+
+    const { error: signInError } = await signIn(emailToUse, password)
 
     if (signInError) {
       setError(signInError.message)
@@ -73,21 +98,43 @@ export function Login() {
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
+            <div className="mb-3">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={isStudentId}
+                  onChange={(e) => {
+                    setIsStudentId(e.target.checked)
+                    setEmail('')
+                    setError('')
+                  }}
+                  className="rounded"
+                />
+                <span className="text-sm text-gray-700">
+                  Je me connecte avec mon identifiant étudiant
+                </span>
+              </label>
+            </div>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Adresse email <span className="text-red-500">*</span>
+                {isStudentId ? 'Identifiant étudiant' : 'Adresse email'} <span className="text-red-500">*</span>
               </label>
               <input
                 id="email"
                 name="email"
-                type="email"
+                type={isStudentId ? "text" : "email"}
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="input-field w-full"
-                placeholder="exemple@email.com"
-                autoComplete="email"
+                placeholder={isStudentId ? "Votre identifiant étudiant" : "exemple@email.com"}
+                autoComplete={isStudentId ? "username" : "email"}
               />
+              {isStudentId && (
+                <p className="text-xs text-gray-500 mt-1">
+                  Utilisez l'identifiant qui vous a été fourni par votre administrateur
+                </p>
+              )}
             </div>
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">

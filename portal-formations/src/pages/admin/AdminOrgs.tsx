@@ -165,22 +165,105 @@ export function AdminOrgs() {
     if (!selectedOrg) return
 
     try {
-      const { error } = await supabase
+      // Vérifier que l'utilisateur est bien admin
+      if (profile?.role !== 'admin') {
+        setError('Accès refusé. Seuls les administrateurs peuvent ajouter des membres.')
+        return
+      }
+
+      const { data, error } = await supabase
         .from('org_members')
         .insert({
           org_id: selectedOrg.id,
           user_id: userId,
           role: role,
         })
+        .select()
 
-      if (error) throw error
+      if (error) {
+        console.error('Error adding member - details:', {
+          error,
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          org_id: selectedOrg.id,
+          user_id: userId,
+          role: role,
+        })
+        throw error
+      }
 
       setSuccess('Membre ajouté avec succès !')
       await fetchOrgMembers(selectedOrg.id)
       fetchOrgs()
     } catch (error: any) {
       console.error('Error adding member:', error)
-      setError(error.message || 'Erreur lors de l\'ajout du membre.')
+      // Afficher un message d'erreur plus détaillé
+      let errorMessage = 'Erreur lors de l\'ajout du membre.'
+      if (error.code === '42501') {
+        errorMessage = 'Permission refusée. Vérifiez que vous êtes administrateur et que les politiques RLS sont correctement configurées.'
+      } else if (error.code === '23505') {
+        errorMessage = 'Cet utilisateur est déjà membre de cette organisation.'
+      } else if (error.message) {
+        errorMessage = error.message
+      }
+      setError(errorMessage)
+    }
+  }
+
+  const handleAddMembers = async (userIds: string[], role: OrgMember['role']) => {
+    if (!selectedOrg || userIds.length === 0) return
+
+    try {
+      // Vérifier que l'utilisateur est bien admin
+      if (profile?.role !== 'admin') {
+        setError('Accès refusé. Seuls les administrateurs peuvent ajouter des membres.')
+        return
+      }
+
+      // Préparer les données pour l'insertion multiple
+      const membersToAdd = userIds.map(userId => ({
+        org_id: selectedOrg.id,
+        user_id: userId,
+        role: role,
+      }))
+
+      const { data, error } = await supabase
+        .from('org_members')
+        .insert(membersToAdd)
+        .select()
+
+      if (error) {
+        console.error('Error adding members - details:', {
+          error,
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          org_id: selectedOrg.id,
+          userIds,
+          role: role,
+        })
+        throw error
+      }
+
+      const addedCount = data?.length || 0
+      setSuccess(`${addedCount} membre${addedCount > 1 ? 's' : ''} ajouté${addedCount > 1 ? 's' : ''} avec succès !`)
+      await fetchOrgMembers(selectedOrg.id)
+      fetchOrgs()
+    } catch (error: any) {
+      console.error('Error adding members:', error)
+      // Afficher un message d'erreur plus détaillé
+      let errorMessage = 'Erreur lors de l\'ajout des membres.'
+      if (error.code === '42501') {
+        errorMessage = 'Permission refusée. Vérifiez que vous êtes administrateur et que les politiques RLS sont correctement configurées.'
+      } else if (error.code === '23505') {
+        errorMessage = 'Un ou plusieurs utilisateurs sont déjà membres de cette organisation.'
+      } else if (error.message) {
+        errorMessage = error.message
+      }
+      setError(errorMessage)
     }
   }
 
@@ -313,8 +396,8 @@ export function AdminOrgs() {
         </div>
 
         {/* Orgs list */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
+        <div className="bg-white rounded-lg shadow overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200" style={{ minWidth: '800px' }}>
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -356,17 +439,19 @@ export function AdminOrgs() {
                     {new Date(org.created_at).toLocaleDateString('fr-FR')}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div className="flex items-center justify-end gap-2">
+                    <div className="flex items-center justify-end gap-2 flex-shrink-0">
                       <button
                         onClick={() => handleViewMembers(org)}
-                        className="text-blue-600 hover:text-blue-900 inline-flex items-center gap-1"
+                        className="text-blue-600 hover:text-blue-900 inline-flex items-center gap-1 px-2 py-1 rounded hover:bg-blue-50 transition-colors"
+                        title="Voir et gérer les membres"
                       >
                         <Users className="w-4 h-4" />
-                        Membres
+                        <span className="hidden sm:inline">Membres</span>
                       </button>
                       <button
                         onClick={() => handleDeleteOrg(org.id)}
-                        className="text-red-600 hover:text-red-900"
+                        className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50 transition-colors"
+                        title="Supprimer l'organisation"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -455,6 +540,7 @@ export function AdminOrgs() {
             setOrgMembers([])
           }}
           onAddMember={handleAddMember}
+          onAddMembers={handleAddMembers}
           onRemoveMember={handleRemoveMember}
         />
       )}
@@ -467,15 +553,18 @@ interface OrgMembersModalProps {
   members: Array<OrgMember & { profile: Profile | null }>
   onClose: () => void
   onAddMember: (userId: string, role: OrgMember['role']) => void
+  onAddMembers: (userIds: string[], role: OrgMember['role']) => void
   onRemoveMember: (memberId: string) => void
 }
 
-function OrgMembersModal({ org, members, onClose, onAddMember, onRemoveMember }: OrgMembersModalProps) {
+function OrgMembersModal({ org, members, onClose, onAddMember, onAddMembers, onRemoveMember }: OrgMembersModalProps) {
   const [showAddForm, setShowAddForm] = useState(false)
   const [users, setUsers] = useState<Profile[]>([])
-  const [selectedUserId, setSelectedUserId] = useState('')
+  const [selectedUserIds, setSelectedUserIds] = useState<string[]>([])
+  const [selectedUserId, setSelectedUserId] = useState('') // Pour la compatibilité avec l'ancien mode
   const [selectedRole, setSelectedRole] = useState<OrgMember['role']>('student')
   const [loadingUsers, setLoadingUsers] = useState(false)
+  const [multiSelectMode, setMultiSelectMode] = useState(true) // Mode sélection multiple par défaut
 
   useEffect(() => {
     if (showAddForm) {
@@ -511,11 +600,39 @@ function OrgMembersModal({ org, members, onClose, onAddMember, onRemoveMember }:
 
   const handleSubmitAdd = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!selectedUserId) return
-    onAddMember(selectedUserId, selectedRole)
-    setShowAddForm(false)
-    setSelectedUserId('')
-    setSelectedRole('student')
+    if (multiSelectMode) {
+      // Mode sélection multiple
+      if (selectedUserIds.length === 0) {
+        return
+      }
+      onAddMembers(selectedUserIds, selectedRole)
+      setShowAddForm(false)
+      setSelectedUserIds([])
+      setSelectedRole('student')
+    } else {
+      // Mode sélection unique (ancien mode)
+      if (!selectedUserId) return
+      onAddMember(selectedUserId, selectedRole)
+      setShowAddForm(false)
+      setSelectedUserId('')
+      setSelectedRole('student')
+    }
+  }
+
+  const handleToggleUser = (userId: string) => {
+    setSelectedUserIds(prev => 
+      prev.includes(userId) 
+        ? prev.filter(id => id !== userId)
+        : [...prev, userId]
+    )
+  }
+
+  const handleSelectAll = () => {
+    if (selectedUserIds.length === users.length) {
+      setSelectedUserIds([])
+    } else {
+      setSelectedUserIds(users.map(u => u.id))
+    }
   }
 
   return (
@@ -533,40 +650,109 @@ function OrgMembersModal({ org, members, onClose, onAddMember, onRemoveMember }:
 
         <div className="mb-4 flex justify-end">
           <button
-            onClick={() => setShowAddForm(true)}
+            onClick={() => {
+              setShowAddForm(true)
+              setSelectedUserIds([])
+              setSelectedUserId('')
+            }}
             className="btn-primary inline-flex items-center gap-2 text-sm"
           >
             <UserPlus className="w-4 h-4" />
-            Ajouter un membre
+            Ajouter des membres
           </button>
         </div>
 
         {showAddForm && (
-          <div className="mb-4 p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium mb-2">Ajouter un membre</h3>
-            <form onSubmit={handleSubmitAdd} className="space-y-3">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Utilisateur
-                </label>
-                <select
-                  required
-                  value={selectedUserId}
-                  onChange={(e) => setSelectedUserId(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                  disabled={loadingUsers}
+          <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-medium text-lg">Ajouter des membres</h3>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setMultiSelectMode(!multiSelectMode)}
+                  className="text-xs text-gray-600 hover:text-gray-900 px-2 py-1 rounded"
+                  title={multiSelectMode ? "Passer en mode sélection unique" : "Passer en mode sélection multiple"}
                 >
-                  <option value="">Sélectionner un utilisateur...</option>
-                  {users.map((user) => (
-                    <option key={user.id} value={user.id}>
-                      {user.full_name || user.id}
-                    </option>
-                  ))}
-                </select>
+                  {multiSelectMode ? "Mode unique" : "Mode multiple"}
+                </button>
               </div>
+            </div>
+            <form onSubmit={handleSubmitAdd} className="space-y-4">
+              {multiSelectMode ? (
+                <>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Sélectionner les utilisateurs ({selectedUserIds.length} sélectionné{selectedUserIds.length > 1 ? 's' : ''})
+                    </label>
+                    {users.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={handleSelectAll}
+                        className="text-xs text-blue-600 hover:text-blue-800 font-medium"
+                      >
+                        {selectedUserIds.length === users.length ? 'Tout désélectionner' : 'Tout sélectionner'}
+                      </button>
+                    )}
+                  </div>
+                  <div className="max-h-64 overflow-y-auto border border-gray-300 rounded-lg bg-white p-2">
+                    {loadingUsers ? (
+                      <div className="text-center py-8 text-gray-500">Chargement des utilisateurs...</div>
+                    ) : users.length === 0 ? (
+                      <div className="text-center py-8 text-gray-500">Aucun utilisateur disponible</div>
+                    ) : (
+                      <div className="space-y-1">
+                        {users.map((user) => (
+                          <label
+                            key={user.id}
+                            className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded cursor-pointer"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={selectedUserIds.includes(user.id)}
+                              onChange={() => handleToggleUser(user.id)}
+                              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            />
+                            <div className="flex-1">
+                              <div className="text-sm font-medium text-gray-900">
+                                {user.full_name || 'Sans nom'}
+                              </div>
+                              {user.email && (
+                                <div className="text-xs text-gray-500">{user.email}</div>
+                              )}
+                              {user.student_id && (
+                                <div className="text-xs text-gray-400">ID: {user.student_id}</div>
+                              )}
+                            </div>
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Utilisateur
+                  </label>
+                  <select
+                    required
+                    value={selectedUserId}
+                    onChange={(e) => setSelectedUserId(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    disabled={loadingUsers}
+                  >
+                    <option value="">Sélectionner un utilisateur...</option>
+                    {users.map((user) => (
+                      <option key={user.id} value={user.id}>
+                        {user.full_name || user.id}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Rôle
+                  Rôle pour {multiSelectMode && selectedUserIds.length > 0 ? `les ${selectedUserIds.length} membres` : 'le membre'}
                 </label>
                 <select
                   required
@@ -580,23 +766,28 @@ function OrgMembersModal({ org, members, onClose, onAddMember, onRemoveMember }:
                   <option value="auditor">Auditeur</option>
                 </select>
               </div>
-              <div className="flex gap-2">
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                >
-                  Ajouter
-                </button>
+              <div className="flex gap-2 justify-end">
                 <button
                   type="button"
                   onClick={() => {
                     setShowAddForm(false)
+                    setSelectedUserIds([])
                     setSelectedUserId('')
                     setSelectedRole('student')
                   }}
                   className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
                 >
                   Annuler
+                </button>
+                <button
+                  type="submit"
+                  disabled={multiSelectMode ? selectedUserIds.length === 0 : !selectedUserId}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {multiSelectMode 
+                    ? `Ajouter ${selectedUserIds.length} membre${selectedUserIds.length > 1 ? 's' : ''}`
+                    : 'Ajouter'
+                  }
                 </button>
               </div>
             </form>

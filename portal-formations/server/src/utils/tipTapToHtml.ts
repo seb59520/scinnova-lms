@@ -49,7 +49,8 @@ function tipTapNodeToHtml(node: any): string {
               break;
             case 'link':
               const href = mark.attrs?.href || '#';
-              text = `<a href="${href}">${text}</a>`;
+              const escapedHref = escapeHtml(href);
+              text = `<a href="${escapedHref}">${text}</a>`;
               break;
             case 'highlight':
               text = `<mark>${text}</mark>`;
@@ -103,7 +104,11 @@ function tipTapNodeToHtml(node: any): string {
       const src = node.attrs?.src || '';
       const alt = node.attrs?.alt || '';
       const title = node.attrs?.title || '';
-      return `<img src="${src}" alt="${alt}"${title ? ` title="${title}"` : ''} />`;
+      // Échapper les attributs pour éviter les problèmes
+      const escapedSrc = escapeHtml(src);
+      const escapedAlt = escapeHtml(alt);
+      const escapedTitle = title ? escapeHtml(title) : '';
+      return `<img src="${escapedSrc}" alt="${escapedAlt}"${escapedTitle ? ` title="${escapedTitle}"` : ''} />`;
 
     case 'table':
       const tableContent = node.content

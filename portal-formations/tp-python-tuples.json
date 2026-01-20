@@ -1,0 +1,640 @@
+{
+  "type": "tp",
+  "title": "TP : Gestion d'un système de coordonnées GPS avec des tuples",
+  "position": 0,
+  "published": true,
+  "content": {
+    "description": "Travaux pratiques pour maîtriser les tuples en Python en créant un système de gestion de coordonnées GPS pour une application de navigation.",
+    "instructions": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": { "level": 1 },
+          "content": [
+            { "type": "text", "text": "🗺️ TP : Système de coordonnées GPS avec des tuples" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Dans ce TP, vous allez créer un système de gestion de coordonnées GPS en utilisant les tuples Python. Vous apprendrez à manipuler les tuples, à les utiliser comme clés de dictionnaire, et à retourner plusieurs valeurs depuis des fonctions." }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "📋 Contexte" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Vous développez une application de navigation qui doit gérer des points d'intérêt (POI) sur une carte. Chaque POI a des coordonnées GPS (latitude, longitude) et des informations associées." }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "🎯 Objectifs" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créer et manipuler des tuples pour représenter des coordonnées GPS" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Utiliser des tuples comme clés dans un dictionnaire" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créer des fonctions qui retournent plusieurs valeurs avec des tuples" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Calculer des distances entre deux points GPS" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Gérer une collection de points d'intérêt" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "📝 Partie 1 : Création et manipulation de coordonnées" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "Tâche 1.1 :" },
+            { "type": "text", "text": " Créez un fichier Python nommé " },
+            { "type": "text", "marks": [{ "type": "code" }], "text": "gps_manager.py" },
+            { "type": "text", "text": " et définissez les coordonnées GPS suivantes sous forme de tuples :" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "# Coordonnées de villes célèbres\nparis = (48.8566, 2.3522)\nnew_york = (40.7128, -74.0060)\nlondres = (51.5074, -0.1278)\ntokyo = (35.6762, 139.6503)\nsydney = (-33.8688, 151.2093)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "Tâche 1.2 :" },
+            { "type": "text", "text": " Écrivez une fonction " },
+            { "type": "text", "marks": [{ "type": "code" }], "text": "afficher_coordonnees(coordonnees)" },
+            { "type": "text", "text": " qui prend un tuple de coordonnées en paramètre et affiche la latitude et la longitude de manière formatée." }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "# Exemple d'utilisation :\n# afficher_coordonnees(paris)\n# Sortie attendue : \"Latitude: 48.8566, Longitude: 2.3522\""
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "📝 Partie 2 : Calcul de distance" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "Tâche 2.1 :" },
+            { "type": "text", "text": " Écrivez une fonction " },
+            { "type": "text", "marks": [{ "type": "code" }], "text": "calculer_distance(point1, point2)" },
+            { "type": "text", "text": " qui calcule la distance euclidienne entre deux points GPS. La fonction doit retourner un tuple contenant :" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "La distance calculée (float)" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Les coordonnées du point le plus proche de l'origine (0, 0)" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "# Formule de distance euclidienne :\n# distance = sqrt((x2 - x1)² + (y2 - y1)²)\n# Utilisez math.sqrt() pour la racine carrée\n\n# Exemple :\n# distance, point_proche = calculer_distance(paris, londres)\n# print(f\"Distance: {distance:.2f}\")\n# print(f\"Point le plus proche: {point_proche}\")"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "📝 Partie 3 : Dictionnaire de points d'intérêt" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "Tâche 3.1 :" },
+            { "type": "text", "text": " Créez un dictionnaire " },
+            { "type": "text", "marks": [{ "type": "code" }], "text": "points_interet" },
+            { "type": "text", "text": " où les clés sont des tuples de coordonnées GPS et les valeurs sont des dictionnaires contenant les informations du POI (nom, type, description)." }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "# Exemple de structure :\n# points_interet = {\n#     (48.8566, 2.3522): {\n#         \"nom\": \"Tour Eiffel\",\n#         \"type\": \"Monument\",\n#         \"description\": \"Symbole de Paris\"\n#     },\n#     (40.7128, -74.0060): {\n#         \"nom\": \"Statue de la Liberté\",\n#         \"type\": \"Monument\",\n#         \"description\": \"Symbole de New York\"\n#     }\n# }"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "Tâche 3.2 :" },
+            { "type": "text", "text": " Écrivez une fonction " },
+            { "type": "text", "marks": [{ "type": "code" }], "text": "ajouter_poi(coordonnees, nom, type_poi, description)" },
+            { "type": "text", "text": " qui ajoute un nouveau point d'intérêt au dictionnaire." }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "Tâche 3.3 :" },
+            { "type": "text", "text": " Écrivez une fonction " },
+            { "type": "text", "marks": [{ "type": "code" }], "text": "rechercher_poi(coordonnees)" },
+            { "type": "text", "text": " qui retourne les informations d'un POI à partir de ses coordonnées. La fonction doit retourner un tuple contenant :" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Un booléen indiquant si le POI existe" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Les informations du POI (ou None si non trouvé)" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "📝 Partie 4 : Recherche de POI proches" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "Tâche 4.1 :" },
+            { "type": "text", "text": " Écrivez une fonction " },
+            { "type": "text", "marks": [{ "type": "code" }], "text": "trouver_poi_proches(point_reference, rayon_max)" },
+            { "type": "text", "text": " qui trouve tous les POI situés à une distance inférieure ou égale à " },
+            { "type": "text", "marks": [{ "type": "code" }], "text": "rayon_max" },
+            { "type": "text", "text": " du point de référence. La fonction doit retourner une liste de tuples, chaque tuple contenant :" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Les coordonnées du POI" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "La distance au point de référence" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Le nom du POI" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "# Exemple :\n# poi_proches = trouver_poi_proches(paris, 5.0)\n# for coords, distance, nom in poi_proches:\n#     print(f\"{nom} à {distance:.2f} unités\")"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "📝 Partie 5 : Statistiques" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "Tâche 5.1 :" },
+            { "type": "text", "text": " Écrivez une fonction " },
+            { "type": "text", "marks": [{ "type": "code" }], "text": "statistiques_poi()" },
+            { "type": "text", "text": " qui retourne un tuple contenant :" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Le nombre total de POI" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Un tuple contenant les coordonnées du POI le plus au nord (latitude max)" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Un tuple contenant les coordonnées du POI le plus au sud (latitude min)" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Un tuple contenant les coordonnées du POI le plus à l'est (longitude max)" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Un tuple contenant les coordonnées du POI le plus à l'ouest (longitude min)" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "📝 Partie 6 : Programme principal" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "Tâche 6.1 :" },
+            { "type": "text", "text": " Créez une fonction " },
+            { "type": "text", "marks": [{ "type": "code" }], "text": "main()" },
+            { "type": "text", "text": " qui :" }
+          ]
+        },
+        {
+          "type": "orderedList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Initialise le dictionnaire de POI avec au moins 5 points d'intérêt" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Affiche les coordonnées de tous les POI" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Calcule et affiche la distance entre Paris et Londres" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Trouve et affiche les POI proches de Paris (rayon de 3.0)" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Affiche les statistiques des POI" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "💡 Conseils" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "N'oubliez pas d'importer le module " },
+                    { "type": "text", "marks": [{ "type": "code" }], "text": "math" },
+                    { "type": "text", "text": " pour utiliser " },
+                    { "type": "text", "marks": [{ "type": "code" }], "text": "math.sqrt()" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Utilisez le tuple unpacking pour déballer les valeurs retournées par vos fonctions" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Testez chaque fonction individuellement avant de passer à la suivante" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Ajoutez des commentaires pour expliquer votre code" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "✅ Validation" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Vérifiez que votre programme :" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "S'exécute sans erreur" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Affiche correctement toutes les informations demandées" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Utilise bien les tuples pour les coordonnées GPS" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Utilise des tuples comme clés dans le dictionnaire de POI" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Retourne plusieurs valeurs avec des tuples dans les fonctions" }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "checklist": [
+      "Créer le fichier gps_manager.py",
+      "Définir les coordonnées GPS des 5 villes sous forme de tuples",
+      "Implémenter la fonction afficher_coordonnees()",
+      "Implémenter la fonction calculer_distance() qui retourne un tuple",
+      "Créer le dictionnaire points_interet avec des tuples comme clés",
+      "Implémenter la fonction ajouter_poi()",
+      "Implémenter la fonction rechercher_poi() qui retourne un tuple",
+      "Implémenter la fonction trouver_poi_proches() qui retourne une liste de tuples",
+      "Implémenter la fonction statistiques_poi() qui retourne un tuple",
+      "Créer la fonction main() avec tous les tests",
+      "Tester le programme et vérifier qu'il s'exécute sans erreur",
+      "Vérifier que tous les résultats affichés sont corrects"
+    ]
+  }
+}

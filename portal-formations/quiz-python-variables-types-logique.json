@@ -1,0 +1,236 @@
+{
+  "type": "game",
+  "title": "Quiz Python - Variables, Types et Logique booléenne",
+  "position": 1,
+  "published": true,
+  "content": {
+    "gameType": "quiz",
+    "description": "Quiz interactif pour tester votre compréhension des variables, types de données, comparaisons et opérations logiques en Python. Basé sur le code d'exemple avec les variables prenom, age, taille et est_etudiant.",
+    "instructions": "Analysez le code Python fourni et répondez aux questions. Vous pouvez exécuter le code mentalement ou utiliser un interpréteur Python pour vérifier vos réponses.",
+    "objectives": [
+      "Comprendre les types de données Python (str, int, float, bool)",
+      "Maîtriser les comparaisons et opérateurs relationnels",
+      "Appliquer les opérations logiques (and, or, not)",
+      "Prédire les résultats d'expressions booléennes"
+    ],
+    "scoring": {
+      "totalQuestions": 15,
+      "pointsPerQuestion": 1,
+      "passingScore": 10,
+      "levels": {
+        "0-9": "Bases à renforcer - Revoyez les types et les comparaisons",
+        "10-12": "Bon niveau - Vous maîtrisez les fondamentaux",
+        "13-15": "Excellent niveau - Très bonne compréhension de la logique Python"
+      }
+    },
+    "levels": [
+      {
+        "level": 1,
+        "name": "Niveau 1 - Types et Variables",
+        "description": "Questions sur les types de données et les valeurs des variables",
+        "questions": [
+          {
+            "id": "q1-type-prenom",
+            "type": "mcq",
+            "prompt": "Quel est le type de la variable `prenom = \"Alex\"` ?",
+            "options": [
+              "int",
+              "str",
+              "float",
+              "bool"
+            ],
+            "answer": "str",
+            "explanation": "La variable `prenom` contient une chaîne de caractères (string) entre guillemets, donc son type est `str`.",
+            "difficulty": 1
+          },
+          {
+            "id": "q2-type-age",
+            "type": "mcq",
+            "prompt": "Quel est le type de la variable `age = 17` ?",
+            "options": [
+              "int",
+              "str",
+              "float",
+              "bool"
+            ],
+            "answer": "int",
+            "explanation": "La variable `age` contient un nombre entier sans décimales, donc son type est `int` (integer).",
+            "difficulty": 1
+          },
+          {
+            "id": "q3-type-taille",
+            "type": "mcq",
+            "prompt": "Quel est le type de la variable `taille = 1.78` ?",
+            "options": [
+              "int",
+              "str",
+              "float",
+              "bool"
+            ],
+            "answer": "float",
+            "explanation": "La variable `taille` contient un nombre avec des décimales (1.78), donc son type est `float` (nombre à virgule flottante).",
+            "difficulty": 1
+          },
+          {
+            "id": "q4-type-bool",
+            "type": "mcq",
+            "prompt": "Quel est le type de la variable `est_etudiant = True` ?",
+            "options": [
+              "int",
+              "str",
+              "float",
+              "bool"
+            ],
+            "answer": "bool",
+            "explanation": "La variable `est_etudiant` contient une valeur booléenne (`True` ou `False`), donc son type est `bool`.",
+            "difficulty": 1
+          },
+          {
+            "id": "q5-valeur-age",
+            "type": "mcq",
+            "prompt": "Quelle est la valeur de la variable `age` dans le code ?",
+            "options": [
+              "18",
+              "17",
+              "16",
+              "19"
+            ],
+            "answer": "17",
+            "explanation": "Dans le code, `age = 17`, donc la valeur de `age` est 17.",
+            "difficulty": 1
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "name": "Niveau 2 - Comparaisons",
+        "description": "Questions sur les opérateurs de comparaison et leurs résultats",
+        "questions": [
+          {
+            "id": "q6-majeur",
+            "type": "true-false",
+            "prompt": "Avec `age = 17` et `majeur = age >= 18`, la variable `majeur` vaut `True`",
+            "answer": false,
+            "explanation": "Faux. `age >= 18` signifie \"age supérieur ou égal à 18\". Comme `age = 17`, la condition `17 >= 18` est fausse, donc `majeur = False`.",
+            "difficulty": 2
+          },
+          {
+            "id": "q7-taille-grande",
+            "type": "true-false",
+            "prompt": "Avec `taille = 1.78` et `taille_grande = taille >= 1.75`, la variable `taille_grande` vaut `True`",
+            "answer": true,
+            "explanation": "Vrai. `taille >= 1.75` signifie \"taille supérieure ou égale à 1.75\". Comme `taille = 1.78`, la condition `1.78 >= 1.75` est vraie, donc `taille_grande = True`.",
+            "difficulty": 2
+          },
+          {
+            "id": "q8-prenom-long",
+            "type": "mcq",
+            "prompt": "Avec `prenom = \"Alex\"` et `prenom_long = len(prenom) >= 6`, quelle est la valeur de `prenom_long` ?",
+            "options": [
+              "True",
+              "False",
+              "4",
+              "6"
+            ],
+            "answer": "False",
+            "explanation": "`len(prenom)` retourne la longueur de la chaîne \"Alex\", soit 4. La condition `4 >= 6` est fausse, donc `prenom_long = False`.",
+            "difficulty": 2
+          },
+          {
+            "id": "q9-comparaison-age",
+            "type": "mcq",
+            "prompt": "Quelle comparaison avec `age = 17` retourne `True` ?",
+            "options": [
+              "age >= 18",
+              "age > 18",
+              "age < 18",
+              "age == 18"
+            ],
+            "answer": "age < 18",
+            "explanation": "Avec `age = 17`, seule la comparaison `age < 18` (17 < 18) retourne `True`. Les autres (`>= 18`, `> 18`, `== 18`) retournent `False`.",
+            "difficulty": 2
+          },
+          {
+            "id": "q10-len-prenom",
+            "type": "mcq",
+            "prompt": "Quelle est la valeur de `len(\"Alex\")` ?",
+            "options": [
+              "3",
+              "4",
+              "5",
+              "6"
+            ],
+            "answer": "4",
+            "explanation": "La fonction `len()` retourne le nombre de caractères dans une chaîne. \"Alex\" contient 4 caractères : A, l, e, x.",
+            "difficulty": 2
+          }
+        ]
+      },
+      {
+        "level": 3,
+        "name": "Niveau 3 - Logique booléenne",
+        "description": "Questions sur les opérations logiques (and, or) et leurs résultats",
+        "questions": [
+          {
+            "id": "q11-peut-conduire",
+            "type": "mcq",
+            "prompt": "Avec `majeur = False` et `peut_conduire = majeur`, quelle est la valeur de `peut_conduire` ?",
+            "options": [
+              "True",
+              "False",
+              "None",
+              "Erreur"
+            ],
+            "answer": "False",
+            "explanation": "`peut_conduire = majeur` signifie que `peut_conduire` prend la même valeur que `majeur`. Comme `majeur = False`, alors `peut_conduire = False`.",
+            "difficulty": 3
+          },
+          {
+            "id": "q12-profil-ok",
+            "type": "mcq",
+            "prompt": "Avec `majeur = False` et `prenom_long = False`, quelle est la valeur de `profil_ok = majeur and prenom_long` ?",
+            "options": [
+              "True",
+              "False",
+              "None",
+              "Erreur"
+            ],
+            "answer": "False",
+            "explanation": "L'opérateur `and` retourne `True` uniquement si les deux conditions sont vraies. Ici, `majeur = False` et `prenom_long = False`, donc `False and False = False`.",
+            "difficulty": 3
+          },
+          {
+            "id": "q13-profil-ok-vrai",
+            "type": "true-false",
+            "prompt": "Pour que `profil_ok = majeur and prenom_long` soit `True`, il faut que `majeur` ET `prenom_long` soient tous les deux `True`",
+            "answer": true,
+            "explanation": "Vrai. L'opérateur `and` (ET logique) retourne `True` uniquement si les deux opérandes sont `True`. Si l'un des deux est `False`, le résultat est `False`.",
+            "difficulty": 3
+          },
+          {
+            "id": "q14-profil-special",
+            "type": "mcq",
+            "prompt": "Avec `est_etudiant = True` et `taille_grande = True`, quelle est la valeur de `profil_special = est_etudiant or taille_grande` ?",
+            "options": [
+              "True",
+              "False",
+              "None",
+              "Erreur"
+            ],
+            "answer": "True",
+            "explanation": "L'opérateur `or` (OU logique) retourne `True` si au moins un des deux opérandes est `True`. Ici, `est_etudiant = True` et `taille_grande = True`, donc `True or True = True`.",
+            "difficulty": 3
+          },
+          {
+            "id": "q15-or-logique",
+            "type": "true-false",
+            "prompt": "Avec `est_etudiant = True` et `taille_grande = False`, l'expression `est_etudiant or taille_grande` retourne `True`",
+            "answer": true,
+            "explanation": "Vrai. L'opérateur `or` retourne `True` si au moins un des deux opérandes est `True`. Ici, `est_etudiant = True`, donc même si `taille_grande = False`, le résultat est `True or False = True`.",
+            "difficulty": 3
+          }
+        ]
+      }
+    ]
+  }
+}

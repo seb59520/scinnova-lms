@@ -8,14 +8,15 @@ import { CourseFeaturesTiles } from '../components/CourseFeaturesTiles'
 import { Progress } from '../components/Progress'
 import { ReactRenderer } from '../components/ReactRenderer'
 import { CourseSidebar } from '../components/CourseSidebar'
-import { ResizableSidebar } from '../components/ResizableSidebar'
 import { CourseJson } from '../types/courseJson'
-import { Eye, EyeOff, X, BookOpen, FileText, Download, Menu, List } from 'lucide-react'
+import { Eye, EyeOff, X, BookOpen, FileText, Download, List } from 'lucide-react'
 import { Lexique } from './Lexique'
 import { getCurrentUserRole } from '../lib/queries/userRole'
 import { CourseResourcesViewer } from '../components/CourseResourcesViewer'
+import { FillableDocumentsViewer } from '../components/FillableDocumentsViewer'
 import { CourseGammaSlides } from '../components/CourseGammaSlides'
 import { ErrorBoundary } from '../components/ErrorBoundary'
+import { AppHeader } from '../components/AppHeader'
 
 interface ModuleWithItems extends Module {
   items: Item[]
@@ -39,7 +40,6 @@ export function CourseView() {
   const [lexiqueDrawerOpen, setLexiqueDrawerOpen] = useState(true)
   const [isDesktop, setIsDesktop] = useState(false)
   const [isTrainer, setIsTrainer] = useState(false)
-  const [sidebarWidth, setSidebarWidth] = useState(256)
   const [courseViewMode, setCourseViewMode] = useState<'all' | 'module'>('all') // 'all' = tout à la suite, 'module' = un module à la fois
   const [currentModuleIndex, setCurrentModuleIndex] = useState<number | null>(null)
   const viewMode = searchParams.get('view')
@@ -214,6 +214,11 @@ export function CourseView() {
       console.log('URL API:', apiUrl);
       console.log('URL complète:', fullUrl);
       
+      // Vérifier que l'URL est valide
+      if (!apiUrl || apiUrl === ':3001') {
+        throw new Error('URL API non configurée. Vérifiez la variable d\'environnement VITE_API_URL ou démarrez le serveur backend sur http://localhost:3001');
+      }
+      
       // Récupérer le token d'authentification
       const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
       
@@ -229,14 +234,32 @@ export function CourseView() {
       
       console.log('Token d\'authentification récupéré');
       
-      // Faire la requête
-      const response = await fetch(fullUrl, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${sessionData.session.access_token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      // Faire la requête avec gestion d'erreur réseau
+      let response: Response;
+      try {
+        response = await fetch(fullUrl, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${sessionData.session.access_token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+      } catch (fetchError: any) {
+        // Erreur réseau (connexion refusée, timeout, etc.)
+        console.error('❌ Erreur réseau lors de la requête:', fetchError);
+        if (fetchError.message?.includes('Failed to fetch') || fetchError.message?.includes('ERR_CONNECTION_REFUSED')) {
+          throw new Error(
+            `Impossible de se connecter au serveur backend.\n\n` +
+            `Le serveur backend n'est pas démarré ou n'est pas accessible.\n\n` +
+            `Pour démarrer le serveur backend :\n` +
+            `1. Ouvrez un terminal\n` +
+            `2. Allez dans le dossier portal-formations\n` +
+            `3. Exécutez : npm run dev:server\n\n` +
+            `Ou vérifiez que le serveur est bien démarré sur ${apiUrl}`
+          );
+        }
+        throw new Error(`Erreur réseau : ${fetchError.message || 'Connexion impossible'}`);
+      }
 
       console.log('Réponse reçue:', {
         status: response.status,
@@ -248,8 +271,10 @@ export function CourseView() {
       if (!response.ok) {
         // Essayer de récupérer le message d'erreur
         let errorMessage = `Erreur ${response.status}: ${response.statusText}`;
+        let errorData: any = null;
+        
         try {
-          const errorData = await response.json();
+          errorData = await response.json();
           errorMessage = errorData.error || errorData.message || errorMessage;
           console.error('Erreur détaillée:', errorData);
         } catch (e) {
@@ -265,11 +290,25 @@ export function CourseView() {
         
         // Messages d'erreur spécifiques
         if (response.status === 404) {
-          errorMessage = 'Cours non trouvé. Vérifiez que le cours existe.';
+          const details = errorData?.details || '';
+          errorMessage = errorData?.error || errorMessage;
+          if (details) {
+            errorMessage += `\n\nDétails: ${details}`;
+          }
         } else if (response.status === 403) {
-          errorMessage = 'Le téléchargement PDF n\'est pas activé pour ce cours.';
+          errorMessage = errorData?.error || errorMessage;
+          if (errorData?.details) {
+            errorMessage += `\n\n${errorData.details}`;
+          }
         } else if (response.status === 500) {
-          errorMessage = 'Erreur serveur. Vérifiez que le serveur backend est démarré et que Puppeteer est installé.';
+          // Utiliser le message d'erreur du serveur s'il est disponible
+          errorMessage = errorData?.error || errorData?.message || errorMessage;
+          if (errorData?.message && errorData.message !== errorMessage) {
+            errorMessage += `\n\n${errorData.message}`;
+          }
+          if (errorData?.details) {
+            errorMessage += `\n\nDétails techniques: ${errorData.details}`;
+          }
         } else if (response.status === 0 || response.type === 'opaque') {
           errorMessage = 'Impossible de se connecter au serveur. Vérifiez que le serveur backend est démarré sur ' + apiUrl;
         }
@@ -309,20 +348,27 @@ export function CourseView() {
         name: error.name
       });
       
-      let errorMessage = 'Erreur lors du téléchargement';
+      // Afficher un message d'erreur plus clair à l'utilisateur
+      const errorMessage = error.message || 'Erreur inconnue lors du téléchargement du PDF';
       
-      if (error.message) {
-        errorMessage = error.message;
-      } else if (error.name === 'TypeError' && error.message?.includes('Failed to fetch')) {
-        errorMessage = 'Impossible de se connecter au serveur backend. Vérifiez que:\n' +
-          '1. Le serveur backend est démarré (npm run dev:server dans le dossier server/)\n' +
-          '2. L\'URL de l\'API est correcte dans les variables d\'environnement\n' +
-          '3. Il n\'y a pas de problème CORS';
-      } else if (error.name === 'AbortError') {
-        errorMessage = 'La requête a expiré. Le serveur prend trop de temps à répondre.';
+      // Si c'est une erreur de connexion, afficher un message spécial
+      if (errorMessage.includes('Impossible de se connecter') || errorMessage.includes('ERR_CONNECTION_REFUSED')) {
+        alert(
+          '🚫 Serveur backend non disponible\n\n' +
+          'Le serveur backend n\'est pas démarré.\n\n' +
+          'Pour télécharger le PDF, vous devez démarrer le serveur backend :\n\n' +
+          '1. Ouvrez un terminal\n' +
+          '2. Allez dans le dossier portal-formations\n' +
+          '3. Exécutez : npm run dev:server\n\n' +
+          'Le serveur doit être accessible sur http://localhost:3001'
+        );
+      } else {
+        // Afficher l'erreur avec plus de détails
+        const fullMessage = errorMessage.length > 500 
+          ? errorMessage.substring(0, 500) + '...\n\n(Voir la console pour plus de détails)'
+          : errorMessage;
+        alert(`Erreur lors du téléchargement du PDF :\n\n${fullMessage}\n\nConsultez les logs du serveur backend pour plus d'informations.`);
       }
-      
-      alert(`Erreur lors du téléchargement:\n${errorMessage}`);
     } finally {
       setDownloadingPdf(false);
     }
@@ -762,200 +808,169 @@ export function CourseView() {
     )
   }
 
+  const summaryChips = [
+    `${visibleModules.length || 0} modules`,
+    `${allItems.length} elements`,
+    course.access_type === 'free' ? 'Acces libre' : 'Acces restreint',
+    course.status === 'published' ? 'Publie' : 'Brouillon'
+  ]
+
+  const outlineButton = 'inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:text-slate-900'
+  const solidButton = 'inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-semibold text-white shadow-sm transition'
+
   return (
-    <div className="min-h-screen bg-gray-50 course-view-container" style={{ width: '100%', maxWidth: '100%' }}>
-      {/* Header */}
-      <header className="bg-white shadow" style={{ zIndex: 40 }}>
-        <div className="w-full">
-          <div 
-            className="flex justify-between items-center py-4 px-4 transition-all duration-300"
-            style={{
-              paddingLeft: viewMode !== 'progress' && courseJson && sidebarOpen && isDesktop
-                ? `calc(var(--sidebar-width, 256px) + 1rem)`
-                : '0',
-              width: '100%'
-            }}
-          >
-            <div className="flex items-center space-x-4 flex-1">
-              <Link
-                to="/app"
-                className="text-blue-600 hover:text-blue-500"
-              >
-                ← Retour
-              </Link>
-            </div>
-            <div className="flex-1 flex justify-center min-w-0">
-              <h1 className="text-2xl font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">{course.title}</h1>
-            </div>
-            <div className="flex items-center space-x-2 flex-1 justify-end flex-wrap gap-2">
-              {/* Boutons d'action principaux - rangée horizontale */}
-              <div className="flex items-center space-x-2">
-                {/* Voir la progression */}
-                {viewMode !== 'progress' ? (
-                  <Link
-                    to={`/courses/${courseId}?view=progress`}
-                    className="flex items-center space-x-2 px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
-                  >
-                    <span>Voir la progression</span>
-                  </Link>
-                ) : (
-                  <Link
-                    to={`/courses/${courseId}`}
-                    className="flex items-center space-x-2 px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
-                  >
-                    <span>Retour au contenu</span>
-                  </Link>
-                )}
-
-                {/* Script (formateurs uniquement) */}
-                {isTrainer && viewMode !== 'progress' && (
-                  <Link
-                    to={`/trainer/courses/${course.id}/script`}
-                    className="flex items-center space-x-2 px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
-                    title="Voir le script pédagogique seul"
-                  >
-                    <FileText className="w-4 h-4" />
-                    <span>Script</span>
-                  </Link>
-                )}
-
-                {/* Script + Cours (formateurs uniquement) */}
-                {isTrainer && viewMode !== 'progress' && (
-                  <Link
-                    to={`/trainer/courses/${course.id}/script?split=true`}
-                    className="flex items-center space-x-2 px-3 py-1.5 text-sm text-white bg-purple-600 hover:bg-purple-700 rounded-md transition-colors"
-                    title="Voir le cours et le script côte à côte"
-                  >
-                    <FileText className="w-4 h-4" />
-                    <span>Script + Cours</span>
-                  </Link>
-                )}
-
-                {/* Modifier (admins uniquement) */}
-                {profile?.role === 'admin' && (
-                  <Link
-                    to={`/admin/courses/${course.id}`}
-                    className="flex items-center space-x-2 px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
-                  >
-                    <span>Modifier</span>
-                  </Link>
-                )}
-
-                {/* Masquer/Afficher */}
-                <button
-                  onClick={() => setShowHeaderContent(!showHeaderContent)}
-                  className="flex items-center space-x-2 px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
-                  title={showHeaderContent ? 'Masquer le contenu' : 'Afficher le contenu'}
-                >
-                  {showHeaderContent ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
-                  <span>{showHeaderContent ? 'Masquer' : 'Afficher'}</span>
-                </button>
+    <div className="min-h-screen bg-slate-50">
+      <AppHeader
+        title={course.title}
+        showBackButton
+        backTo="/app"
+        backLabel="Retour"
+      />
+      <div className="pt-24">
+        <header className="bg-white border-b border-slate-200" style={{ zIndex: 40 }}>
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-6 space-y-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-500">
+              <div className="flex flex-wrap gap-2">
+                {summaryChips.map((chip) => (
+                  <span key={chip} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600">
+                    {chip}
+                  </span>
+                ))}
               </div>
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Formation</p>
+            </div>
 
-              {/* Boutons secondaires (PDF, Lexique) */}
-              {viewMode !== 'progress' && (
-                <div className="flex items-center space-x-2">
-                  {course.allow_pdf_download && (
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+              <div className="space-y-2 max-w-3xl">
+                <h1 className="text-3xl font-semibold text-slate-900">{course.title}</h1>
+                {course.description && (
+                  <p className="text-sm text-slate-600 leading-relaxed">{course.description}</p>
+                )}
+              </div>
+              <div className="flex w-full flex-col items-stretch gap-2 sm:w-auto sm:items-end">
+                <div className="flex w-full flex-wrap justify-end gap-2 md:flex-nowrap">
+                  {viewMode !== 'progress' ? (
+                    <Link
+                      to={`/courses/${courseId}?view=progress`}
+                      className={outlineButton}
+                    >
+                      Voir la progression
+                    </Link>
+                  ) : (
+                    <Link
+                      to={`/courses/${courseId}`}
+                      className={outlineButton}
+                    >
+                      Retour au contenu
+                    </Link>
+                  )}
+
+                  {isTrainer && viewMode !== 'progress' && (
+                    <Link
+                      to={`/trainer/courses/${course.id}/script`}
+                      className={outlineButton}
+                      title="Voir le script pedagogique"
+                    >
+                      <FileText className="w-4 h-4" />
+                      Script
+                    </Link>
+                  )}
+
+                  {isTrainer && viewMode !== 'progress' && (
+                    <Link
+                      to={`/trainer/courses/${course.id}/script?split=true`}
+                      className={`${solidButton} bg-purple-600 hover:bg-purple-700`}
+                      title="Voir le cours et le script cote a cote"
+                    >
+                      <FileText className="w-4 h-4" />
+                      Script + Cours
+                    </Link>
+                  )}
+                </div>
+
+                <div className="flex w-full flex-wrap justify-end gap-2 md:flex-nowrap">
+                  {profile?.role === 'admin' && (
+                    <Link
+                      to={`/admin/courses/${course.id}`}
+                      className={outlineButton}
+                    >
+                      Modifier
+                    </Link>
+                  )}
+
+                  <button
+                    onClick={() => setShowHeaderContent(!showHeaderContent)}
+                    className={outlineButton}
+                    title={showHeaderContent ? 'Masquer les tuiles' : 'Afficher les tuiles'}
+                  >
+                    {showHeaderContent ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showHeaderContent ? 'Masquer' : 'Afficher'}
+                  </button>
+
+                  {course.allow_pdf_download && viewMode !== 'progress' && (
                     <button
                       onClick={handleDownloadPdf}
                       disabled={downloadingPdf}
-                      className="flex items-center space-x-2 px-3 py-1.5 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      title="Télécharger le cours complet en PDF (format paysage)"
+                      className={`${solidButton} bg-blue-600 hover:bg-blue-700 disabled:opacity-50`}
+                      title="Telecharger le cours en PDF"
                     >
                       {downloadingPdf ? (
                         <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                          <span>Génération...</span>
+                          <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-white" />
+                          Generation...
                         </>
                       ) : (
                         <>
                           <Download className="w-4 h-4" />
-                          <span>PDF</span>
+                          PDF
                         </>
                       )}
                     </button>
                   )}
-                  {hasLexique && (
+
+                  {hasLexique && viewMode !== 'progress' && (
                     <button
                       onClick={() => setLexiqueDrawerOpen(!lexiqueDrawerOpen)}
-                      className="flex items-center space-x-2 px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                      className={outlineButton}
                       title={lexiqueDrawerOpen ? 'Fermer le lexique' : 'Ouvrir le lexique'}
                     >
                       <BookOpen className="w-4 h-4" />
-                      <span>Lexique</span>
+                      Lexique
                     </button>
                   )}
                 </div>
-              )}
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* Main content avec sidebar */}
-      <main className="w-full flex relative">
-        {/* Bouton pour ouvrir/fermer la sidebar */}
-        {viewMode !== 'progress' && courseJson && (
-          <button
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              console.log('Bouton sidebar cliqué, sidebarOpen:', sidebarOpen)
-              setSidebarOpen(!sidebarOpen)
-            }}
-            className="fixed z-[60] p-2.5 bg-white rounded-md shadow-lg border border-gray-200 hover:bg-gray-50 transition-all cursor-pointer"
-            style={{
-              left: sidebarOpen && isDesktop 
-                ? `calc(var(--sidebar-width, 300px) + 1rem)` 
-                : '1rem',
-              top: '5.5rem',
-              pointerEvents: 'auto'
-            }}
-            title={sidebarOpen ? 'Fermer la table des matières' : 'Ouvrir la table des matières'}
-            type="button"
-            aria-label={sidebarOpen ? 'Fermer la table des matières' : 'Ouvrir la table des matières'}
-          >
-            {sidebarOpen ? (
-              <X className="w-5 h-5 text-gray-600" />
-            ) : (
-              <List className="w-5 h-5 text-gray-600" />
-            )}
-          </button>
-        )}
-
-        {/* Sidebar avec table des matières */}
-        {viewMode !== 'progress' && courseJson && (
-          <>
-            {/* Overlay pour mobile quand sidebar est ouverte */}
-            {sidebarOpen && (
-              <div 
-                className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-                onClick={() => setSidebarOpen(false)}
-              />
-            )}
-            {/* Sidebar redimensionnable et fixe */}
-            <div className={`
-              fixed top-0 left-0 z-50 h-screen transition-transform duration-300 ease-in-out
-              ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-            `} style={{ height: '100vh', zIndex: 50 }}>
-              <ResizableSidebar
-                storageKey="course-sidebar-width"
-                minWidth={200}
-                maxWidth={800}
-                defaultWidth={300}
-                side="left"
-                onWidthChange={setSidebarWidth}
+      <main 
+        className="px-4 sm:px-6 lg:px-10 py-10"
+        style={{
+          marginRight: hasLexique && lexiqueDrawerOpen && isDesktop ? '384px' : undefined
+        }}
+      >
+        <div className="mx-auto max-w-7xl">
+          {viewMode !== 'progress' && courseJson && (
+            <div className="lg:hidden mb-4">
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300"
               >
-                <div className="h-full flex flex-col" style={{ height: '100vh' }}>
-                  <CourseSidebar 
+                <List className="w-4 h-4" />
+                Table des matieres
+              </button>
+            </div>
+          )}
+
+          <div className={`grid gap-6 ${viewMode !== 'progress' && courseJson ? 'lg:grid-cols-[280px_minmax(0,1fr)]' : ''}`}>
+            {viewMode !== 'progress' && courseJson && (
+              <aside className="hidden lg:block">
+                <div className="sticky top-32 rounded-3xl border border-slate-100 bg-white shadow-sm">
+                  <CourseSidebar
                     courseJson={courseJson}
-                    onClose={() => setSidebarOpen(false)}
-                    sidebarWidth={sidebarWidth}
-                    minWidth={200}
+                    sidebarWidth={280}
+                    minWidth={220}
                     onModuleSelect={(moduleIndex) => {
                       setCourseViewMode('module')
                       setCurrentModuleIndex(moduleIndex)
@@ -963,135 +978,144 @@ export function CourseView() {
                     selectedModuleIndex={courseViewMode === 'module' ? currentModuleIndex : null}
                     directTps={directTps}
                     tpBatches={tpBatches}
+                    fullHeight={false}
                   />
                 </div>
-              </ResizableSidebar>
-            </div>
-          </>
-        )}
+              </aside>
+            )}
 
-        {/* Contenu principal */}
-        <div 
-          className="flex-1 py-6 transition-all duration-300"
-          style={{
-            paddingLeft: viewMode !== 'progress' && courseJson && sidebarOpen && isDesktop
-              ? `calc(var(--sidebar-width, 300px) + 1rem)`
-              : viewMode !== 'progress' && courseJson
-                ? '3.5rem' // Espace pour le bouton burger quand sidebar fermée
-                : '0',
-            marginRight: hasLexique && lexiqueDrawerOpen 
-              ? '384px' // w-96 = 384px
-              : hasLexique 
-                ? '0' // Le drawer est présent mais caché
-                : '0',
-            width: '100%'
-          }}
-        >
-          <div className="w-full px-4">
-            {/* Vue de progression */}
-            {viewMode === 'progress' ? (
-              <Progress />
-            ) : (
-              <>
-                {/* Tuiles de fonctionnalités */}
-                {showHeaderContent && course && allItems.length > 0 && (
-                  <div className="mb-6">
-                    <CourseFeaturesTiles 
-                      course={course} 
-                      items={allItems} 
-                      courseId={courseId!} 
-                    />
-                  </div>
-                )}
-
-                {/* Ressources de la formation */}
-                {showHeaderContent && courseId && (
-                  <CourseResourcesViewer courseId={courseId} />
-                )}
-
-                {/* Navigation par module - étiquettes colorées */}
-                {courseJson && visibleModules.length > 0 && (
-                  <div className="mb-4 flex items-center gap-3 flex-wrap">
-                    <span className="text-sm font-medium text-gray-700">Affichage :</span>
-                    <button
-                      onClick={() => {
-                        setCourseViewMode('all')
-                        setCurrentModuleIndex(null)
-                      }}
-                      className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                        courseViewMode === 'all'
-                          ? 'bg-blue-600 text-white shadow-md'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      Tout le cours
-                    </button>
-                    <span className="text-gray-400">|</span>
-                    <div className="flex flex-wrap gap-2">
-                      {visibleModules.map((module, index) => {
-                        const originalIndex = courseJson.modules.findIndex(m => m.title === module.title)
-                        const isActive = courseViewMode === 'module' && currentModuleIndex === originalIndex
-                        const moduleColor = getModuleColor(module)
-                        
-                        return (
-                          <button
-                            key={originalIndex}
-                            onClick={() => {
-                              setCourseViewMode('module')
-                              setCurrentModuleIndex(originalIndex)
-                            }}
-                            className={`px-3 py-1.5 rounded-md text-xs font-medium text-white transition-all ${
-                              isActive 
-                                ? `${moduleColor} shadow-md ring-2 ring-offset-2 ring-gray-300` 
-                                : `${moduleColor} opacity-70 hover:opacity-100`
-                            }`}
-                            title={module.title}
-                          >
-                            Module {originalIndex + 1}
-                          </button>
-                        )
-                      })}
+            <section className="space-y-6">
+              {viewMode === 'progress' ? (
+                <Progress />
+              ) : (
+                <>
+                  {showHeaderContent && course && allItems.length > 0 && (
+                    <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+                      <CourseFeaturesTiles 
+                        course={course} 
+                        items={allItems} 
+                        courseId={courseId!} 
+                      />
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {/* Présentations Gamma disponibles - avec gestion d'erreur */}
-                {courseId && (
-                  <div className="mb-6">
+                  {showHeaderContent && courseId && (
+                    <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+                      <CourseResourcesViewer courseId={courseId} />
+                    </div>
+                  )}
+
+                  {/* Documents à compléter */}
+                  {showHeaderContent && courseId && (
+                    <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm mt-6">
+                      <FillableDocumentsViewer courseId={courseId} />
+                    </div>
+                  )}
+
+                  {courseJson && visibleModules.length > 0 && (
+                    <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+                      <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                          <p className="text-sm font-semibold text-slate-900">Affichage du contenu</p>
+                          <p className="text-xs text-slate-500">Choisissez un module ou parcourez tout le cours</p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            onClick={() => {
+                              setCourseViewMode('all')
+                              setCurrentModuleIndex(null)
+                            }}
+                            className={`inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-semibold transition ${courseViewMode === 'all' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
+                          >
+                            Tout le cours
+                          </button>
+                        </div>
+                      </div>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {visibleModules.map((module, index) => {
+                          const originalIndex = courseJson.modules.findIndex(m => m.title === module.title)
+                          const isActive = courseViewMode === 'module' && currentModuleIndex === originalIndex
+                          const moduleColor = getModuleColor(module)
+
+                          return (
+                            <button
+                              key={originalIndex}
+                              onClick={() => {
+                                setCourseViewMode('module')
+                                setCurrentModuleIndex(originalIndex)
+                              }}
+                              className={`inline-flex items-center gap-2 rounded-2xl px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition ${isActive ? `${moduleColor} ring-2 ring-offset-2 ring-white` : `${moduleColor} opacity-80 hover:opacity-100`}`}
+                              title={module.title}
+                            >
+                              Module {originalIndex + 1}
+                            </button>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {courseId && (
                     <ErrorBoundary fallback={null}>
                       <CourseGammaSlides courseId={courseId} />
                     </ErrorBoundary>
-                  </div>
-                )}
+                  )}
 
-                {/* Contenu du cours avec ReactRenderer */}
-                {courseJson ? (
-                  <div className="bg-white shadow rounded-lg p-6">
-                    {courseViewMode === 'all' ? (
-                      <ReactRenderer courseJson={courseJson} />
-                    ) : currentModuleIndex !== null ? (
-                      <ReactRenderer 
-                        courseJson={{
-                          ...courseJson,
-                          modules: [courseJson.modules[currentModuleIndex]]
-                        }} 
-                      />
-                    ) : (
-                      <ReactRenderer courseJson={courseJson} />
-                    )}
-                  </div>
-                ) : modules.length === 0 ? (
-                  <div className="text-center py-12 bg-white rounded-lg shadow">
-                    <p className="text-gray-500 text-lg">
-                      Cette formation ne contient aucun module pour le moment.
-                    </p>
-                  </div>
-                ) : null}
-              </>
-            )}
+                  {courseJson ? (
+                    <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+                      {courseViewMode === 'all' ? (
+                        <ReactRenderer courseJson={courseJson} />
+                      ) : currentModuleIndex !== null ? (
+                        <ReactRenderer 
+                          courseJson={{
+                            ...courseJson,
+                            modules: [courseJson.modules[currentModuleIndex]]
+                          }} 
+                        />
+                      ) : (
+                        <ReactRenderer courseJson={courseJson} />
+                      )}
+                    </div>
+                  ) : modules.length === 0 ? (
+                    <div className="text-center py-12 bg-white rounded-3xl border border-slate-100 shadow-sm">
+                      <p className="text-gray-500 text-lg">
+                        Cette formation ne contient aucun module pour le moment.
+                      </p>
+                    </div>
+                  ) : null}
+                </>
+              )}
+            </section>
           </div>
         </div>
       </main>
+
+      {viewMode !== 'progress' && courseJson && !isDesktop && (
+        <>
+          {sidebarOpen && (
+            <div 
+              className="fixed inset-0 bg-black/50 z-40"
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
+          <div className={`fixed inset-y-0 left-0 z-50 w-full max-w-sm transform bg-white shadow-2xl transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+            <CourseSidebar 
+              courseJson={courseJson}
+              onClose={() => setSidebarOpen(false)}
+              sidebarWidth={280}
+              minWidth={200}
+              onModuleSelect={(moduleIndex) => {
+                setCourseViewMode('module')
+                setCurrentModuleIndex(moduleIndex)
+                setSidebarOpen(false)
+              }}
+              selectedModuleIndex={courseViewMode === 'module' ? currentModuleIndex : null}
+              directTps={directTps}
+              tpBatches={tpBatches}
+            />
+          </div>
+        </>
+      )}
 
       {/* Drawer du lexique à droite */}
       {hasLexique && (
@@ -1135,6 +1159,7 @@ export function CourseView() {
           </div>
         </>
       )}
+      </div>
     </div>
   )
 }
