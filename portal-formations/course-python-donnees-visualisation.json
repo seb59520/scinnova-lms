@@ -1,0 +1,2080 @@
+{
+  "title": "Manipulation de données et visualisation en Python",
+  "description": "Cours complet et détaillé sur la manipulation de données et la visualisation en Python : NumPy pour les calculs numériques, Pandas pour la manipulation de données tabulaires, et Matplotlib pour la visualisation. Chaque ligne de code est commentée, avec des explications approfondies de chaque concept, étape par étape.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#E91E63",
+    "secondaryColor": "#F06292",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Introduction à NumPy",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#E91E63",
+        "secondaryColor": "#F06292"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Qu'est-ce que NumPy ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez NumPy, la bibliothèque fondamentale pour le calcul scientifique en Python, avec des explications détaillées pour débutants complets."
+          },
+          "chapters": [
+            {
+              "title": "Introduction à NumPy",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🔢 Qu'est-ce que NumPy ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "NumPy (Numerical Python) est la bibliothèque fondamentale pour le calcul scientifique en Python. Elle fournit des tableaux multidimensionnels (arrays) et des fonctions pour manipuler ces tableaux de manière efficace."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pourquoi utiliser NumPy ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Performance : Les opérations NumPy sont beaucoup plus rapides que les listes Python natives"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Simplicité : Syntaxe claire et intuitive pour les calculs mathématiques"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Fonctionnalités : Des centaines de fonctions mathématiques intégrées"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Interopérabilité : Compatible avec de nombreuses autres bibliothèques (Pandas, Matplotlib, etc.)"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Installation"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Installer NumPy avec pip\n# Dans votre terminal, tapez :\npip install numpy\n\n# Ou avec conda :\nconda install numpy"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Importation"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# IMPORTATION DE NUMPY\n# ============================================\n\n# Importation standard (convention recommandée)\nimport numpy as np\n\n# 'np' est un alias (surnom) pour numpy\n# C'est la convention utilisée par toute la communauté Python\n# Cela permet d'écrire np.array() au lieu de numpy.array()"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Créer des tableaux NumPy",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez à créer des tableaux NumPy (arrays) de différentes manières : à partir de listes, avec des fonctions intégrées, et comprendre la différence avec les listes Python."
+          },
+          "chapters": [
+            {
+              "title": "Création de tableaux NumPy",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📦 Créer des tableaux NumPy"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Un array NumPy est un tableau multidimensionnel homogène (tous les éléments ont le même type). C'est la structure de données de base de NumPy."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Créer un array à partir d'une liste"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Créer un array à partir d'une liste\n# ============================================\n\nimport numpy as np\n\n# Créer une liste Python classique\nliste_python = [1, 2, 3, 4, 5]\nprint(f\"Liste Python : {liste_python}\")\nprint(f\"Type : {type(liste_python)}\")  # <class 'list'>\n\n# Convertir la liste en array NumPy avec np.array()\narray_numpy = np.array(liste_python)\nprint(f\"\\nArray NumPy : {array_numpy}\")\nprint(f\"Type : {type(array_numpy)}\")  # <class 'numpy.ndarray'>\n\n# ndarray = n-dimensional array (tableau à n dimensions)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Array 2D (matrice)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Créer un array 2D (matrice)\n# ============================================\n\nimport numpy as np\n\n# Créer une liste de listes (matrice 3x3)\nmatrice_liste = [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n]\n\n# Convertir en array NumPy\nmatrice_numpy = np.array(matrice_liste)\nprint(matrice_numpy)\n# Résultat :\n# [[1 2 3]\n#  [4 5 6]\n#  [7 8 9]]\n\n# Vérifier les dimensions\nprint(f\"Shape (forme) : {matrice_numpy.shape}\")  # (3, 3) = 3 lignes, 3 colonnes\nprint(f\"Dimensions : {matrice_numpy.ndim}\")      # 2 = 2 dimensions"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Fonctions de création rapide"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Fonctions de création rapide\n# ============================================\n\nimport numpy as np\n\n# np.zeros() : Créer un array rempli de zéros\nzeros = np.zeros(5)  # Array de 5 zéros\nprint(f\"Zéros : {zeros}\")  # [0. 0. 0. 0. 0.]\n\n# np.ones() : Créer un array rempli de uns\nuns = np.ones(5)  # Array de 5 uns\nprint(f\"Uns : {uns}\")  # [1. 1. 1. 1. 1.]\n\n# np.arange() : Créer un array avec une séquence\n# Syntaxe : np.arange(début, fin, pas)\nsequence = np.arange(0, 10, 2)  # De 0 à 10 (exclu) avec un pas de 2\nprint(f\"Séquence : {sequence}\")  # [0 2 4 6 8]\n\n# np.linspace() : Créer un array avec des valeurs espacées uniformément\n# Syntaxe : np.linspace(début, fin, nombre_de_points)\nlinspace = np.linspace(0, 10, 5)  # 5 points entre 0 et 10\nprint(f\"Linspace : {linspace}\")  # [ 0.   2.5  5.   7.5 10. ]\n\n# np.eye() : Créer une matrice identité\nidentite = np.eye(3)  # Matrice identité 3x3\nprint(f\"\\nIdentité :\\n{identite}\")\n# [[1. 0. 0.]\n#  [0. 1. 0.]\n#  [0. 0. 1.]]"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.3 Opérations de base avec NumPy",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Apprenez les opérations arithmétiques de base avec NumPy : addition, soustraction, multiplication, division, et comprendre la différence avec les listes Python."
+          },
+          "chapters": [
+            {
+              "title": "Opérations arithmétiques",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "➕ Opérations arithmétiques avec NumPy"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "NumPy permet d'effectuer des opérations arithmétiques élément par élément sur les arrays, ce qui est beaucoup plus rapide et intuitif qu'avec les listes Python."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Opérations élément par élément"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Opérations élément par élément\n# ============================================\n\nimport numpy as np\n\n# Créer deux arrays\na = np.array([1, 2, 3, 4, 5])\nb = np.array([10, 20, 30, 40, 50])\n\n# Addition : chaque élément de a est ajouté à l'élément correspondant de b\nsomme = a + b\nprint(f\"a + b = {somme}\")  # [11 22 33 44 55]\n\n# Soustraction\ndifference = a - b\nprint(f\"a - b = {difference}\")  # [-9 -18 -27 -36 -45]\n\n# Multiplication élément par élément (PAS un produit matriciel)\nproduit = a * b\nprint(f\"a * b = {produit}\")  # [ 10  40  90 160 250]\n\n# Division\nquotient = b / a\nprint(f\"b / a = {quotient}\")  # [10. 10. 10. 10. 10.]\n\n# Puissance\npuissance = a ** 2\nprint(f\"a² = {puissance}\")  # [ 1  4  9 16 25]"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Opérations avec un scalaire"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Opérations avec un scalaire (nombre unique)\n# ============================================\n\nimport numpy as np\n\na = np.array([1, 2, 3, 4, 5])\n\n# Additionner 10 à chaque élément\nresultat = a + 10\nprint(f\"a + 10 = {resultat}\")  # [11 12 13 14 15]\n\n# Multiplier chaque élément par 2\nresultat = a * 2\nprint(f\"a * 2 = {resultat}\")  # [ 2  4  6  8 10]\n\n# Élever chaque élément au carré\nresultat = a ** 2\nprint(f\"a² = {resultat}\")  # [ 1  4  9 16 25]\n\n# Diviser chaque élément par 2\nresultat = a / 2\nprint(f\"a / 2 = {resultat}\")  # [0.5 1.  1.5 2.  2.5]"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Fonctions mathématiques"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Fonctions mathématiques NumPy\n# ============================================\n\nimport numpy as np\n\na = np.array([1, 4, 9, 16, 25])\n\n# np.sqrt() : Racine carrée\nracines = np.sqrt(a)\nprint(f\"Racines : {racines}\")  # [1. 2. 3. 4. 5.]\n\n# np.sin(), np.cos(), np.tan() : Fonctions trigonométriques\nangles = np.array([0, np.pi/2, np.pi])\nsinus = np.sin(angles)\nprint(f\"Sinus : {sinus}\")  # [0.0000000e+00 1.0000000e+00 1.2246468e-16]\n\n# np.exp() : Exponentielle\nexposants = np.exp([0, 1, 2])\nprint(f\"Exponentielles : {exposants}\")  # [1.         2.71828183 7.3890561 ]\n\n# np.log() : Logarithme naturel\nlogarithmes = np.log([1, np.e, np.e**2])\nprint(f\"Logarithmes : {logarithmes}\")  # [0. 1. 2.]"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 1 : NumPy - Bases",
+          "position": 3,
+          "published": true,
+          "questions": [
+            {
+              "type": "multiple_choice",
+              "question": "Quelle est la fonction NumPy pour créer un array rempli de zéros ?",
+              "options": [
+                "np.zeros()",
+                "np.empty()",
+                "np.none()",
+                "np.zero()"
+              ],
+              "correct_answer": 0,
+              "explanation": "np.zeros() crée un array rempli de zéros. np.empty() crée un array non initialisé, et les autres options n'existent pas."
+            },
+            {
+              "type": "multiple_choice",
+              "question": "Que fait l'opération a * b si a et b sont des arrays NumPy ?",
+              "options": [
+                "Produit matriciel",
+                "Multiplication élément par élément",
+                "Concaténation",
+                "Erreur"
+              ],
+              "correct_answer": 1,
+              "explanation": "Avec NumPy, l'opérateur * effectue une multiplication élément par élément. Pour un produit matriciel, il faut utiliser np.dot() ou @."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : NumPy avancé",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#E91E63",
+        "secondaryColor": "#F06292"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Indexation et slicing",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à accéder et modifier des éléments spécifiques dans les arrays NumPy avec l'indexation et le slicing."
+          },
+          "chapters": [
+            {
+              "title": "Indexation et slicing",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🔍 Indexation et slicing avec NumPy"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "L'indexation permet d'accéder à des éléments spécifiques d'un array, et le slicing permet d'extraire des sous-tableaux."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Indexation 1D"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Indexation dans un array 1D\n# ============================================\n\nimport numpy as np\n\na = np.array([10, 20, 30, 40, 50])\n\n# Accéder au premier élément (index 0)\nprint(f\"Premier élément : {a[0]}\")  # 10\n\n# Accéder au dernier élément (index -1)\nprint(f\"Dernier élément : {a[-1]}\")  # 50\n\n# Accéder au troisième élément (index 2)\nprint(f\"Troisième élément : {a[2]}\")  # 30\n\n# Modifier un élément\na[1] = 25\nprint(f\"Après modification : {a}\")  # [10 25 30 40 50]"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Slicing 1D"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Slicing dans un array 1D\n# ============================================\n\nimport numpy as np\n\na = np.array([10, 20, 30, 40, 50, 60, 70])\n\n# Syntaxe : array[début:fin:pas]\n# début : inclus\n# fin : exclus\n# pas : optionnel (par défaut = 1)\n\n# Extraire les 3 premiers éléments\npremiers = a[0:3]\nprint(f\"Premiers 3 : {premiers}\")  # [10 20 30]\n\n# Extraire du 2ème au 5ème élément\nmilieu = a[1:5]\nprint(f\"Milieu : {milieu}\")  # [20 30 40 50]\n\n# Tous les éléments\ntous = a[:]\nprint(f\"Tous : {tous}\")  # [10 20 30 40 50 60 70]\n\n# Du début jusqu'à l'index 4\ndebut = a[:4]\nprint(f\"Début : {debut}\")  # [10 20 30 40]\n\n# De l'index 3 jusqu'à la fin\nfin = a[3:]\nprint(f\"Fin : {fin}\")  # [40 50 60 70]\n\n# Avec un pas de 2 (un élément sur deux)\npas2 = a[::2]\nprint(f\"Pas de 2 : {pas2}\")  # [10 30 50 70]\n\n# Inverser l'array\ninverse = a[::-1]\nprint(f\"Inverse : {inverse}\")  # [70 60 50 40 30 20 10]"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Indexation 2D"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Indexation dans un array 2D (matrice)\n# ============================================\n\nimport numpy as np\n\n# Créer une matrice 3x3\nmatrice = np.array([\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n])\n\n# Syntaxe : matrice[ligne, colonne]\n\n# Accéder à un élément (ligne 0, colonne 1)\nelement = matrice[0, 1]\nprint(f\"Élément [0,1] : {element}\")  # 2\n\n# Accéder à une ligne entière (ligne 1)\nligne = matrice[1, :]  # ou simplement matrice[1]\nprint(f\"Ligne 1 : {ligne}\")  # [4 5 6]\n\n# Accéder à une colonne entière (colonne 2)\ncolonne = matrice[:, 2]\nprint(f\"Colonne 2 : {colonne}\")  # [3 6 9]\n\n# Slicing 2D : extraire une sous-matrice\nsous_matrice = matrice[0:2, 0:2]  # 2 premières lignes, 2 premières colonnes\nprint(f\"Sous-matrice :\\n{sous_matrice}\")\n# [[1 2]\n#  [4 5]]"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Opérations statistiques",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez à calculer des statistiques descriptives avec NumPy : moyenne, médiane, écart-type, min, max, etc."
+          },
+          "chapters": [
+            {
+              "title": "Statistiques avec NumPy",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📊 Statistiques avec NumPy"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "NumPy fournit de nombreuses fonctions pour calculer des statistiques descriptives sur vos données."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Statistiques de base"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Statistiques de base\n# ============================================\n\nimport numpy as np\n\n# Créer un array de données\ndonnees = np.array([23, 45, 67, 12, 89, 34, 56, 78, 90, 45])\n\n# np.mean() : Moyenne\nmoyenne = np.mean(donnees)\nprint(f\"Moyenne : {moyenne:.2f}\")  # 53.90\n\n# np.median() : Médiane\nmediane = np.median(donnees)\nprint(f\"Médiane : {mediane:.2f}\")  # 50.50\n\n# np.std() : Écart-type\necart_type = np.std(donnees)\nprint(f\"Écart-type : {ecart_type:.2f}\")  # 26.19\n\n# np.var() : Variance\nvariance = np.var(donnees)\nprint(f\"Variance : {variance:.2f}\")  # 685.89\n\n# np.min() : Minimum\nminimum = np.min(donnees)\nprint(f\"Minimum : {minimum}\")  # 12\n\n# np.max() : Maximum\nmaximum = np.max(donnees)\nprint(f\"Maximum : {maximum}\")  # 90\n\n# np.sum() : Somme\nsomme = np.sum(donnees)\nprint(f\"Somme : {somme}\")  # 539"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Statistiques sur des axes"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Statistiques sur des axes (matrices)\n# ============================================\n\nimport numpy as np\n\n# Créer une matrice 3x4\nmatrice = np.array([\n    [1, 2, 3, 4],\n    [5, 6, 7, 8],\n    [9, 10, 11, 12]\n])\n\n# Moyenne de toutes les valeurs\nmoyenne_totale = np.mean(matrice)\nprint(f\"Moyenne totale : {moyenne_totale}\")  # 6.5\n\n# Moyenne par ligne (axis=1)\n# Calcule la moyenne de chaque ligne\nmoyenne_lignes = np.mean(matrice, axis=1)\nprint(f\"Moyenne par ligne : {moyenne_lignes}\")  # [2.5 6.5 10.5]\n\n# Moyenne par colonne (axis=0)\n# Calcule la moyenne de chaque colonne\nmoyenne_colonnes = np.mean(matrice, axis=0)\nprint(f\"Moyenne par colonne : {moyenne_colonnes}\")  # [5. 6. 7. 8.]\n\n# Somme par ligne\nsomme_lignes = np.sum(matrice, axis=1)\nprint(f\"Somme par ligne : {somme_lignes}\")  # [10 26 42]"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : Introduction à Pandas",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#E91E63",
+        "secondaryColor": "#F06292"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Qu'est-ce que Pandas ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez Pandas, la bibliothèque Python pour la manipulation et l'analyse de données tabulaires."
+          },
+          "chapters": [
+            {
+              "title": "Introduction à Pandas",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🐼 Qu'est-ce que Pandas ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pandas est une bibliothèque Python puissante et flexible pour la manipulation et l'analyse de données. Elle est particulièrement adaptée aux données tabulaires (comme les feuilles Excel ou les bases de données)."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pourquoi utiliser Pandas ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Manipulation facile de données tabulaires (DataFrames)"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Lecture et écriture de nombreux formats (CSV, Excel, JSON, SQL, etc.)"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Nettoyage et préparation de données"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Analyse statistique et agrégation"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Gestion des données manquantes"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Fusion et jointure de données"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Installation"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Installer Pandas avec pip\npip install pandas\n\n# Ou avec conda\nconda install pandas"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Importation"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# IMPORTATION DE PANDAS\n# ============================================\n\n# Importation standard (convention recommandée)\nimport pandas as pd\n\n# 'pd' est l'alias conventionnel pour pandas\n# Cela permet d'écrire pd.DataFrame() au lieu de pandas.DataFrame()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Structures de données principales"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pandas utilise deux structures de données principales :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Series : Une structure 1D (une colonne avec un index)"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "DataFrame : Une structure 2D (un tableau avec des lignes et des colonnes, comme une feuille Excel)"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Créer des DataFrames",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez à créer des DataFrames Pandas de différentes manières : à partir de dictionnaires, de listes, et comprendre la structure d'un DataFrame."
+          },
+          "chapters": [
+            {
+              "title": "Création de DataFrames",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📋 Créer des DataFrames"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Un DataFrame est une structure de données bidimensionnelle avec des lignes et des colonnes étiquetées. C'est l'équivalent d'une feuille Excel ou d'une table SQL."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Créer un DataFrame à partir d'un dictionnaire"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Créer un DataFrame à partir d'un dictionnaire\n# ============================================\n\nimport pandas as pd\n\n# Créer un dictionnaire où chaque clé devient une colonne\n# et chaque valeur est une liste (les valeurs de la colonne)\ndonnees = {\n    'Nom': ['Alice', 'Bob', 'Charlie', 'Diana'],\n    'Age': [25, 30, 35, 28],\n    'Ville': ['Paris', 'Lyon', 'Marseille', 'Paris']\n}\n\n# Créer le DataFrame avec pd.DataFrame()\ndf = pd.DataFrame(donnees)\n\nprint(df)\n# Résultat :\n#       Nom  Age      Ville\n# 0   Alice   25      Paris\n# 1     Bob   30       Lyon\n# 2  Charlie   35  Marseille\n# 3   Diana   28      Paris\n\n# Les nombres à gauche (0, 1, 2, 3) sont les index (numéros de ligne)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Créer un DataFrame avec un index personnalisé"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Créer un DataFrame avec un index personnalisé\n# ============================================\n\nimport pandas as pd\n\ndonnees = {\n    'Nom': ['Alice', 'Bob', 'Charlie'],\n    'Age': [25, 30, 35],\n    'Salaire': [50000, 60000, 70000]\n}\n\n# Créer le DataFrame avec un index personnalisé\ndf = pd.DataFrame(donnees, index=['A', 'B', 'C'])\n\nprint(df)\n# Résultat :\n#       Nom  Age  Salaire\n# A   Alice   25    50000\n# B     Bob   30    60000\n# C  Charlie   35    70000\n\n# L'index est maintenant 'A', 'B', 'C' au lieu de 0, 1, 2"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Créer un DataFrame vide puis ajouter des colonnes"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Créer un DataFrame vide\n# ============================================\n\nimport pandas as pd\n\n# Créer un DataFrame vide\ndf = pd.DataFrame()\n\n# Ajouter des colonnes une par une\ndf['Nom'] = ['Alice', 'Bob', 'Charlie']\ndf['Age'] = [25, 30, 35]\n\nprint(df)\n# Résultat :\n#       Nom  Age\n# 0   Alice   25\n# 1     Bob   30\n# 2  Charlie   35"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.3 Lire des fichiers CSV et Excel",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Apprenez à lire des fichiers CSV et Excel avec Pandas, les formats les plus courants pour les données tabulaires."
+          },
+          "chapters": [
+            {
+              "title": "Lecture de fichiers",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📂 Lire des fichiers avec Pandas"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pandas peut lire de nombreux formats de fichiers : CSV, Excel, JSON, SQL, HTML, etc. Les plus courants sont CSV et Excel."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Lire un fichier CSV"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Lire un fichier CSV\n# ============================================\n\nimport pandas as pd\n\n# Lire un fichier CSV avec pd.read_csv()\n# Le fichier doit être dans le même dossier que votre script\n# ou vous devez spécifier le chemin complet\ndf = pd.read_csv('donnees.csv')\n\n# Afficher les premières lignes avec .head()\nprint(df.head())\n# Par défaut, .head() affiche les 5 premières lignes\n\n# Afficher les informations sur le DataFrame\nprint(f\"\\nNombre de lignes : {len(df)}\")\nprint(f\"Nombre de colonnes : {len(df.columns)}\")\nprint(f\"\\nColonnes : {df.columns.tolist()}\")\n\n# Afficher les types de données\nprint(f\"\\nTypes de données :\\n{df.dtypes}\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Options de lecture CSV"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Options de lecture CSV\n# ============================================\n\nimport pandas as pd\n\n# Lire un CSV avec un séparateur personnalisé (point-virgule)\ndf = pd.read_csv('donnees.csv', sep=';')\n\n# Lire un CSV avec un encodage spécifique\ndf = pd.read_csv('donnees.csv', encoding='utf-8')\n\n# Lire un CSV en spécifiant la colonne d'index\ndf = pd.read_csv('donnees.csv', index_col='ID')\n\n# Lire seulement certaines colonnes\ndf = pd.read_csv('donnees.csv', usecols=['Nom', 'Age', 'Ville'])\n\n# Lire seulement les 100 premières lignes\ndf = pd.read_csv('donnees.csv', nrows=100)\n\n# Combiner plusieurs options\ndf = pd.read_csv(\n    'donnees.csv',\n    sep=',',\n    encoding='utf-8',\n    index_col=0,\n    nrows=1000\n)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Lire un fichier Excel"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Lire un fichier Excel\n# ============================================\n\nimport pandas as pd\n\n# Installer openpyxl si nécessaire : pip install openpyxl\n\n# Lire un fichier Excel avec pd.read_excel()\ndf = pd.read_excel('donnees.xlsx')\n\n# Lire une feuille spécifique\ndf = pd.read_excel('donnees.xlsx', sheet_name='Feuille1')\n\n# Lire plusieurs feuilles\nfeuilles = pd.read_excel('donnees.xlsx', sheet_name=['Feuille1', 'Feuille2'])\n# Retourne un dictionnaire : {'Feuille1': DataFrame, 'Feuille2': DataFrame}\n\n# Lire avec des options\ndf = pd.read_excel(\n    'donnees.xlsx',\n    sheet_name='Feuille1',\n    header=0,  # Première ligne comme en-têtes\n    skiprows=2,  # Ignorer les 2 premières lignes\n    nrows=100  # Lire seulement 100 lignes\n)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : Manipulation de données avec Pandas",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#E91E63",
+        "secondaryColor": "#F06292"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Accéder aux données",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à accéder aux colonnes, lignes et éléments spécifiques d'un DataFrame Pandas."
+          },
+          "chapters": [
+            {
+              "title": "Accès aux données",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🔍 Accéder aux données d'un DataFrame"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Il existe plusieurs façons d'accéder aux données dans un DataFrame : par colonne, par ligne, ou par élément spécifique."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Accéder à une colonne"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Accéder à une colonne\n# ============================================\n\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'Nom': ['Alice', 'Bob', 'Charlie'],\n    'Age': [25, 30, 35],\n    'Ville': ['Paris', 'Lyon', 'Marseille']\n})\n\n# Méthode 1 : Utiliser les crochets avec le nom de la colonne\ncolonne_nom = df['Nom']\nprint(f\"Colonne Nom :\\n{colonne_nom}\")\n# Résultat :\n# 0      Alice\n# 1        Bob\n# 2    Charlie\n# Name: Nom, dtype: object\n\n# Méthode 2 : Utiliser la notation point (si le nom de colonne n'a pas d'espaces)\ncolonne_age = df.Age\nprint(f\"\\nColonne Age :\\n{colonne_age}\")\n\n# Accéder à plusieurs colonnes (retourne un DataFrame)\ncolonnes = df[['Nom', 'Age']]\nprint(f\"\\nDeux colonnes :\\n{colonnes}\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Accéder à des lignes"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Accéder à des lignes\n# ============================================\n\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'Nom': ['Alice', 'Bob', 'Charlie', 'Diana'],\n    'Age': [25, 30, 35, 28],\n    'Ville': ['Paris', 'Lyon', 'Marseille', 'Paris']\n})\n\n# .iloc[] : Accès par position (index numérique)\n# Syntaxe : df.iloc[ligne, colonne]\n\n# Première ligne\npremiere_ligne = df.iloc[0]\nprint(f\"Première ligne :\\n{premiere_ligne}\")\n\n# Deux premières lignes\ndeux_lignes = df.iloc[0:2]\nprint(f\"\\nDeux premières lignes :\\n{deux_lignes}\")\n\n# .loc[] : Accès par label (nom de l'index)\n# Si l'index est numérique, .loc[0] fonctionne aussi\nligne_par_label = df.loc[0]\nprint(f\"\\nLigne par label :\\n{ligne_par_label}\")\n\n# Accéder à un élément spécifique\nelement = df.iloc[1, 2]  # Ligne 1, colonne 2\nprint(f\"\\nÉlément [1,2] : {element}\")  # Lyon"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Filtrer les données"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Filtrer les données\n# ============================================\n\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'Nom': ['Alice', 'Bob', 'Charlie', 'Diana'],\n    'Age': [25, 30, 35, 28],\n    'Ville': ['Paris', 'Lyon', 'Marseille', 'Paris']\n})\n\n# Filtrer : personnes de plus de 28 ans\nage_sup_28 = df[df['Age'] > 28]\nprint(f\"Age > 28 :\\n{age_sup_28}\")\n\n# Filtrer : personnes de Paris\nparis = df[df['Ville'] == 'Paris']\nprint(f\"\\nVille = Paris :\\n{paris}\")\n\n# Filtrer avec plusieurs conditions (utiliser & pour ET, | pour OU)\n# IMPORTANT : Mettre chaque condition entre parenthèses\nage_et_ville = df[(df['Age'] > 25) & (df['Ville'] == 'Paris')]\nprint(f\"\\nAge > 25 ET Paris :\\n{age_et_ville}\")\n\n# Filtrer avec .isin() pour plusieurs valeurs\nvilles = df[df['Ville'].isin(['Paris', 'Lyon'])]\nprint(f\"\\nParis ou Lyon :\\n{villes}\")"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "4.2 Modifier les données",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez à modifier, ajouter et supprimer des colonnes et des lignes dans un DataFrame."
+          },
+          "chapters": [
+            {
+              "title": "Modification des données",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "✏️ Modifier les données"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Ajouter une colonne"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Ajouter une colonne\n# ============================================\n\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'Nom': ['Alice', 'Bob', 'Charlie'],\n    'Age': [25, 30, 35],\n    'Salaire': [50000, 60000, 70000]\n})\n\n# Ajouter une colonne avec une valeur constante\ndf['Departement'] = 'IT'\nprint(df)\n\n# Ajouter une colonne calculée\ndf['Salaire_annuel_x2'] = df['Salaire'] * 2\nprint(f\"\\n{df}\")\n\n# Ajouter une colonne avec une liste\ndf['Ville'] = ['Paris', 'Lyon', 'Marseille']\nprint(f\"\\n{df}\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Modifier des valeurs"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Modifier des valeurs\n# ============================================\n\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'Nom': ['Alice', 'Bob', 'Charlie'],\n    'Age': [25, 30, 35],\n    'Ville': ['Paris', 'Lyon', 'Marseille']\n})\n\n# Modifier une valeur spécifique\ndf.loc[0, 'Age'] = 26\nprint(df)\n\n# Modifier toutes les valeurs d'une colonne\ndf['Ville'] = 'Paris'\nprint(f\"\\n{df}\")\n\n# Modifier avec une condition\ndf.loc[df['Age'] > 30, 'Ville'] = 'Lyon'\nprint(f\"\\n{df}\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Supprimer des colonnes et lignes"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Supprimer des colonnes et lignes\n# ============================================\n\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'Nom': ['Alice', 'Bob', 'Charlie'],\n    'Age': [25, 30, 35],\n    'Ville': ['Paris', 'Lyon', 'Marseille'],\n    'Salaire': [50000, 60000, 70000]\n})\n\n# Supprimer une colonne avec .drop()\n# axis=1 signifie colonne, axis=0 signifie ligne\n# inplace=True modifie le DataFrame directement\ndf_sans_salaire = df.drop('Salaire', axis=1)\nprint(f\"Sans colonne Salaire :\\n{df_sans_salaire}\")\n\n# Supprimer plusieurs colonnes\ndf_sans_colonnes = df.drop(['Salaire', 'Ville'], axis=1)\nprint(f\"\\nSans plusieurs colonnes :\\n{df_sans_colonnes}\")\n\n# Supprimer une ligne\ndf_sans_ligne = df.drop(0, axis=0)  # Supprime la ligne d'index 0\nprint(f\"\\nSans ligne 0 :\\n{df_sans_ligne}\")\n\n# Note : Par défaut, .drop() ne modifie pas le DataFrame original\n# Il retourne une copie. Utiliser inplace=True pour modifier directement"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "4.3 Groupby et agrégations",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Apprenez à grouper des données et calculer des statistiques par groupe avec groupby()."
+          },
+          "chapters": [
+            {
+              "title": "Groupby et agrégations",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📊 Groupby et agrégations"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "groupby() permet de regrouper des données selon une ou plusieurs colonnes, puis d'appliquer des fonctions d'agrégation (moyenne, somme, etc.) sur chaque groupe."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Groupby simple"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Groupby simple\n# ============================================\n\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'Ville': ['Paris', 'Paris', 'Lyon', 'Lyon', 'Marseille'],\n    'Nom': ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve'],\n    'Salaire': [50000, 60000, 55000, 65000, 70000]\n})\n\n# Grouper par ville et calculer la moyenne des salaires\nmoyenne_par_ville = df.groupby('Ville')['Salaire'].mean()\nprint(f\"Moyenne par ville :\\n{moyenne_par_ville}\")\n# Résultat :\n# Ville\n# Lyon         60000.0\n# Marseille    70000.0\n# Paris        55000.0\n# Name: Salaire, dtype: float64\n\n# Grouper et calculer plusieurs statistiques\nstats = df.groupby('Ville')['Salaire'].agg(['mean', 'min', 'max', 'count'])\nprint(f\"\\nStatistiques :\\n{stats}\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Groupby avec plusieurs colonnes"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Groupby avec plusieurs colonnes\n# ============================================\n\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'Ville': ['Paris', 'Paris', 'Lyon', 'Lyon', 'Paris'],\n    'Departement': ['IT', 'IT', 'IT', 'RH', 'RH'],\n    'Salaire': [50000, 60000, 55000, 65000, 70000]\n})\n\n# Grouper par ville ET département\ngroupe = df.groupby(['Ville', 'Departement'])['Salaire'].mean()\nprint(f\"Moyenne par ville et département :\\n{groupe}\")\n# Résultat :\n# Ville      Departement\n# Lyon       IT             55000.0\n#            RH             65000.0\n# Paris      IT             55000.0\n#            RH             70000.0\n# Name: Salaire, dtype: float64"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Fonctions d'agrégation courantes"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Fonctions d'agrégation courantes\n# ============================================\n\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'Ville': ['Paris', 'Paris', 'Lyon', 'Lyon'],\n    'Salaire': [50000, 60000, 55000, 65000],\n    'Age': [25, 30, 35, 28]\n})\n\n# .sum() : Somme\nsomme = df.groupby('Ville')['Salaire'].sum()\nprint(f\"Somme :\\n{somme}\")\n\n# .mean() : Moyenne\nmoyenne = df.groupby('Ville')['Salaire'].mean()\nprint(f\"\\nMoyenne :\\n{moyenne}\")\n\n# .count() : Nombre d'éléments\nnombre = df.groupby('Ville')['Salaire'].count()\nprint(f\"\\nNombre :\\n{nombre}\")\n\n# .min() et .max() : Minimum et maximum\nmin_max = df.groupby('Ville')['Salaire'].agg(['min', 'max'])\nprint(f\"\\nMin/Max :\\n{min_max}\")\n\n# .agg() : Appliquer plusieurs fonctions\nmultiples = df.groupby('Ville').agg({\n    'Salaire': ['mean', 'sum'],\n    'Age': 'mean'\n})\nprint(f\"\\nMultiples agrégations :\\n{multiples}\")"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : Introduction à Matplotlib",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#E91E63",
+        "secondaryColor": "#F06292"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "5.1 Qu'est-ce que Matplotlib ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez Matplotlib, la bibliothèque Python pour créer des graphiques et visualisations de données."
+          },
+          "chapters": [
+            {
+              "title": "Introduction à Matplotlib",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📈 Qu'est-ce que Matplotlib ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Matplotlib est la bibliothèque Python de référence pour créer des graphiques et visualisations de données. Elle permet de créer des graphiques de qualité publication."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pourquoi utiliser Matplotlib ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Créer des graphiques professionnels"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Visualiser des données pour mieux les comprendre"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Communiquer des résultats de manière visuelle"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Personnaliser tous les aspects du graphique"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Exporter en différents formats (PNG, PDF, SVG, etc.)"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Installation"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Installer Matplotlib avec pip\npip install matplotlib\n\n# Ou avec conda\nconda install matplotlib"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Importation"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# IMPORTATION DE MATPLOTLIB\n# ============================================\n\n# Importation standard\nimport matplotlib.pyplot as plt\n\n# 'plt' est l'alias conventionnel pour pyplot\n# pyplot est le module principal de Matplotlib pour créer des graphiques\n\n# Importation de NumPy (souvent utilisé avec Matplotlib)\nimport numpy as np"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "5.2 Graphiques de base",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez à créer vos premiers graphiques : graphiques linéaires, en barres et nuages de points."
+          },
+          "chapters": [
+            {
+              "title": "Graphiques de base",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📊 Graphiques de base"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Graphique linéaire"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Graphique linéaire (plot)\n# ============================================\n\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# Créer des données\nx = np.array([1, 2, 3, 4, 5])\ny = np.array([2, 4, 6, 8, 10])\n\n# Créer le graphique avec plt.plot()\nplt.plot(x, y)\n\n# Ajouter des labels\nplt.xlabel('Axe X')  # Label de l'axe X\nplt.ylabel('Axe Y')  # Label de l'axe Y\nplt.title('Mon premier graphique')  # Titre\n\n# Afficher le graphique\nplt.show()\n\n# Note : plt.show() affiche le graphique dans une fenêtre\n# Dans Jupyter Notebook, les graphiques s'affichent automatiquement"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Graphique en barres"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Graphique en barres (bar)\n# ============================================\n\nimport matplotlib.pyplot as plt\n\n# Données\nvilles = ['Paris', 'Lyon', 'Marseille']\npopulations = [2161000, 516092, 861635]\n\n# Créer le graphique en barres avec plt.bar()\nplt.bar(villes, populations)\n\n# Personnaliser\nplt.xlabel('Villes')\nplt.ylabel('Population')\nplt.title('Population des grandes villes françaises')\n\n# Afficher\nplt.show()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Nuage de points"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Nuage de points (scatter)\n# ============================================\n\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# Générer des données aléatoires\nx = np.random.randn(100)  # 100 valeurs aléatoires\ny = np.random.randn(100)\n\n# Créer le nuage de points avec plt.scatter()\nplt.scatter(x, y)\n\n# Personnaliser\nplt.xlabel('Variable X')\nplt.ylabel('Variable Y')\nplt.title('Nuage de points')\n\n# Afficher\nplt.show()\n\n# Personnaliser les points\nplt.scatter(x, y, c='red', s=50, alpha=0.5)\n# c='red' : couleur rouge\n# s=50 : taille des points\n# alpha=0.5 : transparence (0 = transparent, 1 = opaque)\nplt.show()"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "5.3 Personnaliser les graphiques",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Apprenez à personnaliser vos graphiques : couleurs, styles, légendes, grilles, etc."
+          },
+          "chapters": [
+            {
+              "title": "Personnalisation",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🎨 Personnaliser les graphiques"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Couleurs et styles"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Couleurs et styles de ligne\n# ============================================\n\nimport matplotlib.pyplot as plt\nimport numpy as np\n\nx = np.linspace(0, 10, 100)\ny1 = np.sin(x)\ny2 = np.cos(x)\n\n# Créer plusieurs lignes avec différents styles\nplt.plot(x, y1, color='blue', linestyle='-', linewidth=2, label='sin(x)')\n# color='blue' : couleur bleue\n# linestyle='-' : ligne continue (autres : '--' pointillés, ':' pointillés fins)\n# linewidth=2 : épaisseur de la ligne\n# label='sin(x)' : étiquette pour la légende\n\nplt.plot(x, y2, color='red', linestyle='--', linewidth=2, label='cos(x)')\n\n# Ajouter une légende\nplt.legend()\n\n# Ajouter une grille\nplt.grid(True, alpha=0.3)  # alpha contrôle la transparence\n\nplt.xlabel('X')\nplt.ylabel('Y')\nplt.title('Fonctions sinusoïdales')\n\nplt.show()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Plusieurs graphiques"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Plusieurs graphiques sur une figure\n# ============================================\n\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# Créer des données\nx = np.linspace(0, 10, 100)\ny1 = np.sin(x)\ny2 = np.cos(x)\ny3 = np.sin(x) * np.cos(x)\n\n# Créer une figure avec plusieurs sous-graphiques\n# plt.subplot(lignes, colonnes, position)\nfig, axes = plt.subplots(2, 2, figsize=(10, 8))\n# fig : la figure complète\n# axes : tableau 2x2 des sous-graphiques\n# figsize=(10, 8) : taille de la figure en pouces\n\n# Premier graphique (ligne 0, colonne 0)\naxes[0, 0].plot(x, y1)\naxes[0, 0].set_title('sin(x)')\naxes[0, 0].set_xlabel('X')\naxes[0, 0].set_ylabel('Y')\n\n# Deuxième graphique (ligne 0, colonne 1)\naxes[0, 1].plot(x, y2, color='red')\naxes[0, 1].set_title('cos(x)')\n\n# Troisième graphique (ligne 1, colonne 0)\naxes[1, 0].plot(x, y3, color='green')\naxes[1, 0].set_title('sin(x) * cos(x)')\n\n# Quatrième graphique (ligne 1, colonne 1)\naxes[1, 1].plot(x, y1, label='sin')\naxes[1, 1].plot(x, y2, label='cos')\naxes[1, 1].set_title('sin et cos')\naxes[1, 1].legend()\n\n# Ajuster l'espacement entre les graphiques\nplt.tight_layout()\n\n# Afficher\nplt.show()"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 6 : Visualisation avancée",
+      "position": 5,
+      "theme": {
+        "primaryColor": "#E91E63",
+        "secondaryColor": "#F06292"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "6.1 Visualiser des données Pandas",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à utiliser la méthode .plot() de Pandas pour créer rapidement des graphiques à partir de DataFrames."
+          },
+          "chapters": [
+            {
+              "title": "Visualisation avec Pandas",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📊 Visualiser des données Pandas"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pandas intègre Matplotlib et permet de créer des graphiques directement depuis un DataFrame avec la méthode .plot()."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Graphique depuis un DataFrame"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Graphique depuis un DataFrame\n# ============================================\n\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\n# Créer un DataFrame\ndf = pd.DataFrame({\n    'Mois': ['Jan', 'Fév', 'Mar', 'Avr', 'Mai'],\n    'Ventes': [100, 150, 120, 180, 200],\n    'Dépenses': [80, 90, 100, 110, 120]\n})\n\n# Graphique linéaire des ventes\ndf.plot(x='Mois', y='Ventes', kind='line')\nplt.title('Évolution des ventes')\nplt.ylabel('Ventes')\nplt.show()\n\n# Graphique en barres\ndf.plot(x='Mois', y='Ventes', kind='bar')\nplt.title('Ventes par mois')\nplt.ylabel('Ventes')\nplt.show()\n\n# Plusieurs colonnes sur le même graphique\ndf.plot(x='Mois', y=['Ventes', 'Dépenses'], kind='line')\nplt.title('Ventes et dépenses')\nplt.ylabel('Montant')\nplt.legend()\nplt.show()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Types de graphiques Pandas"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Types de graphiques avec Pandas\n# ============================================\n\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\ndf = pd.DataFrame({\n    'Catégorie': ['A', 'B', 'C', 'D'],\n    'Valeur': [10, 20, 15, 25]\n})\n\n# Graphique en barres\ndf.plot(x='Catégorie', y='Valeur', kind='bar')\nplt.show()\n\n# Graphique en barres horizontales\ndf.plot(x='Catégorie', y='Valeur', kind='barh')\nplt.show()\n\n# Graphique circulaire (camembert)\ndf.plot(x='Catégorie', y='Valeur', kind='pie', autopct='%1.1f%%')\nplt.ylabel('')  # Enlever le label Y pour les pie charts\nplt.show()\n\n# Histogramme\ndf['Valeur'].plot(kind='hist')\nplt.show()\n\n# Nuage de points (nécessite deux colonnes numériques)\ndf.plot(x='Catégorie', y='Valeur', kind='scatter')\nplt.show()"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "6.2 Graphiques avancés",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez à créer des graphiques plus complexes : histogrammes, graphiques en aires, graphiques empilés, etc."
+          },
+          "chapters": [
+            {
+              "title": "Graphiques avancés",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📈 Graphiques avancés"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Histogrammes"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Histogrammes\n# ============================================\n\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# Générer des données aléatoires\ndonnees = np.random.normal(100, 15, 1000)\n# np.random.normal(moyenne, écart_type, nombre_de_valeurs)\n# Génère 1000 valeurs suivant une distribution normale\n\n# Créer un histogramme avec plt.hist()\nplt.hist(donnees, bins=30, color='skyblue', edgecolor='black')\n# bins=30 : nombre de barres (classes)\n# edgecolor='black' : couleur des bordures\n\nplt.xlabel('Valeur')\nplt.ylabel('Fréquence')\nplt.title('Histogramme de distribution')\nplt.grid(True, alpha=0.3)\n\nplt.show()\n\n# Histogramme avec deux séries\ndonnees1 = np.random.normal(100, 15, 1000)\ndonnees2 = np.random.normal(120, 15, 1000)\n\nplt.hist(donnees1, bins=30, alpha=0.5, label='Série 1', color='blue')\nplt.hist(donnees2, bins=30, alpha=0.5, label='Série 2', color='red')\n# alpha=0.5 : transparence pour voir les deux histogrammes\nplt.legend()\nplt.show()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Graphiques en aires"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Graphiques en aires (area)\n# ============================================\n\nimport matplotlib.pyplot as plt\nimport pandas as pd\nimport numpy as np\n\n# Créer des données\ndates = pd.date_range('2024-01-01', periods=12, freq='M')\ndf = pd.DataFrame({\n    'Date': dates,\n    'Produit_A': np.random.randint(100, 200, 12),\n    'Produit_B': np.random.randint(80, 150, 12),\n    'Produit_C': np.random.randint(120, 180, 12)\n})\n\n# Graphique en aires empilées\ndf.plot(x='Date', y=['Produit_A', 'Produit_B', 'Produit_C'], \n        kind='area', stacked=True, alpha=0.7)\nplt.title('Ventes par produit (empilées)')\nplt.ylabel('Ventes')\nplt.legend()\nplt.show()\n\n# Graphique en aires non empilées\ndf.plot(x='Date', y=['Produit_A', 'Produit_B', 'Produit_C'], \n        kind='area', stacked=False, alpha=0.7)\nplt.title('Ventes par produit')\nplt.ylabel('Ventes')\nplt.legend()\nplt.show()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Sauvegarder un graphique"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Sauvegarder un graphique\n# ============================================\n\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# Créer un graphique\nx = np.linspace(0, 10, 100)\ny = np.sin(x)\nplt.plot(x, y)\nplt.title('Graphique à sauvegarder')\nplt.xlabel('X')\nplt.ylabel('Y')\n\n# Sauvegarder avec plt.savefig()\nplt.savefig('mon_graphique.png', dpi=300, bbox_inches='tight')\n# dpi=300 : résolution élevée (points par pouce)\n# bbox_inches='tight' : ajuste les bordures\n\n# Autres formats possibles\nplt.savefig('mon_graphique.pdf')  # Format PDF\nplt.savefig('mon_graphique.svg')  # Format SVG (vectoriel)\n\n# Important : plt.savefig() doit être appelé AVANT plt.show()\n# car plt.show() peut effacer la figure\n\nplt.show()"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 2 : Pandas et Matplotlib",
+          "position": 2,
+          "published": true,
+          "questions": [
+            {
+              "type": "multiple_choice",
+              "question": "Quelle méthode Pandas permet de créer rapidement un graphique depuis un DataFrame ?",
+              "options": [
+                ".plot()",
+                ".graph()",
+                ".chart()",
+                ".visualize()"
+              ],
+              "correct_answer": 0,
+              "explanation": ".plot() est la méthode intégrée de Pandas pour créer des graphiques directement depuis un DataFrame."
+            },
+            {
+              "type": "multiple_choice",
+              "question": "Quelle fonction Matplotlib permet de créer un nuage de points ?",
+              "options": [
+                "plt.plot()",
+                "plt.scatter()",
+                "plt.point()",
+                "plt.dot()"
+              ],
+              "correct_answer": 1,
+              "explanation": "plt.scatter() crée un nuage de points, tandis que plt.plot() crée un graphique linéaire."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

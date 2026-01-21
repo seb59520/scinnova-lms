@@ -6,6 +6,9 @@ import { getUserOrg } from '../lib/queries/userQueries';
 import type { Org } from '../types/database';
 import { Building2, LogOut, User, ChevronDown, Settings, Home } from 'lucide-react';
 import { NotificationCenter } from './notifications/NotificationCenter';
+import { GlobalSearch } from './GlobalSearch';
+import { NavigationHistory } from './NavigationHistory';
+import { NavigationSuggestions } from './NavigationSuggestions';
 import logoScinnova from '../../Logo SCINNOVA avec cerveau et fusée.png';
 
 interface AppHeaderProps {
@@ -89,7 +92,10 @@ export function AppHeader({
             {children && <div className="hidden lg:block">{children}</div>}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <GlobalSearch />
+            <NavigationHistory />
+            <NavigationSuggestions />
             <NotificationCenter />
 
             {isAdmin && (

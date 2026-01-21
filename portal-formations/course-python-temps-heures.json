@@ -1,0 +1,2084 @@
+{
+  "title": "Gestion du temps et des heures en Python",
+  "description": "Cours complet et détaillé sur la gestion du temps et des heures en Python : module datetime, objets date, time, datetime, timedelta, formatage, parsing et fuseaux horaires. Chaque ligne de code est commentée, avec des explications approfondies de chaque concept, étape par étape.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#059669",
+    "secondaryColor": "#10B981",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Introduction au module datetime",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#059669",
+        "secondaryColor": "#10B981"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Qu'est-ce que le module datetime ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez pourquoi et comment Python permet de manipuler les dates et heures avec le module datetime, avec des explications détaillées pour débutants complets."
+          },
+          "chapters": [
+            {
+              "title": "Introduction au module datetime",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                        {
+                          "type": "text",
+                          "text": "🕐 Qu'est-ce que le module datetime ?"
+                        }
+                      ]
+                    },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Le module datetime de Python permet de manipuler les dates, les heures et les durées. C'est un outil essentiel pour tout programme qui doit gérer le temps : horloges, calendriers, calculs de durées, etc."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pourquoi utiliser datetime ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Représenter des dates et heures de manière précise et standardisée."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Effectuer des calculs de temps (ajouter/soustraire des durées)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Formater et parser des dates dans différents formats."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Gérer les fuseaux horaires pour des applications internationales."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Les classes principales"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "date"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Représente une date (année, mois, jour) sans heure."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "time"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Représente une heure (heure, minute, seconde) sans date."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "datetime"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Combine date et time (date complète avec heure)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "timedelta"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Représente une durée (différence entre deux dates/heures)."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple simple : Importer datetime"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Importer le module datetime\n# ============================================\n\n# Méthode 1 : Importer tout le module\n# Permet d'utiliser datetime.datetime, datetime.date, etc.\nimport datetime\n\n# Méthode 2 : Importer directement les classes (RECOMMANDÉ)\n# Plus court et plus lisible\nfrom datetime import datetime, date, time, timedelta\n\n# Maintenant, vous pouvez utiliser datetime, date, time, timedelta directement\n# sans préfixe 'datetime.'\n\n# Exemple d'utilisation\naujourdhui = date.today()\nprint(f\"Aujourd'hui : {aujourdhui}\")\n# Résultat affiché : Aujourd'hui : 2024-01-15 (exemple)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 1.1 : Introduction au module datetime",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Quelle classe du module datetime représente une date complète avec heure ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "date",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "datetime",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "time",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "timedelta",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Quelle classe représente une durée ou différence entre deux dates ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "date",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "time",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "datetime",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "timedelta",
+                    "isCorrect": true
+                  }
+                ]
+              },
+              {
+                "question": "Quelle est la meilleure méthode pour importer les classes du module datetime ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "import datetime",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "from datetime import datetime, date, time, timedelta",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "import datetime as dt",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "from datetime import *",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : La classe date",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#059669",
+        "secondaryColor": "#10B981"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Créer et manipuler des dates",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à créer des objets date, obtenir la date actuelle, accéder aux attributs (année, mois, jour) et effectuer des opérations de base, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Créer des objets date",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📅 Créer et manipuler des dates"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "La classe date permet de représenter une date (année, mois, jour) sans information sur l'heure. C'est parfait pour travailler avec des dates de naissance, des dates d'événements, etc."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Créer une date"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Créer une date\n# ============================================\n\nfrom datetime import date\n\n# Créer une date : date(année, mois, jour)\n# Les paramètres sont des nombres entiers (int)\n# date(2024, 1, 15) = 15 janvier 2024\nma_date = date(2024, 1, 15)\n\n# Afficher la date\nprint(ma_date)\n# Résultat affiché : 2024-01-15\n# Format ISO standard : AAAA-MM-JJ\n\n# Accéder aux attributs individuels\nannee = ma_date.year    # 2024\nmois = ma_date.month    # 1\njour = ma_date.day      # 15\n\nprint(f\"Année : {annee}, Mois : {mois}, Jour : {jour}\")\n# Résultat affiché : Année : 2024, Mois : 1, Jour : 15"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Obtenir la date actuelle"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Obtenir la date actuelle\n# ============================================\n\nfrom datetime import date\n\n# date.today() retourne la date du jour\n# C'est une méthode de classe (appelée directement sur 'date')\naujourdhui = date.today()\n\nprint(f\"Aujourd'hui : {aujourdhui}\")\n# Résultat affiché : Aujourd'hui : 2024-01-15 (exemple, dépend de la date réelle)\n\n# Accéder aux composants\nprint(f\"Année : {aujourdhui.year}\")\nprint(f\"Mois : {aujourdhui.month}\")\nprint(f\"Jour : {aujourdhui.day}\")\n\n# ============================================\n# EXEMPLE 3 : Vérifier la validité d'une date\n# ============================================\n\nfrom datetime import date\n\n# date() lève une ValueError si la date est invalide\n# Par exemple : date(2024, 2, 30) n'existe pas (février n'a que 28/29 jours)\n\ntry:\n    # Tentative de créer une date invalide\n    date_invalide = date(2024, 2, 30)\n    print(date_invalide)\nexcept ValueError as e:\n    # ValueError est levée si la date est invalide\n    print(f\"Erreur : {e}\")\n    # Résultat affiché : Erreur : day is out of range for month"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 4 : Opérations avec les dates"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 4 : Comparer et soustraire des dates\n# ============================================\n\nfrom datetime import date, timedelta\n\n# Créer deux dates\ndate1 = date(2024, 1, 15)\ndate2 = date(2024, 1, 20)\n\n# Comparer des dates\nprint(date1 < date2)   # True (date1 est avant date2)\nprint(date1 > date2)   # False\nprint(date1 == date2)  # False\n\n# Soustraire deux dates retourne un timedelta (durée)\n# timedelta représente la différence entre deux dates\ndifference = date2 - date1\nprint(difference)      # 5 days, 0:00:00\nprint(difference.days) # 5 (nombre de jours)\n\n# Ajouter une durée à une date\n# timedelta(days=n) crée une durée de n jours\nnouvelle_date = date1 + timedelta(days=10)\nprint(nouvelle_date)   # 2024-01-25 (15 + 10 jours)\n\n# Soustraire une durée d'une date\nancienne_date = date1 - timedelta(days=5)\nprint(ancienne_date)   # 2024-01-10 (15 - 5 jours)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "date(année, mois, jour) crée une date avec des entiers."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "date.today() retourne la date actuelle."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Les dates peuvent être comparées avec <, >, ==."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Soustraire deux dates donne un timedelta."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 2.1 : La classe date",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Comment créer une date pour le 25 décembre 2024 ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "date(25, 12, 2024)",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "date(2024, 12, 25)",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "date('2024-12-25')",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "date(2024, 25, 12)",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Que retourne date.today() ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "La date et l'heure actuelles",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "La date actuelle (sans heure)",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Un nombre représentant la date",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Une chaîne de caractères",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Que retourne date2 - date1 (où date2 et date1 sont des objets date) ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Un nombre de jours",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Un objet timedelta",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Une nouvelle date",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Une erreur",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : La classe time",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#059669",
+        "secondaryColor": "#10B981"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Créer et manipuler des heures",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à créer des objets time, accéder aux attributs (heure, minute, seconde) et formater les heures, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Créer des objets time",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "⏰ Créer et manipuler des heures"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "La classe time permet de représenter une heure (heure, minute, seconde, microseconde) sans information sur la date. Utile pour les horaires, les durées de travail, etc."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Créer une heure"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Créer une heure\n# ============================================\n\nfrom datetime import time\n\n# Créer une heure : time(heure, minute, seconde)\n# Les paramètres sont des nombres entiers (int)\n# time(14, 30, 0) = 14h30 (2h30 PM)\nmon_heure = time(14, 30, 0)\n\n# Afficher l'heure\nprint(mon_heure)\n# Résultat affiché : 14:30:00\n# Format : HH:MM:SS\n\n# Accéder aux attributs individuels\nheure = mon_heure.hour      # 14\nminute = mon_heure.minute   # 30\nseconde = mon_heure.second  # 0\n\nprint(f\"Heure : {heure}, Minute : {minute}, Seconde : {seconde}\")\n# Résultat affiché : Heure : 14, Minute : 30, Seconde : 0\n\n# ============================================\n# EXEMPLE 2 : Créer une heure avec microsecondes\n# ============================================\n\n# time() accepte aussi microsecond (optionnel)\n# 1 seconde = 1 000 000 microsecondes\nheure_precise = time(14, 30, 0, 500000)\n# 14h30:00.500000 (500 millisecondes)\n\nprint(heure_precise)\n# Résultat affiché : 14:30:00.500000\n\n# ============================================\n# EXEMPLE 3 : Heures simplifiées\n# ============================================\n\n# Seulement l'heure\nheure_simple = time(9)  # 9h00:00\nprint(heure_simple)     # 09:00:00\n\n# Heure et minute\nheure_minute = time(9, 15)  # 9h15:00\nprint(heure_minute)         # 09:15:00"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 4 : Comparer des heures"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 4 : Comparer des heures\n# ============================================\n\nfrom datetime import time\n\n# Créer deux heures\nheure1 = time(9, 0, 0)   # 9h00\nheure2 = time(14, 30, 0) # 14h30\n\n# Comparer des heures\nprint(heure1 < heure2)   # True (9h00 est avant 14h30)\nprint(heure1 > heure2)   # False\nprint(heure1 == heure2)  # False\n\n# Vérifier si une heure est dans une plage\nheure_test = time(12, 0, 0)  # 12h00\n\n# Vérifier si 12h00 est entre 9h00 et 14h30\nif heure1 <= heure_test <= heure2:\n    print(f\"{heure_test} est entre {heure1} et {heure2}\")\n    # Résultat affiché : 12:00:00 est entre 09:00:00 et 14:30:00"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "time(heure, minute, seconde) crée une heure avec des entiers."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Les heures peuvent être comparées avec <, >, ==."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "time() ne supporte pas l'addition/soustraction directe (utiliser timedelta avec datetime)."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 3.1 : La classe time",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Comment créer une heure pour 15h30 ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "time(15, 30)",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "time(3, 30)",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "time('15:30')",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "time(30, 15)",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Que retourne time(9, 0, 0).hour ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "9",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "09",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "9:00:00",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Une erreur",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Peut-on additionner directement deux objets time ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Oui, avec l'opérateur +",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Non, il faut utiliser timedelta avec datetime",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Oui, avec la méthode add()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Non, c'est impossible",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : La classe datetime",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#059669",
+        "secondaryColor": "#10B981"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Créer et manipuler des datetime",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à créer des objets datetime (date + heure), obtenir la date/heure actuelle, et effectuer des opérations complexes, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Créer des objets datetime",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📆 Créer et manipuler des datetime"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "La classe datetime combine date et time pour représenter un moment précis avec date et heure. C'est la classe la plus utilisée pour les horodatages, les logs, etc."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Créer un datetime"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Créer un datetime\n# ============================================\n\nfrom datetime import datetime\n\n# Créer un datetime : datetime(année, mois, jour, heure, minute, seconde)\n# datetime(2024, 1, 15, 14, 30, 0) = 15 janvier 2024 à 14h30\nmon_datetime = datetime(2024, 1, 15, 14, 30, 0)\n\n# Afficher le datetime\nprint(mon_datetime)\n# Résultat affiché : 2024-01-15 14:30:00\n# Format : AAAA-MM-JJ HH:MM:SS\n\n# Accéder aux attributs\nprint(f\"Année : {mon_datetime.year}\")      # 2024\nprint(f\"Mois : {mon_datetime.month}\")     # 1\nprint(f\"Jour : {mon_datetime.day}\")       # 15\nprint(f\"Heure : {mon_datetime.hour}\")     # 14\nprint(f\"Minute : {mon_datetime.minute}\")  # 30\nprint(f\"Seconde : {mon_datetime.second}\") # 0"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Obtenir la date/heure actuelle"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Obtenir la date/heure actuelle\n# ============================================\n\nfrom datetime import datetime\n\n# datetime.now() retourne la date et l'heure actuelles\n# C'est la méthode la plus utilisée pour obtenir l'horodatage actuel\nmaintenant = datetime.now()\n\nprint(f\"Maintenant : {maintenant}\")\n# Résultat affiché : Maintenant : 2024-01-15 14:30:45.123456 (exemple)\n\n# datetime.today() fait la même chose que datetime.now()\n# (sans fuseau horaire)\naujourdhui = datetime.today()\nprint(f\"Aujourd'hui : {aujourdhui}\")\n\n# Extraire seulement la date ou l'heure\nprint(f\"Date : {maintenant.date()}\")  # Objet date\nprint(f\"Heure : {maintenant.time()}\") # Objet time"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Opérations avec datetime"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Opérations avec datetime\n# ============================================\n\nfrom datetime import datetime, timedelta\n\n# Créer deux datetime\ndt1 = datetime(2024, 1, 15, 10, 0, 0)\ndt2 = datetime(2024, 1, 15, 14, 30, 0)\n\n# Comparer des datetime\nprint(dt1 < dt2)   # True (dt1 est avant dt2)\nprint(dt1 > dt2)  # False\n\n# Soustraire deux datetime donne un timedelta\ndifference = dt2 - dt1\nprint(difference)           # 4:30:00 (4 heures et 30 minutes)\nprint(difference.seconds)  # 16200 (secondes totales)\nprint(difference.total_seconds())  # 16200.0\n\n# Ajouter une durée à un datetime\nnouveau_dt = dt1 + timedelta(hours=2, minutes=15)\nprint(nouveau_dt)  # 2024-01-15 12:15:00\n\n# Soustraire une durée d'un datetime\nancien_dt = dt1 - timedelta(days=1, hours=3)\nprint(ancien_dt)  # 2024-01-14 07:00:00"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "datetime(année, mois, jour, heure, minute, seconde) crée un datetime complet."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "datetime.now() retourne la date/heure actuelle."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Soustraire deux datetime donne un timedelta."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 4.1 : La classe datetime",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Comment créer un datetime pour le 1er janvier 2024 à 00h00 ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "datetime(2024, 1, 1, 0, 0, 0)",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "datetime(1, 1, 2024, 0, 0, 0)",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "datetime('2024-01-01 00:00:00')",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "datetime(2024, 1, 1)",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Que retourne datetime.now() ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "La date actuelle uniquement",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "La date et l'heure actuelles",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Un nombre",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Une chaîne de caractères",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Que retourne dt2 - dt1 (où dt1 et dt2 sont des datetime) ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Un nombre de secondes",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Un objet timedelta",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Un nouveau datetime",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Une erreur",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : Formatage et parsing",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#059669",
+        "secondaryColor": "#10B981"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "5.1 Formater et parser des dates",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à formater des dates en chaînes de caractères avec strftime() et parser des chaînes en dates avec strptime(), avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Formatage et parsing",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📝 Formater et parser des dates"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Le formatage permet de convertir une date/heure en chaîne de caractères lisible. Le parsing fait l'inverse : convertir une chaîne en objet date/datetime."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Formater avec strftime()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Formater avec strftime()\n# ============================================\n\nfrom datetime import datetime\n\n# Créer un datetime\ndt = datetime(2024, 1, 15, 14, 30, 0)\n\n# strftime(format) convertit datetime en chaîne selon un format\n# %Y = année (4 chiffres), %m = mois (2 chiffres), %d = jour (2 chiffres)\n# %H = heure (24h), %M = minute, %S = seconde\n\n# Format ISO standard\nformat_iso = dt.strftime(\"%Y-%m-%d %H:%M:%S\")\nprint(format_iso)  # 2024-01-15 14:30:00\n\n# Format français\nformat_fr = dt.strftime(\"%d/%m/%Y %H:%M\")\nprint(format_fr)  # 15/01/2024 14:30\n\n# Format avec texte\nformat_texte = dt.strftime(\"%A %d %B %Y à %Hh%M\")\n# %A = jour de la semaine, %B = mois en lettres\nprint(format_texte)  # Monday 15 January 2024 à 14h30\n\n# Format court\nformat_court = dt.strftime(\"%d/%m/%y\")\n# %y = année (2 chiffres)\nprint(format_court)  # 15/01/24"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Parser avec strptime()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Parser avec strptime()\n# ============================================\n\nfrom datetime import datetime\n\n# strptime(chaîne, format) convertit une chaîne en datetime\n# Le format doit correspondre EXACTEMENT à la chaîne\n\n# Parser une date ISO\nchaine_iso = \"2024-01-15 14:30:00\"\ndt1 = datetime.strptime(chaine_iso, \"%Y-%m-%d %H:%M:%S\")\nprint(dt1)  # 2024-01-15 14:30:00\n\n# Parser une date française\nchaine_fr = \"15/01/2024 14:30\"\ndt2 = datetime.strptime(chaine_fr, \"%d/%m/%Y %H:%M\")\nprint(dt2)  # 2024-01-15 14:30:00\n\n# Parser une date simple\nchaine_simple = \"2024-01-15\"\ndt3 = datetime.strptime(chaine_simple, \"%Y-%m-%d\")\nprint(dt3)  # 2024-01-15 00:00:00 (heure par défaut : 00:00:00)\n\n# Gérer les erreurs de parsing\ntry:\n    chaine_erreur = \"15-01-2024\"\n    # Format incorrect : attendu \"%d/%m/%Y\" mais reçu \"%d-%m-%Y\"\n    dt4 = datetime.strptime(chaine_erreur, \"%d/%m/%Y\")\nexcept ValueError as e:\n    print(f\"Erreur de parsing : {e}\")\n    # Correction : utiliser le bon format\n    dt4 = datetime.strptime(chaine_erreur, \"%d-%m-%Y\")\n    print(f\"Date parsée : {dt4}\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Codes de formatage courants"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# CODES DE FORMATAGE COURANTS\n# ============================================\n\n# %Y = Année (4 chiffres) : 2024\n# %y = Année (2 chiffres) : 24\n# %m = Mois (2 chiffres) : 01-12\n# %d = Jour (2 chiffres) : 01-31\n# %H = Heure (24h, 2 chiffres) : 00-23\n# %M = Minute (2 chiffres) : 00-59\n# %S = Seconde (2 chiffres) : 00-59\n# %A = Jour de la semaine (nom complet) : Monday\n# %a = Jour de la semaine (abréviation) : Mon\n# %B = Mois (nom complet) : January\n# %b = Mois (abréviation) : Jan\n# %I = Heure (12h, 2 chiffres) : 01-12\n# %p = AM/PM : AM ou PM\n\nfrom datetime import datetime\n\ndt = datetime(2024, 1, 15, 14, 30, 0)\n\n# Exemples de formats\nprint(dt.strftime(\"%Y-%m-%d\"))        # 2024-01-15\nprint(dt.strftime(\"%d/%m/%Y\"))        # 15/01/2024\nprint(dt.strftime(\"%A %d %B %Y\"))     # Monday 15 January 2024\nprint(dt.strftime(\"%H:%M:%S\"))        # 14:30:00\nprint(dt.strftime(\"%I:%M %p\"))        # 02:30 PM"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "strftime(format) convertit datetime → chaîne."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "strptime(chaîne, format) convertit chaîne → datetime."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Le format doit correspondre exactement à la chaîne."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 5.1 : Formatage et parsing",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Quel code de formatage représente l'année sur 4 chiffres ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "%y",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "%Y",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "%a",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "%A",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment parser la chaîne \"15/01/2024\" en datetime ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "datetime.strptime(\"15/01/2024\", \"%d/%m/%Y\")",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "datetime.strptime(\"15/01/2024\", \"%Y-%m-%d\")",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "datetime.parse(\"15/01/2024\")",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "datetime(\"15/01/2024\")",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Que fait strftime() ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Convertit une chaîne en datetime",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Convertit un datetime en chaîne",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Formate un nombre",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Parse un fichier",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 6 : La classe timedelta",
+      "position": 5,
+      "theme": {
+        "primaryColor": "#059669",
+        "secondaryColor": "#10B981"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "6.1 Calculer des durées avec timedelta",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à créer des objets timedelta pour représenter des durées, effectuer des calculs de temps (ajouter/soustraire), et convertir des durées, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "La classe timedelta",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "⏱️ Calculer des durées avec timedelta"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "La classe timedelta représente une durée ou une différence entre deux dates/heures. Elle permet d'ajouter ou soustraire des durées aux dates."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Créer un timedelta"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Créer un timedelta\n# ============================================\n\nfrom datetime import timedelta\n\n# Créer une durée de 5 jours\nduree_jours = timedelta(days=5)\nprint(duree_jours)  # 5 days, 0:00:00\n\n# Créer une durée de 2 heures\nduree_heures = timedelta(hours=2)\nprint(duree_heures)  # 2:00:00\n\n# Créer une durée complexe\nduree_complexe = timedelta(days=3, hours=2, minutes=30, seconds=15)\nprint(duree_complexe)  # 3 days, 2:30:15\n\n# Créer une durée négative (pour soustraire)\nduree_negative = timedelta(days=-1)\nprint(duree_negative)  # -1 day, 0:00:00"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Utiliser timedelta avec datetime"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Utiliser timedelta avec datetime\n# ============================================\n\nfrom datetime import datetime, timedelta\n\n# Date de départ\ndate_depart = datetime(2024, 1, 15, 10, 0, 0)\n\n# Ajouter 7 jours\ndate_plus_7_jours = date_depart + timedelta(days=7)\nprint(date_plus_7_jours)  # 2024-01-22 10:00:00\n\n# Ajouter 2 heures et 30 minutes\ndate_plus_duree = date_depart + timedelta(hours=2, minutes=30)\nprint(date_plus_duree)  # 2024-01-15 12:30:00\n\n# Soustraire 3 jours\ndate_moins_3_jours = date_depart - timedelta(days=3)\nprint(date_moins_3_jours)  # 2024-01-12 10:00:00\n\n# Calculer la différence entre deux dates\ndate1 = datetime(2024, 1, 15, 10, 0, 0)\ndate2 = datetime(2024, 1, 20, 14, 30, 0)\n\ndifference = date2 - date1\nprint(difference)  # 5 days, 4:30:00\nprint(f\"Jours : {difference.days}\")  # 5\nprint(f\"Secondes : {difference.total_seconds()}\")  # 459000.0"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Accéder aux attributs de timedelta"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Accéder aux attributs de timedelta\n# ============================================\n\nfrom datetime import timedelta\n\n# Créer une durée\nduree = timedelta(days=5, hours=3, minutes=30, seconds=45)\n\n# Attributs disponibles\nprint(f\"Jours : {duree.days}\")           # 5\nprint(f\"Secondes : {duree.seconds}\")     # 12645 (heures + minutes + secondes)\nprint(f\"Microsecondes : {duree.microseconds}\")  # 0\n\n# Méthodes utiles\nprint(f\"Total secondes : {duree.total_seconds()}\")  # 459045.0\n\n# Convertir en heures\ntotal_heures = duree.total_seconds() / 3600\nprint(f\"Total heures : {total_heures}\")  # 127.5125"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "timedelta(days=n, hours=h, ...) crée une durée."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "datetime + timedelta donne un nouveau datetime."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "datetime2 - datetime1 donne un timedelta."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "total_seconds() retourne la durée totale en secondes."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 6.1 : La classe timedelta",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Comment créer une durée de 2 jours et 3 heures ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "timedelta(2, 3)",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "timedelta(days=2, hours=3)",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "timedelta('2 days 3 hours')",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "timedelta(2 days, 3 hours)",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Que retourne timedelta.total_seconds() ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Le nombre de jours",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Le nombre total de secondes dans la durée",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Le nombre d'heures",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Un datetime",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Que donne datetime(2024,1,15) + timedelta(days=10) ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Une erreur",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Un nouveau datetime (25 janvier 2024)",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Un timedelta",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Un nombre",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 7 : Exercices pratiques",
+      "position": 6,
+      "theme": {
+        "primaryColor": "#059669",
+        "secondaryColor": "#10B981"
+      },
+      "items": [
+        {
+          "type": "exercise",
+          "title": "Exercice 1 : Calculateur d'âge",
+          "position": 0,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📝 Exercice 1 : Calculateur d'âge"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créez un programme Python qui :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Demande à l'utilisateur sa date de naissance (format : JJ/MM/AAAA)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Parse la date de naissance en objet date"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Calcule l'âge en années en soustrayant la date de naissance de la date actuelle"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Affiche l'âge avec un message formaté"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Gère les erreurs (format incorrect, date invalide)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exemple d'exécution :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "text"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Entrez votre date de naissance (JJ/MM/AAAA) : 15/03/1990\nVous avez 33 ans."
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Correction : Calculateur d'âge"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# ============================================\n# CORRECTION : Calculateur d'âge\n# ============================================\n\nfrom datetime import date\n\n# Gérer les erreurs avec try/except\ntry:\n    # Étape 1 : Demander la date de naissance à l'utilisateur\n    # input() attend une saisie de l'utilisateur\n    date_naissance_str = input(\"Entrez votre date de naissance (JJ/MM/AAAA) : \")\n    \n    # Étape 2 : Parser la chaîne en objet date\n    # strptime() convertit \"15/03/1990\" en datetime\n    # Puis .date() extrait seulement la partie date\n    from datetime import datetime\n    date_naissance = datetime.strptime(date_naissance_str, \"%d/%m/%Y\").date()\n    \n    # Étape 3 : Obtenir la date actuelle\n    aujourdhui = date.today()\n    \n    # Étape 4 : Calculer l'âge\n    # Soustraire deux dates donne un timedelta\n    # .days donne le nombre de jours\n    # Diviser par 365.25 pour obtenir les années (prend en compte les années bissextiles)\n    difference = aujourdhui - date_naissance\n    age = difference.days // 365  # Division entière\n    \n    # Méthode plus précise : utiliser les années directement\n    age = aujourdhui.year - date_naissance.year\n    \n    # Ajuster si l'anniversaire n'est pas encore passé cette année\n    # Comparer mois et jour pour vérifier si l'anniversaire est passé\n    if (aujourdhui.month, aujourdhui.day) < (date_naissance.month, date_naissance.day):\n        age -= 1  # L'anniversaire n'est pas encore passé\n    \n    # Étape 5 : Afficher l'âge\n    print(f\"Vous avez {age} ans.\")\n    \n# Gérer les erreurs de format\nexcept ValueError as e:\n    print(f\"Erreur : Format de date incorrect. Utilisez JJ/MM/AAAA\")\n    print(f\"Détails : {e}\")\n    \n# Gérer les autres erreurs\nexcept Exception as e:\n    print(f\"Erreur : {e}\")"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 2 : Horloge avec formatage",
+          "position": 1,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📝 Exercice 2 : Horloge avec formatage"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créez un programme Python qui :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Affiche la date et l'heure actuelles dans 3 formats différents :"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Format ISO : AAAA-MM-JJ HH:MM:SS"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Format français : JJ/MM/AAAA à HHhMM"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Format long : \"Nous sommes le [jour] [date] [mois] [année] et il est [heure]h[minutes]\""
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Correction : Horloge avec formatage"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# ============================================\n# CORRECTION : Horloge avec formatage\n# ============================================\n\nfrom datetime import datetime\n\n# Obtenir la date et l'heure actuelles\nmaintenant = datetime.now()\n\n# Format 1 : ISO standard\nformat_iso = maintenant.strftime(\"%Y-%m-%d %H:%M:%S\")\nprint(f\"Format ISO : {format_iso}\")\n# Résultat : Format ISO : 2024-01-15 14:30:45\n\n# Format 2 : Français\nformat_fr = maintenant.strftime(\"%d/%m/%Y à %Hh%M\")\nprint(f\"Format français : {format_fr}\")\n# Résultat : Format français : 15/01/2024 à 14h30\n\n# Format 3 : Long avec texte\n# %A = jour de la semaine, %d = jour, %B = mois, %Y = année\njour_semaine = maintenant.strftime(\"%A\")\ndate_jour = maintenant.strftime(\"%d\")\nmois_nom = maintenant.strftime(\"%B\")\nannee = maintenant.strftime(\"%Y\")\nheure = maintenant.strftime(\"%H\")\nminute = maintenant.strftime(\"%M\")\n\n# Traduire en français (simplifié)\njours_fr = {\"Monday\": \"lundi\", \"Tuesday\": \"mardi\", \"Wednesday\": \"mercredi\",\n            \"Thursday\": \"jeudi\", \"Friday\": \"vendredi\", \"Saturday\": \"samedi\", \"Sunday\": \"dimanche\"}\nmois_fr = {\"January\": \"janvier\", \"February\": \"février\", \"March\": \"mars\",\n           \"April\": \"avril\", \"May\": \"mai\", \"June\": \"juin\",\n           \"July\": \"juillet\", \"August\": \"août\", \"September\": \"septembre\",\n           \"October\": \"octobre\", \"November\": \"novembre\", \"December\": \"décembre\"}\n\njour_semaine_fr = jours_fr.get(jour_semaine, jour_semaine)\nmois_nom_fr = mois_fr.get(mois_nom, mois_nom)\n\nformat_long = f\"Nous sommes le {jour_semaine_fr} {date_jour} {mois_nom_fr} {annee} et il est {heure}h{minute}\"\nprint(f\"Format long : {format_long}\")\n# Résultat : Format long : Nous sommes le lundi 15 janvier 2024 et il est 14h30"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 3 : Calculateur de durée",
+          "position": 2,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📝 Exercice 3 : Calculateur de durée"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créez un programme Python qui :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Demande deux dates/heures à l'utilisateur (format : JJ/MM/AAAA HH:MM)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Parse les deux dates en objets datetime"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Calcule la différence entre les deux dates"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Affiche la durée en jours, heures, minutes et secondes"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exemple d'exécution :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "text"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Date/heure 1 (JJ/MM/AAAA HH:MM) : 15/01/2024 10:00\nDate/heure 2 (JJ/MM/AAAA HH:MM) : 20/01/2024 14:30\nDurée : 5 jours, 4 heures, 30 minutes, 0 secondes"
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Correction : Calculateur de durée"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# ============================================\n# CORRECTION : Calculateur de durée\n# ============================================\n\nfrom datetime import datetime, timedelta\n\ntry:\n    # Demander les deux dates/heures\n    date1_str = input(\"Date/heure 1 (JJ/MM/AAAA HH:MM) : \")\n    date2_str = input(\"Date/heure 2 (JJ/MM/AAAA HH:MM) : \")\n    \n    # Parser les chaînes en datetime\n    date1 = datetime.strptime(date1_str, \"%d/%m/%Y %H:%M\")\n    date2 = datetime.strptime(date2_str, \"%d/%m/%Y %H:%M\")\n    \n    # Calculer la différence (timedelta)\n    # Utiliser abs() pour toujours avoir une valeur positive\n    difference = abs(date2 - date1)\n    \n    # Extraire les composants\n    jours = difference.days\n    \n    # Les secondes restantes (après avoir retiré les jours)\n    secondes_totales = difference.seconds\n    \n    # Convertir en heures, minutes, secondes\n    heures = secondes_totales // 3600  # 1 heure = 3600 secondes\n    minutes_restantes = (secondes_totales % 3600) // 60  # Minutes restantes\n    secondes = secondes_totales % 60  # Secondes restantes\n    \n    # Afficher le résultat\n    print(f\"Durée : {jours} jours, {heures} heures, {minutes_restantes} minutes, {secondes} secondes\")\n    \n    # Alternative : utiliser total_seconds()\n    total_secondes = difference.total_seconds()\n    jours_alt = int(total_secondes // 86400)  # 86400 secondes = 1 jour\n    heures_alt = int((total_secondes % 86400) // 3600)\n    minutes_alt = int((total_secondes % 3600) // 60)\n    secondes_alt = int(total_secondes % 60)\n    \n    print(f\"Durée (méthode alternative) : {jours_alt} jours, {heures_alt} heures, {minutes_alt} minutes, {secondes_alt} secondes\")\n    \nexcept ValueError as e:\n    print(f\"Erreur de format : {e}\")\nexcept Exception as e:\n    print(f\"Erreur : {e}\")"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -63,7 +63,7 @@ export function DebugProfile() {
     return (
       <div className="min-h-screen bg-gray-50">
         <AppHeader title="Debug Profil" />
-        <div className="flex items-center justify-center min-h-[60vh] pt-24">
+        <div className="flex items-center justify-center min-h-[60vh] pt-8">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
         </div>
       </div>
@@ -73,7 +73,7 @@ export function DebugProfile() {
   return (
     <div className="min-h-screen bg-gray-50">
       <AppHeader title="Debug Profil" />
-      <main className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 pt-24">
+      <main className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 pt-8">
         <div className="bg-white shadow rounded-lg p-6 space-y-6">
           <h2 className="text-2xl font-bold text-gray-900">Informations de débogage</h2>
 

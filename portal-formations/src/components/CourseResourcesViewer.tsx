@@ -16,9 +16,10 @@ import {
 
 interface CourseResourcesViewerProps {
   courseId: string
+  onHasResourcesChange?: (hasResources: boolean) => void
 }
 
-export function CourseResourcesViewer({ courseId }: CourseResourcesViewerProps) {
+export function CourseResourcesViewer({ courseId, onHasResourcesChange }: CourseResourcesViewerProps) {
   const [resources, setResources] = useState<CourseResource[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -28,6 +29,7 @@ export function CourseResourcesViewer({ courseId }: CourseResourcesViewerProps) 
 
   const fetchResources = async () => {
     try {
+      setLoading(true)
       const { data, error } = await supabase
         .from('course_resources')
         .select('*')
@@ -35,10 +37,33 @@ export function CourseResourcesViewer({ courseId }: CourseResourcesViewerProps) 
         .eq('is_visible', true)
         .order('position', { ascending: true })
 
-      if (error) throw error
-      setResources(data || [])
+      if (error) {
+        console.error('Error fetching course resources:', error)
+        console.error('Error details:', {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          courseId
+        })
+        // Si c'est une erreur de permission, ne pas afficher d'erreur mais juste un tableau vide
+        if (error.code === '42501' || error.message?.includes('permission') || error.message?.includes('policy') || error.message?.includes('row-level security')) {
+          console.warn('Permission denied - user may not be enrolled in this course or RLS policy is blocking access')
+          console.warn('Please check: 1) User enrollment status, 2) RLS policies for course_resources table')
+          setResources([])
+        } else {
+          throw error
+        }
+      } else {
+        console.log(`Successfully fetched ${data?.length || 0} course resources for course ${courseId}`)
+        const res = data || []
+        setResources(res)
+        onHasResourcesChange?.(res.length > 0)
+      }
     } catch (err) {
       console.error('Error fetching resources:', err)
+      setResources([])
+      onHasResourcesChange?.(false)
     } finally {
       setLoading(false)
     }
@@ -77,12 +102,14 @@ export function CourseResourcesViewer({ courseId }: CourseResourcesViewerProps) 
     }
   }
 
+  useEffect(() => {
+    if (!loading) {
+      onHasResourcesChange?.(resources.length > 0)
+    }
+  }, [resources.length, loading, onHasResourcesChange])
+
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-4">
-        <Loader2 className="w-5 h-5 animate-spin text-blue-600" />
-      </div>
-    )
+    return null
   }
 
   if (resources.length === 0) {

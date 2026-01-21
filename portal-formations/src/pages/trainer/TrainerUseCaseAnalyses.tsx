@@ -142,7 +142,7 @@ export function TrainerUseCaseAnalyses() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-24">
+      <div className="min-h-screen bg-gray-50 pt-8">
         <TrainerHeader />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">Chargement...</div>
@@ -153,7 +153,7 @@ export function TrainerUseCaseAnalyses() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-24">
+      <div className="min-h-screen bg-gray-50 pt-8">
         <TrainerHeader />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
@@ -165,7 +165,7 @@ export function TrainerUseCaseAnalyses() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24">
+    <div className="min-h-screen bg-gray-50 pt-8">
       <TrainerHeader />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6">

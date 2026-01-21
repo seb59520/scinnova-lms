@@ -19,13 +19,15 @@ interface ResourceViewerProps {
   moduleId?: string
   itemId?: string
   title?: string
+  onHasResourcesChange?: (hasResources: boolean) => void
 }
 
 export function ResourceViewer({ 
   courseId, 
   moduleId, 
   itemId,
-  title = 'Ressources'
+  title = 'Ressources',
+  onHasResourcesChange
 }: ResourceViewerProps) {
   const [resources, setResources] = useState<Resource[]>([])
   const [loading, setLoading] = useState(true)
@@ -63,14 +65,18 @@ export function ResourceViewer({
 
       if (fetchError) throw fetchError
 
-      setResources(data || [])
+      const res = data || []
+      setResources(res)
+      onHasResourcesChange?.(res.length > 0)
       
       // Générer les URLs signées
-      if (data && data.length > 0) {
-        generateSignedUrls(data)
+      if (res.length > 0) {
+        generateSignedUrls(res)
       }
     } catch (err: any) {
       console.error('Error fetching resources:', err)
+      setResources([])
+      onHasResourcesChange?.(false)
     } finally {
       setLoading(false)
     }
@@ -130,12 +136,14 @@ export function ResourceViewer({
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
   }
 
+  useEffect(() => {
+    if (!loading && parentId && parentId !== 'new') {
+      onHasResourcesChange?.(resources.length > 0)
+    }
+  }, [resources.length, loading, parentId, onHasResourcesChange])
+
   if (loading) {
-    return (
-      <div className="bg-gray-50 p-4 rounded-lg">
-        <p className="text-sm text-gray-600">Chargement des ressources...</p>
-      </div>
-    )
+    return null
   }
 
   if (!parentId || parentId === 'new' || resources.length === 0) {

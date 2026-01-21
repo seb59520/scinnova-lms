@@ -11,7 +11,7 @@ export function Login() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const { signIn, signInWithGoogle, user, loading: authLoading } = useAuth()
+  const { signIn, signInWithGoogle, user, profile, loading: authLoading } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const [isStudentId, setIsStudentId] = useState(false)
@@ -21,9 +21,12 @@ export function Login() {
   // Rediriger si déjà connecté
   useEffect(() => {
     if (!authLoading && user) {
-      navigate(from, { replace: true })
+      // Si c'est un admin, rediriger vers /admin par défaut
+      // Sinon utiliser la destination demandée ou /app
+      const destination = profile?.role === 'admin' ? '/admin' : from
+      navigate(destination, { replace: true })
     }
-  }, [user, authLoading, navigate, from])
+  }, [user, profile, authLoading, navigate, from])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

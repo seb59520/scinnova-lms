@@ -1,0 +1,1702 @@
+{
+  "title": "Gestion de fichiers en Python",
+  "description": "Cours complet et détaillé sur la gestion de fichiers en Python : open(), read(), write() et split() pour débutants. Chaque ligne de code est commentée, avec des explications approfondies de chaque concept, étape par étape.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3776AB",
+    "secondaryColor": "#FFD43B",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Introduction à la gestion de fichiers",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Qu'est-ce que la gestion de fichiers ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez pourquoi et comment Python permet de lire et écrire dans des fichiers avec des explications détaillées pour débutants complets."
+          },
+          "chapters": [
+            {
+              "title": "Introduction aux fichiers",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📁 Qu'est-ce que la gestion de fichiers ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "La gestion de fichiers permet à Python de lire et écrire des données dans des fichiers sur votre ordinateur. Imaginez un fichier comme un cahier : vous pouvez y lire des informations ou y écrire de nouvelles données."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pourquoi utiliser des fichiers ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Persistance des données : Les données restent sauvegardées même après la fermeture du programme."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Partage d'informations : Plusieurs programmes peuvent accéder aux mêmes fichiers."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Traitement de données : Lire des fichiers CSV, JSON, texte pour analyser des données."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Les trois fonctions principales"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Dans ce cours, nous allons apprendre trois fonctions essentielles :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "open()"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Ouvre un fichier pour le lire ou l'écrire."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "read()"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Lit le contenu d'un fichier."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "write()"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Écrit du contenu dans un fichier."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                  {
+                    "type": "listItem",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ],
+                            "text": "split()"
+                          },
+                          {
+                            "type": "text",
+                            "text": " : Divise une chaîne de caractères en plusieurs parties."
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 1.1 : Introduction aux fichiers",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Quelle est la fonction Python utilisée pour ouvrir un fichier ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "read()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "open()",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "split()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "file()",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Pourquoi utilise-t-on des fichiers en programmation ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Pour stocker des données de manière permanente",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Pour accélérer les calculs",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Pour améliorer la sécurité",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Pour réduire la consommation mémoire",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : La fonction open()",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Ouvrir un fichier avec open()",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à ouvrir un fichier avec open(), comprendre les modes d'ouverture (r, w, a) et la gestion des erreurs, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Syntaxe de open()",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🔓 Ouvrir un fichier avec open()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "La fonction open() est la première étape pour travailler avec des fichiers. Elle crée un objet fichier que vous pouvez utiliser pour lire ou écrire."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Ouvrir un fichier en lecture"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Ouvrir un fichier en lecture\n# ============================================\n\n# Syntaxe de base : open(nom_fichier, mode)\n# 'nom_fichier' : le chemin vers le fichier (ex: \"mon_fichier.txt\")\n# 'mode' : comment ouvrir le fichier (\"r\" pour lecture, \"w\" pour écriture, etc.)\n\n# Ligne 1 : open() ouvre le fichier \"exemple.txt\" en mode lecture (\"r\")\n#           \"r\" signifie \"read\" (lire en anglais)\n#           Le fichier doit EXISTER, sinon une erreur FileNotFoundError sera levée\n#           L'objet fichier est stocké dans la variable 'fichier'\nfichier = open(\"exemple.txt\", \"r\")\n\n# Ligne 2 : IMPORTANT : Toujours fermer le fichier après utilisation\n#           .close() libère les ressources système\n#           Si vous oubliez de fermer, le fichier reste verrouillé\nfichier.close()\n\n# ============================================\n# EXEMPLE 2 : Ouvrir avec gestion d'erreur (recommandé)\n# ============================================\n\n# try/except permet de gérer les erreurs proprement\n# Si le fichier n'existe pas, on affiche un message au lieu de planter\n\ntry:\n    # Tentative d'ouverture du fichier\n    # Si le fichier existe, cette ligne fonctionne\n    fichier = open(\"exemple.txt\", \"r\")\n    \n    # Ici, vous pouvez lire le contenu (nous verrons read() plus tard)\n    # contenu = fichier.read()\n    \n    # Fermeture du fichier\n    fichier.close()\n    \n    # Message de succès\n    print(\"Fichier ouvert avec succès !\")\n    \n# except FileNotFoundError : si le fichier n'existe pas\n# Python exécute ce bloc au lieu de planter le programme\nexcept FileNotFoundError:\n    # Message d'erreur explicite\n    print(\"Erreur : Le fichier 'exemple.txt' n'existe pas !\")\n    # Le programme continue normalement après ce message\n\n# ============================================\n# EXEMPLE 3 : Ouvrir avec 'with' (MEILLEURE PRATIQUE)\n# ============================================\n\n# 'with' garantit la fermeture automatique du fichier\n# Même si une erreur survient, le fichier sera fermé\n# C'est la méthode RECOMMANDÉE en Python\n\n# Syntaxe : with open(nom_fichier, mode) as variable:\n# 'as fichier' : l'objet fichier est stocké dans 'fichier'\n# Le bloc 'with' se termine automatiquement et ferme le fichier\nwith open(\"exemple.txt\", \"r\") as fichier:\n    # À l'intérieur de ce bloc, le fichier est ouvert\n    # Vous pouvez lire le contenu ici\n    # contenu = fichier.read()\n    \n    # Pas besoin de fichier.close() : c'est automatique !\n    print(\"Fichier ouvert avec 'with'\")\n\n# Ici, le fichier est AUTOMATIQUEMENT fermé\n# Même si une erreur survient dans le bloc 'with', le fichier sera fermé\n\n# ============================================\n# EXEMPLE 4 : Modes d'ouverture\n# ============================================\n\n# Mode \"r\" (read) : Lecture seule\n# Le fichier doit exister, sinon erreur\nwith open(\"lecture.txt\", \"r\") as f:\n    pass  # pass = ne rien faire (syntaxe valide)\n\n# Mode \"w\" (write) : Écriture (écrase le fichier s'il existe)\n# Si le fichier n'existe pas, il est créé\n# ATTENTION : Le contenu existant est EFFACÉ !\nwith open(\"ecriture.txt\", \"w\") as f:\n    # f.write(\"Nouveau contenu\")  # Nous verrons write() plus tard\n    pass\n\n# Mode \"a\" (append) : Ajout à la fin du fichier\n# Si le fichier n'existe pas, il est créé\n# Le contenu existant est PRÉSERVÉ, on ajoute à la fin\nwith open(\"ajout.txt\", \"a\") as f:\n    # f.write(\"Ligne ajoutée\\n\")  # Ajoute à la fin\n    pass\n\n# Mode \"r+\" : Lecture et écriture\n# Le fichier doit exister\nwith open(\"lecture_ecriture.txt\", \"r+\") as f:\n    pass"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Toujours utiliser 'with' pour ouvrir des fichiers (fermeture automatique)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Le mode \"r\" nécessite que le fichier existe."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Le mode \"w\" écrase le contenu existant."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Le mode \"a\" ajoute à la fin sans écraser."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 2.1 : La fonction open()",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Quel mode d'ouverture permet de lire un fichier ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "\"w\"",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "\"r\"",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "\"a\"",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "\"x\"",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Quelle est la meilleure pratique pour ouvrir un fichier en Python ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Utiliser open() puis fermer manuellement avec close()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Utiliser 'with open()' qui ferme automatiquement",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Ne jamais fermer le fichier",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Utiliser uniquement open() sans fermer",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Que se passe-t-il si vous ouvrez un fichier en mode \"w\" et qu'il existe déjà ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Le contenu existant est préservé",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Le contenu existant est écrasé",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Une erreur est levée",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Le fichier est renommé",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : La fonction read()",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Lire un fichier avec read()",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à lire le contenu d'un fichier avec read(), comprendre les différentes méthodes de lecture (read(), readline(), readlines()), avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Méthodes de lecture",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📖 Lire un fichier avec read()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Une fois le fichier ouvert, vous pouvez lire son contenu avec différentes méthodes. La méthode read() est la plus simple : elle lit tout le contenu du fichier."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Lire tout le fichier avec read()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Lire tout le fichier avec read()\n# ============================================\n\n# Supposons que \"exemple.txt\" contient :\n# \"Bonjour le monde\\nCeci est la ligne 2\\nEt voici la ligne 3\"\n\n# Étape 1 : Ouvrir le fichier en mode lecture\n# 'with' garantit la fermeture automatique\nwith open(\"exemple.txt\", \"r\") as fichier:\n    # Étape 2 : Lire TOUT le contenu du fichier\n    # .read() retourne une chaîne de caractères (str) contenant\n    # tout le texte du fichier, y compris les caractères de nouvelle ligne (\\n)\n    contenu = fichier.read()\n    \n    # Étape 3 : Afficher le contenu\n    # print() affiche le texte avec les retours à la ligne\n    print(contenu)\n    # Résultat affiché :\n    # Bonjour le monde\n    # Ceci est la ligne 2\n    # Et voici la ligne 3\n\n# Le fichier est automatiquement fermé ici\n\n# ============================================\n# EXEMPLE 2 : Lire un nombre limité de caractères\n# ============================================\n\n# read(n) lit seulement les n premiers caractères\n# Utile pour lire de gros fichiers par morceaux\n\nwith open(\"exemple.txt\", \"r\") as fichier:\n    # Lire seulement les 10 premiers caractères\n    # \"Bonjour le\" = 10 caractères (espace inclus)\n    premiers_caracteres = fichier.read(10)\n    \n    print(premiers_caracteres)\n    # Résultat affiché : Bonjour le\n    \n    # Lire les 10 caractères suivants\n    # Le curseur de lecture avance automatiquement\n    # On lit à partir de la position 10\n    caracteres_suivants = fichier.read(10)\n    \n    print(caracteres_suivants)\n    # Résultat affiché : monde\n    # (les 10 caractères suivants après \"Bonjour le\")\n\n# ============================================\n# EXEMPLE 3 : Lire ligne par ligne avec readline()\n# ============================================\n\n# readline() lit UNE SEULE ligne à la fois\n# Utile pour traiter un fichier ligne par ligne sans charger tout en mémoire\n\nwith open(\"exemple.txt\", \"r\") as fichier:\n    # Lire la première ligne\n    # readline() retourne la ligne avec le caractère \\n à la fin\n    ligne1 = fichier.readline()\n    print(ligne1)\n    # Résultat affiché : Bonjour le monde\\n\n    # Lire la deuxième ligne\n    # Le curseur avance automatiquement à la ligne suivante\n    ligne2 = fichier.readline()\n    print(ligne2)\n    # Résultat affiché : Ceci est la ligne 2\\n\n    # Lire la troisième ligne\n    ligne3 = fichier.readline()\n    print(ligne3)\n    # Résultat affiché : Et voici la ligne 3\n    # (pas de \\n à la fin si c'est la dernière ligne)\n\n# ============================================\n# EXEMPLE 4 : Lire toutes les lignes avec readlines()\n# ============================================\n\n# readlines() lit TOUTES les lignes et retourne une LISTE\n# Chaque élément de la liste est une ligne (avec \\n à la fin)\n\nwith open(\"exemple.txt\", \"r\") as fichier:\n    # Lire toutes les lignes en une fois\n    # Retourne : [\"Bonjour le monde\\n\", \"Ceci est la ligne 2\\n\", \"Et voici la ligne 3\"]\n    toutes_lignes = fichier.readlines()\n    \n    print(toutes_lignes)\n    # Résultat affiché : ['Bonjour le monde\\n', 'Ceci est la ligne 2\\n', 'Et voici la ligne 3']\n    \n    # Parcourir la liste ligne par ligne\n    for ligne in toutes_lignes:\n        # .strip() enlève les espaces et \\n au début et à la fin\n        # \"Bonjour le monde\\n\".strip() devient \"Bonjour le monde\"\n        ligne_propre = ligne.strip()\n        print(f\"Ligne : {ligne_propre}\")\n    # Résultat affiché :\n    # Ligne : Bonjour le monde\n    # Ligne : Ceci est la ligne 2\n    # Ligne : Et voici la ligne 3\n\n# ============================================\n# EXEMPLE 5 : Parcourir le fichier directement (MEILLEURE PRATIQUE)\n# ============================================\n\n# Python permet de parcourir un fichier ligne par ligne directement\n# C'est la méthode la plus EFFICACE et la plus PYTHONIQUE\n\nwith open(\"exemple.txt\", \"r\") as fichier:\n    # Parcourir le fichier ligne par ligne\n    # Python lit une ligne à la fois (pas besoin de charger tout en mémoire)\n    for ligne in fichier:\n        # .strip() enlève \\n et espaces en début/fin\n        ligne_propre = ligne.strip()\n        \n        # Traiter chaque ligne\n        print(f\"Ligne lue : {ligne_propre}\")\n    # Résultat affiché :\n    # Ligne lue : Bonjour le monde\n    # Ligne lue : Ceci est la ligne 2\n    # Ligne lue : Et voici la ligne 3\n\n# ============================================\n# EXEMPLE 6 : Gestion d'erreur lors de la lecture\n# ============================================\n\n# Toujours gérer les erreurs possibles\n\ntry:\n    # Tentative d'ouverture et de lecture\n    with open(\"fichier_inexistant.txt\", \"r\") as fichier:\n        contenu = fichier.read()\n        print(contenu)\n        \n# Si le fichier n'existe pas\nexcept FileNotFoundError:\n    print(\"Erreur : Le fichier n'existe pas !\")\n    \n# Si une autre erreur survient (permissions, etc.)\nexcept Exception as e:\n    print(f\"Erreur lors de la lecture : {e}\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Résumé des méthodes de lecture"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "read()"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Lit tout le fichier en une fois (retourne une chaîne)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "read(n)"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Lit n caractères (retourne une chaîne)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "readline()"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Lit une seule ligne (retourne une chaîne)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "readlines()"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Lit toutes les lignes (retourne une liste)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "for ligne in fichier"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Parcourt le fichier ligne par ligne (recommandé)."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 3.1 : La fonction read()",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Que retourne fichier.read() ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Une liste de lignes",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Une chaîne de caractères contenant tout le fichier",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Un nombre",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Un dictionnaire",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Quelle méthode lit une seule ligne à la fois ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "read()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "readline()",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "readlines()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "readall()",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Quelle est la meilleure méthode pour parcourir un fichier ligne par ligne ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Utiliser read() puis split('\\n')",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Utiliser 'for ligne in fichier'",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Utiliser readlines() puis une boucle",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Utiliser readline() dans une boucle while",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : La fonction write()",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Écrire dans un fichier avec write()",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à écrire dans un fichier avec write(), comprendre les différents modes d'écriture (w, a), les arguments de write(), et la gestion des erreurs, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Méthodes d'écriture",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "✍️ Écrire dans un fichier avec write()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Une fois le fichier ouvert en mode écriture, vous pouvez écrire du contenu avec la méthode write(). Cette méthode permet d'ajouter du texte dans un fichier."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Écrire du texte avec write()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Écrire du texte avec write()\n# ============================================\n\n# Syntaxe de base : fichier.write(texte)\n# 'texte' : la chaîne de caractères à écrire dans le fichier\n# write() retourne le nombre de caractères écrits\n\n# Étape 1 : Ouvrir le fichier en mode écriture (\"w\")\n# Mode \"w\" : écriture (écrase le fichier s'il existe)\n# Si le fichier n'existe pas, il est créé automatiquement\n# ATTENTION : Le contenu existant est EFFACÉ si le fichier existe déjà !\nwith open(\"mon_fichier.txt\", \"w\") as fichier:\n    \n    # Étape 2 : Écrire du texte dans le fichier\n    # .write() écrit la chaîne de caractères dans le fichier\n    # \"Bonjour le monde\" sera écrit dans le fichier\n    nombre_caracteres = fichier.write(\"Bonjour le monde\")\n    \n    # write() retourne le nombre de caractères écrits\n    print(f\"Nombre de caractères écrits : {nombre_caracteres}\")\n    # Résultat affiché : Nombre de caractères écrits : 15\n    # (15 caractères : \"Bonjour le monde\")\n\n# Le fichier est automatiquement fermé ici\n# Le fichier \"mon_fichier.txt\" contient maintenant : \"Bonjour le monde\"\n\n# ============================================\n# EXEMPLE 2 : Écrire plusieurs lignes\n# ============================================\n\n# Pour écrire plusieurs lignes, il faut ajouter \\n (retour à la ligne)\n# \\n est le caractère spécial qui crée une nouvelle ligne\n\nwith open(\"lignes.txt\", \"w\") as fichier:\n    # Écrire la première ligne\n    # \"Ligne 1\\n\" : écrit \"Ligne 1\" puis passe à la ligne suivante\n    fichier.write(\"Ligne 1\\n\")\n    \n    # Écrire la deuxième ligne\n    fichier.write(\"Ligne 2\\n\")\n    \n    # Écrire la troisième ligne\n    fichier.write(\"Ligne 3\\n\")\n\n# Le fichier \"lignes.txt\" contient maintenant :\n# Ligne 1\n# Ligne 2\n# Ligne 3\n\n# ============================================\n# EXEMPLE 3 : Écrire plusieurs fois dans le même fichier\n# ============================================\n\n# Vous pouvez appeler write() plusieurs fois\n# Chaque appel ajoute le texte à la suite (sans retour à la ligne automatique)\n\nwith open(\"texte.txt\", \"w\") as fichier:\n    # Premier appel : écrit \"Bonjour\"\n    fichier.write(\"Bonjour\")\n    \n    # Deuxième appel : écrit \" le monde\" juste après \"Bonjour\"\n    # Pas de retour à la ligne, donc le texte est collé\n    fichier.write(\" le monde\")\n    \n    # Troisième appel : écrit \" !\" juste après\n    fichier.write(\" !\")\n\n# Le fichier \"texte.txt\" contient maintenant : \"Bonjour le monde !\"\n# (tout sur une seule ligne, collé)\n\n# ============================================\n# EXEMPLE 4 : Écrire avec des variables\n# ============================================\n\n# Vous pouvez écrire le contenu de variables\n\nnom = \"Alice\"\nage = 25\nville = \"Paris\"\n\nwith open(\"profil.txt\", \"w\") as fichier:\n    # Écrire le nom\n    fichier.write(f\"Nom : {nom}\\n\")\n    # f-string permet d'insérer la variable {nom} dans le texte\n    # Résultat écrit : \"Nom : Alice\\n\"\n    \n    # Écrire l'âge (convertir en chaîne avec str())\n    fichier.write(f\"Âge : {age}\\n\")\n    # Résultat écrit : \"Âge : 25\\n\"\n    \n    # Écrire la ville\n    fichier.write(f\"Ville : {ville}\\n\")\n    # Résultat écrit : \"Ville : Paris\\n\"\n\n# Le fichier \"profil.txt\" contient maintenant :\n# Nom : Alice\n# Âge : 25\n# Ville : Paris\n\n# ============================================\n# EXEMPLE 5 : Mode \"a\" (append) - Ajouter à la fin\n# ============================================\n\n# Mode \"a\" (append) : ajoute du texte à la FIN du fichier\n# Le contenu existant est PRÉSERVÉ, on ajoute après\n# Si le fichier n'existe pas, il est créé\n\n# Créer d'abord un fichier avec du contenu\nwith open(\"journal.txt\", \"w\") as fichier:\n    fichier.write(\"Ligne 1\\n\")\n    fichier.write(\"Ligne 2\\n\")\n\n# Maintenant, ajouter du contenu à la fin\nwith open(\"journal.txt\", \"a\") as fichier:\n    # Mode \"a\" : ajoute à la fin sans écraser\n    fichier.write(\"Ligne 3 (ajoutée)\\n\")\n    fichier.write(\"Ligne 4 (ajoutée)\\n\")\n\n# Le fichier \"journal.txt\" contient maintenant :\n# Ligne 1\n# Ligne 2\n# Ligne 3 (ajoutée)\n# Ligne 4 (ajoutée)\n\n# ============================================\n# EXEMPLE 6 : Comparaison mode \"w\" vs mode \"a\"\n# ============================================\n\n# Mode \"w\" : ÉCRASE le contenu existant\nwith open(\"test.txt\", \"w\") as fichier:\n    fichier.write(\"Premier contenu\\n\")\n\n# Le fichier contient : \"Premier contenu\\n\"\n\n# Mode \"w\" à nouveau : ÉCRASE le contenu précédent\nwith open(\"test.txt\", \"w\") as fichier:\n    fichier.write(\"Nouveau contenu\\n\")\n\n# Le fichier contient maintenant : \"Nouveau contenu\\n\"\n# \"Premier contenu\" a été EFFACÉ !\n\n# Mode \"a\" : AJOUTE à la fin sans écraser\nwith open(\"test.txt\", \"a\") as fichier:\n    fichier.write(\"Ligne ajoutée\\n\")\n\n# Le fichier contient maintenant :\n# Nouveau contenu\n# Ligne ajoutée\n\n# ============================================\n# EXEMPLE 7 : Écrire une liste de lignes\n# ============================================\n\n# Si vous avez une liste de chaînes, vous pouvez les écrire une par une\n\nlignes = [\"Ligne 1\", \"Ligne 2\", \"Ligne 3\"]\n\nwith open(\"liste.txt\", \"w\") as fichier:\n    # Parcourir la liste et écrire chaque ligne\n    for ligne in lignes:\n        # Écrire la ligne avec \\n pour le retour à la ligne\n        fichier.write(f\"{ligne}\\n\")\n\n# Le fichier \"liste.txt\" contient maintenant :\n# Ligne 1\n# Ligne 2\n# Ligne 3\n\n# ============================================\n# EXEMPLE 8 : Gestion d'erreur lors de l'écriture\n# ============================================\n\n# Toujours gérer les erreurs possibles (permissions, espace disque, etc.)\n\ntry:\n    # Tentative d'ouverture et d'écriture\n    with open(\"fichier.txt\", \"w\") as fichier:\n        fichier.write(\"Contenu du fichier\\n\")\n        print(\"Fichier écrit avec succès !\")\n        \n# Si une erreur survient (permissions, espace disque, etc.)\nexcept PermissionError:\n    print(\"Erreur : Pas de permission pour écrire dans ce fichier !\")\n    \n# Si une autre erreur survient\nexcept Exception as e:\n    print(f\"Erreur lors de l'écriture : {e}\")\n\n# ============================================\n# EXEMPLE 9 : Arguments de write()\n# ============================================\n\n# write() accepte UN SEUL argument : une chaîne de caractères (str)\n# Vous ne pouvez pas écrire directement des nombres, listes, etc.\n# Il faut d'abord les convertir en chaîne avec str()\n\nnombre = 42\nliste = [1, 2, 3]\n\nwith open(\"types.txt\", \"w\") as fichier:\n    # ❌ ERREUR : write() n'accepte que des chaînes\n    # fichier.write(nombre)  # TypeError !\n    \n    # ✅ CORRECT : convertir en chaîne avec str()\n    fichier.write(str(nombre))\n    fichier.write(\"\\n\")\n    \n    # ❌ ERREUR : write() n'accepte pas les listes directement\n    # fichier.write(liste)  # TypeError !\n    \n    # ✅ CORRECT : convertir la liste en chaîne\n    fichier.write(str(liste))\n    fichier.write(\"\\n\")\n    \n    # ✅ CORRECT : écrire chaque élément de la liste séparément\n    for element in liste:\n        fichier.write(f\"{element}\\n\")\n\n# Le fichier \"types.txt\" contient maintenant :\n# 42\n# [1, 2, 3]\n# 1\n# 2\n# 3\n\n# ============================================\n# EXEMPLE 10 : write() retourne le nombre de caractères\n# ============================================\n\n# write() retourne le nombre de caractères écrits\n# Utile pour vérifier que l'écriture a réussi\n\nwith open(\"compteur.txt\", \"w\") as fichier:\n    # Écrire et récupérer le nombre de caractères\n    nb1 = fichier.write(\"Hello\")\n    print(f\"Premier write : {nb1} caractères\")  # Affiche : 5\n    \n    nb2 = fichier.write(\" World\")\n    print(f\"Deuxième write : {nb2} caractères\")  # Affiche : 6\n    \n    nb3 = fichier.write(\" !\\n\")\n    print(f\"Troisième write : {nb3} caractères\")  # Affiche : 3 (\" !\" + \"\\n\")\n    \n    total = nb1 + nb2 + nb3\n    print(f\"Total écrit : {total} caractères\")  # Affiche : 14\n\n# Le fichier \"compteur.txt\" contient : \"Hello World !\\n\""
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Résumé de write()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "Syntaxe"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : fichier.write(texte) où 'texte' est une chaîne de caractères (str)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "Argument"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : UN SEUL argument de type str (chaîne de caractères)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "Valeur de retour"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Le nombre de caractères écrits (entier)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "Mode \"w\""
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Écriture (écrase le fichier s'il existe)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "Mode \"a\""
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Ajout à la fin (préserve le contenu existant)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "Retour à la ligne"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Utiliser \\n pour créer une nouvelle ligne."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "Conversion"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Convertir les nombres/listes en chaîne avec str() avant d'écrire."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 4.1 : La fonction write()",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Quel est le type d'argument accepté par write() ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Un nombre (int)",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Une chaîne de caractères (str)",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Une liste",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "N'importe quel type",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Que retourne fichier.write(\"Hello\") ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "La chaîne écrite",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Le nombre de caractères écrits",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "True si succès, False sinon",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Rien (None)",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Quelle est la différence entre le mode \"w\" et le mode \"a\" ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Il n'y a pas de différence",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "\"w\" écrase le fichier, \"a\" ajoute à la fin",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "\"w\" ajoute à la fin, \"a\" écrase le fichier",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "\"w\" lit le fichier, \"a\" écrit dans le fichier",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment créer une nouvelle ligne dans un fichier avec write() ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Utiliser \\n dans la chaîne",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Appeler write() deux fois",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Utiliser write_line()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "C'est automatique",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : La méthode split()",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Diviser une chaîne avec split()",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à diviser une chaîne de caractères avec split(), comprendre les séparateurs, les limites, et combiner split() avec la lecture de fichiers, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "La méthode split()",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "✂️ Diviser une chaîne avec split()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "La méthode split() permet de diviser une chaîne de caractères en plusieurs parties selon un séparateur. C'est très utile pour traiter des données lues depuis un fichier."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : split() avec séparateur par défaut"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : split() avec séparateur par défaut (espaces)\n# ============================================\n\n# Chaîne de caractères à diviser\n# \"Bonjour le monde\" contient 3 mots séparés par des espaces\ntexte = \"Bonjour le monde\"\n\n# split() sans argument divise selon les ESPACES (et tabulations, retours à la ligne)\n# Retourne une LISTE de chaînes\n# Chaque mot devient un élément de la liste\nmots = texte.split()\n\n# Affichage du résultat\nprint(mots)\n# Résultat affiché : ['Bonjour', 'le', 'monde']\n# C'est une liste avec 3 éléments : 'Bonjour', 'le', 'monde'\n\n# Accès aux éléments individuels\nprint(mots[0])  # Premier élément : 'Bonjour'\nprint(mots[1])  # Deuxième élément : 'le'\nprint(mots[2])  # Troisième élément : 'monde'\n\n# ============================================\n# EXEMPLE 2 : split() avec séparateur personnalisé\n# ============================================\n\n# Chaîne avec des éléments séparés par des virgules\n# Format CSV (Comma-Separated Values) : valeurs séparées par des virgules\ndonnees_csv = \"Alice,30,Paris\"\n\n# split(\",\") divise selon les VIRGULES\n# Chaque partie entre les virgules devient un élément\ncolonnes = donnees_csv.split(\",\")\n\nprint(colonnes)\n# Résultat affiché : ['Alice', '30', 'Paris']\n# Liste avec 3 éléments : nom, âge, ville\n\n# Accès aux valeurs individuelles\nnom = colonnes[0]    # 'Alice'\nage = colonnes[1]    # '30' (attention : c'est une CHAÎNE, pas un nombre)\nville = colonnes[2]  # 'Paris'\n\nprint(f\"Nom : {nom}, Âge : {age}, Ville : {ville}\")\n# Résultat affiché : Nom : Alice, Âge : 30, Ville : Paris\n\n# ============================================\n# EXEMPLE 3 : split() avec plusieurs séparateurs identiques\n# ============================================\n\n# Chaîne avec plusieurs séparateurs consécutifs\ntexte = \"pomme,,banane,,,cerise\"\n\n# split(\",\") divise selon chaque virgule\n# Les séparateurs consécutifs créent des chaînes VIDES dans la liste\nresultat = texte.split(\",\")\n\nprint(resultat)\n# Résultat affiché : ['pomme', '', 'banane', '', '', 'cerise']\n# Notez les chaînes vides '' entre les éléments\n\n# ============================================\n# EXEMPLE 4 : Limiter le nombre de divisions avec maxsplit\n# ============================================\n\n# Chaîne avec plusieurs séparateurs\ntexte = \"un:deux:trois:quatre:cinq\"\n\n# split(\":\", 2) divise au maximum 2 fois\n# Après 2 divisions, le reste reste intact\n# Résultat : ['un', 'deux', 'trois:quatre:cinq']\nresultat = texte.split(\":\", 2)\n\nprint(resultat)\n# Résultat affiché : ['un', 'deux', 'trois:quatre:cinq']\n# 3 éléments : 'un', 'deux', et 'trois:quatre:cinq' (reste intact)\n\n# ============================================\n# EXEMPLE 5 : split() avec différents séparateurs\n# ============================================\n\n# Séparateur : point-virgule\ntexte1 = \"a;b;c\"\nresultat1 = texte1.split(\";\")\nprint(resultat1)  # ['a', 'b', 'c']\n\n# Séparateur : tiret\ntexte2 = \"x-y-z\"\nresultat2 = texte2.split(\"-\")\nprint(resultat2)  # ['x', 'y', 'z']\n\n# Séparateur : deux-points\ntexte3 = \"10:20:30\"\nresultat3 = texte3.split(\":\")\nprint(resultat3)  # ['10', '20', '30']\n\n# ============================================\n# EXEMPLE 6 : split() avec retour à la ligne\n# ============================================\n\n# Chaîne avec plusieurs lignes (séparées par \\n)\ntexte_multiligne = \"Ligne 1\\nLigne 2\\nLigne 3\"\n\n# split(\"\\n\") divise selon les retours à la ligne\nlignes = texte_multiligne.split(\"\\n\")\n\nprint(lignes)\n# Résultat affiché : ['Ligne 1', 'Ligne 2', 'Ligne 3']\n# Chaque ligne devient un élément de la liste\n\n# ============================================\n# EXEMPLE 7 : split() sur une chaîne vide\n# ============================================\n\n# Chaîne vide\nchaine_vide = \"\"\n\n# split() sur une chaîne vide retourne [''] (liste avec une chaîne vide)\nresultat = chaine_vide.split()\n\nprint(resultat)\n# Résultat affiché : ['']\n# Liste contenant une seule chaîne vide\n\n# ============================================\n# EXEMPLE 8 : split() avec strip() pour nettoyer\n# ============================================\n\n# Chaîne avec espaces autour des virgules\ntexte_sale = \" Alice , Bob , Charlie \"\n\n# split(\",\") divise selon les virgules\n# Mais garde les espaces autour des éléments\nresultat_sale = texte_sale.split(\",\")\nprint(resultat_sale)\n# Résultat affiché : [' Alice ', ' Bob ', ' Charlie ']\n# Notez les espaces avant et après chaque nom\n\n# Solution : utiliser strip() sur chaque élément\n# List comprehension : [element.strip() for element in liste]\n# Pour chaque élément, applique .strip() qui enlève les espaces\nresultat_propre = [element.strip() for element in texte_sale.split(\",\")]\nprint(resultat_propre)\n# Résultat affiché : ['Alice', 'Bob', 'Charlie']\n# Les espaces sont enlevés !"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 9 : Combiner read() et split() pour traiter un fichier"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 9 : Lire un fichier CSV et diviser les lignes\n# ============================================\n\n# Supposons que \"donnees.csv\" contient :\n# \"Alice,30,Paris\\nBob,25,Lyon\\nCharlie,35,Marseille\"\n\n# Ouvrir le fichier en lecture\nwith open(\"donnees.csv\", \"r\") as fichier:\n    # Lire tout le contenu\n    contenu = fichier.read()\n    \n    # Diviser selon les retours à la ligne pour obtenir les lignes\n    # split(\"\\n\") crée une liste où chaque élément est une ligne\n    lignes = contenu.split(\"\\n\")\n    \n    # Parcourir chaque ligne\n    for ligne in lignes:\n        # Ignorer les lignes vides\n        # if ligne : vérifie que la ligne n'est pas vide\n        if ligne:\n            # Diviser chaque ligne selon les virgules\n            # \"Alice,30,Paris\".split(\",\") devient ['Alice', '30', 'Paris']\n            colonnes = ligne.split(\",\")\n            \n            # Extraire les valeurs\n            nom = colonnes[0]    # 'Alice'\n            age = colonnes[1]    # '30' (chaîne)\n            ville = colonnes[2]  # 'Paris'\n            \n            # Afficher les données\n            print(f\"Nom : {nom}, Âge : {age}, Ville : {ville}\")\n    # Résultat affiché :\n    # Nom : Alice, Âge : 30, Ville : Paris\n    # Nom : Bob, Âge : 25, Ville : Lyon\n    # Nom : Charlie, Âge : 35, Ville : Marseille\n\n# ============================================\n# EXEMPLE 10 : Version optimisée avec parcours direct\n# ============================================\n\n# Méthode plus efficace : parcourir le fichier ligne par ligne\nwith open(\"donnees.csv\", \"r\") as fichier:\n    # Parcourir chaque ligne du fichier directement\n    for ligne in fichier:\n        # .strip() enlève \\n et espaces en début/fin\n        ligne_propre = ligne.strip()\n        \n        # Ignorer les lignes vides\n        if ligne_propre:\n            # Diviser selon les virgules\n            colonnes = ligne_propre.split(\",\")\n            \n            # Traiter les données\n            if len(colonnes) >= 3:  # Vérifier qu'il y a au moins 3 colonnes\n                nom = colonnes[0]\n                age = colonnes[1]\n                ville = colonnes[2]\n                \n                print(f\"{nom} a {age} ans et habite à {ville}\")\n\n# ============================================\n# EXEMPLE 11 : Traiter un fichier avec plusieurs séparateurs\n# ============================================\n\n# Supposons que \"config.txt\" contient :\n# \"host=localhost;port=8080;debug=true\"\n\nwith open(\"config.txt\", \"r\") as fichier:\n    # Lire la ligne\n    ligne = fichier.readline().strip()\n    \n    # Diviser selon le point-virgule\n    # \"host=localhost;port=8080;debug=true\".split(\";\")\n    # devient ['host=localhost', 'port=8080', 'debug=true']\n    parametres = ligne.split(\";\")\n    \n    # Parcourir chaque paramètre\n    for param in parametres:\n        # Diviser selon le signe =\n        # \"host=localhost\".split(\"=\") devient ['host', 'localhost']\n        cle, valeur = param.split(\"=\")\n        \n        print(f\"{cle} = {valeur}\")\n    # Résultat affiché :\n    # host = localhost\n    # port = 8080\n    # debug = true"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "split() sans argument divise selon les espaces (et tabulations, retours à la ligne)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "split(separateur) divise selon le séparateur spécifié."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "split() retourne toujours une LISTE de chaînes."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Utiliser strip() pour nettoyer les espaces autour des éléments."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Combiner read() et split() pour traiter des fichiers structurés (CSV, etc.)."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 4.1 : La méthode split()",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Que retourne \"a,b,c\".split(\",\") ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Une chaîne 'abc'",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Une liste ['a', 'b', 'c']",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Un tuple ('a', 'b', 'c')",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Un nombre",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Que fait split() sans argument ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Divise selon les virgules",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Divise selon les espaces, tabulations et retours à la ligne",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Ne fait rien",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Divise selon les points",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment diviser \"nom:âge:ville\" pour obtenir ['nom', 'âge', 'ville'] ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "split(\",\")",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "split(\":\")",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "split(\";\")",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "split(\"-\")",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 6 : Exercices pratiques",
+      "position": 5,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "exercise",
+          "title": "Exercice : Analyser un fichier CSV",
+          "position": 0,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📝 Exercice : Analyser un fichier CSV"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créez un programme Python qui :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Ouvre un fichier CSV nommé \"etudiants.csv\" contenant des données au format : nom,âge,ville"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Lit chaque ligne du fichier"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utilise split() pour séparer les colonnes (nom, âge, ville)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Affiche chaque étudiant avec un message formaté : \"[Nom] a [âge] ans et habite à [ville]\""
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Gère les erreurs (fichier inexistant, lignes vides)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exemple de fichier \"etudiants.csv\" :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "text"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Alice,20,Paris\nBob,22,Lyon\nCharlie,21,Marseille"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Résultat attendu :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "text"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Alice a 20 ans et habite à Paris\nBob a 22 ans et habite à Lyon\nCharlie a 21 ans et habite à Marseille"
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Correction : Analyser un fichier CSV"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# ============================================\n# CORRECTION : Analyser un fichier CSV\n# ============================================\n\n# Étape 1 : Gestion des erreurs avec try/except\n# Permet de gérer proprement les erreurs (fichier inexistant, etc.)\ntry:\n    # Étape 2 : Ouvrir le fichier en mode lecture\n    # 'with' garantit la fermeture automatique du fichier\n    # C'est la MEILLEURE PRATIQUE en Python\n    with open(\"etudiants.csv\", \"r\") as fichier:\n        \n        # Étape 3 : Parcourir le fichier ligne par ligne\n        # Python lit une ligne à la fois (efficace en mémoire)\n        for ligne in fichier:\n            \n            # Étape 4 : Nettoyer la ligne\n            # .strip() enlève les espaces et le caractère \\n en début/fin\n            # \"Alice,20,Paris\\n\".strip() devient \"Alice,20,Paris\"\n            ligne_propre = ligne.strip()\n            \n            # Étape 5 : Ignorer les lignes vides\n            # Si la ligne est vide après strip(), on passe à la suivante\n            # 'if ligne_propre' vérifie que la ligne n'est pas vide\n            if ligne_propre:\n                \n                # Étape 6 : Diviser la ligne selon les virgules\n                # split(\",\") divise \"Alice,20,Paris\" en ['Alice', '20', 'Paris']\n                # Chaque élément entre les virgules devient un élément de la liste\n                colonnes = ligne_propre.split(\",\")\n                \n                # Étape 7 : Vérifier qu'il y a bien 3 colonnes\n                # len(colonnes) donne le nombre d'éléments dans la liste\n                # On vérifie qu'il y a au moins 3 colonnes (nom, âge, ville)\n                if len(colonnes) >= 3:\n                    \n                    # Étape 8 : Extraire les valeurs\n                    # colonnes[0] : premier élément (nom)\n                    # colonnes[1] : deuxième élément (âge)\n                    # colonnes[2] : troisième élément (ville)\n                    nom = colonnes[0].strip()    # .strip() enlève les espaces autour\n                    age = colonnes[1].strip()    # '20' (c'est une chaîne, pas un nombre)\n                    ville = colonnes[2].strip()  # 'Paris'\n                    \n                    # Étape 9 : Afficher le message formaté\n                    # f-string permet d'insérer les variables dans le texte\n                    # {nom} sera remplacé par la valeur de 'nom'\n                    # {age} sera remplacé par la valeur de 'age'\n                    # {ville} sera remplacé par la valeur de 'ville'\n                    print(f\"{nom} a {age} ans et habite à {ville}\")\n                    \n                else:\n                    # Si la ligne n'a pas 3 colonnes, afficher un avertissement\n                    print(f\"Ligne ignorée (format incorrect) : {ligne_propre}\")\n\n# Étape 10 : Gérer l'erreur si le fichier n'existe pas\n# FileNotFoundError est levée si le fichier n'existe pas\nexcept FileNotFoundError:\n    # Message d'erreur explicite\n    print(\"Erreur : Le fichier 'etudiants.csv' n'existe pas !\")\n    print(\"Assurez-vous que le fichier existe dans le même dossier que votre script.\")\n    \n# Étape 11 : Gérer les autres erreurs possibles\n# Exception est la classe de base pour toutes les erreurs\n# 'as e' capture l'erreur dans la variable 'e'\nexcept Exception as e:\n    # Afficher le type et le message d'erreur\n    print(f\"Erreur lors de la lecture du fichier : {e}\")\n\n# ============================================\n# EXEMPLE D'EXÉCUTION\n# ============================================\n# Si \"etudiants.csv\" contient :\n# Alice,20,Paris\n# Bob,22,Lyon\n# Charlie,21,Marseille\n#\n# Le programme affichera :\n# Alice a 20 ans et habite à Paris\n# Bob a 22 ans et habite à Lyon\n# Charlie a 21 ans et habite à Marseille\n\n# ============================================\n# VERSION AMÉLIORÉE : Créer le fichier si nécessaire\n# ============================================\n\n# Optionnel : Créer un fichier d'exemple si il n'existe pas\nimport os\n\n# Vérifier si le fichier existe\nif not os.path.exists(\"etudiants.csv\"):\n    # Créer le fichier avec des données d'exemple\n    with open(\"etudiants.csv\", \"w\") as fichier:\n        # Écrire les lignes (\\n = retour à la ligne)\n        fichier.write(\"Alice,20,Paris\\n\")\n        fichier.write(\"Bob,22,Lyon\\n\")\n        fichier.write(\"Charlie,21,Marseille\\n\")\n    print(\"Fichier 'etudiants.csv' créé avec des données d'exemple.\")\n\n# Maintenant, lire le fichier\n# (le code de lecture est le même qu'au-dessus)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "💡 Explications détaillées"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "with open() : Ouvre le fichier et garantit sa fermeture automatique."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "for ligne in fichier : Parcourt le fichier ligne par ligne efficacement."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "ligne.strip() : Enlève les espaces et retours à la ligne."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "split(\",\") : Divise la ligne selon les virgules pour obtenir les colonnes."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "try/except : Gère les erreurs proprement (fichier inexistant, etc.)."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -5,7 +5,7 @@ import { supabase } from '../../lib/supabaseClient'
 import { Course } from '../../types/database'
 import { Plus, Edit, Eye, Trash2, Users, Code, UserCog, BookOpen, Search, Filter, MoreVertical, Copy, Calendar, DollarSign, LayoutGrid, List, FileText, Building2, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react'
 
-type SortOption = 'title-asc' | 'title-desc' | 'date-asc' | 'date-desc' | 'status-asc' | 'status-desc' | 'access-asc' | 'access-desc'
+type SortOption = 'title-asc' | 'title-desc' | 'date-asc' | 'date-desc' | 'updated-asc' | 'updated-desc' | 'status-asc' | 'status-desc' | 'access-asc' | 'access-desc'
 type GroupByOption = 'none' | 'status' | 'access_type' | 'created_at'
 
 export function AdminCourses() {
@@ -19,8 +19,9 @@ export function AdminCourses() {
   const [accessFilter, setAccessFilter] = useState<'all' | 'free' | 'paid' | 'invite'>('all')
   const [sortBy, setSortBy] = useState<SortOption>(() => {
     const saved = localStorage.getItem('admin-courses-sort')
-    return (saved as SortOption) || 'date-desc'
+    return (saved as SortOption) || 'updated-desc'
   })
+  const [showAllCourses, setShowAllCourses] = useState(false)
   const [groupBy, setGroupBy] = useState<GroupByOption>(() => {
     const saved = localStorage.getItem('admin-courses-group')
     return (saved as GroupByOption) || 'none'
@@ -40,7 +41,7 @@ export function AdminCourses() {
       const { data, error } = await supabase
         .from('courses')
         .select('*')
-        .order('created_at', { ascending: false })
+        .order('updated_at', { ascending: false })
 
       if (error) throw error
       setCourses(data || [])
@@ -66,6 +67,10 @@ export function AdminCourses() {
         return sorted.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
       case 'date-desc':
         return sorted.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      case 'updated-asc':
+        return sorted.sort((a, b) => new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime())
+      case 'updated-desc':
+        return sorted.sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
       case 'status-asc':
         return sorted.sort((a, b) => a.status.localeCompare(b.status))
       case 'status-desc':
@@ -156,8 +161,13 @@ export function AdminCourses() {
     // Trier
     filtered = sortCourses(filtered)
 
+    // Limiter aux 10 derniers utilisés par défaut (sauf si recherche active ou showAllCourses)
+    if (!showAllCourses && !searchQuery.trim() && sortBy === 'updated-desc') {
+      filtered = filtered.slice(0, 10)
+    }
+
     setFilteredCourses(filtered)
-  }, [courses, searchQuery, statusFilter, accessFilter, sortBy])
+  }, [courses, searchQuery, statusFilter, accessFilter, sortBy, showAllCourses])
 
   // Sauvegarder les préférences de tri et groupement
   useEffect(() => {
@@ -338,7 +348,7 @@ export function AdminCourses() {
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                   <input
                     type="text"
-                    placeholder="Rechercher une formation..."
+                    placeholder="Rechercher une formation (titre, description...)"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -413,8 +423,10 @@ export function AdminCourses() {
                       <option value="title-desc">Titre (Z-A)</option>
                     </optgroup>
                     <optgroup label="Date">
+                      <option value="updated-desc">Derniers utilisés</option>
                       <option value="date-desc">Plus récent</option>
                       <option value="date-asc">Plus ancien</option>
+                      <option value="updated-asc">Moins récemment utilisés</option>
                     </optgroup>
                     <optgroup label="Statut">
                       <option value="status-asc">Statut (A-Z)</option>
@@ -442,6 +454,34 @@ export function AdminCourses() {
                   </select>
                 </div>
               </div>
+
+              {/* Indicateur et bouton pour afficher tous les cours */}
+              {!showAllCourses && !searchQuery.trim() && sortBy === 'updated-desc' && courses.length > 10 && (
+                <div className="flex items-center justify-between pt-2 border-t border-gray-200">
+                  <p className="text-sm text-gray-600">
+                    Affichage des 10 derniers cours utilisés sur {courses.length} au total
+                  </p>
+                  <button
+                    onClick={() => setShowAllCourses(true)}
+                    className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    Afficher tous les cours →
+                  </button>
+                </div>
+              )}
+              {showAllCourses && (
+                <div className="flex items-center justify-between pt-2 border-t border-gray-200">
+                  <p className="text-sm text-gray-600">
+                    Affichage de tous les cours ({filteredCourses.length})
+                  </p>
+                  <button
+                    onClick={() => setShowAllCourses(false)}
+                    className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    Afficher seulement les 10 derniers →
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}

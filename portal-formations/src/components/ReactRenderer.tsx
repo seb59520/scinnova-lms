@@ -20,7 +20,7 @@ import { TitanicJsonUploader } from './TitanicJsonUploader'
 import { supabase } from '../lib/supabaseClient'
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ChevronDown, ChevronUp, ChevronRight, Gamepad2, FileText, Presentation, PenTool, Code, ArrowRight, ExternalLink } from 'lucide-react'
+import { ChevronDown, ChevronUp, ChevronRight, Gamepad2, FileText, Presentation, PenTool, Code, ArrowRight, ExternalLink, CheckCircle } from 'lucide-react'
 
 // Vérifie si le body TipTap contient du contenu substantiel
 function hasSubstantialBody(body: any): boolean {
@@ -41,9 +41,19 @@ function hasSubstantialBody(body: any): boolean {
 
 interface ReactRendererProps {
   courseJson: CourseJson
+  modules?: Array<{ id: string; title: string }>
+  moduleProgress?: Record<string, { percent: number; completed: boolean }>
+  onToggleModuleComplete?: (moduleId: string, moduleTitle: string) => void
+  userRole?: string
 }
 
-export function ReactRenderer({ courseJson }: ReactRendererProps) {
+export function ReactRenderer({ 
+  courseJson, 
+  modules = [], 
+  moduleProgress = {}, 
+  onToggleModuleComplete,
+  userRole 
+}: ReactRendererProps) {
   // État pour gérer l'expansion des modules (repliés par défaut)
   // Initialiser avec tous les modules repliés (Set vide)
   const [expandedModules, setExpandedModules] = useState<Set<number>>(() => {
@@ -213,11 +223,68 @@ export function ReactRenderer({ courseJson }: ReactRendererProps) {
                     {module.title}
                   </h2>
                   {hasGames && (
-                    <Gamepad2 
-                      className={`w-5 h-5 ${getItemTypeColor('game')}`}
-                      title="Ce module contient des jeux"
-                    />
+                    <div title="Ce module contient des jeux">
+                      <Gamepad2 
+                        className={`w-5 h-5 ${getItemTypeColor('game')}`}
+                      />
+                    </div>
                   )}
+                  {/* Coche de complétion du module */}
+                  {(() => {
+                    // Utiliser l'ID du module directement depuis courseJson si disponible, sinon chercher par titre
+                    const moduleId = module.id || modules.find(m => m.title === module.title)?.id
+                    const moduleData = moduleId ? modules.find(m => m.id === moduleId) : null
+                    
+                    if (!moduleId && !moduleData) {
+                      console.warn('Module ID not found for:', module.title, 'at index', moduleIndex, 'Available modules:', modules.map(m => ({ id: m.id, title: m.title })))
+                    }
+                    
+                    const moduleProgressData = moduleId ? moduleProgress[moduleId] : null
+                    const isCompleted = moduleProgressData?.completed || false
+                    
+                    if (moduleId) {
+                      console.log('Module progress for', module.title, ':', { 
+                        moduleId, 
+                        progress: moduleProgressData, 
+                        isCompleted,
+                        percent: moduleProgressData?.percent,
+                        completed_at: moduleProgressData?.completed_at,
+                        progressMapKeys: Object.keys(moduleProgress),
+                        progressMapHasThisModule: moduleId in moduleProgress
+                      })
+                    }
+                    
+                    if (moduleId && onToggleModuleComplete && userRole !== 'admin') {
+                      return (
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            onToggleModuleComplete(moduleId, module.title)
+                          }}
+                          className={`flex items-center justify-center transition-colors cursor-pointer ${
+                            isCompleted
+                              ? 'text-green-500 hover:text-green-600'
+                              : 'text-gray-400 hover:text-green-500'
+                          }`}
+                          title={isCompleted ? 'Module complété' : 'Marquer comme complété'}
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault()
+                              e.stopPropagation()
+                              onToggleModuleComplete(moduleId, module.title)
+                            }
+                          }}
+                        >
+                          <CheckCircle 
+                            className={`w-5 h-5 ${isCompleted ? 'fill-current' : ''}`}
+                          />
+                        </div>
+                      )
+                    }
+                    return null
+                  })()}
                 </div>
                 <div className="flex items-center space-x-2 ml-4">
                   <span className="text-xs font-normal text-gray-500">

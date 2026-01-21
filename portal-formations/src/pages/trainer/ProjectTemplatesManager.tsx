@@ -212,7 +212,7 @@ export function ProjectTemplatesManager() {
     return (
       <div className="min-h-screen bg-gray-50">
         <TrainerHeader />
-        <div className="pt-28 flex items-center justify-center">
+        <div className="pt-8 flex items-center justify-center">
           <div className="text-gray-500">Chargement...</div>
         </div>
       </div>
@@ -223,7 +223,7 @@ export function ProjectTemplatesManager() {
     <div className="min-h-screen bg-gray-50">
       <TrainerHeader />
 
-      <div className="max-w-5xl mx-auto px-4 py-6 pt-28">
+      <div className="max-w-5xl mx-auto px-4 py-6 pt-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>

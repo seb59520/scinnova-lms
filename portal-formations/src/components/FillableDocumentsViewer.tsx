@@ -7,9 +7,10 @@ import type { FillableDocument, FillableDocumentSubmission } from '../types/fill
 
 interface FillableDocumentsViewerProps {
   courseId: string
+  onHasDocumentsChange?: (hasDocuments: boolean) => void
 }
 
-export function FillableDocumentsViewer({ courseId }: FillableDocumentsViewerProps) {
+export function FillableDocumentsViewer({ courseId, onHasDocumentsChange }: FillableDocumentsViewerProps) {
   const { user, profile } = useAuth()
   const [documents, setDocuments] = useState<FillableDocument[]>([])
   const [submissions, setSubmissions] = useState<Record<string, FillableDocumentSubmission>>({})
@@ -43,7 +44,9 @@ export function FillableDocumentsViewer({ courseId }: FillableDocumentsViewerPro
 
       if (fetchError) throw fetchError
 
-      setDocuments(data || [])
+      const docs = data || []
+      setDocuments(docs)
+      onHasDocumentsChange?.(docs.length > 0)
     } catch (err: any) {
       console.error('Error fetching documents:', err)
       setError('Erreur lors du chargement des documents')
@@ -344,21 +347,18 @@ export function FillableDocumentsViewer({ courseId }: FillableDocumentsViewerPro
     return new Date(dueDate) < new Date()
   }
 
+  useEffect(() => {
+    if (!loading) {
+      onHasDocumentsChange?.(documents.length > 0)
+    }
+  }, [documents.length, loading, onHasDocumentsChange])
+
   if (loading) {
-    return (
-      <div className="bg-gray-50 p-4 rounded-lg">
-        <p className="text-sm text-gray-600">Chargement des documents à compléter...</p>
-      </div>
-    )
+    return null
   }
 
   if (documents.length === 0) {
-    return (
-      <div className="bg-gray-50 p-4 rounded-lg text-center">
-        <FileText className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-        <p className="text-sm text-gray-600">Aucun document à compléter pour ce cours.</p>
-      </div>
-    )
+    return null
   }
 
   return (

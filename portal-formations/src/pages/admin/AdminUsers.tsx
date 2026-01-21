@@ -313,7 +313,7 @@ export function AdminUsers() {
   return (
     <div className="min-h-screen bg-gray-50">
       <AppHeader title="SCINNOVA - LMS" showBackButton={true} backTo="/admin" backLabel="Retour à l'administration" />
-      <div className="py-8 px-4 sm:px-6 lg:px-8 pt-24">
+      <div className="py-8 px-4 sm:px-6 lg:px-8 pt-8">
         <div className="w-full">
           <div className="mb-8">
             <div className="flex justify-between items-center mb-4">

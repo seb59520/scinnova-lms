@@ -1,0 +1,467 @@
+{
+  "type": "game",
+  "title": "Évaluation Python - Fondamentaux et Compréhension du Code",
+  "position": 1,
+  "published": true,
+  "content": {
+    "gameType": "quiz",
+    "description": "Évaluation complète de 30 questions portant sur les fondamentaux de Python : variables, types, structures de contrôle, fonctions, collections, et compréhension du code. Cette évaluation teste votre maîtrise des concepts essentiels de la programmation Python.",
+    "instructions": "Répondez aux 30 questions pour évaluer votre compréhension des fondamentaux Python. Analysez attentivement chaque code et choisissez la meilleure réponse. Vous obtiendrez une note détaillée avec des explications pour chaque réponse.",
+    "objectives": [
+      "Maîtriser les types de données Python (int, float, str, bool, list, dict, tuple)",
+      "Comprendre les structures de contrôle (if/else, for, while)",
+      "Savoir utiliser et créer des fonctions",
+      "Manipuler les collections (listes, dictionnaires, tuples)",
+      "Comprendre la portée des variables et les concepts de base",
+      "Analyser et prédire le comportement du code Python"
+    ],
+    "scoring": {
+      "totalQuestions": 30,
+      "pointsPerQuestion": 1,
+      "passingScore": 20,
+      "levels": {
+        "0-14": "Bases à renforcer - Revoyez les fondamentaux de Python",
+        "15-24": "Bon niveau - Vous maîtrisez les concepts essentiels",
+        "25-30": "Excellent niveau - Très bonne compréhension de Python"
+      }
+    },
+    "levels": [
+      {
+        "level": 1,
+        "name": "Niveau 1 - Types, Variables et Opérations de Base",
+        "description": "Questions sur les types de données, variables, opérations arithmétiques et comparaisons",
+        "questions": [
+          {
+            "id": "q1-type-int",
+            "type": "mcq",
+            "prompt": "Quel est le type de la variable `x = 42` ?",
+            "options": [
+              "str",
+              "int",
+              "float",
+              "bool"
+            ],
+            "answer": "int",
+            "explanation": "La variable `x = 42` contient un nombre entier sans décimales, donc son type est `int` (integer).",
+            "difficulty": 1
+          },
+          {
+            "id": "q2-type-float",
+            "type": "mcq",
+            "prompt": "Quel est le type de la variable `y = 3.14` ?",
+            "options": [
+              "int",
+              "str",
+              "float",
+              "bool"
+            ],
+            "answer": "float",
+            "explanation": "La variable `y = 3.14` contient un nombre avec des décimales, donc son type est `float` (nombre à virgule flottante).",
+            "difficulty": 1
+          },
+          {
+            "id": "q3-division-float",
+            "type": "mcq",
+            "prompt": "Quel est le résultat de `10 / 3` en Python 3 ?",
+            "options": [
+              "3",
+              "3.3333333333333335",
+              "3.0",
+              "Erreur"
+            ],
+            "answer": "3.3333333333333335",
+            "explanation": "En Python 3, l'opérateur `/` effectue une division réelle (float), même entre deux entiers. Le résultat est `3.3333333333333335` (approximation de 10/3). Pour une division entière, utilisez `//`.",
+            "difficulty": 1
+          },
+          {
+            "id": "q4-concatenation",
+            "type": "mcq",
+            "prompt": "Quel est le résultat de `\"Hello\" + \" \" + \"World\"` ?",
+            "options": [
+              "\"Hello World\"",
+              "\"Hello\" \" \" \"World\"",
+              "Erreur",
+              "\"Hello+ +World\""
+            ],
+            "answer": "\"Hello World\"",
+            "explanation": "L'opérateur `+` permet de concaténer (assembler) des chaînes de caractères. `\"Hello\" + \" \" + \"World\"` donne `\"Hello World\"`.",
+            "difficulty": 1
+          },
+          {
+            "id": "q5-comparaison",
+            "type": "true-false",
+            "prompt": "L'expression `5 >= 5` retourne `True`",
+            "answer": true,
+            "explanation": "Vrai. L'opérateur `>=` signifie \"supérieur ou égal\". Comme `5` est égal à `5`, l'expression `5 >= 5` retourne `True`.",
+            "difficulty": 1
+          },
+          {
+            "id": "q6-bool-and",
+            "type": "mcq",
+            "prompt": "Quel est le résultat de `True and False` ?",
+            "options": [
+              "True",
+              "False",
+              "None",
+              "Erreur"
+            ],
+            "answer": "False",
+            "explanation": "L'opérateur `and` retourne `True` uniquement si les deux opérandes sont `True`. Ici, `True and False` retourne `False` car l'un des deux est `False`.",
+            "difficulty": 1
+          },
+          {
+            "id": "q7-bool-or",
+            "type": "mcq",
+            "prompt": "Quel est le résultat de `True or False` ?",
+            "options": [
+              "True",
+              "False",
+              "None",
+              "Erreur"
+            ],
+            "answer": "True",
+            "explanation": "L'opérateur `or` retourne `True` si au moins un des deux opérandes est `True`. Ici, `True or False` retourne `True` car le premier opérande est `True`.",
+            "difficulty": 1
+          },
+          {
+            "id": "q8-len-string",
+            "type": "mcq",
+            "prompt": "Quelle est la valeur de `len(\"Python\")` ?",
+            "options": [
+              "5",
+              "6",
+              "7",
+              "Erreur"
+            ],
+            "answer": "6",
+            "explanation": "La fonction `len()` retourne le nombre de caractères dans une chaîne. \"Python\" contient 6 caractères : P, y, t, h, o, n.",
+            "difficulty": 1
+          },
+          {
+            "id": "q9-modulo",
+            "type": "mcq",
+            "prompt": "Quel est le résultat de `10 % 3` ?",
+            "options": [
+              "3",
+              "1",
+              "0",
+              "Erreur"
+            ],
+            "answer": "1",
+            "explanation": "L'opérateur `%` (modulo) retourne le reste de la division entière. `10 % 3` = 1 car 10 = 3 × 3 + 1. Le reste est 1.",
+            "difficulty": 1
+          },
+          {
+            "id": "q10-type-conversion",
+            "type": "mcq",
+            "prompt": "Quel est le résultat de `int(\"42\")` ?",
+            "options": [
+              "42 (int)",
+              "\"42\" (str)",
+              "Erreur",
+              "42.0 (float)"
+            ],
+            "answer": "42 (int)",
+            "explanation": "La fonction `int()` convertit une chaîne de caractères en entier. `int(\"42\")` retourne l'entier `42` (type `int`).",
+            "difficulty": 1
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "name": "Niveau 2 - Structures de Contrôle et Collections",
+        "description": "Questions sur les conditions, boucles, listes, dictionnaires et leur manipulation",
+        "questions": [
+          {
+            "id": "q11-if-else",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\nx = 10\nif x > 5:\n    result = \"Grand\"\nelse:\n    result = \"Petit\"\n```\nQuelle est la valeur de `result` ?",
+            "options": [
+              "\"Grand\"",
+              "\"Petit\"",
+              "None",
+              "Erreur"
+            ],
+            "answer": "\"Grand\"",
+            "explanation": "Comme `x = 10` et `10 > 5` est `True`, la condition `if x > 5` est vraie, donc `result = \"Grand\"` est exécuté.",
+            "difficulty": 2
+          },
+          {
+            "id": "q12-for-loop",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\nsomme = 0\nfor i in range(3):\n    somme += i\n```\nQuelle est la valeur de `somme` après l'exécution ?",
+            "options": [
+              "3",
+              "6",
+              "0",
+              "Erreur"
+            ],
+            "answer": "3",
+            "explanation": "`range(3)` génère les valeurs 0, 1, 2. La boucle calcule : somme = 0 + 0 + 1 + 2 = 3.",
+            "difficulty": 2
+          },
+          {
+            "id": "q13-list-index",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\nliste = [10, 20, 30, 40]\nresult = liste[1]\n```\nQuelle est la valeur de `result` ?",
+            "options": [
+              "10",
+              "20",
+              "30",
+              "Erreur"
+            ],
+            "answer": "20",
+            "explanation": "En Python, les indices de liste commencent à 0. `liste[0]` = 10, `liste[1]` = 20, `liste[2]` = 30, `liste[3]` = 40. Donc `liste[1]` retourne `20`.",
+            "difficulty": 2
+          },
+          {
+            "id": "q14-list-append",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\nliste = [1, 2, 3]\nliste.append(4)\n```\nQuelle est la valeur de `liste` après l'exécution ?",
+            "options": [
+              "[1, 2, 3]",
+              "[1, 2, 3, 4]",
+              "[4, 1, 2, 3]",
+              "Erreur"
+            ],
+            "answer": "[1, 2, 3, 4]",
+            "explanation": "La méthode `append()` ajoute un élément à la fin de la liste. `liste.append(4)` ajoute `4` à la fin, donc `liste` devient `[1, 2, 3, 4]`.",
+            "difficulty": 2
+          },
+          {
+            "id": "q15-dict-access",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\nd = {\"nom\": \"Alice\", \"age\": 25}\nresult = d[\"nom\"]\n```\nQuelle est la valeur de `result` ?",
+            "options": [
+              "\"Alice\"",
+              "25",
+              "\"nom\"",
+              "Erreur"
+            ],
+            "answer": "\"Alice\"",
+            "explanation": "Les dictionnaires stockent des paires clé-valeur. `d[\"nom\"]` accède à la valeur associée à la clé `\"nom\"`, qui est `\"Alice\"`.",
+            "difficulty": 2
+          },
+          {
+            "id": "q16-while-loop",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\nx = 0\nwhile x < 3:\n    x += 1\n```\nQuelle est la valeur de `x` après l'exécution ?",
+            "options": [
+              "2",
+              "3",
+              "4",
+              "Boucle infinie"
+            ],
+            "answer": "3",
+            "explanation": "La boucle `while` s'exécute tant que `x < 3`. Itérations : x=0 (0<3 vrai) → x=1, x=1 (1<3 vrai) → x=2, x=2 (2<3 vrai) → x=3, x=3 (3<3 faux) → arrêt. Donc `x = 3`.",
+            "difficulty": 2
+          },
+          {
+            "id": "q17-list-slicing",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\nliste = [0, 1, 2, 3, 4]\nresult = liste[1:4]\n```\nQuelle est la valeur de `result` ?",
+            "options": [
+              "[0, 1, 2, 3]",
+              "[1, 2, 3]",
+              "[1, 2, 3, 4]",
+              "Erreur"
+            ],
+            "answer": "[1, 2, 3]",
+            "explanation": "Le slicing `liste[1:4]` extrait les éléments de l'indice 1 (inclus) à l'indice 4 (exclu). Donc `liste[1:4]` = `[liste[1], liste[2], liste[3]]` = `[1, 2, 3]`.",
+            "difficulty": 2
+          },
+          {
+            "id": "q18-list-comprehension",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\nresult = [x * 2 for x in range(3)]\n```\nQuelle est la valeur de `result` ?",
+            "options": [
+              "[0, 2, 4]",
+              "[2, 4, 6]",
+              "[0, 1, 2]",
+              "Erreur"
+            ],
+            "answer": "[0, 2, 4]",
+            "explanation": "La compréhension de liste `[x * 2 for x in range(3)]` crée une liste en multipliant chaque élément de `range(3)` (0, 1, 2) par 2. Donc `result = [0*2, 1*2, 2*2] = [0, 2, 4]`.",
+            "difficulty": 2
+          },
+          {
+            "id": "q19-tuple",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\nt = (1, 2, 3)\nresult = t[0]\n```\nQuelle est la valeur de `result` ?",
+            "options": [
+              "1",
+              "2",
+              "3",
+              "Erreur"
+            ],
+            "answer": "1",
+            "explanation": "Les tuples sont des séquences immutables (non modifiables). Comme les listes, on accède aux éléments par indice. `t[0]` retourne le premier élément, qui est `1`.",
+            "difficulty": 2
+          },
+          {
+            "id": "q20-dict-get",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\nd = {\"a\": 1, \"b\": 2}\nresult = d.get(\"c\", 0)\n```\nQuelle est la valeur de `result` ?",
+            "options": [
+              "1",
+              "2",
+              "0",
+              "Erreur"
+            ],
+            "answer": "0",
+            "explanation": "La méthode `get(clé, valeur_par_défaut)` retourne la valeur associée à la clé si elle existe, sinon la valeur par défaut. Comme `\"c\"` n'existe pas dans `d`, `d.get(\"c\", 0)` retourne `0`.",
+            "difficulty": 2
+          }
+        ]
+      },
+      {
+        "level": 3,
+        "name": "Niveau 3 - Fonctions et Compréhension du Code",
+        "description": "Questions sur les fonctions, portée des variables, et analyse de code plus complexe",
+        "questions": [
+          {
+            "id": "q21-function-def",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\ndef double(x):\n    return x * 2\n\nresult = double(5)\n```\nQuelle est la valeur de `result` ?",
+            "options": [
+              "5",
+              "10",
+              "25",
+              "Erreur"
+            ],
+            "answer": "10",
+            "explanation": "La fonction `double(x)` retourne `x * 2`. Quand on appelle `double(5)`, elle retourne `5 * 2 = 10`. Donc `result = 10`.",
+            "difficulty": 3
+          },
+          {
+            "id": "q22-function-default",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\ndef greet(name=\"World\"):\n    return f\"Hello, {name}!\"\n\nresult = greet()\n```\nQuelle est la valeur de `result` ?",
+            "options": [
+              "\"Hello, World!\"",
+              "\"Hello, !\"",
+              "Erreur",
+              "None"
+            ],
+            "answer": "\"Hello, World!\"",
+            "explanation": "La fonction `greet` a un paramètre par défaut `name=\"World\"`. Quand on appelle `greet()` sans argument, `name` prend la valeur par défaut `\"World\"`. Donc `result = \"Hello, World!\"`.",
+            "difficulty": 3
+          },
+          {
+            "id": "q23-scope-local",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\nx = 10\n\ndef change_x():\n    x = 20\n    return x\n\nresult = change_x()\n```\nQuelle est la valeur de `result` ? Et quelle est la valeur de `x` après l'appel (variable globale) ?",
+            "options": [
+              "result = 20, x global = 20",
+              "result = 20, x global = 10",
+              "result = 10, x global = 10",
+              "Erreur"
+            ],
+            "answer": "result = 20, x global = 10",
+            "explanation": "Dans la fonction `change_x()`, `x = 20` crée une variable locale `x`, qui masque la variable globale. La fonction retourne `20` (variable locale). La variable globale `x` reste inchangée à `10` car l'assignation dans la fonction ne modifie que la variable locale.",
+            "difficulty": 3
+          },
+          {
+            "id": "q24-list-mutation",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\nliste = [1, 2, 3]\n\ndef add_element(lst):\n    lst.append(4)\n    return lst\n\nresult = add_element(liste)\n```\nQuelle est la valeur de `liste` après l'appel ?",
+            "options": [
+              "[1, 2, 3]",
+              "[1, 2, 3, 4]",
+              "[4]",
+              "Erreur"
+            ],
+            "answer": "[1, 2, 3, 4]",
+            "explanation": "Les listes sont des objets mutables. Quand on passe `liste` à `add_element()`, le paramètre `lst` référence la même liste. `lst.append(4)` modifie cette liste, donc la liste originale `liste` est modifiée et devient `[1, 2, 3, 4]`.",
+            "difficulty": 3
+          },
+          {
+            "id": "q25-lambda",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\nf = lambda x: x + 1\nresult = f(5)\n```\nQuelle est la valeur de `result` ?",
+            "options": [
+              "5",
+              "6",
+              "Erreur",
+              "None"
+            ],
+            "answer": "6",
+            "explanation": "Une fonction lambda est une fonction anonyme. `lambda x: x + 1` est équivalent à `def f(x): return x + 1`. Donc `f(5)` retourne `5 + 1 = 6`.",
+            "difficulty": 3
+          },
+          {
+            "id": "q26-nested-loop",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\nresult = []\nfor i in range(2):\n    for j in range(2):\n        result.append((i, j))\n```\nQuelle est la valeur de `result` ?",
+            "options": [
+              "[(0, 0), (0, 1), (1, 0), (1, 1)]",
+              "[(0, 0), (1, 1)]",
+              "[(0, 1), (1, 0)]",
+              "Erreur"
+            ],
+            "answer": "[(0, 0), (0, 1), (1, 0), (1, 1)]",
+            "explanation": "Boucle imbriquée : pour chaque `i` (0, 1), on itère sur `j` (0, 1). Itérations : i=0, j=0 → (0,0) ; i=0, j=1 → (0,1) ; i=1, j=0 → (1,0) ; i=1, j=1 → (1,1). Donc `result = [(0, 0), (0, 1), (1, 0), (1, 1)]`.",
+            "difficulty": 3
+          },
+          {
+            "id": "q27-string-methods",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\ntext = \"Hello World\"\nresult = text.upper()\n```\nQuelle est la valeur de `result` ?",
+            "options": [
+              "\"hello world\"",
+              "\"HELLO WORLD\"",
+              "\"Hello World\"",
+              "Erreur"
+            ],
+            "answer": "\"HELLO WORLD\"",
+            "explanation": "La méthode `upper()` convertit tous les caractères d'une chaîne en majuscules. `\"Hello World\".upper()` retourne `\"HELLO WORLD\"`.",
+            "difficulty": 3
+          },
+          {
+            "id": "q28-list-filter",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\nnombres = [1, 2, 3, 4, 5]\nresult = [x for x in nombres if x % 2 == 0]\n```\nQuelle est la valeur de `result` ?",
+            "options": [
+              "[1, 3, 5]",
+              "[2, 4]",
+              "[1, 2, 3, 4, 5]",
+              "Erreur"
+            ],
+            "answer": "[2, 4]",
+            "explanation": "La compréhension de liste avec condition `[x for x in nombres if x % 2 == 0]` filtre les nombres pairs (divisibles par 2). Les nombres pairs dans `[1, 2, 3, 4, 5]` sont `2` et `4`. Donc `result = [2, 4]`.",
+            "difficulty": 3
+          },
+          {
+            "id": "q29-dict-comprehension",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\nresult = {x: x**2 for x in range(3)}\n```\nQuelle est la valeur de `result` ?",
+            "options": [
+              "{0: 0, 1: 1, 2: 4}",
+              "{0, 1, 4}",
+              "[0, 1, 4]",
+              "Erreur"
+            ],
+            "answer": "{0: 0, 1: 1, 2: 4}",
+            "explanation": "La compréhension de dictionnaire `{x: x**2 for x in range(3)}` crée un dictionnaire où chaque clé `x` (0, 1, 2) est associée à sa valeur au carré. Donc `result = {0: 0², 1: 1², 2: 2²} = {0: 0, 1: 1, 2: 4}`.",
+            "difficulty": 3
+          },
+          {
+            "id": "q30-code-analysis",
+            "type": "mcq",
+            "prompt": "Considérez le code suivant :\n```python\ndef count_even(numbers):\n    count = 0\n    for num in numbers:\n        if num % 2 == 0:\n            count += 1\n    return count\n\nresult = count_even([1, 2, 3, 4, 5, 6])\n```\nQuelle est la valeur de `result` ?",
+            "options": [
+              "2",
+              "3",
+              "4",
+              "Erreur"
+            ],
+            "answer": "3",
+            "explanation": "La fonction `count_even` compte les nombres pairs dans une liste. Elle parcourt `[1, 2, 3, 4, 5, 6]` et incrémente `count` pour chaque nombre pair (2, 4, 6). Il y a 3 nombres pairs, donc `result = 3`.",
+            "difficulty": 3
+          }
+        ]
+      }
+    ]
+  },
+  "chapters": []
+}

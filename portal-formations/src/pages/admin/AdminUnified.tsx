@@ -7,6 +7,7 @@ import { AdminUsersContent } from './AdminUsersContent'
 import { AdminOrgsContent } from './AdminOrgsContent'
 import { AdminItemsContent } from './AdminItemsContent'
 import { AdminTrainerContent } from './AdminTrainerContent'
+import { AdminStudentsContent } from './AdminStudentsContent'
 import {
   BookOpen,
   Layers,
@@ -18,11 +19,12 @@ import {
   Radio,
   Award,
   ClipboardCheck,
-  ChevronDown
+  ChevronDown,
+  Eye
 } from 'lucide-react'
 import '../../styles/admin-unified.css'
 
-type AdminTab = 'courses' | 'programs' | 'users' | 'orgs' | 'items' | 'trainer'
+type AdminTab = 'courses' | 'programs' | 'users' | 'orgs' | 'items' | 'trainer' | 'students'
 
 interface SubMenu {
   id: string;
@@ -31,7 +33,7 @@ interface SubMenu {
   path: string;
 }
 
-type AccentTone = 'blue' | 'purple' | 'emerald' | 'orange' | 'rose' | 'indigo';
+type AccentTone = 'blue' | 'purple' | 'emerald' | 'orange' | 'rose' | 'indigo' | 'cyan';
 
 interface TabWithSubMenu {
   id: AdminTab;
@@ -43,9 +45,16 @@ interface TabWithSubMenu {
 }
 
 export function AdminUnified() {
-  const [activeTab, setActiveTab] = useState<AdminTab>('courses')
+  const [activeTab, setActiveTab] = useState<AdminTab>('students')
   const navigate = useNavigate()
   const tabs: TabWithSubMenu[] = [
+    { 
+      id: 'students', 
+      label: 'Vue élèves', 
+      icon: Eye,
+      description: 'Accédez à la vue que voient les élèves pour tester l\'expérience utilisateur.',
+      accent: 'cyan'
+    },
     { 
       id: 'courses', 
       label: 'Formations', 
@@ -137,6 +146,12 @@ export function AdminUnified() {
       pill: 'bg-indigo-50 text-indigo-700 border-indigo-100',
       icon: 'bg-indigo-50 text-indigo-500',
       iconActive: 'bg-indigo-600 text-white'
+    },
+    cyan: {
+      gradient: 'from-cyan-600 via-blue-600 to-sky-600',
+      pill: 'bg-cyan-50 text-cyan-700 border-cyan-100',
+      icon: 'bg-cyan-50 text-cyan-500',
+      iconActive: 'bg-cyan-600 text-white'
     }
   }
 
@@ -147,7 +162,7 @@ export function AdminUnified() {
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <AppHeader title="Administration" />
 
-      <main className="pt-24 pb-12 px-4 sm:px-6 lg:px-10">
+      <main className="pt-8 pb-12 px-4 sm:px-6 lg:px-10">
         <div className="mx-auto w-full max-w-7xl space-y-8">
           <section className="rounded-3xl border border-slate-100 bg-white shadow-sm">
             <div className="flex flex-col gap-6 p-6 lg:flex-row lg:items-center lg:justify-between">
@@ -279,6 +294,7 @@ export function AdminUnified() {
 
               <div className="p-2 sm:p-4 lg:p-6 bg-slate-50/40">
                 <div className="admin-unified min-w-0">
+                  {activeTab === 'students' && <AdminStudentsContent />}
                   {activeTab === 'courses' && <AdminCoursesContent />}
                   {activeTab === 'programs' && <AdminProgramsContent />}
                   {activeTab === 'users' && <AdminUsersContent />}

@@ -29,17 +29,29 @@ export function CourseSidebar({
 }: CourseSidebarProps) {
   const { courseId } = useParams<{ courseId: string }>()
   const location = useLocation()
-  const [expandedModules, setExpandedModules] = useState<Set<number>>(new Set()) // Par défaut, tous fermés
+  
+  // Initialiser avec tous les modules dépliés par défaut
+  const [expandedModules, setExpandedModules] = useState<Set<number>>(() => {
+    const allModules = new Set<number>()
+    courseJson.modules.forEach((_, index) => {
+      allModules.add(index)
+    })
+    return allModules
+  })
   const [expandedLexique, setExpandedLexique] = useState(false)
   const [expandedBatches, setExpandedBatches] = useState<Set<string>>(new Set())
   
   // Détecter si la sidebar est réduite au minimum (à 5px près pour gérer les arrondis)
   const isMinimized = sidebarWidth <= minWidth + 5
 
-  // Synchroniser avec le module sélectionné depuis le contenu principal
+  // Synchroniser avec le module sélectionné depuis le contenu principal (sans fermer les autres)
   useEffect(() => {
     if (selectedModuleIndex !== null && selectedModuleIndex !== undefined) {
-      setExpandedModules(new Set([selectedModuleIndex]))
+      setExpandedModules(prev => {
+        const newSet = new Set(prev)
+        newSet.add(selectedModuleIndex)
+        return newSet
+      })
     }
   }, [selectedModuleIndex])
 
@@ -50,10 +62,12 @@ export function CourseSidebar({
     : undefined
 
   const toggleModule = (index: number) => {
-    const newExpanded = new Set<number>()
+    const newExpanded = new Set(expandedModules)
     // Si le module est déjà ouvert, on le ferme
-    // Sinon, on ferme tous les autres et on ouvre seulement celui-ci
-    if (!expandedModules.has(index)) {
+    // Sinon, on l'ouvre (sans fermer les autres)
+    if (expandedModules.has(index)) {
+      newExpanded.delete(index)
+    } else {
       newExpanded.add(index)
       // Notifier le parent pour synchroniser la vue du contenu
       if (onModuleSelect) {
@@ -138,11 +152,11 @@ export function CourseSidebar({
 
   const containerStyle = fullHeight
     ? { height: '100vh', overflow: 'hidden' as const }
-    : { height: '100%', maxHeight: 'calc(100vh - 8rem)', overflow: 'hidden' as const, borderRadius: '1.5rem' }
+    : { width: '100%', overflow: 'hidden' as const }
 
   const scrollStyle = fullHeight
     ? { height: '100%', overflowY: 'auto' as const }
-    : { maxHeight: 'calc(100vh - 12rem)', overflowY: 'auto' as const }
+    : { maxHeight: '100%', overflowY: 'auto' as const }
 
   return (
     <div className={`w-full bg-white ${fullHeight ? 'border-r border-gray-200' : 'border border-gray-200'} flex flex-col shadow-lg`} style={containerStyle}>

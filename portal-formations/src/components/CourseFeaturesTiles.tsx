@@ -97,9 +97,9 @@ export function CourseFeaturesTiles({ course, items, courseId }: CourseFeaturesT
         {features.map((feature) => {
           const content = (
             <div
-              className={`${feature.bgColor} ${feature.color} rounded-lg p-4 transition-all duration-200 cursor-pointer border-2 border-transparent hover:border-gray-300`}
+              className={`${feature.bgColor} ${feature.color} rounded-lg p-4 transition-all duration-200 cursor-pointer border-2 border-transparent hover:border-gray-300 h-full flex flex-col`}
             >
-              <div className="flex flex-col items-center text-center space-y-2">
+              <div className="flex flex-col items-center text-center space-y-2 flex-1 justify-center">
                 <div className={feature.color}>
                   {feature.icon}
                 </div>
@@ -117,13 +117,13 @@ export function CourseFeaturesTiles({ course, items, courseId }: CourseFeaturesT
 
           if (feature.link) {
             return (
-              <Link key={feature.type} to={feature.link}>
+              <Link key={feature.type} to={feature.link} className="h-full">
                 {content}
               </Link>
             )
           }
 
-          return <div key={feature.type}>{content}</div>
+          return <div key={feature.type} className="h-full">{content}</div>
         })}
       </div>
     </div>

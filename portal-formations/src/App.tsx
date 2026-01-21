@@ -75,14 +75,27 @@ import { UserDirectoryPage } from './pages/UserDirectoryPage'
 import { ChatWidget } from './components/ChatWidget'
 import { TimeTrackingProvider } from './components/TimeTrackingProvider'
 import DataExercisesPage from './pages/DataExercisesPage'
+import { NavigationSidebar } from './components/NavigationSidebar'
+import { Breadcrumb } from './components/Breadcrumb'
+import { KeyboardShortcuts } from './components/KeyboardShortcuts'
+import { useLocation } from 'react-router-dom'
 
 function AppContent() {
   const { isOpen, data, closeGammaPresentation } = useGammaPresentation()
+  const location = useLocation()
+  
+  // Pages qui ne doivent pas avoir la sidebar
+  const noSidebarPaths = ['/login', '/register', '/reset-password', '/ghost-login', '/landing']
+  const showSidebar = !noSidebarPaths.includes(location.pathname)
 
   return (
     <>
       <NetworkStatus />
-      <div className="min-h-screen bg-gray-50 pt-24">
+      <KeyboardShortcuts />
+      <div className="min-h-screen bg-gray-50 pt-8">
+        {showSidebar && <NavigationSidebar />}
+        <div className={showSidebar ? 'lg:ml-64' : ''}>
+          {showSidebar && <Breadcrumb />}
         <Routes>
           {/* Routes publiques */}
           <Route
@@ -713,6 +726,7 @@ function AppContent() {
         </Routes>
         {/* Widget de chat disponible partout */}
         <ChatWidget />
+        </div>
       </div>
       {isOpen && data && (
         <GammaPresentation

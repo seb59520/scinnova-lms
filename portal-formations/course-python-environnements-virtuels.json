@@ -1,0 +1,2206 @@
+{
+  "title": "Environnements virtuels en Python",
+  "description": "Cours complet et détaillé sur les environnements virtuels en Python : venv, pip, requirements.txt. Apprenez à isoler vos projets, gérer les dépendances et créer des environnements reproductibles. Chaque ligne de code est commentée, avec des explications approfondies de chaque concept, étape par étape.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#4A90E2",
+    "secondaryColor": "#7ED321",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Introduction aux environnements virtuels",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#4A90E2",
+        "secondaryColor": "#7ED321"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Qu'est-ce qu'un environnement virtuel ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez pourquoi et comment utiliser les environnements virtuels Python pour isoler vos projets et gérer les dépendances."
+          },
+          "chapters": [
+            {
+              "title": "Introduction aux environnements virtuels",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🐍 Qu'est-ce qu'un environnement virtuel ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Un environnement virtuel (virtual environment) est un espace isolé où vous pouvez installer des packages Python spécifiques à un projet, sans affecter les autres projets ou l'installation Python globale de votre système."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pourquoi utiliser un environnement virtuel ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Isolation des dépendances : Chaque projet peut avoir ses propres versions de packages sans conflit."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Reproductibilité : Vous pouvez partager exactement les mêmes versions de packages avec votre équipe."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Éviter les conflits : Un projet peut utiliser Django 3.2 et un autre Django 4.0 sans problème."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Nettoyage facile : Supprimer un environnement virtuel supprime toutes ses dépendances d'un coup."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Les outils principaux"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "venv"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Module intégré à Python 3.3+ pour créer des environnements virtuels (recommandé)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "pip"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Gestionnaire de packages Python pour installer, mettre à jour et supprimer des packages."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "requirements.txt"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Fichier texte qui liste toutes les dépendances d'un projet avec leurs versions."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Analogie simple"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Imaginez un environnement virtuel comme une boîte à outils séparée pour chaque projet. Chaque boîte contient exactement les outils (packages) dont vous avez besoin pour ce projet spécifique, sans mélanger avec les outils d'autres projets."
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 1.1 : Introduction aux environnements virtuels",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Quel est le principal avantage d'un environnement virtuel ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Rendre le code plus rapide",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Isoler les dépendances de chaque projet",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Réduire la taille des fichiers",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Améliorer la sécurité",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Quel outil est intégré à Python 3.3+ pour créer des environnements virtuels ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "virtualenv",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "venv",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "pipenv",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "conda",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Que contient un fichier requirements.txt ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Le code source du projet",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "La liste des dépendances avec leurs versions",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Les instructions d'installation",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Les tests du projet",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : Créer et utiliser venv",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#4A90E2",
+        "secondaryColor": "#7ED321"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Créer un environnement virtuel avec venv",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à créer, activer et désactiver un environnement virtuel avec le module venv."
+          },
+          "chapters": [
+            {
+              "title": "Créer un environnement virtuel",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🔧 Créer un environnement virtuel avec venv"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Étape 1 : Créer l'environnement virtuel"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pour créer un environnement virtuel, utilisez la commande python -m venv suivie du nom du dossier qui contiendra l'environnement."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# CRÉER UN ENVIRONNEMENT VIRTuel\n# ============================================\n\n# Commande de base : python -m venv nom_du_dossier\n# Cette commande crée un nouveau dossier contenant l'environnement virtuel\n\n# Exemple 1 : Créer un environnement virtuel nommé 'venv'\n# 'venv' est le nom conventionnel le plus utilisé\npython -m venv venv\n\n# Exemple 2 : Créer un environnement virtuel avec un nom personnalisé\npython -m venv mon_projet_env\n\n# Exemple 3 : Créer un environnement virtuel dans un dossier spécifique\npython -m venv .venv\n# Le point (.) crée un dossier caché (commence par un point)\n\n# ============================================\n# VÉRIFIER QUE L'ENVIRONNEMENT EST CRÉÉ\n# ============================================\n\n# Après la création, vous devriez voir un nouveau dossier\n# Ce dossier contient :\n# - bin/ (ou Scripts/ sur Windows) : scripts d'activation\n# - lib/ : packages Python installés\n# - include/ : fichiers d'en-tête\n# - pyvenv.cfg : configuration de l'environnement"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Étape 2 : Activer l'environnement virtuel"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Une fois créé, vous devez activer l'environnement virtuel pour l'utiliser. La commande diffère selon votre système d'exploitation."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# ACTIVATION SUR LINUX/MAC\n# ============================================\n\n# Si votre environnement s'appelle 'venv'\nsource venv/bin/activate\n\n# Si votre environnement s'appelle 'mon_projet_env'\nsource mon_projet_env/bin/activate\n\n# ============================================\n# ACTIVATION SUR WINDOWS (CMD)\n# ============================================\n\n# Si votre environnement s'appelle 'venv'\nvenv\\Scripts\\activate.bat\n\n# ============================================\n# ACTIVATION SUR WINDOWS (PowerShell)\n# ============================================\n\n# Si votre environnement s'appelle 'venv'\nvenv\\Scripts\\Activate.ps1\n\n# Note : Si vous avez une erreur d'exécution de script sur PowerShell,\n# exécutez d'abord : Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser\n\n# ============================================\n# COMMENT SAVOIR SI L'ENVIRONNEMENT EST ACTIVÉ ?\n# ============================================\n\n# Quand l'environnement est activé, vous verrez son nom au début de votre ligne de commande\n# Exemple : (venv) user@computer:~/mon_projet$\n\n# Vous pouvez aussi vérifier avec :\nwhich python\n# Sur Linux/Mac, cela devrait afficher le chemin vers python dans venv\n\n# Ou avec :\npython --version\n# Devrait afficher la version de Python utilisée dans l'environnement"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Étape 3 : Désactiver l'environnement virtuel"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# DÉSACTIVER L'ENVIRONNEMENT VIRTuel\n# ============================================\n\n# Sur tous les systèmes (Linux, Mac, Windows)\n# La commande est la même :\ndeactivate\n\n# Après cette commande :\n# - Le préfixe (venv) disparaît de votre ligne de commande\n# - Vous revenez à l'environnement Python global de votre système\n# - Les packages installés dans l'environnement virtuel ne sont plus accessibles"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple complet : Workflow typique"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# WORKFLOW COMPLET : CRÉER ET UTILISER UN ENVIRONNEMENT\n# ============================================\n\n# 1. Créer un nouveau dossier pour votre projet\nmkdir mon_projet\ncd mon_projet\n\n# 2. Créer l'environnement virtuel\npython -m venv venv\n\n# 3. Activer l'environnement\n# Sur Linux/Mac :\nsource venv/bin/activate\n# Sur Windows (PowerShell) :\n# venv\\Scripts\\Activate.ps1\n\n# 4. Vérifier que vous êtes dans l'environnement\n# Le préfixe (venv) devrait apparaître\n# Vérifier la version de Python\npython --version\n\n# 5. Installer des packages (nous verrons cela dans le module suivant)\npip install requests\n\n# 6. Travailler sur votre projet...\n# Créer des fichiers Python, écrire du code, etc.\n\n# 7. Quand vous avez terminé, désactiver l'environnement\ndeactivate\n\n# ============================================\n# BONNES PRATIQUES\n# ============================================\n\n# ✅ Toujours créer un environnement virtuel pour chaque nouveau projet\n# ✅ Activer l'environnement avant de travailler\n# ✅ Ne jamais commiter le dossier venv/ dans Git (ajoutez-le au .gitignore)\n# ✅ Utiliser le nom 'venv' ou '.venv' pour la cohérence"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "python -m venv nom_du_dossier crée un nouvel environnement virtuel."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "source venv/bin/activate active l'environnement (Linux/Mac)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "deactivate désactive l'environnement sur tous les systèmes."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Le préfixe (venv) dans votre terminal indique que l'environnement est activé."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 2.1 : Créer et utiliser venv",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Quelle commande crée un environnement virtuel nommé 'venv' ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "python venv create",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "python -m venv venv",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "venv create venv",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "python create venv",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment activer un environnement virtuel sur Linux/Mac ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "activate venv",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "source venv/bin/activate",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "venv activate",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "python activate venv",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment désactiver un environnement virtuel ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "exit",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "deactivate",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "quit",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "disable",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : Gérer les packages avec pip",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#4A90E2",
+        "secondaryColor": "#7ED321"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Installer et gérer des packages avec pip",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à utiliser pip pour installer, mettre à jour, lister et supprimer des packages Python dans votre environnement virtuel."
+          },
+          "chapters": [
+            {
+              "title": "Gérer les packages avec pip",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📦 Gérer les packages avec pip"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "pip (Pip Installs Packages) est le gestionnaire de packages standard pour Python. Il permet d'installer, mettre à jour et supprimer des packages depuis le Python Package Index (PyPI)."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Installation de packages"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# INSTALLER UN PACKAGE\n# ============================================\n\n# Commande de base : pip install nom_du_package\n# Cette commande télécharge et installe le package depuis PyPI\n\n# Exemple 1 : Installer un package simple\npip install requests\n# Installe la dernière version disponible de 'requests'\n\n# Exemple 2 : Installer une version spécifique\npip install requests==2.28.0\n# Installe exactement la version 2.28.0 de 'requests'\n\n# Exemple 3 : Installer une version minimale\npip install requests>=2.25.0\n# Installe une version >= 2.25.0 (peut être 2.25.0, 2.26.0, 3.0.0, etc.)\n\n# Exemple 4 : Installer plusieurs packages en une fois\npip install requests flask django\n# Installe requests, flask et django\n\n# Exemple 5 : Installer depuis un fichier requirements.txt\npip install -r requirements.txt\n# Installe tous les packages listés dans requirements.txt\n# (nous verrons ce fichier dans le module suivant)\n\n# ============================================\n# VÉRIFIER QU'UN PACKAGE EST INSTALLÉ\n# ============================================\n\n# Lister tous les packages installés\npip list\n# Affiche tous les packages avec leurs versions\n\n# Vérifier si un package spécifique est installé\npip show requests\n# Affiche les informations détaillées sur le package 'requests'\n\n# Vérifier la version d'un package\npip show requests | grep Version\n# Sur Linux/Mac, affiche la version de 'requests'"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Mise à jour de packages"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# METTRE À JOUR UN PACKAGE\n# ============================================\n\n# Exemple 1 : Mettre à jour un package spécifique\npip install --upgrade requests\n# Ou la version courte :\npip install -U requests\n# Télécharge et installe la dernière version de 'requests'\n\n# Exemple 2 : Mettre à jour tous les packages\npip list --outdated\n# Affiche tous les packages qui ont une version plus récente disponible\n\n# Pour mettre à jour tous les packages (attention, peut casser des choses) :\npip list --outdated --format=freeze | grep -v '^\\-e' | cut -d = -f 1 | xargs -n1 pip install -U\n# Cette commande complexe met à jour tous les packages obsolètes\n\n# Exemple 3 : Mettre à jour pip lui-même\npython -m pip install --upgrade pip\n# Met à jour pip vers la dernière version"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Désinstallation de packages"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# DÉSINSTALLER UN PACKAGE\n# ============================================\n\n# Commande de base : pip uninstall nom_du_package\n# Supprime le package de l'environnement\n\n# Exemple 1 : Désinstaller un package\npip uninstall requests\n# Vous serez demandé de confirmer (tapez 'y' pour oui)\n\n# Exemple 2 : Désinstaller sans confirmation\npip uninstall -y requests\n# Supprime 'requests' sans demander de confirmation\n\n# Exemple 3 : Désinstaller plusieurs packages\npip uninstall requests flask django\n# Désinstalle requests, flask et django"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Rechercher des packages"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# RECHERCHER DES PACKAGES\n# ============================================\n\n# Rechercher un package sur PyPI\npip search nom_du_package\n# Note : Cette fonctionnalité a été désactivée sur PyPI\n# Utilisez plutôt le site web : https://pypi.org\n\n# Alternative : Utiliser le site PyPI directement\n# Allez sur https://pypi.org et recherchez votre package\n\n# Vérifier les informations d'un package avant installation\npip index versions requests\n# Affiche toutes les versions disponibles de 'requests'"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Commandes utiles supplémentaires"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# AUTRES COMMANDES UTILES\n# ============================================\n\n# Lister tous les packages installés avec leurs versions\npip list\n# Exemple de sortie :\n# Package    Version\n# ---------- -------\n# requests   2.28.0\n# flask      2.2.0\n\n# Afficher les informations détaillées d'un package\npip show requests\n# Affiche : nom, version, résumé, auteur, dépendances, etc.\n\n# Lister uniquement les packages obsolètes\npip list --outdated\n\n# Vérifier les dépendances d'un package\npip show requests\n# La section 'Requires:' liste les dépendances\n\n# Installer depuis un fichier requirements.txt\npip install -r requirements.txt\n\n# Générer un fichier requirements.txt (nous verrons cela plus tard)\npip freeze > requirements.txt\n\n# Installer en mode développement (pour les packages locaux)\npip install -e .\n# Installe le package dans le répertoire courant en mode développement"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "pip install nom_du_package installe un package depuis PyPI."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "pip list affiche tous les packages installés."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "pip install --upgrade nom_du_package met à jour un package."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "pip uninstall nom_du_package supprime un package."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Toujours travailler dans un environnement virtuel activé pour isoler les packages."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 3.1 : Gérer les packages avec pip",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Quelle commande installe le package 'requests' ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "pip add requests",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "pip install requests",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "pip get requests",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "python install requests",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Quelle commande liste tous les packages installés ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "pip show",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "pip list",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "pip packages",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "pip installed",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment mettre à jour un package nommé 'flask' ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "pip update flask",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "pip install --upgrade flask",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "pip upgrade flask",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "pip refresh flask",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : Le fichier requirements.txt",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#4A90E2",
+        "secondaryColor": "#7ED321"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Créer et utiliser requirements.txt",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à créer, utiliser et maintenir un fichier requirements.txt pour gérer les dépendances de votre projet de manière reproductible."
+          },
+          "chapters": [
+            {
+              "title": "Le fichier requirements.txt",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📄 Le fichier requirements.txt"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Le fichier requirements.txt est un fichier texte simple qui liste toutes les dépendances (packages) nécessaires à votre projet Python, avec leurs versions spécifiques. C'est essentiel pour la reproductibilité et le partage de projets."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pourquoi utiliser requirements.txt ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Reproductibilité : Permet à d'autres développeurs (ou vous-même sur un autre ordinateur) d'installer exactement les mêmes versions de packages."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Documentation : Liste clairement toutes les dépendances du projet."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Déploiement : Facilite le déploiement sur des serveurs de production."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Versioning : Permet de figer les versions pour éviter les problèmes de compatibilité."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Créer un fichier requirements.txt"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# GÉNÉRER UN FICHIER requirements.txt\n# ============================================\n\n# Méthode 1 : Générer automatiquement depuis l'environnement actuel\n# Cette commande liste tous les packages installés avec leurs versions exactes\npip freeze > requirements.txt\n\n# Exemple de contenu généré :\n# requests==2.28.0\n# flask==2.2.0\n# django==4.1.0\n\n# ============================================\n# CRÉER MANUELLEMENT UN FICHIER requirements.txt\n# ============================================\n\n# Vous pouvez aussi créer le fichier manuellement avec un éditeur de texte\n# Créez un fichier nommé 'requirements.txt' dans la racine de votre projet\n\n# Format de base :\n# nom_du_package==version_exacte\n\n# Exemple de fichier requirements.txt :\n# requests==2.28.0\n# flask==2.2.0\n# django==4.1.0\n# numpy==1.23.0"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Format du fichier requirements.txt"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "text"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLES DE FORMATS DANS requirements.txt\n# ============================================\n\n# Format 1 : Version exacte (recommandé pour la production)\nrequests==2.28.0\nflask==2.2.0\n\n# Format 2 : Version minimale\nrequests>=2.25.0\nflask>=2.0.0\n\n# Format 3 : Version maximale\nrequests<=2.30.0\nflask<3.0.0\n\n# Format 4 : Plage de versions\nrequests>=2.25.0,<3.0.0\nflask>=2.0.0,<2.3.0\n\n# Format 5 : Compatible avec une version (approximativement)\nrequests~=2.28.0\n# Équivalent à >=2.28.0,<2.29.0\n\n# Format 6 : Sans version (déconseillé, installe la dernière version)\nrequests\nflask\n\n# Format 7 : Installer depuis Git\n# git+https://github.com/user/repo.git@branch\n# git+https://github.com/user/repo.git@v1.0.0\n\n# Format 8 : Installer depuis un fichier local\n# ./local_package\n# file:///path/to/package\n\n# Format 9 : Commentaires (lignes commençant par #)\n# Ceci est un commentaire\nrequests==2.28.0  # Package pour les requêtes HTTP\n\n# Format 10 : Lignes vides (ignorées)\nrequests==2.28.0\n\nflask==2.2.0"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Installer depuis requirements.txt"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# INSTALLER LES PACKAGES DEPUIS requirements.txt\n# ============================================\n\n# Commande de base : pip install -r requirements.txt\n# Cette commande lit le fichier et installe tous les packages listés\n\n# Exemple 1 : Installation basique\npip install -r requirements.txt\n\n# Exemple 2 : Installation avec mise à jour\npip install -r requirements.txt --upgrade\n# Met à jour les packages s'ils sont déjà installés\n\n# Exemple 3 : Installation sans dépendances\npip install -r requirements.txt --no-deps\n# Installe uniquement les packages listés, sans leurs dépendances\n# (déconseillé sauf cas particulier)\n\n# ============================================\n# WORKFLOW TYPIQUE\n# ============================================\n\n# 1. Cloner un projet depuis Git\n# git clone https://github.com/user/project.git\n# cd project\n\n# 2. Créer un environnement virtuel\npython -m venv venv\n\n# 3. Activer l'environnement\n# Sur Linux/Mac :\nsource venv/bin/activate\n# Sur Windows :\n# venv\\Scripts\\Activate.ps1\n\n# 4. Installer les dépendances depuis requirements.txt\npip install -r requirements.txt\n\n# 5. Vérifier que tout est installé\npip list\n\n# Maintenant vous pouvez utiliser le projet !"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Mettre à jour requirements.txt"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# METTRE À JOUR requirements.txt\n# ============================================\n\n# Quand vous installez un nouveau package :\npip install nouveau_package\n\n# Régénérer le fichier requirements.txt\npip freeze > requirements.txt\n# Cela met à jour le fichier avec tous les packages actuellement installés\n\n# ============================================\n# BONNES PRATIQUES\n# ============================================\n\n# ✅ Toujours commiter requirements.txt dans Git\n# ✅ Utiliser des versions exactes (==) pour la production\n# ✅ Utiliser des plages de versions (>=,<) pour le développement\n# ✅ Nettoyer le fichier : supprimer les packages non utilisés\n# ✅ Organiser par catégories avec des commentaires\n\n# Exemple de requirements.txt bien organisé :\n# # Web Framework\n# flask==2.2.0\n# django==4.1.0\n#\n# # HTTP Requests\n# requests==2.28.0\n#\n# # Data Science\n# numpy==1.23.0\n# pandas==1.5.0"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple complet de requirements.txt"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "text"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE COMPLET DE requirements.txt\n# ============================================\n\n# Web Framework\nflask==2.2.0\nflask-cors==3.0.10\n\n# Database\nsqlalchemy==1.4.44\npsycopg2-binary==2.9.5\n\n# HTTP Requests\nrequests==2.28.0\n\n# Data Processing\npandas==1.5.0\nnumpy==1.23.0\n\n# Testing\npytest==7.2.0\npytest-cov==4.0.0\n\n# Development Tools\nblack==22.10.0\nflake8==6.0.0\n\n# Security\ncryptography==38.0.0"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "pip freeze > requirements.txt génère le fichier depuis l'environnement actuel."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "pip install -r requirements.txt installe tous les packages listés."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Utilisez == pour les versions exactes (production) ou >= pour les versions minimales (développement)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Toujours commiter requirements.txt dans votre dépôt Git."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 4.1 : Le fichier requirements.txt",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Quelle commande génère un fichier requirements.txt ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "pip generate requirements.txt",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "pip freeze > requirements.txt",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "pip list > requirements.txt",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "pip export requirements.txt",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment installer les packages depuis requirements.txt ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "pip install requirements.txt",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "pip install -r requirements.txt",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "pip load requirements.txt",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "pip from requirements.txt",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Quel format est recommandé pour la production dans requirements.txt ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "requests (sans version)",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "requests==2.28.0 (version exacte)",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "requests>=2.28.0 (version minimale)",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "requests~2.28.0",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : Exercices pratiques",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#4A90E2",
+        "secondaryColor": "#7ED321"
+      },
+      "items": [
+        {
+          "type": "exercise",
+          "title": "Exercice 1 : Créer un environnement virtuel et installer des packages",
+          "position": 0,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📝 Exercice 1 : Créer un environnement virtuel et installer des packages"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créez un nouveau projet Python avec un environnement virtuel et installez les packages suivants :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Créez un nouveau dossier nommé 'mon_projet'"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Créez un environnement virtuel nommé 'venv' dans ce dossier"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Activez l'environnement virtuel"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Installez les packages suivants : requests (version 2.28.0), flask (version 2.2.0)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Vérifiez que les packages sont bien installés avec pip list"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Générez un fichier requirements.txt avec pip freeze"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Résultat attendu :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Vous devriez avoir :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Un dossier 'mon_projet' contenant un dossier 'venv'"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Un fichier requirements.txt avec requests==2.28.0 et flask==2.2.0 (et leurs dépendances)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "L'environnement virtuel activé (vous voyez (venv) dans votre terminal)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Correction : Créer un environnement virtuel et installer des packages"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "bash"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# ============================================\n# CORRECTION : Créer un environnement virtuel et installer des packages\n# ============================================\n\n# Étape 1 : Créer un nouveau dossier pour le projet\n# mkdir crée un nouveau dossier\nmkdir mon_projet\n\n# Étape 2 : Se déplacer dans le dossier créé\n# cd (change directory) permet de naviguer dans les dossiers\ncd mon_projet\n\n# Étape 3 : Créer l'environnement virtuel\n# python -m venv venv crée un environnement virtuel dans le dossier 'venv'\n# Le module venv est intégré à Python 3.3+\npython -m venv venv\n\n# Étape 4 : Activer l'environnement virtuel\n# Sur Linux/Mac :\nsource venv/bin/activate\n# Sur Windows (PowerShell) :\n# venv\\Scripts\\Activate.ps1\n# Sur Windows (CMD) :\n# venv\\Scripts\\activate.bat\n\n# Après activation, vous devriez voir (venv) au début de votre ligne de commande\n# Exemple : (venv) user@computer:~/mon_projet$\n\n# Étape 5 : Vérifier que l'environnement est activé\n# which python (Linux/Mac) ou where python (Windows) affiche le chemin de Python\n# Le chemin devrait pointer vers venv/bin/python (ou venv\\Scripts\\python.exe sur Windows)\nwhich python\n# Devrait afficher quelque chose comme : /chemin/vers/mon_projet/venv/bin/python\n\n# Étape 6 : Installer les packages avec les versions spécifiées\n# pip install installe les packages depuis PyPI\n# ==2.28.0 spécifie la version exacte à installer\npip install requests==2.28.0 flask==2.2.0\n\n# Cette commande va :\n# - Télécharger requests version 2.28.0\n# - Télécharger flask version 2.2.0\n# - Installer leurs dépendances automatiquement\n# - Les installer dans l'environnement virtuel (pas globalement)\n\n# Étape 7 : Vérifier que les packages sont installés\n# pip list affiche tous les packages installés dans l'environnement actuel\npip list\n\n# Vous devriez voir quelque chose comme :\n# Package            Version\n# ------------------ -------\n# click              8.1.3\n# flask              2.2.0\n# itsdangerous      2.1.2\n# Jinja2             3.1.2\n# MarkupSafe         2.1.1\n# requests           2.28.0\n# urllib3            1.26.13\n# Werkzeug           2.2.2\n#\n# Note : Vous verrez aussi les dépendances de flask et requests\n\n# Étape 8 : Générer le fichier requirements.txt\n# pip freeze liste tous les packages avec leurs versions exactes\n# > requirements.txt redirige la sortie vers le fichier requirements.txt\n# Si le fichier existe déjà, il sera écrasé\npip freeze > requirements.txt\n\n# Étape 9 : Vérifier le contenu du fichier requirements.txt\n# cat (Linux/Mac) ou type (Windows) affiche le contenu d'un fichier\ncat requirements.txt\n# Sur Windows : type requirements.txt\n\n# Le fichier devrait contenir quelque chose comme :\n# click==8.1.3\n# flask==2.2.0\n# itsdangerous==2.1.2\n# Jinja2==3.1.2\n# MarkupSafe==2.1.1\n# requests==2.28.0\n# urllib3==1.26.13\n# Werkzeug==2.2.2\n\n# ============================================\n# VÉRIFICATION FINALE\n# ============================================\n\n# Vérifier la structure du projet :\n# ls (Linux/Mac) ou dir (Windows) liste les fichiers et dossiers\nls -la\n# Sur Windows : dir\n\n# Vous devriez voir :\n# - venv/ (dossier de l'environnement virtuel)\n# - requirements.txt (fichier des dépendances)\n\n# Vérifier que vous êtes toujours dans l'environnement virtuel :\n# Le préfixe (venv) devrait toujours être visible dans votre terminal\n\n# ============================================\n# BONUS : Test rapide\n# ============================================\n\n# Vous pouvez tester que les packages fonctionnent :\npython -c \"import requests; import flask; print('Tous les packages sont installés correctement !')\"\n\n# Si cette commande s'exécute sans erreur, tout est OK !"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "💡 Explications détaillées"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "python -m venv venv : Crée un environnement virtuel isolé dans le dossier 'venv'."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "source venv/bin/activate : Active l'environnement virtuel (Linux/Mac)."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "pip install requests==2.28.0 flask==2.2.0 : Installe les packages avec des versions spécifiques."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "pip freeze > requirements.txt : Génère un fichier listant toutes les dépendances avec leurs versions exactes."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "L'environnement virtuel isole les packages de ce projet des autres projets et de l'installation Python globale."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 2 : Utiliser requirements.txt pour réinstaller un projet",
+          "position": 1,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📝 Exercice 2 : Utiliser requirements.txt pour réinstaller un projet"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Simulez la situation où vous clonez un projet depuis Git et devez installer ses dépendances :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Créez un nouveau dossier nommé 'projet_clone'"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Créez un fichier requirements.txt dans ce dossier avec le contenu suivant :"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "text"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "requests==2.28.0\nflask==2.2.0\npandas==1.5.0"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Créez un environnement virtuel nommé 'venv' dans ce dossier"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Activez l'environnement virtuel"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Installez tous les packages depuis requirements.txt avec pip install -r requirements.txt"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Vérifiez avec pip list que tous les packages sont installés"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Résultat attendu :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Tous les packages listés dans requirements.txt (et leurs dépendances) devraient être installés dans l'environnement virtuel."
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Correction : Utiliser requirements.txt pour réinstaller un projet"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "bash"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# ============================================\n# CORRECTION : Utiliser requirements.txt pour réinstaller un projet\n# ============================================\n\n# Étape 1 : Créer un nouveau dossier pour simuler un projet cloné\nmkdir projet_clone\ncd projet_clone\n\n# Étape 2 : Créer le fichier requirements.txt\n# Vous pouvez utiliser un éditeur de texte ou la commande echo/cat\n# Méthode 1 : Avec un éditeur (nano, vim, code, etc.)\n# Créez le fichier requirements.txt et ajoutez :\n# requests==2.28.0\n# flask==2.2.0\n# pandas==1.5.0\n\n# Méthode 2 : Avec echo (Linux/Mac)\necho \"requests==2.28.0\" > requirements.txt\necho \"flask==2.2.0\" >> requirements.txt\necho \"pandas==1.5.0\" >> requirements.txt\n\n# Sur Windows (PowerShell) :\n# @\"\n# requests==2.28.0\n# flask==2.2.0\n# pandas==1.5.0\n# \"@ | Out-File -FilePath requirements.txt -Encoding utf8\n\n# Étape 3 : Vérifier le contenu du fichier\ncat requirements.txt\n# Sur Windows : type requirements.txt\n\n# Le fichier devrait contenir :\n# requests==2.28.0\n# flask==2.2.0\n# pandas==1.5.0\n\n# Étape 4 : Créer l'environnement virtuel\npython -m venv venv\n\n# Étape 5 : Activer l'environnement virtuel\n# Sur Linux/Mac :\nsource venv/bin/activate\n# Sur Windows (PowerShell) :\n# venv\\Scripts\\Activate.ps1\n\n# Vérifier que l'environnement est activé (vous devriez voir (venv))\n\n# Étape 6 : Installer tous les packages depuis requirements.txt\n# pip install -r requirements.txt lit le fichier et installe chaque package\n# -r signifie \"read from file\"\npip install -r requirements.txt\n\n# Cette commande va :\n# - Lire le fichier requirements.txt ligne par ligne\n# - Pour chaque ligne (sauf commentaires et lignes vides) :\n#   - Installer le package avec la version spécifiée\n#   - Installer automatiquement les dépendances de ce package\n# - Afficher la progression de l'installation\n\n# Vous devriez voir quelque chose comme :\n# Collecting requests==2.28.0\n#   Downloading requests-2.28.0-py3-none-any.whl\n# Collecting flask==2.2.0\n#   Downloading Flask-2.2.0-py3-none-any.whl\n# Collecting pandas==1.5.0\n#   Downloading pandas-1.5.0-cp39-cp39-win_amd64.whl\n# ... (installation des dépendances)\n# Successfully installed ...\n\n# Étape 7 : Vérifier que tous les packages sont installés\npip list\n\n# Vous devriez voir requests, flask, pandas et toutes leurs dépendances\n# Exemple de sortie :\n# Package            Version\n# ------------------ -------\n# click              8.1.3\n# flask              2.2.0\n# itsdangerous      2.1.2\n# Jinja2             3.1.2\n# MarkupSafe         2.1.1\n# numpy              1.23.5\n# pandas             1.5.0\n# python-dateutil    2.8.2\n# pytz               2022.7\n# requests           2.28.0\n# ... (autres dépendances)\n\n# Étape 8 : Vérifier les versions spécifiques\npip show requests\npip show flask\npip show pandas\n\n# Chaque commande devrait afficher la version exacte spécifiée dans requirements.txt\n\n# ============================================\n# TEST : Vérifier que les packages fonctionnent\n# ============================================\n\n# Tester l'importation des packages\npython -c \"import requests; import flask; import pandas; print('Tous les packages sont installés et fonctionnent !')\"\n\n# Si cette commande s'exécute sans erreur, tout est parfait !\n\n# ============================================\n# COMPARAISON AVEC L'ENVIRONNEMENT ORIGINAL\n# ============================================\n\n# Si vous avez un autre environnement avec les mêmes packages,\n# vous pouvez comparer les versions installées :\n\n# Dans le premier environnement :\n# pip freeze > requirements_original.txt\n\n# Dans le nouvel environnement :\n# pip freeze > requirements_nouveau.txt\n\n# Comparer les fichiers (sur Linux/Mac) :\n# diff requirements_original.txt requirements_nouveau.txt\n\n# Les versions devraient être identiques si requirements.txt spécifie des versions exactes (==)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "💡 Explications détaillées"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "pip install -r requirements.txt lit le fichier et installe chaque package listé."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Les versions exactes (==) garantissent que vous installez exactement les mêmes versions que spécifiées."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "pip installe automatiquement les dépendances de chaque package (dépendances transitives)."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Cette méthode permet de reproduire exactement l'environnement d'un projet sur n'importe quelle machine."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 3 : Gérer les versions et mettre à jour requirements.txt",
+          "position": 2,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📝 Exercice 3 : Gérer les versions et mettre à jour requirements.txt"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dans un environnement virtuel existant, effectuez les opérations suivantes :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Créez un environnement virtuel et activez-le"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Installez requests version 2.25.0"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Générez un requirements.txt initial"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Mettez à jour requests vers la version 2.28.0 avec pip install --upgrade requests"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Vérifiez la version installée avec pip show requests"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Régénérez requirements.txt et vérifiez que la version a été mise à jour"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Installez un nouveau package : flask==2.2.0"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Régénérez requirements.txt et vérifiez que flask a été ajouté"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Résultat attendu :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Le fichier requirements.txt devrait être mis à jour à chaque étape, reflétant les packages installés et leurs versions actuelles."
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Correction : Gérer les versions et mettre à jour requirements.txt"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "bash"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# ============================================\n# CORRECTION : Gérer les versions et mettre à jour requirements.txt\n# ============================================\n\n# Étape 1 : Créer et activer un environnement virtuel\nmkdir gestion_versions\ncd gestion_versions\npython -m venv venv\n\n# Activer l'environnement\n# Sur Linux/Mac :\nsource venv/bin/activate\n# Sur Windows :\n# venv\\Scripts\\Activate.ps1\n\n# Étape 2 : Installer requests version 2.25.0\npip install requests==2.25.0\n\n# Vérifier l'installation\npip show requests\n# Devrait afficher : Version: 2.25.0\n\n# Étape 3 : Générer le fichier requirements.txt initial\npip freeze > requirements.txt\n\n# Afficher le contenu\ncat requirements.txt\n# Sur Windows : type requirements.txt\n\n# Le fichier devrait contenir quelque chose comme :\n# certifi==2022.9.24\n# charset-normalizer==2.1.1\n# idna==3.4\n# requests==2.25.0\n# urllib3==1.26.12\n\n# Notez que requests==2.25.0 est présent avec cette version exacte\n\n# Étape 4 : Mettre à jour requests vers la version 2.28.0\n# pip install --upgrade (ou -U) met à jour le package vers la dernière version\n# Si vous spécifiez une version, elle sera installée même si elle est plus ancienne\npip install --upgrade requests==2.28.0\n\n# Alternative : pip install requests==2.28.0 (sans --upgrade fonctionne aussi)\n\n# Étape 5 : Vérifier la version installée\npip show requests\n# Devrait maintenant afficher : Version: 2.28.0\n\n# Étape 6 : Régénérer requirements.txt\npip freeze > requirements.txt\n\n# Afficher le nouveau contenu\ncat requirements.txt\n\n# Le fichier devrait maintenant contenir :\n# certifi==2022.12.7\n# charset-normalizer==3.0.1\n# idna==3.4\n# requests==2.28.0  <-- Version mise à jour !\n# urllib3==1.26.13\n\n# Notez que :\n# - requests est maintenant en version 2.28.0\n# - Les dépendances peuvent aussi avoir été mises à jour\n\n# Étape 7 : Installer un nouveau package (flask)\npip install flask==2.2.0\n\n# Vérifier l'installation\npip show flask\n# Devrait afficher : Version: 2.2.0\n\n# Étape 8 : Régénérer requirements.txt\npip freeze > requirements.txt\n\n# Afficher le contenu final\ncat requirements.txt\n\n# Le fichier devrait maintenant contenir :\n# click==8.1.3\n# certifi==2022.12.7\n# charset-normalizer==3.0.1\n# flask==2.2.0  <-- Nouveau package ajouté !\n# itsdangerous==2.1.2\n# Jinja2==3.1.2\n# MarkupSafe==2.1.1\n# idna==3.4\n# requests==2.28.0\n# urllib3==1.26.13\n# Werkzeug==2.2.2\n\n# Notez que :\n# - flask==2.2.0 a été ajouté\n# - Les dépendances de flask (click, itsdangerous, Jinja2, etc.) ont aussi été ajoutées\n# - requests==2.28.0 est toujours présent\n\n# ============================================\n# COMPARAISON DES VERSIONS\n# ============================================\n\n# Pour voir l'historique des changements, vous pouvez :\n\n# Sauvegarder l'ancien fichier avant de le régénérer\ncp requirements.txt requirements_ancien.txt\npip freeze > requirements.txt\n\n# Comparer les différences (sur Linux/Mac)\ndiff requirements_ancien.txt requirements.txt\n\n# ============================================\n# BONNES PRATIQUES\n# ============================================\n\n# ✅ Toujours régénérer requirements.txt après avoir installé/mis à jour des packages\n# ✅ Vérifier le contenu de requirements.txt avant de le commiter dans Git\n# ✅ Utiliser des versions exactes (==) pour la production\n# ✅ Tester que pip install -r requirements.txt fonctionne après chaque modification\n\n# ============================================\n# TEST FINAL\n# ============================================\n\n# Vérifier que tout fonctionne en réinstallant depuis requirements.txt\n# (dans un nouvel environnement pour tester)\n\n# Créer un nouvel environnement de test\npython -m venv venv_test\nsource venv_test/bin/activate  # Linux/Mac\n# venv_test\\Scripts\\Activate.ps1  # Windows\n\n# Installer depuis requirements.txt\npip install -r requirements.txt\n\n# Vérifier les versions\npip show requests  # Devrait être 2.28.0\npip show flask     # Devrait être 2.2.0\n\n# Si tout correspond, votre requirements.txt est correct !"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "💡 Explications détaillées"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "pip install --upgrade nom_du_package met à jour un package vers une version plus récente."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "pip freeze > requirements.txt régénère le fichier avec les packages actuellement installés."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Chaque fois que vous installez ou mettez à jour un package, vous devez régénérer requirements.txt."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "pip show nom_du_package affiche les informations détaillées d'un package, y compris sa version."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

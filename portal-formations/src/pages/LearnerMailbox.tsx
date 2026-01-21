@@ -266,7 +266,7 @@ export function LearnerMailbox() {
     return (
       <div className="min-h-screen bg-gray-50">
         <AppHeader />
-        <div className="flex items-center justify-center min-h-[60vh] pt-24">
+        <div className="flex items-center justify-center min-h-[60vh] pt-8">
           <p className="text-gray-500">Chargement...</p>
         </div>
       </div>
@@ -276,7 +276,7 @@ export function LearnerMailbox() {
   return (
     <div className="min-h-screen bg-gray-50">
       <AppHeader />
-      <div className="max-w-4xl mx-auto px-4 pt-24 pb-8">
+      <div className="max-w-4xl mx-auto px-4 pt-8 pb-8">
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">

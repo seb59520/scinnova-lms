@@ -9,10 +9,11 @@ import { Progress } from '../components/Progress'
 import { ReactRenderer } from '../components/ReactRenderer'
 import { CourseSidebar } from '../components/CourseSidebar'
 import { CourseJson } from '../types/courseJson'
-import { Eye, EyeOff, X, BookOpen, FileText, Download, List } from 'lucide-react'
+import { Eye, EyeOff, X, BookOpen, FileText, Download, List, ChevronRight, Home } from 'lucide-react'
 import { Lexique } from './Lexique'
 import { getCurrentUserRole } from '../lib/queries/userRole'
 import { CourseResourcesViewer } from '../components/CourseResourcesViewer'
+import { ResourceViewer } from '../components/ResourceViewer'
 import { FillableDocumentsViewer } from '../components/FillableDocumentsViewer'
 import { CourseGammaSlides } from '../components/CourseGammaSlides'
 import { ErrorBoundary } from '../components/ErrorBoundary'
@@ -35,13 +36,17 @@ export function CourseView() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [showHeaderContent, setShowHeaderContent] = useState(true)
-  const [sidebarOpen, setSidebarOpen] = useState(false) // Par défaut fermée
+  const [sidebarOpen, setSidebarOpen] = useState(true) // Par défaut ouverte
   // Le lexique est ouvert par défaut en mode desktop, fermé en mode mobile
   const [lexiqueDrawerOpen, setLexiqueDrawerOpen] = useState(true)
   const [isDesktop, setIsDesktop] = useState(false)
   const [isTrainer, setIsTrainer] = useState(false)
   const [courseViewMode, setCourseViewMode] = useState<'all' | 'module'>('all') // 'all' = tout à la suite, 'module' = un module à la fois
   const [currentModuleIndex, setCurrentModuleIndex] = useState<number | null>(null)
+  const [moduleProgress, setModuleProgress] = useState<Record<string, { percent: number; completed: boolean }>>({})
+  const [hasFillableDocuments, setHasFillableDocuments] = useState<boolean | null>(null)
+  const [hasCourseResources, setHasCourseResources] = useState<boolean | null>(null)
+  const [hasResources, setHasResources] = useState<boolean | null>(null)
   const viewMode = searchParams.get('view')
 
   // Détecter si on est sur desktop
@@ -403,23 +408,37 @@ export function CourseView() {
         else if (courseData.access_type === 'free' && courseData.status === 'published') {
           // Les formations gratuites et publiées sont accessibles à tous
           // Créer automatiquement un enrollment si nécessaire
-          const { data: existingEnrollment } = await supabase
+          const { data: existingEnrollment, error: enrollmentCheckError } = await supabase
             .from('enrollments')
             .select('id')
             .eq('user_id', user.id)
             .eq('course_id', courseId)
             .maybeSingle()
 
+          console.log('Enrollment check:', { existingEnrollment, enrollmentCheckError, courseId, userId: user.id, courseAccessType: courseData.access_type, courseStatus: courseData.status })
+
           if (!existingEnrollment) {
             // Créer automatiquement l'enrollment pour les formations gratuites
-            await supabase
+            const { data: newEnrollment, error: enrollmentInsertError } = await supabase
               .from('enrollments')
               .insert({
                 user_id: user.id,
                 course_id: courseId,
                 status: 'active',
-                source: 'manual'
+                source: 'manual',
+                enrolled_at: new Date().toISOString()
               })
+              .select()
+
+            console.log('Auto-enrollment created:', { newEnrollment, enrollmentInsertError })
+            
+            if (enrollmentInsertError) {
+              console.error('❌ Error creating enrollment:', enrollmentInsertError)
+            } else {
+              console.log('✅ Enrollment created successfully:', newEnrollment)
+            }
+          } else {
+            console.log('✅ Enrollment already exists:', existingEnrollment)
           }
         }
         // Pour les autres cas, vérifier l'enrollment direct OU via un programme
@@ -563,6 +582,53 @@ export function CourseView() {
       const allItemsList = sortedModules.flatMap(module => module.items || [])
       setAllItems(allItemsList)
 
+      // Créer les entrées module_progress pour marquer que la formation a été commencée
+      // Cela permet de distinguer "non commencé" de "en cours"
+      if (user?.id && sortedModules.length > 0 && profile?.role !== 'admin') {
+        const moduleIds = sortedModules.map(m => m.id)
+        console.log('Creating initial progressions for modules:', moduleIds)
+        
+        // Vérifier quelles progressions existent déjà
+        const { data: existingProgress, error: existingProgressError } = await supabase
+          .from('module_progress')
+          .select('module_id, started_at')
+          .eq('user_id', user.id)
+          .in('module_id', moduleIds)
+        
+        console.log('Existing progressions:', existingProgress, 'error:', existingProgressError)
+        
+        const existingModuleIds = new Set(existingProgress?.map(p => p.module_id) || [])
+        
+        // Créer les progressions manquantes avec started_at
+        const newProgressions = moduleIds
+          .filter(moduleId => !existingModuleIds.has(moduleId))
+          .map(moduleId => ({
+            user_id: user.id,
+            module_id: moduleId,
+            session_id: null, // Pour les formations hors session
+            percent: 0,
+            started_at: new Date().toISOString()
+          }))
+        
+        console.log('New progressions to create:', newProgressions.length, newProgressions)
+        
+        if (newProgressions.length > 0) {
+          const { data: insertedProgress, error: progressError } = await supabase
+            .from('module_progress')
+            .insert(newProgressions)
+            .select()
+          
+          if (progressError) {
+            console.error('❌ Erreur lors de la création des progressions:', progressError)
+            // Ne pas bloquer le chargement si ça échoue
+          } else {
+            console.log(`✅ ${newProgressions.length} progression(s) créée(s) pour marquer le début de la formation:`, insertedProgress)
+          }
+        } else {
+          console.log('✅ Toutes les progressions existent déjà')
+        }
+      }
+
       // Récupérer tous les chapitres pour tous les items
       const allItemIds = allItemsList.map(item => item.id)
       let chaptersMap = new Map<string, any[]>()
@@ -684,6 +750,7 @@ export function CourseView() {
         price_cents: courseData.price_cents || undefined,
         currency: courseData.currency || undefined,
         modules: sortedModules.map(module => ({
+          id: module.id, // Inclure l'ID du module pour la progression
           title: module.title,
           position: module.position,
           items: module.items.map((item: Item) => {
@@ -726,6 +793,9 @@ export function CourseView() {
 
       // Récupérer les TP associés directement et les lots de TP
       await fetchCourseTpsAndBatches()
+
+      // Charger les progressions des modules pour afficher les checkboxes
+      await fetchModuleProgress()
     } catch (error: any) {
       console.error('Error fetching course:', error)
       if (isAuthError(error)) {
@@ -785,6 +855,253 @@ export function CourseView() {
     }
   }
 
+  // Charger les progressions des modules
+  const fetchModuleProgress = async () => {
+    console.log('fetchModuleProgress called:', { userId: user?.id, modulesLength: modules.length, modules: modules.map(m => ({ id: m.id, title: m.title })) })
+    
+    if (!user?.id || !modules.length) {
+      console.log('Cannot fetch module progress:', { userId: user?.id, modulesLength: modules.length })
+      return
+    }
+
+    try {
+      const moduleIds = modules.map(m => m.id)
+      console.log('Fetching module progress for modules:', moduleIds, 'user:', user.id)
+      
+      const { data: progressions, error } = await supabase
+        .from('module_progress')
+        .select('module_id, percent, completed_at, updated_at')
+        .eq('user_id', user.id)
+        .in('module_id', moduleIds)
+        .order('updated_at', { ascending: false })
+
+      if (error) {
+        console.error('Error fetching module progress:', error)
+        throw error
+      }
+
+      console.log('Raw progressions from DB:', progressions)
+
+      // Utiliser un Map pour garder seulement la progression la plus récente par module
+      const progressMap: Record<string, { percent: number; completed: boolean; completed_at: string | null }> = {}
+      const seenModules = new Set<string>()
+      
+      // Les progressions sont déjà triées par updated_at décroissant
+      // On garde seulement la première occurrence de chaque module_id
+      progressions?.forEach(p => {
+        if (!seenModules.has(p.module_id)) {
+          seenModules.add(p.module_id)
+          // Un module est complété si completed_at n'est pas null OU si percent est 100
+          const isCompleted = p.completed_at !== null || p.percent === 100
+          console.log('Processing progression (latest):', {
+            module_id: p.module_id,
+            percent: p.percent,
+            completed_at: p.completed_at,
+            updated_at: p.updated_at,
+            isCompleted,
+            completed_at_is_null: p.completed_at === null,
+            percent_is_100: p.percent === 100
+          })
+          progressMap[p.module_id] = {
+            percent: p.percent,
+            completed: isCompleted,
+            completed_at: p.completed_at
+          }
+        }
+      })
+
+      console.log('Module progress fetched:', progressMap, 'from', progressions?.length || 0, 'records')
+      console.log('Full progress map keys:', Object.keys(progressMap))
+      console.log('Progress map details:', Object.entries(progressMap).map(([k, v]) => ({ moduleId: k, ...v })))
+      setModuleProgress(progressMap)
+      
+      // Vérifier que les modules complétés sont bien dans la map
+      const completedModules = Object.entries(progressMap).filter(([_, v]) => v.completed)
+      console.log('Completed modules in map:', completedModules.length, completedModules)
+    } catch (error) {
+      console.error('Error fetching module progress:', error)
+    }
+  }
+
+  // Marquer/démarquer un module comme complété
+  const toggleModuleComplete = async (moduleId: string, moduleTitle: string) => {
+    if (!user?.id) {
+      console.error('User not authenticated')
+      alert('Vous devez être connecté pour marquer un module comme complété.')
+      return
+    }
+
+    const currentProgress = moduleProgress[moduleId]
+    const isCompleted = currentProgress?.completed || false
+    const newCompleted = !isCompleted
+
+    try {
+      // Récupérer la session_id depuis l'enrollment si elle existe
+      let sessionId: string | null = null
+      if (courseId) {
+        const { data: enrollmentData } = await supabase
+          .from('enrollments')
+          .select('session_id')
+          .eq('user_id', user.id)
+          .eq('course_id', courseId)
+          .eq('status', 'active')
+          .maybeSingle()
+        
+        if (enrollmentData?.session_id) {
+          sessionId = enrollmentData.session_id
+        }
+      }
+
+      console.log('Toggling module completion:', {
+        moduleId,
+        moduleTitle,
+        newCompleted,
+        sessionId,
+        userId: user.id
+      })
+
+      // Utiliser la fonction SQL upsert_module_progress pour éviter les problèmes RLS
+      console.log('Calling RPC upsert_module_progress with:', {
+        p_module_id: moduleId,
+        p_session_id: sessionId,
+        p_percent: newCompleted ? 100 : 0,
+        p_completed_at: newCompleted ? new Date().toISOString() : null
+      })
+      
+      const { data: progressId, error: rpcError } = await supabase.rpc('upsert_module_progress', {
+        p_module_id: moduleId,
+        p_session_id: sessionId,
+        p_percent: newCompleted ? 100 : 0,
+        p_completed_at: newCompleted ? new Date().toISOString() : null
+      })
+
+      console.log('RPC result:', { progressId, rpcError, errorCode: rpcError?.code, errorMessage: rpcError?.message })
+
+      if (rpcError) {
+        // Si la fonction n'existe pas, fallback sur l'approche directe
+        if (rpcError.code === '42883' || rpcError.message?.includes('function') || rpcError.message?.includes('does not exist')) {
+          console.warn('Function upsert_module_progress not found, using direct approach')
+          
+          // Vérifier si une progression existe
+          const { data: existing, error: selectError } = await supabase
+            .from('module_progress')
+            .select('id, session_id')
+            .eq('user_id', user.id)
+            .eq('module_id', moduleId)
+            .maybeSingle()
+
+          if (selectError) {
+            console.error('Error fetching existing progress:', selectError)
+            throw selectError
+          }
+
+          if (existing) {
+            // Mettre à jour la progression existante
+            const { error: updateError } = await supabase
+              .from('module_progress')
+              .update({
+                percent: newCompleted ? 100 : 0,
+                completed_at: newCompleted ? new Date().toISOString() : null,
+                updated_at: new Date().toISOString()
+              })
+              .eq('id', existing.id)
+              .eq('user_id', user.id)
+
+            if (updateError) {
+              console.error('Error updating module progress:', updateError)
+              throw updateError
+            }
+          } else {
+            // Créer une nouvelle progression
+            console.log('Inserting new module progress:', {
+              user_id: user.id,
+              module_id: moduleId,
+              session_id: sessionId,
+              percent: newCompleted ? 100 : 0,
+              completed_at: newCompleted ? new Date().toISOString() : null
+            })
+            
+            const { data: insertData, error: insertError } = await supabase
+              .from('module_progress')
+              .insert({
+                user_id: user.id,
+                module_id: moduleId,
+                session_id: sessionId,
+                percent: newCompleted ? 100 : 0,
+                completed_at: newCompleted ? new Date().toISOString() : null,
+                started_at: new Date().toISOString()
+              })
+              .select()
+
+            console.log('Insert result:', { insertData, insertError })
+
+            if (insertError) {
+              console.error('Error inserting module progress:', insertError)
+              console.error('Insert error details:', {
+                code: insertError.code,
+                message: insertError.message,
+                details: insertError.details,
+                hint: insertError.hint
+              })
+              throw insertError
+            }
+          }
+        } else {
+          console.error('Error calling upsert_module_progress:', rpcError)
+          console.error('Error details:', {
+            code: rpcError.code,
+            message: rpcError.message,
+            details: rpcError.details,
+            hint: rpcError.hint,
+            moduleId,
+            userId: user.id,
+            sessionId
+          })
+          throw rpcError
+        }
+      }
+
+      // Vérifier immédiatement si la progression a été sauvegardée
+      const { data: verifyData, error: verifyError } = await supabase
+        .from('module_progress')
+        .select('id, module_id, percent, completed_at, user_id')
+        .eq('user_id', user.id)
+        .eq('module_id', moduleId)
+        .maybeSingle()
+      
+      console.log('Verification after update:', { 
+        verifyData, 
+        verifyError,
+        expectedUserId: user.id,
+        expectedModuleId: moduleId
+      })
+      
+      if (!verifyData && !verifyError) {
+        console.warn('⚠️ Progress was not saved! Verification returned no data and no error.')
+      }
+      
+      // Attendre un peu pour s'assurer que la transaction est commitée
+      await new Promise(resolve => setTimeout(resolve, 200))
+      
+      // Rafraîchir la progression depuis la base de données pour s'assurer de la synchronisation
+      await fetchModuleProgress()
+      
+      console.log('Module progress updated successfully for module:', moduleId)
+    } catch (error: any) {
+      console.error('Error toggling module completion:', error)
+      
+      // Message d'erreur plus détaillé
+      let errorMessage = 'Erreur lors de la mise à jour. Veuillez réessayer.'
+      if (error?.code === '42501' || error?.message?.includes('permission') || error?.message?.includes('policy')) {
+        errorMessage = 'Vous n\'avez pas les permissions nécessaires pour effectuer cette action. Veuillez contacter l\'administrateur.'
+      } else if (error?.message) {
+        errorMessage = `Erreur: ${error.message}`
+      }
+      
+      alert(errorMessage)
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -826,7 +1143,7 @@ export function CourseView() {
         backTo="/app"
         backLabel="Retour"
       />
-      <div className="pt-24">
+      <div className="pt-8">
         <header className="bg-white border-b border-slate-200" style={{ zIndex: 40 }}>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-6 space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-500">
@@ -945,43 +1262,113 @@ export function CourseView() {
         </header>
 
       <main 
-        className="px-4 sm:px-6 lg:px-10 py-10"
+        className="px-4 sm:px-6 lg:px-10 py-10 transition-all"
         style={{
-          marginRight: hasLexique && lexiqueDrawerOpen && isDesktop ? '384px' : undefined
+          marginRight: hasLexique && lexiqueDrawerOpen && isDesktop ? '384px' : undefined,
+          marginLeft: viewMode !== 'progress' && courseJson && sidebarOpen && !isDesktop ? '320px' : undefined
         }}
       >
-        <div className="mx-auto max-w-7xl">
-          {viewMode !== 'progress' && courseJson && (
-            <div className="lg:hidden mb-4">
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300"
-              >
-                <List className="w-4 h-4" />
-                Table des matieres
-              </button>
-            </div>
-          )}
+        <div className="mx-auto max-w-7xl" style={{ position: 'relative' }}>
+          {/* Fil d'Ariane */}
+          <nav className="mb-6 flex items-center gap-2 text-sm text-slate-600">
+            <Link 
+              to="/app" 
+              className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+            >
+              <Home className="w-4 h-4" />
+              <span>Accueil</span>
+            </Link>
+            <ChevronRight className="w-4 h-4 text-slate-400" />
+            <Link 
+              to="/app" 
+              className="hover:text-blue-600 transition-colors"
+            >
+              Formations
+            </Link>
+            {course && (
+              <>
+                <ChevronRight className="w-4 h-4 text-slate-400" />
+                <span className="text-slate-900 font-medium truncate max-w-xs">
+                  {course.title}
+                </span>
+              </>
+            )}
+          </nav>
 
-          <div className={`grid gap-6 ${viewMode !== 'progress' && courseJson ? 'lg:grid-cols-[280px_minmax(0,1fr)]' : ''}`}>
+          <div className={`grid gap-6 ${viewMode !== 'progress' && courseJson ? 'lg:grid-cols-[320px_minmax(0,1fr)]' : ''}`} style={{ position: 'relative' }}>
             {viewMode !== 'progress' && courseJson && (
-              <aside className="hidden lg:block">
-                <div className="sticky top-32 rounded-3xl border border-slate-100 bg-white shadow-sm">
-                  <CourseSidebar
-                    courseJson={courseJson}
-                    sidebarWidth={280}
-                    minWidth={220}
-                    onModuleSelect={(moduleIndex) => {
-                      setCourseViewMode('module')
-                      setCurrentModuleIndex(moduleIndex)
+              <>
+                {/* Sidebar desktop - sticky, suit le scroll */}
+                <aside className="hidden lg:block" style={{ alignSelf: 'start' }}>
+                  <div 
+                    className="sticky rounded-3xl border border-slate-100 bg-white shadow-sm" 
+                    style={{ 
+                      position: 'sticky',
+                      top: '2rem',
+                      maxHeight: 'calc(100vh - 4rem)',
+                      zIndex: 10
                     }}
-                    selectedModuleIndex={courseViewMode === 'module' ? currentModuleIndex : null}
-                    directTps={directTps}
-                    tpBatches={tpBatches}
-                    fullHeight={false}
-                  />
-                </div>
-              </aside>
+                  >
+                    <CourseSidebar
+                      courseJson={courseJson}
+                      sidebarWidth={320}
+                      minWidth={280}
+                      onModuleSelect={(moduleIndex) => {
+                        setCourseViewMode('module')
+                        setCurrentModuleIndex(moduleIndex)
+                      }}
+                      selectedModuleIndex={courseViewMode === 'module' ? currentModuleIndex : null}
+                      directTps={directTps}
+                      tpBatches={tpBatches}
+                      fullHeight={false}
+                    />
+                  </div>
+                </aside>
+
+                {/* Sidebar mobile - toujours visible */}
+                {sidebarOpen && (
+                  <div className="lg:hidden fixed inset-y-0 left-0 z-40 w-80 bg-white border-r border-slate-200 shadow-lg flex flex-col">
+                    <div className="p-4 border-b border-slate-200 flex items-center justify-between flex-shrink-0">
+                      <h3 className="text-sm font-semibold text-slate-900">Table des matières</h3>
+                      <button
+                        onClick={() => setSidebarOpen(false)}
+                        className="p-1 text-slate-400 hover:text-slate-600 rounded transition-colors"
+                        title="Fermer"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+                    <div className="flex-1 overflow-y-auto">
+                      <div className="p-4">
+                        <CourseSidebar
+                          courseJson={courseJson}
+                          sidebarWidth={320}
+                          minWidth={280}
+                          onModuleSelect={(moduleIndex) => {
+                            setCourseViewMode('module')
+                            setCurrentModuleIndex(moduleIndex)
+                          }}
+                          selectedModuleIndex={courseViewMode === 'module' ? currentModuleIndex : null}
+                          directTps={directTps}
+                          tpBatches={tpBatches}
+                          fullHeight={true}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Bouton pour ouvrir la sidebar sur mobile */}
+                {!sidebarOpen && (
+                  <button
+                    onClick={() => setSidebarOpen(true)}
+                    className="lg:hidden fixed left-4 top-24 z-30 inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300"
+                  >
+                    <List className="w-4 h-4" />
+                    Table des matières
+                  </button>
+                )}
+              </>
             )}
 
             <section className="space-y-6">
@@ -1000,60 +1387,66 @@ export function CourseView() {
                   )}
 
                   {showHeaderContent && courseId && (
-                    <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
-                      <CourseResourcesViewer courseId={courseId} />
-                    </div>
+                    <>
+                      {hasCourseResources === true && (
+                        <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+                          <CourseResourcesViewer 
+                            courseId={courseId} 
+                            onHasResourcesChange={setHasCourseResources}
+                          />
+                        </div>
+                      )}
+                      {hasCourseResources === null && (
+                        <div style={{ display: 'none' }}>
+                          <CourseResourcesViewer 
+                            courseId={courseId} 
+                            onHasResourcesChange={setHasCourseResources}
+                          />
+                        </div>
+                      )}
+                      {hasResources === true && (
+                        <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm mt-6">
+                          <ResourceViewer 
+                            courseId={courseId} 
+                            title="Ressources du cours"
+                            onHasResourcesChange={setHasResources}
+                          />
+                        </div>
+                      )}
+                      {hasResources === null && (
+                        <div style={{ display: 'none' }}>
+                          <ResourceViewer 
+                            courseId={courseId} 
+                            title="Ressources du cours"
+                            onHasResourcesChange={setHasResources}
+                          />
+                        </div>
+                      )}
+                    </>
                   )}
 
                   {/* Documents à compléter */}
                   {showHeaderContent && courseId && (
-                    <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm mt-6">
-                      <FillableDocumentsViewer courseId={courseId} />
-                    </div>
+                    <>
+                      {hasFillableDocuments === true && (
+                        <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm mt-6">
+                          <FillableDocumentsViewer 
+                            courseId={courseId} 
+                            onHasDocumentsChange={setHasFillableDocuments}
+                          />
+                        </div>
+                      )}
+                      {hasFillableDocuments === null && (
+                        <div style={{ display: 'none' }}>
+                          <FillableDocumentsViewer 
+                            courseId={courseId} 
+                            onHasDocumentsChange={setHasFillableDocuments}
+                          />
+                        </div>
+                      )}
+                    </>
                   )}
 
-                  {courseJson && visibleModules.length > 0 && (
-                    <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
-                      <div className="flex flex-wrap items-center justify-between gap-4">
-                        <div>
-                          <p className="text-sm font-semibold text-slate-900">Affichage du contenu</p>
-                          <p className="text-xs text-slate-500">Choisissez un module ou parcourez tout le cours</p>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          <button
-                            onClick={() => {
-                              setCourseViewMode('all')
-                              setCurrentModuleIndex(null)
-                            }}
-                            className={`inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-semibold transition ${courseViewMode === 'all' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
-                          >
-                            Tout le cours
-                          </button>
-                        </div>
-                      </div>
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {visibleModules.map((module, index) => {
-                          const originalIndex = courseJson.modules.findIndex(m => m.title === module.title)
-                          const isActive = courseViewMode === 'module' && currentModuleIndex === originalIndex
-                          const moduleColor = getModuleColor(module)
-
-                          return (
-                            <button
-                              key={originalIndex}
-                              onClick={() => {
-                                setCourseViewMode('module')
-                                setCurrentModuleIndex(originalIndex)
-                              }}
-                              className={`inline-flex items-center gap-2 rounded-2xl px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition ${isActive ? `${moduleColor} ring-2 ring-offset-2 ring-white` : `${moduleColor} opacity-80 hover:opacity-100`}`}
-                              title={module.title}
-                            >
-                              Module {originalIndex + 1}
-                            </button>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  )}
 
                   {courseId && (
                     <ErrorBoundary fallback={null}>
@@ -1063,18 +1456,17 @@ export function CourseView() {
 
                   {courseJson ? (
                     <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
-                      {courseViewMode === 'all' ? (
-                        <ReactRenderer courseJson={courseJson} />
-                      ) : currentModuleIndex !== null ? (
-                        <ReactRenderer 
-                          courseJson={{
-                            ...courseJson,
-                            modules: [courseJson.modules[currentModuleIndex]]
-                          }} 
-                        />
-                      ) : (
-                        <ReactRenderer courseJson={courseJson} />
-                      )}
+                      {(() => {
+                        console.log('Rendering ReactRenderer with moduleProgress:', moduleProgress, 'modules:', modules.map(m => ({ id: m.id, title: m.title })))
+                        return null
+                      })()}
+                      <ReactRenderer 
+                        courseJson={courseJson}
+                        modules={modules}
+                        moduleProgress={moduleProgress}
+                        onToggleModuleComplete={toggleModuleComplete}
+                        userRole={profile?.role}
+                      />
                     </div>
                   ) : modules.length === 0 ? (
                     <div className="text-center py-12 bg-white rounded-3xl border border-slate-100 shadow-sm">
@@ -1090,31 +1482,12 @@ export function CourseView() {
         </div>
       </main>
 
-      {viewMode !== 'progress' && courseJson && !isDesktop && (
-        <>
-          {sidebarOpen && (
-            <div 
-              className="fixed inset-0 bg-black/50 z-40"
-              onClick={() => setSidebarOpen(false)}
-            />
-          )}
-          <div className={`fixed inset-y-0 left-0 z-50 w-full max-w-sm transform bg-white shadow-2xl transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-            <CourseSidebar 
-              courseJson={courseJson}
-              onClose={() => setSidebarOpen(false)}
-              sidebarWidth={280}
-              minWidth={200}
-              onModuleSelect={(moduleIndex) => {
-                setCourseViewMode('module')
-                setCurrentModuleIndex(moduleIndex)
-                setSidebarOpen(false)
-              }}
-              selectedModuleIndex={courseViewMode === 'module' ? currentModuleIndex : null}
-              directTps={directTps}
-              tpBatches={tpBatches}
-            />
-          </div>
-        </>
+      {/* Overlay pour mobile quand sidebar est ouverte */}
+      {viewMode !== 'progress' && courseJson && sidebarOpen && !isDesktop && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-30"
+          onClick={() => setSidebarOpen(false)}
+        />
       )}
 
       {/* Drawer du lexique à droite */}

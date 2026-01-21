@@ -1,0 +1,2350 @@
+{
+  "title": "Programmation Orientée Objet en Python",
+  "description": "Cours complet et détaillé sur la programmation orientée objet (POO) en Python : classes, objets, attributs, méthodes, constructeur __init__, encapsulation, héritage et méthodes spéciales. Chaque ligne de code est commentée, avec des explications approfondies de chaque concept, étape par étape.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#7C3AED",
+    "secondaryColor": "#A78BFA",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Introduction à la POO",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#7C3AED",
+        "secondaryColor": "#A78BFA"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Qu'est-ce que la programmation orientée objet ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez les concepts fondamentaux de la programmation orientée objet : classes, objets, attributs et méthodes, avec des explications détaillées pour débutants complets."
+          },
+          "chapters": [
+            {
+              "title": "Introduction à la POO",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🎯 Qu'est-ce que la programmation orientée objet ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "La programmation orientée objet (POO) est un paradigme de programmation qui organise le code autour d'objets plutôt que de fonctions. Un objet est une instance d'une classe qui contient des données (attributs) et des comportements (méthodes)."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pourquoi utiliser la POO ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Organisation du code : Regrouper les données et les fonctions qui les manipulent."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Réutilisabilité : Créer des classes une fois et les réutiliser plusieurs fois."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Maintenabilité : Modifier une classe affecte tous les objets créés à partir d'elle."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Modularité : Séparer le code en modules indépendants et réutilisables."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Concepts fondamentaux"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "Classe"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Modèle ou plan pour créer des objets. C'est comme un moule à gâteau."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "Objet"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Instance d'une classe. C'est comme un gâteau créé à partir du moule."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "Attribut"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Variable qui stocke des données dans un objet (ex: nom, âge)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "Méthode"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Fonction définie dans une classe qui agit sur les attributs de l'objet."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple simple : Analogie avec une voiture"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# ANALOGIE : Classe = Moule, Objet = Gâteau\n# ============================================\n\n# La CLASSE 'Voiture' est le moule (le plan)\n# Elle définit :\n#   - Les ATTRIBUTS (données) : marque, couleur, vitesse\n#   - Les MÉTHODES (comportements) : démarrer(), accélérer(), freiner()\n\n# Un OBJET 'ma_voiture' est un gâteau créé à partir du moule\n# Il a ses propres valeurs : marque=\"Toyota\", couleur=\"rouge\", vitesse=0\n\n# On peut créer plusieurs objets à partir de la même classe\n# voiture1, voiture2, voiture3 = 3 gâteaux différents du même moule"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 1.1 : Introduction à la POO",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Qu'est-ce qu'une classe en POO ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Un objet",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Un modèle ou plan pour créer des objets",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Une fonction",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Une variable",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Qu'est-ce qu'un objet ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Une classe",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Une instance d'une classe",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Une méthode",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Un attribut",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Quelle est la différence entre un attribut et une méthode ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Un attribut stocke des données, une méthode est une fonction",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Ils sont identiques",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Un attribut est une fonction, une méthode stocke des données",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Aucune différence",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : Créer une classe simple",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#7C3AED",
+        "secondaryColor": "#A78BFA"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Créer votre première classe",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à créer une classe simple en Python, définir des attributs et créer des objets, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Créer une classe simple",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🏗️ Créer votre première classe"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Créer une classe en Python est simple. Utilisez le mot-clé 'class' suivi du nom de la classe (en PascalCase) et de deux-points."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Classe Personne simple"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Classe Personne simple\n# ============================================\n\n# Définir une classe avec le mot-clé 'class'\n# 'Personne' est le nom de la classe (convention : PascalCase)\n# 'pass' est un mot-clé qui signifie \"ne rien faire\" (classe vide pour l'instant)\nclass Personne:\n    pass  # Classe vide pour l'instant\n\n# Créer un objet (instance) de la classe Personne\n# Syntaxe : nom_objet = NomClasse()\n# Les parenthèses () appellent le constructeur par défaut\npersonne1 = Personne()\n\n# Vérifier le type de l'objet\nprint(type(personne1))  # <class '__main__.Personne'>\nprint(personne1)        # <__main__.Personne object at 0x...>\n\n# Créer plusieurs objets de la même classe\npersonne2 = Personne()\npersonne3 = Personne()\n\n# Chaque objet est différent (adresse mémoire différente)\nprint(personne1 == personne2)  # False (objets différents)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Ajouter des attributs"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Ajouter des attributs à un objet\n# ============================================\n\nclass Personne:\n    pass\n\n# Créer un objet\npersonne = Personne()\n\n# Ajouter des attributs dynamiquement\n# Syntaxe : objet.attribut = valeur\n# Chaque objet peut avoir ses propres valeurs d'attributs\npersonne.nom = \"Alice\"\npersonne.age = 25\npersonne.ville = \"Paris\"\n\n# Accéder aux attributs\n# Syntaxe : objet.attribut\nprint(personne.nom)   # Alice\nprint(personne.age)   # 25\nprint(personne.ville) # Paris\n\n# Créer un autre objet avec des attributs différents\npersonne2 = Personne()\npersonne2.nom = \"Bob\"\npersonne2.age = 30\npersonne2.ville = \"Lyon\"\n\n# Chaque objet a ses propres attributs\nprint(personne.nom)   # Alice\nprint(personne2.nom)   # Bob"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "class NomClasse: définit une classe."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "objet = NomClasse() crée un objet (instance)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "objet.attribut = valeur ajoute/modifie un attribut."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Chaque objet a ses propres attributs indépendants."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 2.1 : Créer une classe simple",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Quel mot-clé utilise-t-on pour définir une classe en Python ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "def",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "class",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "object",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "create",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment créer un objet à partir d'une classe ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "objet = NomClasse",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "objet = NomClasse()",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "objet = new NomClasse()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "objet = create NomClasse()",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment ajouter un attribut 'nom' avec la valeur 'Alice' à un objet 'personne' ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "personne['nom'] = 'Alice'",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "personne.nom = 'Alice'",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "personne.set('nom', 'Alice')",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "personne.nom('Alice')",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : Le constructeur __init__",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#7C3AED",
+        "secondaryColor": "#A78BFA"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Initialiser des objets avec __init__",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à utiliser le constructeur __init__ pour initialiser automatiquement les attributs d'un objet lors de sa création, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Le constructeur __init__",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🔧 Initialiser des objets avec __init__"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Le constructeur __init__ est une méthode spéciale appelée automatiquement lors de la création d'un objet. Il permet d'initialiser les attributs de l'objet avec des valeurs spécifiques."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Constructeur simple"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Constructeur __init__ simple\n# ============================================\n\nclass Personne:\n    # __init__ est appelé automatiquement lors de la création d'un objet\n    # 'self' représente l'objet en cours de création\n    # Les autres paramètres sont les valeurs à assigner aux attributs\n    def __init__(self, nom, age):\n        # self.nom crée un attribut 'nom' pour cet objet\n        # nom (sans self) est le paramètre passé à la fonction\n        self.nom = nom      # Attribut 'nom' = valeur du paramètre 'nom'\n        self.age = age      # Attribut 'age' = valeur du paramètre 'age'\n        \n        # Ces attributs sont maintenant disponibles pour cet objet\n        print(f\"Objet {self.nom} créé !\")\n\n# Créer un objet : __init__ est appelé automatiquement\n# Les arguments passés entre () sont transmis à __init__\npersonne1 = Personne(\"Alice\", 25)\n# Résultat affiché : Objet Alice créé !\n\n# Accéder aux attributs initialisés\nprint(personne1.nom)  # Alice\nprint(personne1.age)  # 25\n\n# Créer un autre objet avec des valeurs différentes\npersonne2 = Personne(\"Bob\", 30)\n# Résultat affiché : Objet Bob créé !\nprint(personne2.nom)  # Bob\nprint(personne2.age)  # 30"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Constructeur avec valeurs par défaut"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Constructeur avec valeurs par défaut\n# ============================================\n\nclass Personne:\n    def __init__(self, nom, age, ville=\"Paris\"):\n        # 'ville' a une valeur par défaut \"Paris\"\n        # Si l'utilisateur ne fournit pas 'ville', \"Paris\" est utilisé\n        self.nom = nom\n        self.age = age\n        self.ville = ville\n        print(f\"{self.nom} habite à {self.ville}\")\n\n# Créer un objet sans spécifier 'ville' (valeur par défaut utilisée)\npersonne1 = Personne(\"Alice\", 25)\n# Résultat : Alice habite à Paris\n\n# Créer un objet en spécifiant 'ville'\npersonne2 = Personne(\"Bob\", 30, \"Lyon\")\n# Résultat : Bob habite à Lyon\n\n# Créer un objet avec argument nommé\npersonne3 = Personne(\"Charlie\", 28, ville=\"Marseille\")\n# Résultat : Charlie habite à Marseille"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Comprendre 'self'"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Comprendre 'self'\n# ============================================\n\nclass Personne:\n    def __init__(self, nom):\n        # 'self' est une référence à l'objet en cours de création\n        # C'est comme dire \"cet objet\" ou \"moi-même\"\n        # self.nom signifie \"l'attribut 'nom' de cet objet\"\n        self.nom = nom\n        \n        # Python passe automatiquement 'self' en premier paramètre\n        # Vous n'avez pas besoin de le passer lors de l'appel\n        print(f\"self représente : {self}\")\n        print(f\"self.nom vaut : {self.nom}\")\n\n# Créer un objet\n# Python fait automatiquement : Personne.__init__(personne1, \"Alice\")\n# 'self' = personne1 dans cet appel\npersonne1 = Personne(\"Alice\")\n# Résultat affiché :\n# self représente : <__main__.Personne object at 0x...>\n# self.nom vaut : Alice\n\n# IMPORTANT : 'self' doit toujours être le premier paramètre des méthodes\n# Mais vous ne le passez JAMAIS lors de l'appel\n# Python le fait automatiquement"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "__init__ est appelé automatiquement lors de la création d'un objet."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "'self' représente l'objet en cours de création (toujours en premier paramètre)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "self.attribut = valeur crée/modifie un attribut de l'objet."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Les paramètres de __init__ peuvent avoir des valeurs par défaut."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 3.1 : Le constructeur __init__",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Quand est appelé __init__ ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Manuellement par le programmeur",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Automatiquement lors de la création d'un objet",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Jamais",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Seulement si on l'appelle explicitement",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Que représente 'self' dans une méthode ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "La classe",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "L'objet en cours (l'instance)",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Une méthode",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Un attribut",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment initialiser un attribut 'nom' dans __init__ ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "nom = valeur",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "self.nom = valeur",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "this.nom = valeur",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "object.nom = valeur",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : Méthodes",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#7C3AED",
+        "secondaryColor": "#A78BFA"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Créer et utiliser des méthodes",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à définir des méthodes dans une classe pour ajouter des comportements aux objets, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Créer des méthodes",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "⚙️ Créer et utiliser des méthodes"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Une méthode est une fonction définie dans une classe. Elle peut accéder et modifier les attributs de l'objet via 'self'. Les méthodes définissent le comportement des objets."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Méthode simple"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Méthode simple\n# ============================================\n\nclass Personne:\n    def __init__(self, nom, age):\n        self.nom = nom\n        self.age = age\n    \n    # Définir une méthode : fonction à l'intérieur d'une classe\n    # 'self' est toujours le premier paramètre\n    # Permet d'accéder aux attributs de l'objet\n    def se_presenter(self):\n        # self.nom et self.age accèdent aux attributs de cet objet\n        # Chaque objet a ses propres valeurs\n        print(f\"Je m'appelle {self.nom} et j'ai {self.age} ans.\")\n\n# Créer des objets\npersonne1 = Personne(\"Alice\", 25)\npersonne2 = Personne(\"Bob\", 30)\n\n# Appeler une méthode\n# Syntaxe : objet.methode()\n# Python passe automatiquement 'self' (l'objet) en premier paramètre\npersonne1.se_presenter()  # Je m'appelle Alice et j'ai 25 ans.\npersonne2.se_presenter()  # Je m'appelle Bob et j'ai 30 ans."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Méthode avec paramètres"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Méthode avec paramètres\n# ============================================\n\nclass Personne:\n    def __init__(self, nom, age):\n        self.nom = nom\n        self.age = age\n    \n    # Méthode qui modifie un attribut\n    def feter_anniversaire(self):\n        # Modifier l'attribut 'age' de cet objet\n        self.age += 1  # self.age = self.age + 1\n        print(f\"{self.nom} a maintenant {self.age} ans !\")\n    \n    # Méthode avec paramètres supplémentaires\n    def changer_nom(self, nouveau_nom):\n        # 'nouveau_nom' est un paramètre passé lors de l'appel\n        # 'self' est toujours le premier paramètre (passé automatiquement)\n        ancien_nom = self.nom  # Sauvegarder l'ancien nom\n        self.nom = nouveau_nom  # Modifier le nom\n        print(f\"{ancien_nom} s'appelle maintenant {self.nom}\")\n\n# Créer un objet\npersonne = Personne(\"Alice\", 25)\n\n# Appeler les méthodes\npersonne.feter_anniversaire()  # Alice a maintenant 26 ans !\npersonne.changer_nom(\"Alicia\")  # Alice s'appelle maintenant Alicia\n\n# Vérifier les modifications\nprint(personne.nom)  # Alicia\nprint(personne.age)  # 26"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Méthode qui retourne une valeur"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Méthode qui retourne une valeur\n# ============================================\n\nclass Personne:\n    def __init__(self, nom, age):\n        self.nom = nom\n        self.age = age\n    \n    # Méthode qui retourne une valeur (comme une fonction normale)\n    def est_majeur(self):\n        # Retourne True si l'âge >= 18, False sinon\n        return self.age >= 18\n    \n    def obtenir_info(self):\n        # Retourne une chaîne formatée\n        return f\"{self.nom}, {self.age} ans\"\n    \n    def calculer_annee_naissance(self, annee_actuelle):\n        # Méthode avec paramètre qui retourne un calcul\n        return annee_actuelle - self.age\n\n# Créer un objet\npersonne = Personne(\"Alice\", 25)\n\n# Utiliser les méthodes qui retournent des valeurs\nest_majeur = personne.est_majeur()\nprint(est_majeur)  # True\n\ninfo = personne.obtenir_info()\nprint(info)  # Alice, 25 ans\n\nannee_naissance = personne.calculer_annee_naissance(2024)\nprint(f\"Année de naissance : {annee_naissance}\")  # Année de naissance : 1999"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Une méthode est une fonction définie dans une classe."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "'self' est toujours le premier paramètre (passé automatiquement)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "objet.methode() appelle la méthode sur l'objet."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Les méthodes peuvent modifier les attributs via self.attribut."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 4.1 : Méthodes",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Quel est le premier paramètre obligatoire d'une méthode ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "this",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "self",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "object",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "cls",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment appeler une méthode 'se_presenter' sur un objet 'personne' ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "personne.se_presenter",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "personne.se_presenter()",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "se_presenter(personne)",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Personne.se_presenter()",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment accéder à un attribut 'nom' dans une méthode ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "nom",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "self.nom",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "this.nom",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "object.nom",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : Encapsulation et attributs privés",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#7C3AED",
+        "secondaryColor": "#A78BFA"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "5.1 Encapsulation et attributs privés",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à protéger les attributs avec l'encapsulation, utiliser des attributs privés (__attribut) et créer des getters/setters, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Encapsulation",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🔒 Encapsulation et attributs privés"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "L'encapsulation consiste à protéger les données d'un objet en limitant l'accès direct aux attributs. En Python, on utilise des conventions de nommage (préfixe _ ou __) pour indiquer qu'un attribut est privé."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Attributs privés avec __"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Attributs privés avec __\n# ============================================\n\nclass CompteBancaire:\n    def __init__(self, solde_initial):\n        # Attribut privé : préfixe __\n        # Python renomme automatiquement __solde en _CompteBancaire__solde\n        # Cela rend l'accès direct plus difficile (mais pas impossible)\n        self.__solde = solde_initial  # Attribut privé\n        \n        # Attribut public (accessible directement)\n        self.nom_titulaire = \"\"\n    \n    def deposer(self, montant):\n        # Méthode publique pour modifier le solde\n        # Permet de contrôler les modifications\n        if montant > 0:\n            self.__solde += montant\n            print(f\"Dépôt de {montant}€. Nouveau solde : {self.__solde}€\")\n        else:\n            print(\"Le montant doit être positif\")\n    \n    def retirer(self, montant):\n        # Contrôle : vérifier que le solde est suffisant\n        if montant > 0 and montant <= self.__solde:\n            self.__solde -= montant\n            print(f\"Retrait de {montant}€. Nouveau solde : {self.__solde}€\")\n        else:\n            print(\"Montant invalide ou solde insuffisant\")\n    \n    def obtenir_solde(self):\n        # Getter : méthode pour lire l'attribut privé\n        return self.__solde\n\n# Créer un compte\ncompte = CompteBancaire(1000)\n\n# Accéder à l'attribut public\ncompte.nom_titulaire = \"Alice\"\nprint(compte.nom_titulaire)  # Alice\n\n# Essayer d'accéder directement à l'attribut privé (ne fonctionne pas comme prévu)\n# print(compte.__solde)  # Erreur : AttributeError\n\n# Utiliser les méthodes publiques\ncompte.deposer(500)  # Dépôt de 500€. Nouveau solde : 1500€\ncompte.retirer(200)  # Retrait de 200€. Nouveau solde : 1300€\n\n# Lire le solde via la méthode\nprint(f\"Solde actuel : {compte.obtenir_solde()}€\")  # Solde actuel : 1300€"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Getters et Setters"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Getters et Setters\n# ============================================\n\nclass Personne:\n    def __init__(self, nom, age):\n        self.__nom = nom  # Attribut privé\n        self.__age = age  # Attribut privé\n    \n    # Getter : méthode pour lire un attribut privé\n    def get_nom(self):\n        return self.__nom\n    \n    # Setter : méthode pour modifier un attribut privé avec validation\n    def set_age(self, nouvel_age):\n        # Validation : l'âge doit être positif\n        if nouvel_age >= 0:\n            self.__age = nouvel_age\n        else:\n            print(\"L'âge doit être positif\")\n    \n    # Getter pour l'âge\n    def get_age(self):\n        return self.__age\n\n# Créer un objet\npersonne = Personne(\"Alice\", 25)\n\n# Utiliser les getters\nprint(personne.get_nom())  # Alice\nprint(personne.get_age())  # 25\n\n# Utiliser le setter (avec validation)\npersonne.set_age(30)  # OK\nprint(personne.get_age())  # 30\n\npersonne.set_age(-5)  # L'âge doit être positif\nprint(personne.get_age())  # 30 (inchangé)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Propriétés avec @property"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Propriétés avec @property (méthode Pythonique)\n# ============================================\n\nclass Personne:\n    def __init__(self, nom, age):\n        self.__nom = nom\n        self.__age = age\n    \n    # @property transforme une méthode en attribut (lecture)\n    # Permet d'utiliser personne.nom au lieu de personne.get_nom()\n    @property\n    def nom(self):\n        return self.__nom\n    \n    @property\n    def age(self):\n        return self.__age\n    \n    # @age.setter permet de définir un setter pour la propriété\n    @age.setter\n    def age(self, valeur):\n        if valeur >= 0:\n            self.__age = valeur\n        else:\n            print(\"L'âge doit être positif\")\n\n# Créer un objet\npersonne = Personne(\"Alice\", 25)\n\n# Utiliser comme un attribut (mais c'est en fait une méthode)\nprint(personne.nom)  # Alice (appelle automatiquement la méthode nom())\nprint(personne.age)  # 25\n\n# Modifier via le setter\npersonne.age = 30  # Appelle automatiquement age.setter\nprint(personne.age)  # 30\n\npersonne.age = -5  # L'âge doit être positif\nprint(personne.age)  # 30 (inchangé)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "__attribut crée un attribut privé (convention Python)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Les getters/setters permettent de contrôler l'accès aux attributs."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "@property permet d'utiliser des méthodes comme des attributs."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 5.1 : Encapsulation",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Comment créer un attribut privé en Python ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "self.attribut",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "self.__attribut",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "self.private attribut",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "self.private(attribut)",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Qu'est-ce qu'un getter ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Une méthode pour modifier un attribut",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Une méthode pour lire un attribut",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Un attribut public",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Une classe",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Que fait le décorateur @property ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Crée un attribut privé",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Transforme une méthode en attribut accessible",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Définit une classe",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Crée un objet",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 6 : Héritage",
+      "position": 5,
+      "theme": {
+        "primaryColor": "#7C3AED",
+        "secondaryColor": "#A78BFA"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "6.1 L'héritage de classes",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à utiliser l'héritage pour créer des classes qui héritent des attributs et méthodes d'une classe parente, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "L'héritage",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "👨‍👩‍👧‍👦 L'héritage de classes"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "L'héritage permet à une classe (classe enfant) d'hériter des attributs et méthodes d'une autre classe (classe parente). Cela évite la duplication de code et permet de créer des relations \"est un\" entre les classes."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Héritage simple"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Héritage simple\n# ============================================\n\n# Classe parente (ou classe de base)\nclass Animal:\n    def __init__(self, nom):\n        self.nom = nom\n    \n    def faire_du_bruit(self):\n        print(f\"{self.nom} fait un bruit\")\n    \n    def manger(self):\n        print(f\"{self.nom} mange\")\n\n# Classe enfant (ou classe dérivée)\n# Syntaxe : class Enfant(Parent):\n# 'Chien' hérite de 'Animal'\nclass Chien(Animal):\n    # Si on ne définit pas __init__, celui de la classe parente est utilisé\n    # Chien hérite automatiquement de __init__ et faire_du_bruit()\n    \n    # Redéfinir (override) une méthode de la classe parente\n    def faire_du_bruit(self):\n        # Appeler la méthode de la classe parente avec super()\n        # super() fait référence à la classe parente\n        print(f\"{self.nom} aboie : Wouf !\")\n\n# Classe enfant qui hérite aussi de Animal\nclass Chat(Animal):\n    def faire_du_bruit(self):\n        print(f\"{self.nom} miaule : Miaou !\")\n\n# Créer des objets\nchien = Chien(\"Rex\")\nchat = Chat(\"Minou\")\n\n# Les objets héritent des méthodes de la classe parente\nchien.manger()  # Rex mange (méthode héritée)\nchat.manger()   # Minou mange (méthode héritée)\n\n# Les méthodes redéfinies utilisent la nouvelle implémentation\nchien.faire_du_bruit()  # Rex aboie : Wouf !\nchat.faire_du_bruit()   # Minou miaule : Miaou !"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Héritage avec __init__"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Héritage avec __init__\n# ============================================\n\nclass Vehicule:\n    def __init__(self, marque, annee):\n        self.marque = marque\n        self.annee = annee\n    \n    def demarrer(self):\n        print(f\"Le {self.marque} démarre\")\n\n# Classe enfant avec son propre __init__\nclass Voiture(Vehicule):\n    def __init__(self, marque, annee, nombre_portes):\n        # Appeler le __init__ de la classe parente avec super()\n        # super() permet d'accéder à la classe parente\n        # super().__init__(marque, annee) appelle Vehicule.__init__()\n        super().__init__(marque, annee)\n        \n        # Ajouter des attributs spécifiques à Voiture\n        self.nombre_portes = nombre_portes\n    \n    def klaxonner(self):\n        print(f\"Le {self.marque} klaxonne : Tut tut !\")\n\n# Créer un objet\nvoiture = Voiture(\"Toyota\", 2020, 4)\n\n# Attributs hérités\nprint(voiture.marque)  # Toyota\nprint(voiture.annee)   # 2020\n\n# Attribut spécifique à Voiture\nprint(voiture.nombre_portes)  # 4\n\n# Méthode héritée\nvoiture.demarrer()  # Le Toyota démarre\n\n# Méthode spécifique à Voiture\nvoiture.klaxonner()  # Le Toyota klaxonne : Tut tut !"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Vérifier l'héritage"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Vérifier l'héritage\n# ============================================\n\nclass Animal:\n    pass\n\nclass Chien(Animal):\n    pass\n\n# isinstance(objet, classe) vérifie si un objet est une instance d'une classe\nchien = Chien()\n\nprint(isinstance(chien, Chien))   # True (chien est un Chien)\nprint(isinstance(chien, Animal))  # True (chien est aussi un Animal)\n\n# issubclass(classe_enfant, classe_parente) vérifie l'héritage\nprint(issubclass(Chien, Animal))  # True (Chien hérite de Animal)\nprint(issubclass(Animal, Chien))  # False (Animal n'hérite pas de Chien)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "class Enfant(Parent): crée une classe qui hérite de Parent."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "super() permet d'accéder à la classe parente."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Les classes enfants héritent de tous les attributs et méthodes de la classe parente."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "On peut redéfinir (override) les méthodes de la classe parente."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 6.1 : Héritage",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Comment créer une classe 'Enfant' qui hérite de 'Parent' ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "class Enfant(Parent):",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "class Enfant extends Parent:",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "class Enfant inherits Parent:",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "class Enfant: Parent",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment appeler le __init__ de la classe parente dans une classe enfant ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "parent.__init__()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "super().__init__()",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Parent.__init__()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "self.parent.__init__()",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Que fait isinstance(objet, Classe) ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Crée un objet",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Vérifie si un objet est une instance d'une classe",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Vérifie l'héritage entre classes",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Modifie un objet",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 7 : Méthodes spéciales",
+      "position": 6,
+      "theme": {
+        "primaryColor": "#7C3AED",
+        "secondaryColor": "#A78BFA"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "7.1 Méthodes spéciales (__str__, __repr__, etc.)",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à utiliser les méthodes spéciales (magic methods) comme __str__, __repr__, __len__, __eq__ pour personnaliser le comportement des objets, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Méthodes spéciales",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "✨ Méthodes spéciales (magic methods)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Les méthodes spéciales (magic methods) sont des méthodes préfixées et suffixées par __ (double underscore). Elles sont appelées automatiquement par Python dans certaines situations."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : __str__ et __repr__"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : __str__ et __repr__\n# ============================================\n\nclass Personne:\n    def __init__(self, nom, age):\n        self.nom = nom\n        self.age = age\n    \n    # __str__ : représentation lisible pour l'utilisateur\n    # Appelé par print() et str()\n    def __str__(self):\n        return f\"{self.nom}, {self.age} ans\"\n    \n    # __repr__ : représentation technique pour les développeurs\n    # Appelé par repr() et dans les listes\n    # Devrait être une chaîne qui permet de recréer l'objet\n    def __repr__(self):\n        return f\"Personne('{self.nom}', {self.age})\"\n\n# Créer un objet\npersonne = Personne(\"Alice\", 25)\n\n# print() utilise __str__\nprint(personne)  # Alice, 25 ans\n\n# str() utilise __str__\nprint(str(personne))  # Alice, 25 ans\n\n# repr() utilise __repr__\nprint(repr(personne))  # Personne('Alice', 25)\n\n# Dans une liste, __repr__ est utilisé\nliste = [personne]\nprint(liste)  # [Personne('Alice', 25)]"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : __eq__ et __len__"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : __eq__ (égalité) et __len__ (longueur)\n# ============================================\n\nclass ListePersonnalisee:\n    def __init__(self, elements):\n        self.elements = elements  # Liste d'éléments\n    \n    # __eq__ : définit l'égalité entre deux objets\n    # Appelé par ==\n    def __eq__(self, autre):\n        # Comparer les listes d'éléments\n        return self.elements == autre.elements\n    \n    # __len__ : définit la longueur de l'objet\n    # Appelé par len()\n    def __len__(self):\n        return len(self.elements)\n    \n    def __str__(self):\n        return str(self.elements)\n\n# Créer des objets\nliste1 = ListePersonnalisee([1, 2, 3])\nliste2 = ListePersonnalisee([1, 2, 3])\nliste3 = ListePersonnalisee([4, 5, 6])\n\n# Utiliser == (appelle __eq__)\nprint(liste1 == liste2)  # True (éléments identiques)\nprint(liste1 == liste3)  # False (éléments différents)\n\n# Utiliser len() (appelle __len__)\nprint(len(liste1))  # 3\n\n# Sans __eq__, == comparerait les adresses mémoire (False)\n# Sans __len__, len() donnerait une erreur"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Autres méthodes spéciales courantes"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Autres méthodes spéciales courantes\n# ============================================\n\nclass Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n    \n    def __str__(self):\n        return f\"Point({self.x}, {self.y})\"\n    \n    # __add__ : définit l'addition (+)\n    def __add__(self, autre):\n        return Point(self.x + autre.x, self.y + autre.y)\n    \n    # __sub__ : définit la soustraction (-)\n    def __sub__(self, autre):\n        return Point(self.x - autre.x, self.y - autre.y)\n    \n    # __mul__ : définit la multiplication (*)\n    def __mul__(self, nombre):\n        return Point(self.x * nombre, self.y * nombre)\n\n# Créer des points\np1 = Point(1, 2)\np2 = Point(3, 4)\n\n# Utiliser les opérateurs (appellent les méthodes spéciales)\nprint(p1 + p2)  # Point(4, 6) (appelle __add__)\nprint(p2 - p1)  # Point(2, 2) (appelle __sub__)\nprint(p1 * 3)   # Point(3, 6) (appelle __mul__)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "__str__ définit la représentation lisible (pour print())."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "__repr__ définit la représentation technique (pour repr())."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "__eq__ définit l'égalité (==), __len__ définit la longueur (len())."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Les méthodes spéciales sont appelées automatiquement par Python."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 7.1 : Méthodes spéciales",
+          "position": 1,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Quelle méthode spéciale est appelée par print() ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "__repr__",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "__str__",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "__print__",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "__display__",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Quelle méthode spéciale définit l'égalité (==) ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "__equal__",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "__eq__",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "__same__",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "__compare__",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Quelle méthode spéciale définit l'addition (+) ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "__add__",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "__plus__",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "__sum__",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "__concat__",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 8 : Exercices pratiques",
+      "position": 7,
+      "theme": {
+        "primaryColor": "#7C3AED",
+        "secondaryColor": "#A78BFA"
+      },
+      "items": [
+        {
+          "type": "exercise",
+          "title": "Exercice 1 : Classe Rectangle",
+          "position": 0,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📝 Exercice 1 : Classe Rectangle"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créez une classe Rectangle qui :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "A un constructeur __init__ qui prend largeur et hauteur"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "A une méthode calculer_aire() qui retourne l'aire (largeur × hauteur)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "A une méthode calculer_perimetre() qui retourne le périmètre (2 × (largeur + hauteur))"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "A une méthode __str__ qui retourne \"Rectangle(largeur={largeur}, hauteur={hauteur})\""
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Correction : Classe Rectangle"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# ============================================\n# CORRECTION : Classe Rectangle\n# ============================================\n\nclass Rectangle:\n    def __init__(self, largeur, hauteur):\n        # Initialiser les attributs\n        self.largeur = largeur\n        self.hauteur = hauteur\n    \n    def calculer_aire(self):\n        # Aire = largeur × hauteur\n        return self.largeur * self.hauteur\n    \n    def calculer_perimetre(self):\n        # Périmètre = 2 × (largeur + hauteur)\n        return 2 * (self.largeur + self.hauteur)\n    \n    def __str__(self):\n        # Représentation lisible\n        return f\"Rectangle(largeur={self.largeur}, hauteur={self.hauteur})\"\n\n# Créer un rectangle\nrect = Rectangle(5, 3)\n\n# Utiliser les méthodes\nprint(rect)  # Rectangle(largeur=5, hauteur=3)\nprint(f\"Aire : {rect.calculer_aire()}\")  # Aire : 15\nprint(f\"Périmètre : {rect.calculer_perimetre()}\")  # Périmètre : 16"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 2 : Classe CompteBancaire avec héritage",
+          "position": 1,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📝 Exercice 2 : Classe CompteBancaire avec héritage"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créez une classe CompteBancaire avec :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Un attribut privé __solde initialisé à 0"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Une méthode deposer(montant) qui ajoute au solde"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Une méthode retirer(montant) qui soustrait du solde (vérifier que le solde est suffisant)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Une méthode get_solde() qui retourne le solde"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Créez ensuite une classe CompteEpargne qui hérite de CompteBancaire et ajoute une méthode calculer_interets(taux) qui ajoute les intérêts au solde"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Correction : CompteBancaire avec héritage"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# ============================================\n# CORRECTION : CompteBancaire avec héritage\n# ============================================\n\nclass CompteBancaire:\n    def __init__(self):\n        # Attribut privé\n        self.__solde = 0\n    \n    def deposer(self, montant):\n        if montant > 0:\n            self.__solde += montant\n            print(f\"Dépôt de {montant}€\")\n        else:\n            print(\"Le montant doit être positif\")\n    \n    def retirer(self, montant):\n        if montant > 0 and montant <= self.__solde:\n            self.__solde -= montant\n            print(f\"Retrait de {montant}€\")\n        else:\n            print(\"Montant invalide ou solde insuffisant\")\n    \n    def get_solde(self):\n        return self.__solde\n\n# Classe enfant\nclass CompteEpargne(CompteBancaire):\n    def calculer_interets(self, taux):\n        # taux est un pourcentage (ex: 0.05 pour 5%)\n        interets = self.get_solde() * taux\n        self.deposer(interets)  # Utiliser la méthode héritée\n        print(f\"Intérêts de {interets}€ ajoutés\")\n\n# Créer un compte épargne\ncompte = CompteEpargne()\n\n# Utiliser les méthodes\ncompte.deposer(1000)  # Dépôt de 1000€\nprint(f\"Solde : {compte.get_solde()}€\")  # Solde : 1000€\n\ncompte.calculer_interets(0.05)  # Intérêts de 50.0€ ajoutés\nprint(f\"Solde après intérêts : {compte.get_solde()}€\")  # Solde après intérêts : 1050.0€"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 3 : Classe Etudiant complète",
+          "position": 2,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📝 Exercice 3 : Classe Etudiant complète"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créez une classe Etudiant qui :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "A un constructeur avec nom, prenom, age"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "A une liste de notes (initialisée vide)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "A une méthode ajouter_note(note) qui ajoute une note à la liste"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "A une méthode calculer_moyenne() qui retourne la moyenne des notes"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "A une méthode __str__ qui affiche le nom, prénom et la moyenne"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Correction : Classe Etudiant complète"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# ============================================\n# CORRECTION : Classe Etudiant complète\n# ============================================\n\nclass Etudiant:\n    def __init__(self, nom, prenom, age):\n        self.nom = nom\n        self.prenom = prenom\n        self.age = age\n        self.notes = []  # Liste vide initialisée\n    \n    def ajouter_note(self, note):\n        # Ajouter une note à la liste\n        self.notes.append(note)\n        print(f\"Note {note} ajoutée\")\n    \n    def calculer_moyenne(self):\n        # Calculer la moyenne des notes\n        if len(self.notes) == 0:\n            return 0  # Pas de notes\n        \n        # sum() additionne tous les éléments de la liste\n        # len() donne le nombre d'éléments\n        return sum(self.notes) / len(self.notes)\n    \n    def __str__(self):\n        moyenne = self.calculer_moyenne()\n        return f\"{self.prenom} {self.nom} ({self.age} ans) - Moyenne : {moyenne:.2f}\"\n\n# Créer un étudiant\netudiant = Etudiant(\"Dupont\", \"Jean\", 20)\n\n# Ajouter des notes\netudiant.ajouter_note(15)  # Note 15 ajoutée\netudiant.ajouter_note(18)  # Note 18 ajoutée\netudiant.ajouter_note(12)  # Note 12 ajoutée\n\n# Afficher l'étudiant (utilise __str__)\nprint(etudiant)  # Jean Dupont (20 ans) - Moyenne : 15.00\n\n# Calculer la moyenne\nprint(f\"Moyenne : {etudiant.calculer_moyenne()}\")  # Moyenne : 15.0"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

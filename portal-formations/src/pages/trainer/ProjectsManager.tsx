@@ -115,7 +115,7 @@ export function ProjectsManager() {
     <div className="min-h-screen bg-gray-50">
       <TrainerHeader />
       
-      <div className="max-w-6xl mx-auto px-4 py-6 pt-28">
+      <div className="max-w-6xl mx-auto px-4 py-6 pt-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>

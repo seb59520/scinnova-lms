@@ -1,0 +1,2127 @@
+{
+  "title": "Web Scraping en Python",
+  "description": "Cours complet et détaillé sur le web scraping en Python : requests pour récupérer des pages web, BeautifulSoup pour parser le HTML, et introduction à Scrapy pour des projets plus complexes. Chaque ligne de code est commentée, avec des explications approfondies de chaque concept, étape par étape.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#10B981",
+    "secondaryColor": "#34D399",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Introduction au Web Scraping et requests",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#34D399"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Qu'est-ce que le Web Scraping ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez les concepts fondamentaux du web scraping : définition, cas d'usage, éthique et légalité, avec des explications détaillées pour débutants complets."
+          },
+          "chapters": [
+            {
+              "title": "Introduction au Web Scraping",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🕷️ Qu'est-ce que le Web Scraping ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Le web scraping (ou extraction de données web) est une technique qui consiste à extraire automatiquement des informations depuis des sites web. Au lieu de copier manuellement les données, on utilise un programme Python pour récupérer et analyser le contenu HTML des pages web."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pourquoi faire du Web Scraping ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Collecte de données : Extraire des prix, des avis, des articles de presse, des informations météo, etc."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Surveillance de prix : Suivre l'évolution des prix sur des sites e-commerce."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Analyse de marché : Collecter des données pour des études de marché."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Agrégation de contenu : Rassembler des informations depuis plusieurs sources."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Éthique et légalité"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Respecter les robots.txt : Vérifier le fichier robots.txt du site avant de scraper."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Ne pas surcharger les serveurs : Ajouter des délais entre les requêtes (time.sleep())."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Respecter les conditions d'utilisation : Lire et respecter les CGU du site."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Utiliser un User-Agent approprié : Identifier votre script correctement."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Les outils Python pour le Web Scraping"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "requests"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Bibliothèque pour faire des requêtes HTTP (récupérer des pages web)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "BeautifulSoup"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Bibliothèque pour parser et naviguer dans le HTML."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "Scrapy"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Framework complet pour des projets de scraping complexes."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Installer et utiliser requests",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez à installer et utiliser la bibliothèque requests pour récupérer des pages web, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Installer requests",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📦 Installer requests"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "La bibliothèque requests n'est pas incluse par défaut dans Python. Il faut l'installer avec pip."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Installer requests avec pip\npip install requests\n\n# Ou avec pip3 si vous avez plusieurs versions de Python\npip3 install requests"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Requête GET simple"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Requête GET simple\n# ============================================\n\n# Importer la bibliothèque requests\n# requests permet de faire des requêtes HTTP (GET, POST, etc.)\nimport requests\n\n# Faire une requête GET vers une URL\n# GET est la méthode HTTP pour récupérer des données\n# response contient la réponse du serveur\nresponse = requests.get(\"https://httpbin.org/get\")\n\n# Afficher le code de statut HTTP\n# 200 = succès, 404 = page non trouvée, 500 = erreur serveur\nprint(f\"Code de statut : {response.status_code}\")\n# Résultat affiché : Code de statut : 200\n\n# Afficher le contenu de la réponse (texte HTML/JSON)\nprint(response.text)\n# Résultat : Contenu de la page (format JSON dans cet exemple)\n\n# Afficher l'URL finale (peut être différente après redirections)\nprint(f\"URL : {response.url}\")\n# Résultat affiché : URL : https://httpbin.org/get"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Gérer les erreurs"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Gérer les erreurs\n# ============================================\n\nimport requests\n\n# URL qui n'existe pas (erreur 404)\nurl = \"https://httpbin.org/status/404\"\n\n# Faire la requête\nresponse = requests.get(url)\n\n# Vérifier le code de statut\n# response.raise_for_status() lève une exception si le code est >= 400\nif response.status_code == 200:\n    print(\"Succès !\")\n    print(response.text)\nelse:\n    print(f\"Erreur {response.status_code} : {response.reason}\")\n    # response.reason contient le message d'erreur (ex: \"Not Found\")\n\n# ============================================\n# EXEMPLE 3 : Utiliser try/except pour gérer les exceptions\n# ============================================\n\nimport requests\n\nurl = \"https://httpbin.org/get\"\n\ntry:\n    # Faire la requête\n    response = requests.get(url)\n    \n    # Lever une exception si le code de statut indique une erreur\n    response.raise_for_status()\n    \n    # Si on arrive ici, la requête a réussi\n    print(\"Requête réussie !\")\n    print(response.text)\n    \nexcept requests.exceptions.HTTPError as e:\n    # Erreur HTTP (404, 500, etc.)\n    print(f\"Erreur HTTP : {e}\")\n    \nexcept requests.exceptions.ConnectionError as e:\n    # Erreur de connexion (pas d'internet, serveur inaccessible)\n    print(f\"Erreur de connexion : {e}\")\n    \nexcept requests.exceptions.Timeout as e:\n    # Timeout (le serveur ne répond pas assez vite)\n    print(f\"Timeout : {e}\")\n    \nexcept requests.exceptions.RequestException as e:\n    # Toute autre erreur liée à requests\n    print(f\"Erreur de requête : {e}\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Ajouter des en-têtes (headers)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Ajouter des en-têtes (headers)\n# ============================================\n\nimport requests\n\n# URL à scraper\nurl = \"https://httpbin.org/headers\"\n\n# Définir les en-têtes HTTP\n# User-Agent identifie votre navigateur/script\n# Certains sites bloquent les requêtes sans User-Agent\nheaders = {\n    \"User-Agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\",\n    \"Accept\": \"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\",\n    \"Accept-Language\": \"fr-FR,fr;q=0.9,en;q=0.8\"\n}\n\n# Faire la requête avec les en-têtes\n# headers=headers passe les en-têtes à la requête\nresponse = requests.get(url, headers=headers)\n\n# Afficher la réponse (qui contient les en-têtes envoyés)\nprint(response.text)\n# Résultat : JSON contenant les en-têtes que vous avez envoyés"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 4 : Requête avec paramètres"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 4 : Requête avec paramètres\n# ============================================\n\nimport requests\n\n# URL de base (sans paramètres)\nbase_url = \"https://httpbin.org/get\"\n\n# Méthode 1 : Ajouter les paramètres dans l'URL manuellement\nurl_avec_params = \"https://httpbin.org/get?nom=Alice&age=25\"\nresponse1 = requests.get(url_avec_params)\nprint(\"Méthode 1 :\")\nprint(response1.text)\n\n# Méthode 2 : Utiliser le paramètre 'params' (RECOMMANDÉ)\n# params est un dictionnaire qui sera automatiquement converti en paramètres URL\nparams = {\n    \"nom\": \"Alice\",\n    \"age\": 25,\n    \"ville\": \"Paris\"\n}\n\n# requests.get() ajoute automatiquement ?nom=Alice&age=25&ville=Paris à l'URL\nresponse2 = requests.get(base_url, params=params)\n\nprint(\"\\nMéthode 2 :\")\nprint(response2.text)\n# Résultat : JSON contenant les paramètres envoyés\n\n# Afficher l'URL finale avec les paramètres\nprint(f\"\\nURL finale : {response2.url}\")\n# Résultat affiché : URL finale : https://httpbin.org/get?nom=Alice&age=25&ville=Paris"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 5 : Télécharger une page web et sauvegarder"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 5 : Télécharger une page web et sauvegarder\n# ============================================\n\nimport requests\n\n# URL de la page à télécharger\nurl = \"https://example.com\"\n\n# Faire la requête\nresponse = requests.get(url)\n\n# Vérifier que la requête a réussi\nresponse.raise_for_status()\n\n# Sauvegarder le contenu dans un fichier\n# 'w' = mode écriture, encoding='utf-8' pour gérer les caractères spéciaux\nwith open(\"page.html\", \"w\", encoding=\"utf-8\") as fichier:\n    # Écrire le contenu HTML dans le fichier\n    fichier.write(response.text)\n\nprint(\"Page sauvegardée dans page.html\")\n\n# ============================================\n# EXEMPLE 6 : Télécharger une image\n# ============================================\n\nimport requests\n\n# URL d'une image\nurl_image = \"https://httpbin.org/image/png\"\n\n# Faire la requête\nresponse = requests.get(url_image)\nresponse.raise_for_status()\n\n# Pour les fichiers binaires (images, PDF, etc.), utiliser response.content\n# response.content contient les données brutes (bytes)\n# response.text est pour le texte (HTML, JSON, etc.)\nwith open(\"image.png\", \"wb\") as fichier:\n    # 'wb' = mode écriture binaire\n    fichier.write(response.content)\n\nprint(\"Image sauvegardée dans image.png\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 6 : Ajouter un délai pour respecter les serveurs"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 6 : Ajouter un délai entre les requêtes\n# ============================================\n\nimport requests\nimport time\n\n# Liste d'URLs à scraper\nurls = [\n    \"https://httpbin.org/get?page=1\",\n    \"https://httpbin.org/get?page=2\",\n    \"https://httpbin.org/get?page=3\"\n]\n\n# Parcourir chaque URL\nfor url in urls:\n    # Faire la requête\n    response = requests.get(url)\n    response.raise_for_status()\n    \n    # Traiter la réponse (ex: extraire des données)\n    print(f\"Page {url} téléchargée\")\n    \n    # Attendre 1 seconde avant la prochaine requête\n    # IMPORTANT : Respecter les serveurs en ajoutant des délais\n    # time.sleep(1) pause l'exécution pendant 1 seconde\n    time.sleep(1)\n\nprint(\"Toutes les pages ont été téléchargées\")\n\n# ============================================\n# EXEMPLE 7 : Utiliser un timeout\n# ============================================\n\nimport requests\n\nurl = \"https://httpbin.org/delay/5\"  # URL qui répond après 5 secondes\n\ntry:\n    # timeout=3 signifie : abandonner après 3 secondes\n    # Si le serveur ne répond pas en 3 secondes, une exception Timeout est levée\n    response = requests.get(url, timeout=3)\n    print(response.text)\nexcept requests.exceptions.Timeout:\n    print(\"La requête a pris trop de temps (timeout)\")\nexcept requests.exceptions.RequestException as e:\n    print(f\"Erreur : {e}\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "requests.get(url) fait une requête GET et retourne un objet Response."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "response.text contient le contenu texte (HTML, JSON), response.content contient les données binaires."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "response.status_code contient le code HTTP (200 = succès, 404 = non trouvé, etc.)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Toujours utiliser time.sleep() entre les requêtes pour respecter les serveurs."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Utiliser headers pour définir un User-Agent approprié."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 1.2 : La bibliothèque requests",
+          "position": 2,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Quelle méthode requests utilise-t-on pour récupérer une page web ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "requests.fetch()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "requests.get()",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "requests.download()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "requests.read()",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Quel attribut contient le code de statut HTTP de la réponse ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "response.code",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "response.status_code",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "response.status",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "response.http_code",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Quelle propriété utiliser pour récupérer le contenu texte d'une réponse ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "response.content",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "response.text",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "response.html",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "response.data",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Pourquoi est-il important d'ajouter time.sleep() entre les requêtes ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "Pour améliorer les performances",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Pour respecter les serveurs et éviter de les surcharger",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "Pour économiser la mémoire",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "Pour éviter les erreurs de syntaxe",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 1 : Scraper une page simple",
+          "position": 3,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📝 Exercice 1 : Scraper une page simple"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créez un script Python qui :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utilise requests pour télécharger la page https://example.com"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Vérifie que le code de statut est 200"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Affiche la longueur du contenu HTML (nombre de caractères)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Sauvegarde le contenu dans un fichier nommé 'example_page.html'"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Gère les erreurs avec try/except"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : BeautifulSoup pour parser le HTML",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#34D399"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Introduction à BeautifulSoup",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez BeautifulSoup, la bibliothèque Python pour parser et naviguer dans le HTML, avec des explications détaillées pour débutants complets."
+          },
+          "chapters": [
+            {
+              "title": "Introduction à BeautifulSoup",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🍲 Qu'est-ce que BeautifulSoup ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "BeautifulSoup est une bibliothèque Python qui permet de parser (analyser) le HTML et de naviguer facilement dans sa structure. Une fois que vous avez récupéré une page web avec requests, BeautifulSoup vous permet d'extraire facilement les données qui vous intéressent."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pourquoi utiliser BeautifulSoup ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Facilité d'utilisation : API simple et intuitive pour naviguer dans le HTML."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Robustesse : Gère bien le HTML mal formé (contrairement à un parser XML strict)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Sélecteurs CSS et méthodes de recherche : Trouver facilement les éléments qui vous intéressent."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Installer BeautifulSoup"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Installer BeautifulSoup4 et lxml (parser recommandé)\npip install beautifulsoup4 lxml\n\n# Ou avec pip3\npip3 install beautifulsoup4 lxml"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Note : beautifulsoup4 est le nom du package (la version 4 est la version actuelle)."
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Parser du HTML avec BeautifulSoup",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez à parser du HTML avec BeautifulSoup, naviguer dans la structure et extraire des données, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Parser du HTML avec BeautifulSoup",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🔍 Parser du HTML avec BeautifulSoup"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Parser du HTML simple"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Parser du HTML simple\n# ============================================\n\n# Importer BeautifulSoup\nfrom bs4 import BeautifulSoup\n\n# HTML à parser (exemple simple)\nhtml = \"\"\"\n<html>\n<head>\n    <title>Ma Page</title>\n</head>\n<body>\n    <h1>Bienvenue</h1>\n    <p>Ceci est un paragraphe.</p>\n</body>\n</html>\n\"\"\"\n\n# Créer un objet BeautifulSoup\n# BeautifulSoup(html, 'lxml') parse le HTML avec le parser lxml\n# 'lxml' est un parser rapide et robuste (il faut l'installer : pip install lxml)\n# Alternative : 'html.parser' (inclus dans Python, mais plus lent)\nsoup = BeautifulSoup(html, 'lxml')\n\n# Afficher le HTML formaté (indenté)\nprint(soup.prettify())\n# Résultat : HTML bien formaté avec indentation\n\n# Accéder au titre\n# soup.title retourne l'élément <title>\ntitre = soup.title\nprint(f\"Titre : {titre}\")\n# Résultat affiché : Titre : <title>Ma Page</title>\n\n# Obtenir le texte du titre (sans les balises)\n# .string ou .get_text() retourne le texte contenu dans l'élément\ntexte_titre = soup.title.string\nprint(f\"Texte du titre : {texte_titre}\")\n# Résultat affiché : Texte du titre : Ma Page\n\n# Accéder au premier paragraphe\n# soup.p retourne le premier élément <p>\nparagraphe = soup.p\nprint(f\"Paragraphe : {paragraphe}\")\n# Résultat affiché : Paragraphe : <p>Ceci est un paragraphe.</p>\n\n# Obtenir le texte du paragraphe\ntexte_paragraphe = soup.p.get_text()\nprint(f\"Texte : {texte_paragraphe}\")\n# Résultat affiché : Texte : Ceci est un paragraphe."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Combiner requests et BeautifulSoup"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Combiner requests et BeautifulSoup\n# ============================================\n\nimport requests\nfrom bs4 import BeautifulSoup\n\n# Étape 1 : Récupérer la page web avec requests\nurl = \"https://example.com\"\nresponse = requests.get(url)\nresponse.raise_for_status()  # Vérifier qu'il n'y a pas d'erreur\n\n# Étape 2 : Parser le HTML avec BeautifulSoup\n# response.text contient le HTML brut\nsoup = BeautifulSoup(response.text, 'lxml')\n\n# Étape 3 : Extraire des données\n# Extraire le titre de la page\ntitre = soup.title.string\nprint(f\"Titre de la page : {titre}\")\n\n# Extraire tous les paragraphes\n# soup.find_all('p') retourne une liste de tous les éléments <p>\nparagraphes = soup.find_all('p')\nprint(f\"\\nNombre de paragraphes : {len(paragraphes)}\")\n\n# Parcourir chaque paragraphe\nfor i, p in enumerate(paragraphes, 1):\n    # .get_text() retourne le texte sans les balises HTML\n    texte = p.get_text()\n    print(f\"Paragraphe {i} : {texte}\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Trouver des éléments avec find() et find_all()"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Trouver des éléments avec find() et find_all()\n# ============================================\n\nfrom bs4 import BeautifulSoup\n\nhtml = \"\"\"\n<html>\n<body>\n    <div class=\"article\">\n        <h2>Titre Article 1</h2>\n        <p>Contenu article 1</p>\n    </div>\n    <div class=\"article\">\n        <h2>Titre Article 2</h2>\n        <p>Contenu article 2</p>\n    </div>\n    <div class=\"sidebar\">\n        <h3>Sidebar</h3>\n    </div>\n</body>\n</html>\n\"\"\"\n\nsoup = BeautifulSoup(html, 'lxml')\n\n# find() retourne le PREMIER élément correspondant\n# find('div') retourne le premier <div>\npremier_div = soup.find('div')\nprint(f\"Premier div : {premier_div}\")\n# Résultat : <div class=\"article\">...</div>\n\n# find_all() retourne TOUS les éléments correspondants (liste)\n# find_all('div') retourne tous les <div>\ntous_les_divs = soup.find_all('div')\nprint(f\"\\nNombre de divs : {len(tous_les_divs)}\")\n# Résultat : 3 divs\n\n# Trouver par classe CSS\n# class_='article' (notez le underscore, car 'class' est un mot-clé Python)\narticles = soup.find_all('div', class_='article')\nprint(f\"\\nNombre d'articles : {len(articles)}\")\n# Résultat : 2 articles\n\n# Parcourir les articles\nfor article in articles:\n    # Trouver le titre h2 dans chaque article\n    titre = article.find('h2')\n    if titre:\n        print(f\"Titre : {titre.get_text()}\")\n    # Résultat affiché :\n    # Titre : Titre Article 1\n    # Titre : Titre Article 2\n\n# Trouver par ID\n# Supposons qu'il y ait <div id=\"main\">...</div>\n# main_div = soup.find('div', id='main')\n\n# Trouver par attribut personnalisé\n# liens = soup.find_all('a', href='https://example.com')"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 4 : Extraire des liens et des images"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 4 : Extraire des liens et des images\n# ============================================\n\nimport requests\nfrom bs4 import BeautifulSoup\nfrom urllib.parse import urljoin, urlparse\n\n# Récupérer une page web\nurl = \"https://example.com\"\nresponse = requests.get(url)\nresponse.raise_for_status()\n\nsoup = BeautifulSoup(response.text, 'lxml')\n\n# Extraire tous les liens (<a>)\n# find_all('a') retourne tous les éléments <a>\nliens = soup.find_all('a')\nprint(f\"Nombre de liens : {len(liens)}\")\n\n# Parcourir chaque lien\nfor lien in liens:\n    # .get('href') récupère la valeur de l'attribut 'href'\n    # href contient l'URL du lien\n    href = lien.get('href')\n    \n    # .get_text() récupère le texte du lien\n    texte = lien.get_text().strip()\n    \n    if href:\n        # urljoin() construit une URL absolue à partir d'une URL relative\n        # Si href=\"page.html\" et url=\"https://example.com/\",\n        # urljoin() retourne \"https://example.com/page.html\"\n        url_absolue = urljoin(url, href)\n        print(f\"Lien : {texte} -> {url_absolue}\")\n\n# Extraire toutes les images (<img>)\nimages = soup.find_all('img')\nprint(f\"\\nNombre d'images : {len(images)}\")\n\nfor img in images:\n    # src contient l'URL de l'image\n    src = img.get('src')\n    \n    # alt contient le texte alternatif de l'image\n    alt = img.get('alt', 'Pas de texte alternatif')\n    \n    if src:\n        url_image = urljoin(url, src)\n        print(f\"Image : {alt} -> {url_image}\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 5 : Utiliser les sélecteurs CSS"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 5 : Utiliser les sélecteurs CSS\n# ============================================\n\nfrom bs4 import BeautifulSoup\n\nhtml = \"\"\"\n<html>\n<body>\n    <div class=\"container\">\n        <article class=\"post\">\n            <h1 class=\"title\">Titre 1</h1>\n            <p class=\"content\">Contenu 1</p>\n        </article>\n        <article class=\"post\">\n            <h1 class=\"title\">Titre 2</h1>\n            <p class=\"content\">Contenu 2</p>\n        </article>\n    </div>\n    <footer id=\"footer\">\n        <p>Copyright 2024</p>\n    </footer>\n</body>\n</html>\n\"\"\"\n\nsoup = BeautifulSoup(html, 'lxml')\n\n# Utiliser select() avec des sélecteurs CSS\n# select() retourne une liste d'éléments (comme find_all)\n\n# Sélectionner par classe : .classe\narticles = soup.select('.post')\nprint(f\"Articles : {len(articles)}\")\n# Résultat : 2 articles\n\n# Sélectionner par ID : #id\nfooter = soup.select('#footer')\nprint(f\"Footer : {len(footer)}\")\n# Résultat : 1 footer\n\n# Sélectionner par balise et classe : balise.classe\ntitres = soup.select('h1.title')\nfor titre in titres:\n    print(f\"Titre : {titre.get_text()}\")\n# Résultat affiché :\n# Titre : Titre 1\n# Titre : Titre 2\n\n# Sélectionner les enfants directs : parent > enfant\ncontenus = soup.select('.post > .content')\nfor contenu in contenus:\n    print(f\"Contenu : {contenu.get_text()}\")\n\n# Sélectionner les descendants : parent descendant\nparagraphes = soup.select('article p')\nprint(f\"\\nParagraphes dans articles : {len(paragraphes)}\")\n\n# Sélectionner le premier élément : select_one()\npremier_article = soup.select_one('.post')\nif premier_article:\n    print(f\"\\nPremier article : {premier_article.find('h1').get_text()}\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 6 : Extraire des données structurées (tableau)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 6 : Extraire des données d'un tableau HTML\n# ============================================\n\nfrom bs4 import BeautifulSoup\n\nhtml = \"\"\"\n<html>\n<body>\n    <table>\n        <thead>\n            <tr>\n                <th>Nom</th>\n                <th>Âge</th>\n                <th>Ville</th>\n            </tr>\n        </thead>\n        <tbody>\n            <tr>\n                <td>Alice</td>\n                <td>25</td>\n                <td>Paris</td>\n            </tr>\n            <tr>\n                <td>Bob</td>\n                <td>30</td>\n                <td>Lyon</td>\n            </tr>\n            <tr>\n                <td>Charlie</td>\n                <td>28</td>\n                <td>Marseille</td>\n            </tr>\n        </tbody>\n    </table>\n</body>\n</html>\n\"\"\"\n\nsoup = BeautifulSoup(html, 'lxml')\n\n# Trouver le tableau\n# find('table') retourne le premier élément <table>\ntable = soup.find('table')\n\n# Extraire les en-têtes (th)\n# find_all('th') retourne tous les <th> dans le tableau\nentetes = table.find_all('th')\ncolonnes = [th.get_text().strip() for th in entetes]\nprint(f\"Colonnes : {colonnes}\")\n# Résultat affiché : Colonnes : ['Nom', 'Âge', 'Ville']\n\n# Extraire les lignes de données (tr dans tbody)\n# find('tbody') trouve le <tbody>, puis find_all('tr') trouve toutes les lignes\nlignes = table.find('tbody').find_all('tr')\n\n# Liste pour stocker les données\ndonnees = []\n\n# Parcourir chaque ligne\nfor ligne in lignes:\n    # find_all('td') trouve toutes les cellules de la ligne\n    cellules = ligne.find_all('td')\n    \n    # Extraire le texte de chaque cellule\n    # [cellule.get_text().strip() for cellule in cellules] crée une liste\n    valeurs = [cellule.get_text().strip() for cellule in cellules]\n    \n    # Créer un dictionnaire avec les colonnes comme clés\n    # dict(zip(colonnes, valeurs)) associe chaque colonne à sa valeur\n    # zip(['Nom', 'Âge', 'Ville'], ['Alice', '25', 'Paris'])\n    # -> [('Nom', 'Alice'), ('Âge', '25'), ('Ville', 'Paris')]\n    ligne_dict = dict(zip(colonnes, valeurs))\n    \n    # Ajouter à la liste de données\ndonnees.append(ligne_dict)\n    \n    print(f\"Ligne : {ligne_dict}\")\n\n# Résultat affiché :\n# Ligne : {'Nom': 'Alice', 'Âge': '25', 'Ville': 'Paris'}\n# Ligne : {'Nom': 'Bob', 'Âge': '30', 'Ville': 'Lyon'}\n# Ligne : {'Nom': 'Charlie', 'Âge': '28', 'Ville': 'Marseille'}\n\nprint(f\"\\nTotal de lignes : {len(donnees)}\")"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "BeautifulSoup(html, 'lxml') parse le HTML et crée un objet navigable."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "find() retourne le premier élément, find_all() retourne tous les éléments (liste)."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": ".get_text() retourne le texte sans les balises HTML."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": ".get('attribut') récupère la valeur d'un attribut HTML."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "select() permet d'utiliser des sélecteurs CSS pour trouver des éléments."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 2.2 : BeautifulSoup",
+          "position": 2,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Quelle méthode BeautifulSoup retourne le premier élément correspondant ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "find_all()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "find()",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "search()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "get()",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment obtenir le texte d'un élément sans les balises HTML ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "element.text",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "element.get_text()",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "element.content",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "element.string()",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment trouver tous les éléments avec la classe 'article' ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "soup.find_all('div', class='article')",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "soup.find_all('div', class_='article')",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "soup.find_all('div', className='article')",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "soup.find_all('div', css_class='article')",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Quelle méthode permet d'utiliser des sélecteurs CSS ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "find_css()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "select()",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "query()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "css()",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 2 : Extraire des données d'une page web",
+          "position": 3,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📝 Exercice 2 : Extraire des données d'une page web"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créez un script Python qui :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utilise requests pour télécharger la page https://quotes.toscrape.com/"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utilise BeautifulSoup pour parser le HTML"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Extrait tous les textes de citations (classe 'text')"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Extrait tous les auteurs (classe 'author')"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Affiche chaque citation avec son auteur sous la forme : \"Citation\" - Auteur"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Sauvegarde les résultats dans un fichier 'citations.txt'"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : Introduction à Scrapy",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#34D399"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Qu'est-ce que Scrapy ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Découvrez Scrapy, le framework Python pour le web scraping à grande échelle, avec des explications détaillées pour débutants complets."
+          },
+          "chapters": [
+            {
+              "title": "Introduction à Scrapy",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🕸️ Qu'est-ce que Scrapy ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Scrapy est un framework Python complet et puissant pour le web scraping. Contrairement à requests + BeautifulSoup qui sont des outils simples, Scrapy est conçu pour des projets de scraping à grande échelle avec de nombreuses fonctionnalités intégrées."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Pourquoi utiliser Scrapy ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Performance : Gère automatiquement les requêtes asynchrones et la concurrence."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Gestion automatique : Gère les cookies, les sessions, les redirections, etc."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Export de données : Exporte facilement en JSON, CSV, XML, etc."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Pipeline de traitement : Système modulaire pour nettoyer, valider et stocker les données."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Gestion des erreurs : Retry automatique, gestion des erreurs HTTP, etc."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Quand utiliser Scrapy vs requests + BeautifulSoup ?"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "requests + BeautifulSoup"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Pour des projets simples, quelques pages à scraper, apprentissage."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ],
+                                "text": "Scrapy"
+                              },
+                              {
+                                "type": "text",
+                                "text": " : Pour des projets complexes, beaucoup de pages, besoin de performance, production."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Installer Scrapy"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Installer Scrapy\npip install scrapy\n\n# Ou avec pip3\npip3 install scrapy"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Créer votre premier projet Scrapy",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Apprenez à créer un projet Scrapy, créer un spider et extraire des données, avec explications détaillées ligne par ligne."
+          },
+          "chapters": [
+            {
+              "title": "Créer votre premier projet Scrapy",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🚀 Créer votre premier projet Scrapy"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Étape 1 : Créer un projet Scrapy"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Créer un nouveau projet Scrapy\n# scrapy startproject nom_du_projet crée la structure du projet\nscrapy startproject mon_projet\n\n# Cela crée un dossier 'mon_projet' avec la structure suivante :\n# mon_projet/\n#     scrapy.cfg          # Fichier de configuration\n#     mon_projet/\n#         __init__.py\n#         items.py        # Définition des structures de données\n#         middlewares.py  # Middlewares personnalisés\n#         pipelines.py    # Pipelines de traitement des données\n#         settings.py     # Paramètres du projet\n#         spiders/        # Dossier contenant les spiders\n#             __init__.py"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Étape 2 : Créer un spider"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Se placer dans le dossier du projet\ncd mon_projet\n\n# Créer un spider\n# scrapy genspider nom_spider url_debut\n# Le spider va scraper les pages commençant par url_debut\nscrapy genspider quotes quotes.toscrape.com\n\n# Cela crée le fichier : mon_projet/spiders/quotes.py"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 1 : Spider simple"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 1 : Spider Scrapy simple\n# ============================================\n# Fichier : mon_projet/spiders/quotes.py\n\nimport scrapy\n\n\nclass QuotesSpider(scrapy.Spider):\n    # Nom du spider (unique)\n    # Utilisé pour lancer le spider : scrapy crawl quotes\n    name = 'quotes'\n    \n    # URLs autorisées (domaines que le spider peut visiter)\n    # Scrapy ne visitera que les URLs de ce domaine\n    allowed_domains = ['quotes.toscrape.com']\n    \n    # URLs de départ (liste des pages à scraper en premier)\n    # Scrapy commence par ces URLs\n    start_urls = [\n        'http://quotes.toscrape.com/',\n    ]\n    \n    # Méthode appelée pour chaque réponse HTTP\n    # 'response' contient la page HTML téléchargée\n    def parse(self, response):\n        # Extraire toutes les citations\n        # response.css() utilise des sélecteurs CSS (comme BeautifulSoup select())\n        # '.quote' sélectionne tous les éléments avec la classe 'quote'\n        quotes = response.css('div.quote')\n        \n        # Parcourir chaque citation\n        for quote in quotes:\n            # Extraire le texte de la citation\n            # .css('span.text::text') sélectionne le texte dans <span class=\"text\">\n            # .get() retourne le premier élément (ou None)\n            text = quote.css('span.text::text').get()\n            \n            # Extraire l'auteur\n            # .css('small.author::text') sélectionne le texte dans <small class=\"author\">\n            author = quote.css('small.author::text').get()\n            \n            # Extraire les tags\n            # .css('a.tag::text') sélectionne le texte de tous les <a class=\"tag\">\n            # .getall() retourne tous les éléments (liste)\n            tags = quote.css('a.tag::text').getall()\n            \n            # Retourner les données extraites\n            # yield retourne un dictionnaire (item)\n            # Scrapy collecte automatiquement ces items\n            yield {\n                'text': text,\n                'author': author,\n                'tags': tags\n            }\n        \n        # Trouver le lien \"Next\" pour aller à la page suivante\n        # response.css('li.next a::attr(href)') trouve l'attribut href du lien Next\n        next_page = response.css('li.next a::attr(href)').get()\n        \n        # Si un lien Next existe\n        if next_page:\n            # Construire l'URL complète\n            # response.urljoin() ajoute le domaine à l'URL relative\n            next_page_url = response.urljoin(next_page)\n            \n            # Suivre le lien vers la page suivante\n            # response.follow() crée une nouvelle requête et appelle parse() automatiquement\n            yield response.follow(next_page_url, callback=self.parse)"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Étape 3 : Lancer le spider"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "bash"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# Lancer le spider\n# scrapy crawl nom_du_spider\nscrapy crawl quotes\n\n# Sauvegarder les résultats dans un fichier JSON\nscrapy crawl quotes -o quotes.json\n\n# Sauvegarder dans un fichier CSV\nscrapy crawl quotes -o quotes.csv\n\n# Sauvegarder dans un fichier XML\nscrapy crawl quotes -o quotes.xml"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 2 : Utiliser les Items pour structurer les données"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 2 : Utiliser les Items\n# ============================================\n# Fichier : mon_projet/mon_projet/items.py\n\nimport scrapy\n\n\nclass QuoteItem(scrapy.Item):\n    # Définir les champs de l'item\n    # Chaque champ est un scrapy.Field()\n    text = scrapy.Field()      # Texte de la citation\n    author = scrapy.Field()     # Auteur\n    tags = scrapy.Field()       # Liste de tags\n    url = scrapy.Field()        # URL de la page\n\n\n# ============================================\n# Modifier le spider pour utiliser l'Item\n# ============================================\n# Fichier : mon_projet/spiders/quotes.py\n\nimport scrapy\nfrom mon_projet.items import QuoteItem\n\n\nclass QuotesSpider(scrapy.Spider):\n    name = 'quotes'\n    allowed_domains = ['quotes.toscrape.com']\n    start_urls = ['http://quotes.toscrape.com/']\n    \n    def parse(self, response):\n        quotes = response.css('div.quote')\n        \n        for quote in quotes:\n            # Créer un nouvel item\n            item = QuoteItem()\n            \n            # Remplir les champs de l'item\n            item['text'] = quote.css('span.text::text').get()\n            item['author'] = quote.css('small.author::text').get()\n            item['tags'] = quote.css('a.tag::text').getall()\n            item['url'] = response.url\n            \n            # Retourner l'item\n            yield item"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Exemple 3 : Utiliser un Pipeline pour traiter les données"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# EXEMPLE 3 : Pipeline pour nettoyer les données\n# ============================================\n# Fichier : mon_projet/mon_projet/pipelines.py\n\nclass QuotePipeline:\n    def process_item(self, item, spider):\n        # Nettoyer le texte de la citation\n        # Enlever les guillemets et espaces\n        if 'text' in item and item['text']:\n            # .strip() enlève les espaces en début/fin\n            # .replace('\"', '') enlève les guillemets\n            item['text'] = item['text'].strip().replace('\"', '')\n        \n        # Nettoyer l'auteur\n        if 'author' in item and item['author']:\n            item['author'] = item['author'].strip()\n        \n        # Retourner l'item (obligatoire)\n        return item\n\n\n# ============================================\n# Activer le pipeline dans settings.py\n# ============================================\n# Fichier : mon_projet/mon_projet/settings.py\n\n# Ajouter cette ligne dans ITEM_PIPELINES\nITEM_PIPELINES = {\n    'mon_projet.pipelines.QuotePipeline': 300,\n    # Le nombre (300) définit l'ordre d'exécution (plus petit = exécuté en premier)\n}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 3
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "💡 Points importants à retenir"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Un spider Scrapy hérite de scrapy.Spider et définit name, allowed_domains et start_urls."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "La méthode parse() est appelée pour chaque réponse HTTP et doit retourner des items avec yield."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "response.css() utilise des sélecteurs CSS, .get() retourne le premier élément, .getall() retourne tous les éléments."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Les Items permettent de structurer les données, les Pipelines permettent de les traiter."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "type": "text",
+                                "text": "Scrapy gère automatiquement les requêtes asynchrones, les retries, les cookies, etc."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz 3.2 : Scrapy",
+          "position": 2,
+          "published": true,
+          "content": {
+            "questions": [
+              {
+                "question": "Quelle commande crée un nouveau projet Scrapy ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "scrapy new project",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "scrapy startproject",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "scrapy create",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "scrapy init",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Quelle méthode d'un spider Scrapy est appelée pour chaque réponse HTTP ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "process()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "parse()",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "extract()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "scrape()",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment sélectionner un élément avec un sélecteur CSS dans Scrapy ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "response.select()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "response.css()",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "response.find()",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "response.query()",
+                    "isCorrect": false
+                  }
+                ]
+              },
+              {
+                "question": "Comment lancer un spider nommé 'quotes' ?",
+                "type": "single",
+                "answers": [
+                  {
+                    "text": "scrapy run quotes",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "scrapy crawl quotes",
+                    "isCorrect": true
+                  },
+                  {
+                    "text": "scrapy execute quotes",
+                    "isCorrect": false
+                  },
+                  {
+                    "text": "scrapy start quotes",
+                    "isCorrect": false
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice 3 : Créer un spider Scrapy",
+          "position": 3,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📝 Exercice 3 : Créer un spider Scrapy"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Créez un projet Scrapy qui :"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Crée un nouveau projet Scrapy nommé 'books_scraper'"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Crée un spider nommé 'books' qui scrape https://books.toscrape.com/"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Extrait pour chaque livre : le titre, le prix, la disponibilité (in stock / out of stock)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Suit automatiquement le lien 'Next' pour scraper toutes les pages"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Exporte les résultats dans un fichier JSON nommé 'books.json'"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Indice"
+                    },
+                    {
+                      "type": "text",
+                      "text": " : Inspectez la structure HTML de https://books.toscrape.com/ pour trouver les sélecteurs CSS appropriés."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

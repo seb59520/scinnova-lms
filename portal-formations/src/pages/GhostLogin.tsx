@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { Ghost, Lock, AlertCircle, ArrowLeft, Loader2 } from 'lucide-react'
 
 export function GhostLogin() {
-  const { signInAsGhost, user, loading: authLoading } = useAuth()
+  const { signInAsGhost, user, profile, loading: authLoading } = useAuth()
   const navigate = useNavigate()
   const [accessCode, setAccessCode] = useState('')
   const [loading, setLoading] = useState(false)
@@ -13,9 +13,11 @@ export function GhostLogin() {
   // Rediriger si déjà connecté
   useEffect(() => {
     if (!authLoading && user) {
-      navigate('/app', { replace: true })
+      // Si c'est un admin, rediriger vers /admin par défaut
+      const destination = profile?.role === 'admin' ? '/admin' : '/app'
+      navigate(destination, { replace: true })
     }
-  }, [user, authLoading, navigate])
+  }, [user, profile, authLoading, navigate])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

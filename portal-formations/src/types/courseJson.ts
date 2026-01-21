@@ -12,6 +12,7 @@ export interface CourseJson {
     fontFamily?: string
   }
   modules?: Array<{
+    id?: string // ID du module (optionnel, pour la progression)
     title: string
     position: number
     theme?: {

@@ -226,7 +226,7 @@ export function SessionsManager() {
     return (
       <div className="min-h-screen bg-gray-50">
         <TrainerHeader />
-        <div className="pt-24 flex items-center justify-center">
+        <div className="pt-8 flex items-center justify-center">
           <p className="text-gray-500">Chargement...</p>
         </div>
       </div>
@@ -237,7 +237,7 @@ export function SessionsManager() {
     <div className="min-h-screen bg-gray-50">
       <TrainerHeader />
 
-      <div className="pt-24 max-w-7xl mx-auto px-4 py-6">
+      <div className="pt-8 max-w-7xl mx-auto px-4 py-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>

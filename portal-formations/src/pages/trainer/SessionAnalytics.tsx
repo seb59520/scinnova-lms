@@ -53,7 +53,7 @@ export function SessionAnalytics() {
   return (
     <div className="min-h-screen bg-gray-50">
       <TrainerHeader />
-      <div className="p-6 pt-28">
+      <div className="p-6 pt-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-6 flex items-center justify-between">
             <h1 className="text-3xl font-bold text-gray-900">Analyses détaillées</h1>
