@@ -7,6 +7,7 @@ import { FileUpload } from './FileUpload'
 import { RichTextEditor } from './RichTextEditor'
 import { GameRenderer } from './GameRenderer'
 import { ItemDocuments } from './ItemDocuments'
+import { TpControlRenderer } from './TpControlRenderer'
 import { Presentation, Eye, Columns, Sparkles, FileJson } from 'lucide-react'
 import { correctAnswer, CorrectionResult } from '../lib/answerCorrector'
 import { TitanicJsonUploader } from './TitanicJsonUploader'
@@ -16,9 +17,10 @@ interface ItemRendererProps {
   item: Item
   submission?: Submission | null
   onSubmissionUpdate: (submission: Submission | null) => void
+  viewingUserId?: string | null
 }
 
-export function ItemRenderer({ item, submission, onSubmissionUpdate }: ItemRendererProps) {
+export function ItemRenderer({ item, submission, onSubmissionUpdate, viewingUserId }: ItemRendererProps) {
   const { user } = useAuth()
   const [loading, setLoading] = useState(false)
   const [answer, setAnswer] = useState(submission?.answer_text || '')
@@ -1332,6 +1334,13 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate }: ItemRende
   }
 
   const renderTp = () => {
+    // Vérifier si c'est un TP de contrôle
+    const isControlTp = (item as any).is_control_tp === true;
+    
+    if (isControlTp) {
+      // Utiliser le composant spécialisé pour les TP de contrôle
+      return <TpControlRenderer item={item} submission={submission} onSubmissionUpdate={onSubmissionUpdate} viewingUserId={viewingUserId || undefined} />;
+    }
     const isSubmitted = submission?.status === 'submitted'
     const isGraded = submission?.status === 'graded'
     

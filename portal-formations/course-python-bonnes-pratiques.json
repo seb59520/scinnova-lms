@@ -1,0 +1,945 @@
+{
+  "title": "Bonnes pratiques en programmation Python",
+  "description": "Cours complet sur les bonnes pratiques en programmation Python : apprenez à écrire du code lisible, structuré, testé et professionnel. Chaque concept est expliqué en détail avec des exemples pratiques et des explications ligne par ligne.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3776AB",
+    "secondaryColor": "#FFD43B",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 : Écrire du code lisible et propre",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#3776AB",
+        "secondaryColor": "#FFD43B"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 PEP 8 et conventions de nommage",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez les conventions PEP 8 pour nommer vos variables, fonctions et classes de manière cohérente."
+          },
+          "chapters": [
+            {
+              "title": "PEP 8 : Le style guide officiel",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📋 PEP 8 : Le style guide officiel"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "PEP 8 est le guide de style officiel pour Python. Il définit des conventions pour rendre le code Python lisible et cohérent."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 2
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Conventions de nommage"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# CONVENTIONS DE NOMMAGE PEP 8\n# ============================================\n\n# ✅ VARIABLES ET FONCTIONS : snake_case (minuscules avec underscores)\nnom_utilisateur = \"Alice\"\nage_utilisateur = 30\n\ndef calculer_moyenne(liste_nombres):\n    \"\"\"Calcule la moyenne d'une liste de nombres.\"\"\"\n    return sum(liste_nombres) / len(liste_nombres)\n\n# ✅ CLASSES : PascalCase\nclass Utilisateur:\n    pass\n\nclass GestionnaireFichiers:\n    pass\n\n# ✅ CONSTANTES : UPPER_SNAKE_CASE\nPI = 3.14159\nTAUX_TVA = 0.20\n\n# ✅ PRIVÉ : préfixe avec underscore (_)\ndef _fonction_interne():\n    \"\"\"Fonction privée, usage interne uniquement.\"\"\"\n    pass\n\n# ❌ À ÉVITER\nnomUtilisateur = \"Alice\"  # ❌ camelCase (style Java)\nn = 10  # ❌ Trop court, pas descriptif"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Indentation et espacement",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Maîtrisez l'indentation (4 espaces) et les règles d'espacement pour un code propre."
+          },
+          "chapters": [
+            {
+              "title": "Règles d'indentation et espacement",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📏 Indentation et espacement"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "L'indentation est cruciale en Python. Elle définit la structure du code."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# INDENTATION : 4 ESPACES (jamais de tabulations)\n# ============================================\n\n# ✅ CORRECT : 4 espaces\ndef fonction_exemple():\n    # Corps de la fonction indenté de 4 espaces\n    if condition:\n        # Bloc if indenté de 4 espaces supplémentaires (8 au total)\n        print(\"Condition vraie\")\n    else:\n        # Bloc else au même niveau que if\n        print(\"Condition fausse\")\n\n# ❌ INCORRECT : Mélange d'espaces et de tabulations\ndef fonction_incorrecte():\n\tprint(\"Tabulation - ❌ ERREUR\")\n    print(\"Espaces - ✅ CORRECT\")\n\n# ============================================\n# ESPACEMENT AUTOUR DES OPÉRATEURS\n# ============================================\n\n# ✅ CORRECT : Espaces autour des opérateurs\nx = 5 + 3\nif x > 10:\n    resultat = x * 2\n\n# ❌ INCORRECT : Pas d'espaces\nx=5+3  # ❌ Difficile à lire\nif x>10:  # ❌ Difficile à lire\n\n# ============================================\n# ESPACEMENT DANS LES APPELS DE FONCTION\n# ============================================\n\n# ✅ CORRECT : Pas d'espace avant la parenthèse\nma_fonction(arg1, arg2)\n\n# ❌ INCORRECT\nma_fonction (arg1, arg2)  # ❌ Espace avant parenthèse\n\n# ============================================\n# LIGNES MAXIMUM : 79 caractères (PEP 8)\n# ============================================\n\n# ✅ CORRECT : Ligne courte\nnom = \"Alice\"\n\n# ✅ CORRECT : Ligne longue avec continuation\nresultat = (valeur1 + valeur2 + \n            valeur3 + valeur4)\n\n# ❌ INCORRECT : Ligne trop longue (> 79 caractères)\nresultat = valeur1 + valeur2 + valeur3 + valeur4 + valeur5 + valeur6 + valeur7  # ❌ Trop long"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.3 Docstrings et commentaires",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Apprenez à documenter votre code avec des docstrings et des commentaires pertinents."
+          },
+          "chapters": [
+            {
+              "title": "Documentation du code",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📖 Docstrings et commentaires"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "La documentation est essentielle pour comprendre le code. Python utilise les docstrings pour documenter les fonctions, classes et modules."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# DOCSTRINGS : Documentation des fonctions/classes\n# ============================================\n\ndef calculer_moyenne(nombres):\n    \"\"\"\n    Calcule la moyenne d'une liste de nombres.\n    \n    Cette fonction prend une liste de nombres, calcule leur somme,\n    puis divise par le nombre d'éléments pour obtenir la moyenne.\n    \n    Args:\n        nombres (list): Liste de nombres à moyenner.\n                        Peut contenir des int ou float.\n    \n    Returns:\n        float: La moyenne des nombres.\n               Si la liste est vide, lève une ValueError.\n    \n    Raises:\n        ValueError: Si la liste est vide.\n    \n    Example:\n        >>> calculer_moyenne([1, 2, 3, 4, 5])\n        3.0\n        >>> calculer_moyenne([10, 20, 30])\n        20.0\n    \"\"\"\n    if not nombres:\n        raise ValueError(\"La liste ne peut pas être vide\")\n    return sum(nombres) / len(nombres)\n\n# ============================================\n# COMMENTAIRES : Expliquer le POURQUOI, pas le QUOI\n# ============================================\n\n# ✅ BON COMMENTAIRE : Explique le pourquoi\n# On utilise un dictionnaire pour un accès O(1) au lieu d'une liste O(n)\nutilisateurs = {\"alice\": 30, \"bob\": 25}\n\n# ❌ MAUVAIS COMMENTAIRE : Répète ce que le code fait déjà\n# On crée une variable x et on lui assigne la valeur 5\nx = 5  # ❌ Le code est déjà clair, pas besoin de commentaire\n\n# ✅ COMMENTAIRE UTILE : Explique une logique complexe\n# Algorithme de tri optimisé pour les listes presque triées\n# Complexité : O(n) dans le meilleur cas, O(n²) dans le pire cas\ndef tri_optimise(liste):\n    # ... implémentation\n    pass"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice : Refactoriser du code selon PEP 8",
+          "position": 3,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📝 Exercice : Refactoriser du code"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Refactorisez le code suivant pour qu'il respecte les conventions PEP 8 :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Code à refactoriser\ndef calcMoy(n):\n    s=0\n    for i in n:\n        s=s+i\n    return s/len(n)\n\nclass userManager:\n    def __init__(self):\n        self.users=[]\n    \n    def addUser(self, name, age):\n        self.users.append({\"name\":name, \"age\":age})\n    \n    def getOldestUser(self):\n        oldest=None\n        for u in self.users:\n            if oldest==None or u[\"age\"]>oldest[\"age\"]:\n                oldest=u\n        return oldest"
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Correction"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Code refactorisé selon PEP 8\ndef calculer_moyenne(nombres):\n    \"\"\"\n    Calcule la moyenne d'une liste de nombres.\n    \n    Args:\n        nombres (list): Liste de nombres à moyenner.\n    \n    Returns:\n        float: La moyenne des nombres.\n    \"\"\"\n    somme = 0\n    for nombre in nombres:\n        somme = somme + nombre\n    return somme / len(nombres)\n\nclass GestionnaireUtilisateurs:\n    \"\"\"Gère une collection d'utilisateurs.\"\"\"\n    \n    def __init__(self):\n        self.utilisateurs = []\n    \n    def ajouter_utilisateur(self, nom, age):\n        \"\"\"\n        Ajoute un utilisateur à la liste.\n        \n        Args:\n            nom (str): Le nom de l'utilisateur.\n            age (int): L'âge de l'utilisateur.\n        \"\"\"\n        self.utilisateurs.append({\"nom\": nom, \"age\": age})\n    \n    def obtenir_utilisateur_plus_age(self):\n        \"\"\"\n        Retourne l'utilisateur le plus âgé.\n        \n        Returns:\n            dict: L'utilisateur le plus âgé ou None si la liste est vide.\n        \"\"\"\n        plus_age = None\n        for utilisateur in self.utilisateurs:\n            if plus_age is None or utilisateur[\"age\"] > plus_age[\"age\"]:\n                plus_age = utilisateur\n        return plus_age"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 : Structurer un projet Python",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#059669"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Structure de dossiers",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à organiser vos fichiers Python dans une structure de projet professionnelle."
+          },
+          "chapters": [
+            {
+              "title": "Organisation d'un projet Python",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📁 Structure de dossiers"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Une bonne structure de projet facilite la maintenance et la collaboration."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# STRUCTURE D'UN PROJET PYTHON PROFESSIONNEL\n# ============================================\n\n# mon_projet/\n# ├── README.md              # Documentation du projet\n# ├── requirements.txt       # Dépendances Python\n# ├── setup.py               # Installation du package\n# ├── .gitignore            # Fichiers à ignorer par Git\n# ├── .env.example          # Exemple de variables d'environnement\n# ├── tests/                # Tests unitaires\n# │   ├── __init__.py\n# │   ├── test_utils.py\n# │   └── test_api.py\n# ├── src/                  # Code source principal\n# │   └── mon_projet/\n# │       ├── __init__.py\n# │       ├── main.py\n# │       ├── config.py\n# │       ├── models/        # Modèles de données\n# │       │   ├── __init__.py\n# │       │   └── user.py\n# │       ├── services/      # Logique métier\n# │       │   ├── __init__.py\n# │       │   └── user_service.py\n# │       └── utils/         # Utilitaires\n# │           ├── __init__.py\n# │           └── helpers.py\n# └── docs/                  # Documentation\n#     └── api.md\n\n# ============================================\n# FICHIER __init__.py : Rend un dossier un package Python\n# ============================================\n\n# src/mon_projet/__init__.py\n# Ce fichier (même vide) indique que 'mon_projet' est un package Python\n# Permet d'importer : from mon_projet import quelque_chose\n\n# ============================================\n# IMPORTS RELATIFS VS ABSOLUS\n# ============================================\n\n# ✅ IMPORT ABSOLU (recommandé)\nfrom mon_projet.models.user import User\nfrom mon_projet.services.user_service import UserService\n\n# ✅ IMPORT RELATIF (dans le même package)\nfrom .models.user import User\nfrom ..utils.helpers import helper_function\n\n# ❌ IMPORT RELATIF complexe (à éviter)\nfrom ....models.user import User  # ❌ Trop de niveaux"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Gestion des dépendances",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Utilisez requirements.txt et virtualenv pour gérer les dépendances de votre projet."
+          },
+          "chapters": [
+            {
+              "title": "Virtualenv et requirements.txt",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📦 Gestion des dépendances"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Isoler les dépendances de chaque projet avec des environnements virtuels."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# CRÉER UN ENVIRONNEMENT VIRTuel\n# ============================================\n\n# Créer un environnement virtuel\npython3 -m venv venv\n\n# Activer l'environnement (Linux/Mac)\nsource venv/bin/activate\n\n# Activer l'environnement (Windows)\nvenv\\Scripts\\activate\n\n# Désactiver l'environnement\ndeactivate\n\n# ============================================\n# REQUIREMENTS.TXT : Liste des dépendances\n# ============================================\n\n# requirements.txt\n# Chaque ligne = une dépendance avec sa version\nrequests==2.31.0\nflask==3.0.0\npytest==7.4.3\nblack==23.12.0\n\n# Installer toutes les dépendances\npip install -r requirements.txt\n\n# Sauvegarder les dépendances actuelles\npip freeze > requirements.txt\n\n# ============================================\n# POETRY : Gestion moderne des dépendances\n# ============================================\n\n# Installation\npip install poetry\n\n# Initialiser un projet\npoetry init\n\n# Ajouter une dépendance\npoetry add requests\n\n# Ajouter une dépendance de développement\npoetry add --dev pytest\n\n# Installer les dépendances\npoetry install\n\n# pyproject.toml (généré par Poetry)\n[tool.poetry]\nname = \"mon-projet\"\nversion = \"0.1.0\"\ndescription = \"Description du projet\"\n\n[tool.poetry.dependencies]\npython = \"^3.9\"\nrequests = \"^2.31.0\"\n\n[tool.poetry.dev-dependencies]\npytest = \"^7.4.3\" "
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 3 : Gérer les erreurs sans paniquer",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#EF4444",
+        "secondaryColor": "#FCA5A5"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Gestion des exceptions avec try/except",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Apprenez à gérer les erreurs proprement avec try/except pour éviter les crashes."
+          },
+          "chapters": [
+            {
+              "title": "Gestion des exceptions",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🛡️ Gestion des exceptions"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Les exceptions permettent de gérer les erreurs de manière élégante sans faire planter le programme."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# TRY/EXCEPT : Gérer les erreurs\n# ============================================\n\n# ✅ GESTION SIMPLE\ntry:\n    # Code qui peut lever une exception\n    resultat = 10 / 0\nexcept ZeroDivisionError:\n    # Gère l'erreur de division par zéro\n    print(\"Erreur : Division par zéro impossible\")\n\n# ============================================\n# GESTION DE PLUSIEURS EXCEPTIONS\n# ============================================\n\ntry:\n    nombre = int(input(\"Entrez un nombre : \"))\n    resultat = 100 / nombre\n    print(f\"Résultat : {resultat}\")\nexcept ValueError:\n    # L'utilisateur n'a pas entré un nombre valide\n    print(\"Erreur : Vous devez entrer un nombre\")\nexcept ZeroDivisionError:\n    # Division par zéro\n    print(\"Erreur : Division par zéro impossible\")\nexcept Exception as e:\n    # Gère toutes les autres exceptions\n    print(f\"Erreur inattendue : {e}\")\n\n# ============================================\n# ELSE ET FINALLY\n# ============================================\n\ntry:\n    fichier = open(\"donnees.txt\", \"r\")\n    contenu = fichier.read()\nexcept FileNotFoundError:\n    print(\"Le fichier n'existe pas\")\nexcept IOError:\n    print(\"Erreur de lecture du fichier\")\nelse:\n    # Exécuté si AUCUNE exception n'est levée\n    print(\"Fichier lu avec succès\")\n    print(contenu)\nfinally:\n    # TOUJOURS exécuté, même en cas d'exception\n    # Parfait pour fermer les fichiers, connexions, etc.\n    if 'fichier' in locals():\n        fichier.close()\n    print(\"Nettoyage terminé\")\n\n# ============================================\n# LEVER DES EXCEPTIONS PERSONNALISÉES\n# ============================================\n\nclass ErreurValeurNegative(Exception):\n    \"\"\"Exception personnalisée pour les valeurs négatives.\"\"\"\n    pass\n\ndef calculer_racine_carree(nombre):\n    if nombre < 0:\n        # Lever une exception personnalisée\n        raise ErreurValeurNegative(f\"Le nombre {nombre} est négatif\")\n    return nombre ** 0.5\n\n# Utilisation\ntry:\n    resultat = calculer_racine_carree(-5)\nexcept ErreurValeurNegative as e:\n    print(f\"Erreur : {e}\")"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Bonnes pratiques de gestion d'erreurs",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Découvrez les meilleures pratiques pour gérer les erreurs de manière professionnelle."
+          },
+          "chapters": [
+            {
+              "title": "Meilleures pratiques",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "✅ Bonnes pratiques"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# ❌ À ÉVITER : Capturer toutes les exceptions\n# ============================================\n\ntry:\n    resultat = operation_risquee()\nexcept:  # ❌ Trop général, cache les bugs\n    print(\"Une erreur est survenue\")\n\n# ============================================\n# ✅ À FAIRE : Capturer des exceptions spécifiques\n# ============================================\n\ntry:\n    resultat = operation_risquee()\nexcept ValueError as e:\n    # Gère spécifiquement les erreurs de valeur\n    print(f\"Valeur invalide : {e}\")\nexcept FileNotFoundError as e:\n    # Gère spécifiquement les fichiers manquants\n    print(f\"Fichier introuvable : {e}\")\n\n# ============================================\n# ✅ LOGGING AU LIEU DE PRINT\n# ============================================\n\nimport logging\n\n# Configuration du logging\nlogging.basicConfig(level=logging.INFO)\nlogger = logging.getLogger(__name__)\n\ntry:\n    resultat = operation_risquee()\nexcept Exception as e:\n    # ✅ Utiliser logging au lieu de print\n    logger.error(f\"Erreur lors de l'opération : {e}\", exc_info=True)\n    # exc_info=True affiche la stack trace complète\n\n# ============================================\n# ✅ CONTEXT MANAGERS (with)\n# ============================================\n\n# ✅ CORRECT : with ferme automatiquement le fichier\nwith open(\"fichier.txt\", \"r\") as f:\n    contenu = f.read()\n# Le fichier est automatiquement fermé ici, même en cas d'erreur\n\n# ❌ INCORRECT : Fermeture manuelle (peut être oubliée)\nf = open(\"fichier.txt\", \"r\")\ncontenu = f.read()\nf.close()  # ❌ Peut être oublié si une exception est levée"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice : Gérer les erreurs proprement",
+          "position": 2,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📝 Exercice : Gestion d'erreurs"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Écrivez une fonction qui lit un fichier JSON et gère toutes les erreurs possibles (fichier inexistant, JSON invalide, etc.) avec des messages d'erreur clairs."
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# À compléter\nimport json\n\ndef lire_fichier_json(nom_fichier):\n    # Votre code ici\n    pass"
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Correction"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "import json\nimport logging\n\nlogger = logging.getLogger(__name__)\n\ndef lire_fichier_json(nom_fichier):\n    \"\"\"\n    Lit et parse un fichier JSON.\n    \n    Args:\n        nom_fichier (str): Le chemin vers le fichier JSON.\n    \n    Returns:\n        dict: Les données JSON parsées.\n    \n    Raises:\n        FileNotFoundError: Si le fichier n'existe pas.\n        json.JSONDecodeError: Si le JSON est invalide.\n        PermissionError: Si l'accès au fichier est refusé.\n    \"\"\"\n    try:\n        with open(nom_fichier, \"r\", encoding=\"utf-8\") as f:\n            donnees = json.load(f)\n            logger.info(f\"Fichier {nom_fichier} lu avec succès\")\n            return donnees\n    except FileNotFoundError:\n        message = f\"Le fichier {nom_fichier} n'existe pas\"\n        logger.error(message)\n        raise FileNotFoundError(message)\n    except json.JSONDecodeError as e:\n        message = f\"Erreur de parsing JSON dans {nom_fichier}: {e}\"\n        logger.error(message)\n        raise json.JSONDecodeError(message, e.doc, e.pos)\n    except PermissionError:\n        message = f\"Permission refusée pour lire {nom_fichier}\"\n        logger.error(message)\n        raise PermissionError(message)"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 4 : Tester pour ne plus casser",
+      "position": 3,
+      "theme": {
+        "primaryColor": "#8B5CF6",
+        "secondaryColor": "#C4B5FD"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Tests unitaires avec pytest",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Écrivez des tests unitaires avec pytest pour garantir que votre code fonctionne correctement."
+          },
+          "chapters": [
+            {
+              "title": "Introduction aux tests unitaires",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🧪 Tests unitaires avec pytest"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Les tests unitaires vérifient que chaque fonction fonctionne correctement en isolation."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# INSTALLATION DE PYTEST\n# ============================================\n\n# pip install pytest\n\n# ============================================\n# FICHIER À TESTER : calculs.py\n# ============================================\n\n# calculs.py\ndef additionner(a, b):\n    \"\"\"Additionne deux nombres.\"\"\"\n    return a + b\n\ndef multiplier(a, b):\n    \"\"\"Multiplie deux nombres.\"\"\"\n    return a * b\n\ndef diviser(a, b):\n    \"\"\"Divise a par b.\"\"\"\n    if b == 0:\n        raise ValueError(\"Division par zéro impossible\")\n    return a / b\n\n# ============================================\n# FICHIER DE TEST : test_calculs.py\n# ============================================\n\n# test_calculs.py\nimport pytest\nfrom calculs import additionner, multiplier, diviser\n\ndef test_additionner():\n    \"\"\"Test de la fonction additionner.\"\"\"\n    # Arrange (Préparer)\n    a = 5\n    b = 3\n    \n    # Act (Agir)\n    resultat = additionner(a, b)\n    \n    # Assert (Vérifier)\n    assert resultat == 8\n\ndef test_additionner_negatifs():\n    \"\"\"Test avec des nombres négatifs.\"\"\"\n    assert additionner(-5, -3) == -8\n    assert additionner(5, -3) == 2\n\ndef test_multiplier():\n    \"\"\"Test de la fonction multiplier.\"\"\"\n    assert multiplier(4, 5) == 20\n    assert multiplier(0, 10) == 0\n    assert multiplier(-2, 3) == -6\n\ndef test_diviser():\n    \"\"\"Test de la fonction diviser.\"\"\"\n    assert diviser(10, 2) == 5\n    assert diviser(9, 3) == 3\n\ndef test_diviser_par_zero():\n    \"\"\"Test que la division par zéro lève une exception.\"\"\"\n    # Vérifie qu'une ValueError est levée\n    with pytest.raises(ValueError, match=\"Division par zéro\"):\n        diviser(10, 0)\n\n# ============================================\n# EXÉCUTER LES TESTS\n# ============================================\n\n# Dans le terminal :\n# pytest test_calculs.py\n\n# Avec plus de détails :\n# pytest test_calculs.py -v\n\n# Avec couverture de code :\n# pytest --cov=calculs test_calculs.py"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "4.2 Fixtures et paramétrisation",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Utilisez les fixtures et la paramétrisation pour écrire des tests plus efficaces."
+          },
+          "chapters": [
+            {
+              "title": "Fixtures et paramétrisation",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🔧 Fixtures et paramétrisation"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# FIXTURES : Données de test réutilisables\n# ============================================\n\nimport pytest\n\n@pytest.fixture\ndef utilisateur_exemple():\n    \"\"\"Crée un utilisateur de test.\"\"\"\n    return {\n        \"nom\": \"Alice\",\n        \"age\": 30,\n        \"email\": \"alice@example.com\"\n    }\n\ndef test_utilisateur_nom(utilisateur_exemple):\n    \"\"\"Test avec la fixture utilisateur_exemple.\"\"\"\n    assert utilisateur_exemple[\"nom\"] == \"Alice\"\n\n# ============================================\n# PARAMÉTRISATION : Tester plusieurs cas\n# ============================================\n\n@pytest.mark.parametrize(\"a, b, attendu\", [\n    (2, 3, 5),\n    (0, 0, 0),\n    (-1, 1, 0),\n    (10, -5, 5),\n])\ndef test_additionner_parametrise(a, b, attendu):\n    \"\"\"Test additionner avec plusieurs cas.\"\"\"\n    from calculs import additionner\n    assert additionner(a, b) == attendu"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "title": "Exercice : Écrire des tests pour une fonction",
+          "position": 2,
+          "published": true,
+          "content": {
+            "question": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "📝 Exercice : Tests unitaires"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Écrivez des tests complets pour la fonction suivante en utilisant pytest :"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Fonction à tester\ndef filtrer_nombres_pairs(nombres):\n    \"\"\"\n    Filtre les nombres pairs d'une liste.\n    \n    Args:\n        nombres (list): Liste de nombres entiers.\n    \n    Returns:\n        list: Liste des nombres pairs.\n    \"\"\"\n    if not isinstance(nombres, list):\n        raise TypeError(\"L'argument doit être une liste\")\n    return [n for n in nombres if n % 2 == 0]"
+                    }
+                  ]
+                }
+              ]
+            },
+            "correction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 1
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "✅ Correction"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "import pytest\nfrom mon_module import filtrer_nombres_pairs\n\ndef test_filtrer_nombres_pairs_basique():\n    \"\"\"Test basique avec des nombres positifs.\"\"\"\n    assert filtrer_nombres_pairs([1, 2, 3, 4, 5]) == [2, 4]\n\ndef test_filtrer_nombres_pairs_negatifs():\n    \"\"\"Test avec des nombres négatifs.\"\"\"\n    assert filtrer_nombres_pairs([-2, -1, 0, 1, 2]) == [-2, 0, 2]\n\ndef test_filtrer_nombres_pairs_vide():\n    \"\"\"Test avec une liste vide.\"\"\"\n    assert filtrer_nombres_pairs([]) == []\n\ndef test_filtrer_nombres_pairs_tous_impairs():\n    \"\"\"Test avec seulement des nombres impairs.\"\"\"\n    assert filtrer_nombres_pairs([1, 3, 5, 7]) == []\n\ndef test_filtrer_nombres_pairs_type_error():\n    \"\"\"Test que TypeError est levée pour un argument invalide.\"\"\"\n    with pytest.raises(TypeError, match=\"L'argument doit être une liste\"):\n        filtrer_nombres_pairs(\"pas une liste\")\n\n@pytest.mark.parametrize(\"entree, attendu\", [\n    ([2, 4, 6], [2, 4, 6]),\n    ([1, 2, 3], [2]),\n    ([0], [0]),\n    ([], []),\n])\ndef test_filtrer_nombres_pairs_parametrise(entree, attendu):\n    \"\"\"Test paramétré avec plusieurs cas.\"\"\"\n    assert filtrer_nombres_pairs(entree) == attendu"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 5 : Écrire du Python \"pro\"",
+      "position": 4,
+      "theme": {
+        "primaryColor": "#F59E0B",
+        "secondaryColor": "#FCD34D"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "5.1 List comprehensions et générateurs",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Maîtrisez les list comprehensions et les générateurs pour écrire du code Pythonique."
+          },
+          "chapters": [
+            {
+              "title": "List comprehensions",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "✨ List comprehensions"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# LIST COMPREHENSION : Syntaxe Pythonique\n# ============================================\n\n# ❌ APPROCHE CLASSIQUE\nnombres = [1, 2, 3, 4, 5]\ncarres = []\nfor n in nombres:\n    carres.append(n ** 2)\n\n# ✅ LIST COMPREHENSION (plus Pythonique)\nnombres = [1, 2, 3, 4, 5]\ncarres = [n ** 2 for n in nombres]\n# Résultat : [1, 4, 9, 16, 25]\n\n# ============================================\n# AVEC CONDITION\n# ============================================\n\n# Nombres pairs seulement\npairs = [n for n in range(10) if n % 2 == 0]\n# Résultat : [0, 2, 4, 6, 8]\n\n# ============================================\n# GÉNÉRATEURS : Mémoire efficace\n# ============================================\n\n# ❌ Liste (charge tout en mémoire)\ncarres_liste = [n ** 2 for n in range(1000000)]\n\n# ✅ Générateur (lazy evaluation)\ncarres_gen = (n ** 2 for n in range(1000000))\n# Ne calcule que quand on itère\n\n# Utilisation\nfor carre in carres_gen:\n    print(carre)\n    if carre > 100:\n        break  # Arrête, ne calcule pas tout"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "5.2 Decorators et context managers",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Utilisez les decorators et context managers pour écrire du code élégant et réutilisable."
+          },
+          "chapters": [
+            {
+              "title": "Decorators et context managers",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🎨 Decorators et context managers"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# DECORATORS : Modifier le comportement d'une fonction\n# ============================================\n\ndef timer(func):\n    \"\"\"Decorator qui mesure le temps d'exécution.\"\"\"\n    import time\n    \n    def wrapper(*args, **kwargs):\n        start = time.time()\n        resultat = func(*args, **kwargs)\n        end = time.time()\n        print(f\"{func.__name__} a pris {end - start:.2f} secondes\")\n        return resultat\n    return wrapper\n\n@timer\ndef fonction_lente():\n    import time\n    time.sleep(1)\n    return \"Terminé\"\n\n# Utilisation\nresultat = fonction_lente()\n# Affiche : fonction_lente a pris 1.00 secondes\n\n# ============================================\n# CONTEXT MANAGERS : Gestion automatique des ressources\n# ============================================\n\nfrom contextlib import contextmanager\n\n@contextmanager\ndef ouvrir_fichier(nom_fichier, mode):\n    \"\"\"Context manager personnalisé pour ouvrir un fichier.\"\"\"\n    fichier = open(nom_fichier, mode)\n    try:\n        yield fichier\n    finally:\n        fichier.close()\n\n# Utilisation\nwith ouvrir_fichier(\"data.txt\", \"r\") as f:\n    contenu = f.read()\n# Le fichier est automatiquement fermé"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 6 : Préparer son code pour l'entreprise",
+      "position": 5,
+      "theme": {
+        "primaryColor": "#6366F1",
+        "secondaryColor": "#A5B4FC"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "6.1 Versioning avec Git",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Utilisez Git pour versionner votre code et collaborer efficacement."
+          },
+          "chapters": [
+            {
+              "title": "Git et GitHub",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "📚 Versioning avec Git"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# COMMANDES GIT ESSENTIELLES\n# ============================================\n\n# Initialiser un dépôt\ngit init\n\n# Ajouter des fichiers\ngit add .\ngit add fichier.py\n\n# Commit\ngit commit -m \"Message descriptif du changement\"\n\n# Voir l'historique\ngit log\n\n# Créer une branche\ngit checkout -b nouvelle-fonctionnalite\n\n# Fusionner une branche\ngit merge nouvelle-fonctionnalite\n\n# ============================================\n# .GITIGNORE : Fichiers à ignorer\n# ============================================\n\n# .gitignore\n__pycache__/\n*.pyc\n*.pyo\n*.pyd\n.Python\nvenv/\nenv/\n.env\n*.log\n.DS_Store\n.idea/\n.vscode/"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "6.2 CI/CD et outils de qualité",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Découvrez les outils de qualité de code et l'intégration continue."
+          },
+          "chapters": [
+            {
+              "title": "Outils de qualité",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": {
+                      "level": 1
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "🔍 Outils de qualité de code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "codeBlock",
+                    "attrs": {
+                      "language": "python"
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "# ============================================\n# BLACK : Formateur de code automatique\n# ============================================\n\n# Installation\npip install black\n\n# Formater un fichier\nblack mon_fichier.py\n\n# Formater tout le projet\nblack .\n\n# ============================================\n# FLAKE8 : Linter (détecte les erreurs de style)\n# ============================================\n\n# Installation\npip install flake8\n\n# Vérifier le code\nflake8 mon_fichier.py\n\n# ============================================\n# MYPY : Vérification de types statique\n# ============================================\n\n# Installation\npip install mypy\n\n# Vérifier les types\nmypy mon_fichier.py\n\n# ============================================\n# PRE-COMMIT : Hooks Git automatiques\n# ============================================\n\n# Installation\npip install pre-commit\n\n# Configuration : .pre-commit-config.yaml\nrepos:\n  - repo: https://github.com/psf/black\n    rev: 23.12.0\n    hooks:\n      - id: black\n  - repo: https://github.com/pycqa/flake8\n    rev: 7.0.0\n    hooks:\n      - id: flake8\n\n# Installer les hooks\npre-commit install"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

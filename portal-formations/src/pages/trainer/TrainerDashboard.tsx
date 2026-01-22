@@ -4,7 +4,6 @@ import { useAuth } from '../../hooks/useAuth';
 import { getAllTrainerOrgs, getSessions, getSessionKPIs } from '../../lib/queries/trainerQueries';
 import type { Session, SessionKPIs, Org } from '../../types/database';
 import { KPICard } from '../../components/trainer/KPICard';
-import { AlertCard } from '../../components/trainer/AlertCard';
 import { TrainerHeader } from '../../components/trainer/TrainerHeader';
 import { formatPercent, formatScore, daysSince } from '../../utils/trainerUtils';
 import { Users, BookOpen, TrendingUp, AlertTriangle, Building2, ChevronDown, ChevronRight, MessageSquare, ClipboardCheck, Award, Play } from 'lucide-react';
@@ -20,7 +19,6 @@ export function TrainerDashboard() {
   const [kpis, setKpis] = useState<SessionKPIs | null>(null);
   const [loading, setLoading] = useState(true);
   const [expandedOrgs, setExpandedOrgs] = useState<Set<string>>(new Set());
-  const [alerts, setAlerts] = useState<Array<{ type: 'warning' | 'error' | 'info'; title: string; message: string }>>([]);
 
   useEffect(() => {
     async function loadData() {
@@ -79,52 +77,12 @@ export function TrainerDashboard() {
         console.error('Error loading KPIs:', error);
       } else {
         setKpis(sessionKPIs);
-        generateAlerts(sessionKPIs);
       }
     }
 
     loadKPIs();
   }, [selectedSessionId]);
 
-  function generateAlerts(kpis: SessionKPIs | null) {
-    if (!kpis) return;
-
-    const newAlerts: Array<{ type: 'warning' | 'error' | 'info'; title: string; message: string }> = [];
-
-    if (kpis.active_learners_7d === 0) {
-      newAlerts.push({
-        type: 'warning',
-        title: 'Aucun apprenant actif',
-        message: 'Aucun apprenant n\'a été actif au cours des 7 derniers jours.',
-      });
-    }
-
-    if (kpis.completion_rate < 50) {
-      newAlerts.push({
-        type: 'error',
-        title: 'Taux de complétion faible',
-        message: `Seulement ${formatPercent(kpis.completion_rate)} des apprenants ont complété la formation.`,
-      });
-    }
-
-    if (kpis.avg_score < 60) {
-      newAlerts.push({
-        type: 'warning',
-        title: 'Score moyen faible',
-        message: `Le score moyen est de ${formatScore(kpis.avg_score)}.`,
-      });
-    }
-
-    if (kpis.red_modules > 0) {
-      newAlerts.push({
-        type: 'error',
-        title: 'Modules en difficulté',
-        message: `${kpis.red_modules} module(s) nécessitent une attention particulière.`,
-      });
-    }
-
-    setAlerts(newAlerts);
-  }
 
   const toggleOrg = (orgId: string) => {
     const newExpanded = new Set(expandedOrgs);
@@ -153,10 +111,30 @@ export function TrainerDashboard() {
         <div className="mx-auto max-w-7xl">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Tableau de bord</h1>
-            <p className="mt-2 text-gray-600">
-              Vue multi-organisations
-            </p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Tableau de bord</h1>
+                <p className="mt-2 text-gray-600">
+                  Vue multi-organisations
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <Link
+                  to="/trainer/dashboard/by-org"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+                >
+                  <Building2 className="w-4 h-4" />
+                  Suivi par Organisation
+                </Link>
+                <Link
+                  to="/trainer/dashboard/by-program"
+                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center gap-2"
+                >
+                  <BookOpen className="w-4 h-4" />
+                  Suivi par Programme
+                </Link>
+              </div>
+            </div>
           </div>
 
           {/* Multi-org view */}
@@ -299,20 +277,6 @@ export function TrainerDashboard() {
               icon={<AlertTriangle className="h-8 w-8" />}
               color={kpis.red_modules === 0 ? 'green' : 'red'}
             />
-          </div>
-        )}
-
-        {/* Alerts */}
-        {alerts.length > 0 && (
-          <div className="mb-8 space-y-4">
-            {alerts.map((alert, index) => (
-              <AlertCard
-                key={index}
-                type={alert.type}
-                title={alert.title}
-                message={alert.message}
-              />
-            ))}
           </div>
         )}
 

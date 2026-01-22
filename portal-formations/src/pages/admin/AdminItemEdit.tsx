@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
-import { Item } from '../../types/database'
-import { Save, Upload, Copy, Search, X } from 'lucide-react'
+import { Item, ItemCategory } from '../../types/database'
+import { Save, Upload, Copy, Search, X, FileText } from 'lucide-react'
 import { FileUpload } from '../../components/FileUpload'
 import { RichTextEditor } from '../../components/RichTextEditor'
 import { ChapterManager } from '../../components/ChapterManager'
 import { ItemDocumentsManager } from '../../components/ItemDocumentsManager'
+import { TpControlSourcesManager } from '../../components/TpControlSourcesManager'
 
 export function AdminItemEdit() {
   const { itemId } = useParams<{ itemId: string }>()
@@ -26,6 +27,7 @@ export function AdminItemEdit() {
     external_url: null,
     position: 0,
     published: true,
+    category: null,
     module_id: moduleIdFromUrl || undefined
   })
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -38,6 +40,8 @@ export function AdminItemEdit() {
   const [searchTerm, setSearchTerm] = useState('')
   const [loadingGames, setLoadingGames] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
+  const [solutionCodeLocal, setSolutionCodeLocal] = useState<string>('')
+  const [solutionCodeSaveTimeout, setSolutionCodeSaveTimeout] = useState<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     // Si c'est un ID temporaire, rediriger vers la création d'un nouvel item (une seule fois)
@@ -75,6 +79,51 @@ export function AdminItemEdit() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemId, isNew, moduleIdFromUrl, redirected])
+
+  // Synchroniser solutionCodeLocal avec item.solution_code
+  useEffect(() => {
+    if ((item as any).solution_code !== undefined) {
+      setSolutionCodeLocal((item as any).solution_code || '')
+    }
+  }, [(item as any).solution_code])
+
+  // Fonction pour sauvegarder la solution avec debounce
+  const saveSolutionCode = async (value: string) => {
+    if (!itemId || itemId === 'new') return
+
+    // Annuler le timeout précédent s'il existe
+    if (solutionCodeSaveTimeout) {
+      clearTimeout(solutionCodeSaveTimeout)
+    }
+
+    // Mettre à jour l'état local immédiatement
+    setSolutionCodeLocal(value)
+    setItem({ ...item, solution_code: value } as any)
+
+    // Sauvegarder dans la base après 1 seconde d'inactivité
+    const timeout = setTimeout(async () => {
+      const { error } = await supabase
+        .from('items')
+        .update({ solution_code: value })
+        .eq('id', itemId)
+      
+      if (error) {
+        console.error('Error saving solution code:', error)
+      }
+      setSolutionCodeSaveTimeout(null)
+    }, 1000)
+
+    setSolutionCodeSaveTimeout(timeout)
+  }
+
+  // Nettoyer le timeout au démontage
+  useEffect(() => {
+    return () => {
+      if (solutionCodeSaveTimeout) {
+        clearTimeout(solutionCodeSaveTimeout)
+      }
+    }
+  }, [solutionCodeSaveTimeout])
 
   const fetchItem = async () => {
     if (!itemId || itemId === 'new' || itemId.startsWith('temp-')) {
@@ -163,6 +212,7 @@ export function AdminItemEdit() {
         ...item,
         asset_path: assetPath,
         content: item.content || {},
+        category: item.category || null,
         updated_at: new Date().toISOString()
       }
 
@@ -459,6 +509,28 @@ export function AdminItemEdit() {
                   <option value="tp">TP</option>
                   <option value="game">Mini-jeu</option>
                 </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Categorie pedagogique
+                </label>
+                <select
+                  value={item.category || ''}
+                  onChange={(e) => setItem({ ...item, category: (e.target.value || null) as ItemCategory | null })}
+                  className="input-field"
+                >
+                  <option value="">Non categorise</option>
+                  <option value="cours">Cours</option>
+                  <option value="exemple">Exemple</option>
+                  <option value="exercice">Exercice</option>
+                  <option value="tp">TP</option>
+                  <option value="ressource">Ressource</option>
+                  <option value="evaluation">Evaluation</option>
+                </select>
+                <p className="text-xs text-gray-500 mt-1">
+                  La categorie permet de regrouper les elements sur la page d'accueil de la formation.
+                </p>
               </div>
 
               <div>
@@ -760,9 +832,37 @@ export function AdminItemEdit() {
 
             {item.type === 'tp' && (
               <div className="space-y-4">
-                <h3 className="text-lg font-medium text-gray-900">TP</h3>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-medium text-gray-900">TP</h3>
+                  {isNew && (
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                      <p className="text-sm text-yellow-800">
+                        <strong>Étape 1 :</strong> Remplissez le titre et sauvegardez d'abord l'item
+                      </p>
+                      <p className="text-xs text-yellow-700 mt-1">
+                        Ensuite, vous pourrez configurer les instructions et activer le mode "TP de contrôle"
+                      </p>
+                    </div>
+                  )}
+                </div>
                 {!isNew && itemId ? (
                   <>
+                    {/* Guide pour TP de contrôle */}
+                    {!(item as any).is_control_tp && (
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <h4 className="font-medium text-blue-900 mb-2">💡 Créer un TP de contrôle</h4>
+                        <p className="text-sm text-blue-800 mb-3">
+                          Un TP de contrôle permet aux apprenants de soumettre du code qui sera automatiquement comparé à une solution.
+                        </p>
+                        <ol className="text-sm text-blue-700 space-y-1 ml-4 list-decimal">
+                          <li>Cochez la case "TP de contrôle avec correction automatique" ci-dessous</li>
+                          <li>Ajoutez le fichier de logs à fournir (si nécessaire)</li>
+                          <li>Ajoutez les sources (fichiers, liens) pour les apprenants</li>
+                          <li>Rédigez la solution attendue (code Python)</li>
+                        </ol>
+                      </div>
+                    )}
+
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Instructions du TP
@@ -785,6 +885,151 @@ export function AdminItemEdit() {
                         placeholder="Une tâche par ligne"
                       />
                     </div>
+
+                    {/* Option TP de contrôle */}
+                    <div className={`p-4 border rounded-lg ${(item as any).is_control_tp ? 'bg-green-50 border-green-300' : 'bg-blue-50 border-blue-200'}`}>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={(item as any).is_control_tp || false}
+                          onChange={async (e) => {
+                            const { error } = await supabase
+                              .from('items')
+                              .update({ is_control_tp: e.target.checked })
+                              .eq('id', itemId);
+                            if (!error) {
+                              setItem({ ...item, is_control_tp: e.target.checked } as any);
+                            }
+                          }}
+                          className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                        />
+                        <span className={`text-sm font-medium ${(item as any).is_control_tp ? 'text-green-900' : 'text-blue-900'}`}>
+                          ✅ TP de contrôle avec correction automatique
+                        </span>
+                      </label>
+                      <p className={`text-xs mt-1 ml-6 ${(item as any).is_control_tp ? 'text-green-700' : 'text-blue-700'}`}>
+                        {(item as any).is_control_tp 
+                          ? 'Mode TP de contrôle activé. Les apprenants pourront soumettre du code qui sera comparé automatiquement.'
+                          : 'Active la soumission de code avec comparaison automatique à une solution'
+                        }
+                      </p>
+                    </div>
+
+                    {/* Fichier de logs (pour TP de contrôle) */}
+                    {(item as any).is_control_tp && (
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Fichier de logs à fournir (contenu du fichier)
+                          </label>
+                          <input
+                            type="file"
+                            accept=".log,.txt"
+                            onChange={async (e) => {
+                              const file = e.target.files?.[0];
+                              if (!file) return;
+
+                              // Lire le contenu du fichier
+                              const reader = new FileReader();
+                              reader.onload = async (event) => {
+                                const content = event.target?.result as string;
+                                if (content) {
+                                  const { error } = await supabase
+                                    .from('items')
+                                    .update({ control_tp_log_file: content })
+                                    .eq('id', itemId);
+                                  if (!error) {
+                                    setItem({ ...item, control_tp_log_file: content } as any);
+                                  }
+                                }
+                              };
+                              reader.readAsText(file);
+                              
+                              // Réinitialiser l'input pour permettre de réimporter le même fichier
+                              e.target.value = '';
+                            }}
+                            className="hidden"
+                            id="log-file-input"
+                          />
+                          <label
+                            htmlFor="log-file-input"
+                            className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm cursor-pointer"
+                          >
+                            <Upload className="w-4 h-4" />
+                            Importer un fichier .log
+                          </label>
+                        </div>
+                        <textarea
+                          value={(item as any).control_tp_log_file || ''}
+                          onChange={async (e) => {
+                            const { error } = await supabase
+                              .from('items')
+                              .update({ control_tp_log_file: e.target.value })
+                              .eq('id', itemId);
+                            if (!error) {
+                              setItem({ ...item, control_tp_log_file: e.target.value } as any);
+                            }
+                          }}
+                          rows={10}
+                          className="input-field font-mono text-xs"
+                          placeholder="2026-01-22T01:12:10 IP=10.0.0.5 USER=admin STATUS=FAIL&#10;2026-01-22T01:12:15 IP=10.0.0.5 USER=admin STATUS=FAIL&#10;..."
+                        />
+                        <div className="flex items-center justify-between mt-1">
+                          <p className="text-xs text-gray-500">
+                            Contenu du fichier de logs que les apprenants devront télécharger et utiliser
+                          </p>
+                          {(item as any).control_tp_log_file && (
+                            <p className="text-xs text-gray-500">
+                              {(item as any).control_tp_log_file.split('\n').length} lignes
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Sources à fournir (pour TP de contrôle) */}
+                    {(item as any).is_control_tp && (
+                      <div>
+                        <TpControlSourcesManager
+                          sources={(item as any).control_tp_sources || []}
+                          onChange={async (newSources) => {
+                            const { error } = await supabase
+                              .from('items')
+                              .update({ control_tp_sources: newSources })
+                              .eq('id', itemId);
+                            if (!error) {
+                              setItem({ ...item, control_tp_sources: newSources } as any);
+                            }
+                          }}
+                        />
+                        <p className="text-xs text-gray-500 mt-2">
+                          Ajoutez des fichiers sources ou des liens utiles pour les apprenants
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Solution attendue (pour TP de contrôle) */}
+                    {(item as any).is_control_tp && (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Solution attendue (code Python)
+                        </label>
+                        <textarea
+                          value={solutionCodeLocal}
+                          onChange={(e) => {
+                            saveSolutionCode(e.target.value)
+                          }}
+                          rows={15}
+                          className="input-field font-mono text-sm"
+                          placeholder="# Votre code solution Python ici..."
+                          spellCheck={false}
+                        />
+                        <p className="text-xs text-gray-500 mt-1">
+                          Code solution qui sera utilisé pour la comparaison automatique avec le code soumis. 
+                          Vous pouvez coller du code directement (Ctrl+V / Cmd+V).
+                        </p>
+                      </div>
+                    )}
                   </>
                 ) : (
                   <>

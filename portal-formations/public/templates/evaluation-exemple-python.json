@@ -1,0 +1,89 @@
+{
+  "title": "Quiz Python - Les Bases",
+  "description": "Évaluation des connaissances fondamentales en Python",
+  "passing_score": 70,
+  "max_attempts": 3,
+  "time_limit_minutes": 20,
+  "questions": [
+    {
+      "question": "Quel mot-clé est utilisé pour définir une fonction en Python ?",
+      "type": "multiple_choice",
+      "options": ["function", "def", "func", "define"],
+      "correct_answer": "def",
+      "points": 1
+    },
+    {
+      "question": "Python est un langage à typage dynamique.",
+      "type": "true_false",
+      "options": ["Vrai", "Faux"],
+      "correct_answer": "Vrai",
+      "points": 1
+    },
+    {
+      "question": "Quelle est la sortie de : print(type([]))",
+      "type": "multiple_choice",
+      "options": ["<class 'tuple'>", "<class 'list'>", "<class 'dict'>", "<class 'set'>"],
+      "correct_answer": "<class 'list'>",
+      "points": 1
+    },
+    {
+      "question": "En Python, les indices de liste commencent à 1.",
+      "type": "true_false",
+      "options": ["Vrai", "Faux"],
+      "correct_answer": "Faux",
+      "points": 1
+    },
+    {
+      "question": "Quelle méthode permet d'ajouter un élément à la fin d'une liste ?",
+      "type": "multiple_choice",
+      "options": ["add()", "append()", "insert()", "push()"],
+      "correct_answer": "append()",
+      "points": 1
+    },
+    {
+      "question": "Quel opérateur est utilisé pour la division entière en Python 3 ?",
+      "type": "multiple_choice",
+      "options": ["/", "//", "%", "**"],
+      "correct_answer": "//",
+      "points": 1
+    },
+    {
+      "question": "Les dictionnaires Python conservent l'ordre d'insertion depuis Python 3.7.",
+      "type": "true_false",
+      "options": ["Vrai", "Faux"],
+      "correct_answer": "Vrai",
+      "points": 1
+    },
+    {
+      "question": "Quelle est la sortie de : len('Python')",
+      "type": "multiple_choice",
+      "options": ["5", "6", "7", "Erreur"],
+      "correct_answer": "6",
+      "points": 1
+    },
+    {
+      "question": "Comment crée-t-on un commentaire multi-lignes en Python ?",
+      "type": "multiple_choice",
+      "options": ["/* commentaire */", "// commentaire", "\"\"\" commentaire \"\"\"", "<!-- commentaire -->"],
+      "correct_answer": "\"\"\" commentaire \"\"\"",
+      "points": 1
+    },
+    {
+      "question": "Quelle structure de données est immuable en Python ?",
+      "type": "multiple_choice",
+      "options": ["list", "dict", "tuple", "set"],
+      "correct_answer": "tuple",
+      "points": 1
+    },
+    {
+      "question": "Expliquez la différence entre une liste et un tuple en Python.",
+      "type": "text",
+      "points": 3
+    },
+    {
+      "question": "Écrivez une fonction Python qui prend une liste de nombres et retourne la somme des nombres pairs.",
+      "type": "code",
+      "points": 5
+    }
+  ]
+}

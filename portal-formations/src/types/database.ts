@@ -12,6 +12,39 @@ export interface Profile {
 export type CourseStatus = 'draft' | 'published';
 export type AccessType = 'free' | 'paid' | 'invite';
 
+// Types for pedagogical metadata
+export interface PedagogicalObjective {
+  id: string;
+  text: string;
+  category?: string;
+  order: number;
+}
+
+export interface Prerequisite {
+  id: string;
+  text: string;
+  level?: 'required' | 'recommended' | 'optional';
+  order: number;
+}
+
+export interface FinalSynthesis {
+  body?: Record<string, any>;
+  summary?: string;
+  keyPoints?: string[];
+}
+
+export interface EvaluationItem {
+  itemId: string;
+  title: string;
+  weight: number;
+  threshold?: number;
+}
+
+export interface EvaluationsConfig {
+  items: EvaluationItem[];
+  passingScore?: number;
+}
+
 export interface Course {
   id: string;
   title: string;
@@ -25,6 +58,11 @@ export interface Course {
   is_public?: boolean;
   publication_date?: string | null;
   thumbnail_image_path: string | null;
+  pedagogical_objectives: PedagogicalObjective[] | null;
+  prerequisites: Prerequisite[] | null;
+  recommended_path: string | null;
+  final_synthesis: FinalSynthesis | null;
+  evaluations_config: EvaluationsConfig | null;
   created_by: string;
   created_at: string;
   updated_at: string;
@@ -39,6 +77,7 @@ export interface Module {
 }
 
 export type ItemType = 'resource' | 'slide' | 'exercise' | 'activity' | 'tp' | 'game';
+export type ItemCategory = 'cours' | 'exemple' | 'exercice' | 'tp' | 'ressource' | 'evaluation';
 
 export interface Item {
   id: string;
@@ -50,6 +89,7 @@ export interface Item {
   external_url: string | null;
   position: number;
   published: boolean;
+  category: ItemCategory | null;
   created_at: string;
   updated_at: string;
 }
@@ -259,6 +299,41 @@ export interface ExerciseAnalytics {
 }
 
 // Types pour les Programmes (fusion de formations)
+// Types pour les glossaires
+export interface GlossaryMetadata {
+  title: string;
+  description?: string;
+  category?: string;
+  version?: string;
+  author?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface GlossaryCategory {
+  id: string;
+  name: string;
+  description?: string;
+}
+
+export interface GlossaryTerm {
+  id: string;
+  word: string;
+  explanation: string;
+  example: string;
+  category_id?: string;
+  tags?: string[];
+  related_terms?: string[];
+  language?: string;
+  difficulty?: 'beginner' | 'intermediate' | 'advanced';
+}
+
+export interface Glossary {
+  metadata: GlossaryMetadata;
+  categories?: GlossaryCategory[];
+  terms: GlossaryTerm[];
+}
+
 export interface Program {
   id: string;
   title: string;
@@ -268,6 +343,8 @@ export interface Program {
   price_cents: number | null;
   currency: string | null;
   summary_pdf_path: string | null;
+  thumbnail_image_path: string | null;
+  glossary: Glossary | null;
   created_by: string;
   created_at: string;
   updated_at: string;
@@ -402,4 +479,170 @@ export interface CourseAllTp {
   is_visible: boolean | null;
   created_at: string;
   updated_at: string;
+}
+
+// ============================================================================
+// TYPES POUR LE DASHBOARD FORMATEUR - PROGRAMMES ET ORGANISATIONS
+// ============================================================================
+
+// Liaison Organisation-Programme
+export interface OrgProgram {
+  id: string;
+  org_id: string;
+  program_id: string;
+  granted_at: string;
+  granted_by: string | null;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface OrgProgramWithDetails extends OrgProgram {
+  programs?: Program;
+  orgs?: Org;
+}
+
+// Types pour les évaluations de programme
+export type EvaluationQuestionType = 'multiple_choice' | 'text' | 'code' | 'true_false';
+
+export interface EvaluationQuestion {
+  id: string;
+  question: string;
+  type: EvaluationQuestionType;
+  options?: string[];
+  correct_answer?: string;
+  points: number;
+  course_id?: string;
+  explanation?: string;
+}
+
+export interface ProgramEvaluation {
+  id: string;
+  program_id: string;
+  title: string;
+  description: string | null;
+  questions: EvaluationQuestion[];
+  passing_score: number;
+  max_attempts: number;
+  time_limit_minutes: number | null;
+  shuffle_questions: boolean;
+  shuffle_options: boolean;
+  show_correct_answers: boolean;
+  is_published: boolean;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ProgramEvaluationAttempt {
+  id: string;
+  evaluation_id: string;
+  user_id: string;
+  org_id: string | null;
+  answers: Record<string, string>;
+  score: number | null;
+  total_points: number | null;
+  percentage: number | null;
+  is_passed: boolean | null;
+  started_at: string;
+  submitted_at: string | null;
+  graded_at: string | null;
+  attempt_number: number;
+  results_detail: Record<string, {
+    is_correct: boolean | null;
+    points_earned: number | null;
+    correct_answer: string;
+    user_answer: string;
+    needs_manual_grading?: boolean;
+  }>;
+}
+
+export interface ProgramEvaluationWithProgram extends ProgramEvaluation {
+  programs?: Program;
+}
+
+// Progression d'un étudiant sur un programme
+export interface StudentProgramProgress {
+  user_id: string;
+  user_name: string;
+  user_email?: string;
+  org_id: string;
+  org_name: string;
+  program_id: string;
+  program_title: string;
+  total_courses: number;
+  completed_courses: number;
+  current_course_id: string | null;
+  current_course_title: string | null;
+  current_module_id: string | null;
+  current_module_title: string | null;
+  last_activity_at: string | null;
+  overall_progress_percent: number;
+  evaluation_attempts: number;
+  best_evaluation_score: number | null;
+  evaluation_passed: boolean | null;
+}
+
+// Résumé des résultats d'évaluation
+export interface EvaluationResultsSummary {
+  evaluation_id: string;
+  program_id: string;
+  evaluation_title: string;
+  program_title: string;
+  total_participants: number;
+  passed_count: number;
+  failed_count: number;
+  average_score: number | null;
+  min_score: number | null;
+  max_score: number | null;
+}
+
+// TP de session avec infos programme
+export interface SessionTpWithProgram {
+  id: string;
+  session_id: string;
+  program_id: string | null;
+  title: string;
+  description: string | null;
+  instructions: string | null;
+  enonce_content: Record<string, unknown> | null;
+  source_files: Array<{
+    name: string;
+    path: string;
+    size: number;
+    type: string;
+    description?: string;
+    uploaded_at: string;
+  }>;
+  criteria: unknown[];
+  settings: Record<string, unknown>;
+  status: 'draft' | 'published' | 'open' | 'closed' | 'grading' | 'completed' | 'archived';
+  due_date: string | null;
+  submissions_count: number;
+  evaluated_count: number;
+  average_score: number | null;
+  created_at: string;
+}
+
+// Stats de progression par organisation
+export interface OrgProgressStats {
+  org_id: string;
+  org_name: string;
+  total_students: number;
+  active_students_7d: number;
+  avg_progress_percent: number;
+  completed_count: number;
+  in_progress_count: number;
+  not_started_count: number;
+}
+
+// Stats de progression par programme
+export interface ProgramProgressStats {
+  program_id: string;
+  program_title: string;
+  total_enrolled: number;
+  avg_progress_percent: number;
+  completed_count: number;
+  in_progress_count: number;
+  evaluation_pass_rate: number | null;
+  avg_evaluation_score: number | null;
 }

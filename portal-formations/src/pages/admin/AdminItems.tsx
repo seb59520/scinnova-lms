@@ -221,7 +221,7 @@ export function AdminItems() {
               <button
                 onClick={() => handleCreateItem('tp')}
                 className="btn-secondary inline-flex items-center space-x-2"
-                title="Créer un TP"
+                title="Créer un TP (classique ou de contrôle)"
               >
                 <FileText className="w-4 h-4" />
                 <span>Nouveau TP</span>
@@ -280,6 +280,25 @@ export function AdminItems() {
               {error}
             </div>
           )}
+
+          {/* Guide rapide pour créer un TP de contrôle */}
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <div className="flex items-start gap-3">
+              <FileText className="w-6 h-6 text-blue-600 mt-0.5 flex-shrink-0" />
+              <div className="flex-1">
+                <h3 className="font-semibold text-blue-900 mb-2">Comment créer un TP de contrôle ?</h3>
+                <ol className="text-sm text-blue-800 space-y-1 ml-4 list-decimal">
+                  <li>Cliquez sur <strong>"Nouveau TP"</strong> ci-dessus</li>
+                  <li>Remplissez le <strong>titre</strong> et <strong>sauvegardez</strong> l'item</li>
+                  <li>Cochez <strong>"TP de contrôle avec correction automatique"</strong></li>
+                  <li>Ajoutez le fichier de logs, les sources et la solution attendue</li>
+                </ol>
+                <p className="text-xs text-blue-700 mt-2 italic">
+                  Les apprenants pourront soumettre du code qui sera automatiquement comparé à votre solution.
+                </p>
+              </div>
+            </div>
+          </div>
 
           {/* Filtres et recherche */}
           <div className="bg-white shadow rounded-lg p-6 mb-6">

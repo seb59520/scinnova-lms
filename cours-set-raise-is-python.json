@@ -1,0 +1,1796 @@
+{
+  "title": "Cours sur SET, RAISE et IS en Python",
+  "description": "Cours complet sur les ensembles (SET), l'instruction RAISE pour les exceptions, et l'opérateur IS pour les comparaisons d'identité en Python. Contexte, cas d'usage et exemples pratiques.",
+  "status": "published",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3B82F6",
+    "secondaryColor": "#8B5CF6",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Cours complet : SET, RAISE et IS",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#3B82F6",
+        "secondaryColor": "#8B5CF6"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "Cours sur SET, RAISE et IS en Python",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Cours complet sur les ensembles (SET), l'instruction RAISE pour les exceptions, et l'opérateur IS pour les comparaisons d'identité en Python. Contexte, cas d'usage et exemples pratiques.",
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cours sur SET, RAISE et IS en Python"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ce cours couvre trois concepts essentiels en Python : les ensembles (SET) pour la manipulation de collections uniques, l'instruction RAISE pour la gestion des exceptions, et l'opérateur IS pour les comparaisons d'identité d'objets."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "1. SET - Les ensembles en Python"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Contexte et définition"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Un "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "set"
+                    },
+                    {
+                      "type": "text",
+                      "text": " (ensemble) est une collection non ordonnée d'éléments uniques et immuables. Contrairement aux listes, les sets ne permettent pas les doublons et ne sont pas indexés."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Caractéristiques principales :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Éléments uniques : aucun doublon autorisé"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Non ordonné : l'ordre d'insertion n'est pas garanti"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Éléments immuables : seuls les types hashables peuvent être ajoutés (int, str, tuple, etc.)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Mutable : le set lui-même peut être modifié (ajout, suppression)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Création d'un set"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Méthode 1 : avec des accolades\nmon_set = {1, 2, 3, 4, 5}\nprint(mon_set)  # {1, 2, 3, 4, 5}\n\n# Méthode 2 : avec la fonction set()\nmon_set2 = set([1, 2, 3, 4, 5])\nprint(mon_set2)  # {1, 2, 3, 4, 5}\n\n# Set vide (attention : {} crée un dict, pas un set !)\nset_vide = set()\nprint(type(set_vide))  # <class 'set'>\n\n# Les doublons sont automatiquement supprimés\navec_doublons = {1, 2, 2, 3, 3, 3}\nprint(avec_doublons)  # {1, 2, 3}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Opérations principales sur les sets"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Ajout d'éléments\nfruits = {'pomme', 'banane'}\nfruits.add('orange')\nprint(fruits)  # {'pomme', 'banane', 'orange'}\n\n# Ajout multiple\nfruits.update(['kiwi', 'mangue'])\nprint(fruits)  # {'pomme', 'banane', 'orange', 'kiwi', 'mangue'}\n\n# Suppression\nfruits.remove('banane')  # Lève KeyError si l'élément n'existe pas\nfruits.discard('ananas')  # Ne lève pas d'erreur si l'élément n'existe pas\nfruits.pop()  # Supprime et retourne un élément arbitraire\n\n# Vérification d'appartenance\nprint('pomme' in fruits)  # True\nprint('banane' not in fruits)  # True\n\n# Longueur\nprint(len(fruits))  # Nombre d'éléments"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Opérations ensemblistes (union, intersection, différence)"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "set_a = {1, 2, 3, 4}\nset_b = {3, 4, 5, 6}\n\n# Union : tous les éléments des deux sets\nunion = set_a | set_b\n# ou\nunion = set_a.union(set_b)\nprint(union)  # {1, 2, 3, 4, 5, 6}\n\n# Intersection : éléments communs\nintersection = set_a & set_b\n# ou\nintersection = set_a.intersection(set_b)\nprint(intersection)  # {3, 4}\n\n# Différence : éléments dans A mais pas dans B\ndifference = set_a - set_b\n# ou\ndifference = set_a.difference(set_b)\nprint(difference)  # {1, 2}\n\n# Différence symétrique : éléments dans A ou B mais pas dans les deux\nsym_diff = set_a ^ set_b\n# ou\nsym_diff = set_a.symmetric_difference(set_b)\nprint(sym_diff)  # {1, 2, 5, 6}\n\n# Sous-ensemble et sur-ensemble\nset_c = {2, 3}\nprint(set_c.issubset(set_a))  # True\nprint(set_a.issuperset(set_c))  # True"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas d'usage pratiques"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 4
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas 1 : Supprimer les doublons d'une liste"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "liste_avec_doublons = [1, 2, 2, 3, 3, 3, 4, 5, 5]\nliste_unique = list(set(liste_avec_doublons))\nprint(liste_unique)  # [1, 2, 3, 4, 5] (ordre peut varier)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 4
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas 2 : Vérifier l'appartenance rapidement"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Les sets sont optimisés pour les vérifications d'appartenance (O(1) vs O(n) pour les listes)\nutilisateurs_actifs = {'alice', 'bob', 'charlie'}\n\nif 'alice' in utilisateurs_actifs:\n    print(\"Alice est connectée\")\n\n# Plus rapide qu'une liste pour de grandes collections"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 4
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas 3 : Trouver les éléments communs entre deux listes"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "liste1 = ['a', 'b', 'c', 'd']\nliste2 = ['c', 'd', 'e', 'f']\n\n# Éléments communs\ncommuns = set(liste1) & set(liste2)\nprint(communs)  # {'c', 'd'}\n\n# Éléments uniques à chaque liste\nuniques_liste1 = set(liste1) - set(liste2)\nuniques_liste2 = set(liste2) - set(liste1)\nprint(uniques_liste1)  # {'a', 'b'}\nprint(uniques_liste2)  # {'e', 'f'}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 4
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas 4 : Gestion des tags ou catégories"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "class Article:\n    def __init__(self, titre):\n        self.titre = titre\n        self.tags = set()\n    \n    def ajouter_tag(self, tag):\n        self.tags.add(tag)\n    \n    def a_tag(self, tag):\n        return tag in self.tags\n    \n    def tags_communs(self, autre_article):\n        return self.tags & autre_article.tags\n\narticle1 = Article(\"Python pour débutants\")\narticle1.ajouter_tag('python')\narticle1.ajouter_tag('débutant')\narticle1.ajouter_tag('programmation')\n\narticle2 = Article(\"Python avancé\")\narticle2.ajouter_tag('python')\narticle2.ajouter_tag('avancé')\n\nprint(article1.tags_communs(article2))  # {'python'}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "2. RAISE - Lever des exceptions"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Contexte et définition"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "L'instruction "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "raise"
+                    },
+                    {
+                      "type": "text",
+                      "text": " permet de lever (lancer) une exception manuellement. C'est essentiel pour signaler des erreurs et gérer les cas exceptionnels dans votre code."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Pourquoi utiliser raise ?"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Signaler des erreurs de manière explicite"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Valider les entrées utilisateur"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Créer des exceptions personnalisées"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Propager des erreurs dans la chaîne d'appels"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Syntaxe de base"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Lever une exception standard\nraise ValueError(\"La valeur doit être positive\")\n\n# Lever une exception avec un type spécifique\nraise TypeError(\"Type de données incorrect\")\n\n# Relancer la dernière exception (dans un bloc except)\ntry:\n    result = 10 / 0\nexcept ZeroDivisionError:\n    print(\"Erreur capturée\")\n    raise  # Relance la même exception"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exceptions personnalisées"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Créer une exception personnalisée\nclass ErreurAgeInvalide(Exception):\n    \"\"\"Exception levée quand l'âge est invalide\"\"\"\n    pass\n\nclass ErreurSoldeInsuffisant(Exception):\n    \"\"\"Exception levée quand le solde est insuffisant\"\"\"\n    def __init__(self, solde, montant_requis):\n        self.solde = solde\n        self.montant_requis = montant_requis\n        message = f\"Solde insuffisant : {solde}€ disponible, {montant_requis}€ requis\"\n        super().__init__(message)\n\n# Utilisation\ndef verifier_age(age):\n    if age < 0:\n        raise ErreurAgeInvalide(\"L'âge ne peut pas être négatif\")\n    if age > 150:\n        raise ErreurAgeInvalide(\"L'âge semble invalide\")\n    return age\n\ndef retirer_argent(solde, montant):\n    if montant > solde:\n        raise ErreurSoldeInsuffisant(solde, montant)\n    return solde - montant\n\n# Test\ntry:\n    verifier_age(-5)\nexcept ErreurAgeInvalide as e:\n    print(f\"Erreur : {e}\")"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas d'usage pratiques"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 4
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas 1 : Validation de données"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "def calculer_racine_carree(nombre):\n    if not isinstance(nombre, (int, float)):\n        raise TypeError(\"Le nombre doit être un entier ou un flottant\")\n    if nombre < 0:\n        raise ValueError(\"Le nombre doit être positif ou nul\")\n    return nombre ** 0.5\n\n# Utilisation\ntry:\n    resultat = calculer_racine_carree(-4)\nexcept ValueError as e:\n    print(f\"Erreur de valeur : {e}\")\nexcept TypeError as e:\n    print(f\"Erreur de type : {e}\")"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 4
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas 2 : Gestion des erreurs métier"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "class CompteBancaire:\n    def __init__(self, solde_initial=0):\n        if solde_initial < 0:\n            raise ValueError(\"Le solde initial ne peut pas être négatif\")\n        self.solde = solde_initial\n    \n    def deposer(self, montant):\n        if montant <= 0:\n            raise ValueError(\"Le montant à déposer doit être positif\")\n        self.solde += montant\n    \n    def retirer(self, montant):\n        if montant <= 0:\n            raise ValueError(\"Le montant à retirer doit être positif\")\n        if montant > self.solde:\n            raise ValueError(f\"Solde insuffisant. Solde actuel : {self.solde}€\")\n        self.solde -= montant\n        return self.solde\n\n# Utilisation\ncompte = CompteBancaire(100)\ntry:\n    compte.retirer(150)\nexcept ValueError as e:\n    print(f\"Opération refusée : {e}\")"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 4
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas 3 : Propagation d'erreurs avec contexte"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "def lire_fichier(nom_fichier):\n    try:\n        with open(nom_fichier, 'r') as f:\n            return f.read()\n    except FileNotFoundError:\n        raise FileNotFoundError(f\"Le fichier '{nom_fichier}' est introuvable\")\n    except PermissionError:\n        raise PermissionError(f\"Permission refusée pour lire '{nom_fichier}'\")\n    except Exception as e:\n        raise RuntimeError(f\"Erreur lors de la lecture de '{nom_fichier}': {e}\") from e\n\ndef traiter_fichier(nom_fichier):\n    try:\n        contenu = lire_fichier(nom_fichier)\n        return contenu.upper()\n    except FileNotFoundError as e:\n        print(f\"Fichier non trouvé : {e}\")\n        return None\n\n# Test\ntraiter_fichier(\"fichier_inexistant.txt\")"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 4
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas 4 : Assertions avec messages d'erreur personnalisés"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "def diviser(a, b):\n    if b == 0:\n        raise ZeroDivisionError(\"Division par zéro impossible\")\n    if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):\n        raise TypeError(\"Les deux arguments doivent être des nombres\")\n    return a / b\n\n# Alternative avec assert (peut être désactivé avec -O)\ndef diviser_avec_assert(a, b):\n    assert b != 0, \"Le diviseur ne peut pas être zéro\"\n    assert isinstance(a, (int, float)), \"Le premier argument doit être un nombre\"\n    assert isinstance(b, (int, float)), \"Le deuxième argument doit être un nombre\"\n    return a / b"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "3. IS - Opérateur de comparaison d'identité"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Contexte et définition"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "L'opérateur "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "is"
+                    },
+                    {
+                      "type": "text",
+                      "text": " compare l'identité des objets (leur adresse mémoire), tandis que "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "=="
+                    },
+                    {
+                      "type": "text",
+                      "text": " compare l'égalité des valeurs."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Différence fondamentale :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "is : vérifie si deux variables pointent vers le même objet en mémoire (même identité)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "== : vérifie si deux objets ont la même valeur (égalité)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exemples de base"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Cas 1 : Même objet\nliste1 = [1, 2, 3]\nliste2 = liste1  # liste2 référence le même objet\n\nprint(liste1 is liste2)  # True (même identité)\nprint(liste1 == liste2)   # True (même valeur)\n\n# Cas 2 : Objets différents avec même valeur\nliste3 = [1, 2, 3]\n\nprint(liste1 is liste3)  # False (objets différents)\nprint(liste1 == liste3)  # True (valeurs égales)\n\n# Cas 3 : None (cas d'usage le plus courant)\nx = None\nprint(x is None)   # True (recommandé)\nprint(x == None)   # True mais moins pythonique"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas particuliers : petits entiers et chaînes"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Python optimise les petits entiers (-5 à 256)\na = 100\nb = 100\nprint(a is b)  # True (même objet en mémoire)\n\nc = 300\nd = 300\nprint(c is d)  # Peut être True ou False selon l'implémentation\nprint(c == d)   # True (toujours)\n\n# Chaînes de caractères (interning)\nstr1 = \"hello\"\nstr2 = \"hello\"\nprint(str1 is str2)  # True (interning automatique)\n\nstr3 = \"hello world\"\nstr4 = \"hello world\"\nprint(str3 is str4)  # Peut varier, ne pas s'y fier\nprint(str3 == str4)  # True (toujours)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas d'usage pratiques"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 4
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas 1 : Vérifier None (usage le plus courant)"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "def traiter_donnees(donnees):\n    if donnees is None:\n        return \"Aucune donnée fournie\"\n    if donnees is not None:\n        return f\"Traitement de {donnees}\"\n\n# Bonne pratique\nresultat = traiter_donnees(None)\nprint(resultat)  # \"Aucune donnée fournie\"\n\n# À éviter (fonctionne mais moins pythonique)\n# if donnees == None:  # PEP 8 recommande 'is None'"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 4
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas 2 : Vérifier si un objet est un singleton"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Vérifier les valeurs booléennes\nvaleur = True\nif valeur is True:  # Plus explicite que 'if valeur == True'\n    print(\"Valeur est True\")\n\n# Vérifier les types de classe\nclass MaClasse:\n    pass\n\nobj1 = MaClasse()\nobj2 = MaClasse()\n\nprint(obj1 is obj2)  # False (objets différents)\nprint(type(obj1) is type(obj2))  # True (même type)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 4
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas 3 : Comparer des objets personnalisés"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "class Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n    \n    def __eq__(self, other):\n        if not isinstance(other, Point):\n            return False\n        return self.x == other.x and self.y == other.y\n\np1 = Point(1, 2)\np2 = Point(1, 2)\np3 = p1\n\nprint(p1 == p2)   # True (égalité de valeur grâce à __eq__)\nprint(p1 is p2)   # False (objets différents)\nprint(p1 is p3)   # True (même objet)\n\n# Utilisation pratique\ndef modifier_point(point):\n    if point is None:\n        raise ValueError(\"Le point ne peut pas être None\")\n    # Modification du point (affecte l'objet original)\n    point.x += 1\n    return point\n\np = Point(5, 10)\nmodifier_point(p)\nprint(p.x)  # 6 (modifié car même objet)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 4
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas 4 : Vérifier l'identité dans les structures de données"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "# Détecter les références circulaires\nclass Noeud:\n    def __init__(self, valeur):\n        self.valeur = valeur\n        self.suivant = None\n\ndef detecter_boucle(noeud):\n    vus = set()\n    current = noeud\n    \n    while current is not None:\n        if current in vus:  # Utilise l'identité (hash basé sur id())\n            return True\n        vus.add(current)\n        current = current.suivant\n    return False\n\n# Créer une liste chaînée avec boucle\nn1 = Noeud(1)\nn2 = Noeud(2)\nn3 = Noeud(3)\nn1.suivant = n2\nn2.suivant = n3\nn3.suivant = n2  # Boucle !\n\nprint(detecter_boucle(n1))  # True"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Quand utiliser 'is' vs '==' ?"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Utilisez 'is' pour :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comparer avec None : "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "code"
+                                }
+                              ],
+                              "text": "if x is None"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comparer avec True/False : "
+                            },
+                            {
+                              "type": "text",
+                              "marks": [
+                                {
+                                  "type": "code"
+                                }
+                              ],
+                              "text": "if x is True"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Vérifier si deux variables référencent le même objet"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Utilisez '==' pour :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comparer les valeurs de deux objets"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comparer des nombres, chaînes, listes, etc."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Tous les cas où vous voulez vérifier l'égalité de contenu"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exemples combinés"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exemple complet : Gestion d'un cache avec sets, exceptions et vérifications d'identité"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "class Cache:\n    def __init__(self):\n        self._cache = {}\n        self._cles_accessibles = set()\n    \n    def ajouter(self, cle, valeur):\n        if cle is None:\n            raise ValueError(\"La clé ne peut pas être None\")\n        if not isinstance(cle, (str, int)):\n            raise TypeError(\"La clé doit être une chaîne ou un entier\")\n        \n        if cle in self._cles_accessibles:\n            raise ValueError(f\"La clé '{cle}' existe déjà dans le cache\")\n        \n        self._cache[cle] = valeur\n        self._cles_accessibles.add(cle)\n    \n    def obtenir(self, cle):\n        if cle is None:\n            raise ValueError(\"La clé ne peut pas être None\")\n        \n        if cle not in self._cles_accessibles:\n            raise KeyError(f\"Clé '{cle}' introuvable dans le cache\")\n        \n        return self._cache[cle]\n    \n    def supprimer(self, cle):\n        if cle is None:\n            raise ValueError(\"La clé ne peut pas être None\")\n        \n        if cle not in self._cles_accessibles:\n            raise KeyError(f\"Clé '{cle}' introuvable\")\n        \n        del self._cache[cle]\n        self._cles_accessibles.discard(cle)\n    \n    def cles_communes(self, autre_cache):\n        if autre_cache is None:\n            raise ValueError(\"L'autre cache ne peut pas être None\")\n        if not isinstance(autre_cache, Cache):\n            raise TypeError(\"L'argument doit être une instance de Cache\")\n        \n        return self._cles_accessibles & autre_cache._cles_accessibles\n    \n    def vider(self):\n        self._cache.clear()\n        self._cles_accessibles.clear()\n\n# Utilisation\ncache1 = Cache()\ncache2 = Cache()\n\ntry:\n    cache1.ajouter(\"user1\", {\"nom\": \"Alice\"})\n    cache1.ajouter(\"user2\", {\"nom\": \"Bob\"})\n    \n    cache2.ajouter(\"user2\", {\"nom\": \"Bob\"})\n    cache2.ajouter(\"user3\", {\"nom\": \"Charlie\"})\n    \n    # Clés communes\n    communes = cache1.cles_communes(cache2)\n    print(f\"Clés communes : {communes}\")  # {'user2'}\n    \n    # Obtenir une valeur\n    user = cache1.obtenir(\"user1\")\n    print(f\"Utilisateur : {user}\")\n    \n    # Tentative d'ajout d'une clé existante\n    cache1.ajouter(\"user1\", {\"nom\": \"Alice2\"})\nexcept ValueError as e:\n    print(f\"Erreur : {e}\")\nexcept KeyError as e:\n    print(f\"Erreur de clé : {e}\")"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "4. Tableau comparatif complet des structures de données Python"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ce tableau de référence regroupe les caractéristiques techniques et les usages concrets des principales structures de données Python, notamment en cybersurveillance."
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "text"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Structure      | Nom Python  | Ordonné | Indexable    | Modifiable | Doublons      | Accès principal      | Quand l'utiliser\n---------------|-------------|---------|--------------|------------|---------------|----------------------|----------------------------------------\nListe          | list        | Oui     | Oui ([i])    | Oui        | Oui           | Par index            | Données ordonnées qui évoluent\nTuple          | tuple       | Oui     | Oui ([i])    | Non        | Oui           | Par index            | Données fixes, non modifiables\nEnsemble       | set         | Non     | Non          | Oui        | Non           | Par appartenance (in) | Éliminer doublons, tests rapides\nDictionnaire   | dict        | Oui (>=3.7) | Par clé  | Oui        | Clés uniques  | Par clé               | Associer une clé à une valeur"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Usage typique en cybersurveillance"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "text"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Liste (list)      : Stocker les logs dans l'ordre chronologique\nTuple (tuple)     : Stocker une configuration, un horodatage, une coordonnée\nEnsemble (set)    : Lister les IP uniques suspectes\nDictionnaire (dict): Représenter un log ou compter des événements"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Lecture pédagogique du tableau"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 4
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Liste (list)"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "On empile des éléments"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "L'ordre compte"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Très utilisée pour parcourir des données"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "👉 En cybersurveillance :"
+                    },
+                    {
+                      "type": "text",
+                      "text": " liste de logs, liste d'événements, liste d'alertes"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "events = []\nevents.append(event)"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 4
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Tuple (tuple)"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Donnée figée"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Plus sûr qu'une liste"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Souvent utilisé implicitement"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "👉 En cybersurveillance :"
+                    },
+                    {
+                      "type": "text",
+                      "text": " horodatage, signature d'événement, retour de fonction"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "timestamp = (\"2026-01-10\", \"08:12:01\")"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 4
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ensemble (set)"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Pas de doublons"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Très rapide pour les tests in"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Pas d'ordre garanti"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "👉 En cybersurveillance :"
+                    },
+                    {
+                      "type": "text",
+                      "text": " IP uniques, ports distincts, comptes ciblés"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "suspect_ips = set()\nsuspect_ips.add(\"192.168.1.10\")"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 4
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dictionnaire (dict)"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Donne du sens aux données"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Structure centrale en Python"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Très lisible"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "👉 En cybersurveillance :"
+                    },
+                    {
+                      "type": "text",
+                      "text": " log structuré, compteurs, statistiques"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "python"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "event = {\n    \"ip\": \"192.168.1.10\",\n    \"user\": \"admin\",\n    \"status\": \"FAIL\"\n}"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Tableau de décision rapide (à mémoriser)"
+                    }
+                  ]
+                },
+                {
+                  "type": "codeBlock",
+                  "attrs": {
+                    "language": "text"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Besoin                        | Structure\nGarder l'ordre                  | list\nEmpêcher la modification         | tuple\nSupprimer les doublons           | set\nDonner du sens aux données       | dict"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Phrase clé (idéale pour vos apprenants)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "On stocke dans une liste,"
+                    },
+                    {
+                      "type": "text",
+                      "text": " on sécurise dans un tuple, on filtre avec un set, on structure avec un dictionnaire."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Résumé et bonnes pratiques"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "SET"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utilisez les sets pour supprimer les doublons rapidement"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Idéal pour les vérifications d'appartenance (O(1) vs O(n) pour les listes)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Parfait pour les opérations ensemblistes (union, intersection, différence)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Rappelez-vous : les sets ne sont pas ordonnés (utilisez OrderedDict ou list si l'ordre compte)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "RAISE"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Toujours lever des exceptions explicites avec des messages clairs"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Créez des exceptions personnalisées pour les erreurs métier spécifiques"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Validez les entrées au début de vos fonctions"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utilisez 'raise ... from e' pour préserver la chaîne d'exceptions"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "IS"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Toujours utiliser 'is None' et 'is not None' (PEP 8)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "N'utilisez 'is' que pour comparer l'identité, pas les valeurs"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Ne vous fiez pas à 'is' pour les petits entiers ou chaînes (utilisez '==')"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utilisez 'is' pour vérifier si deux variables référencent le même objet"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

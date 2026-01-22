@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabaseClient'
 import { Item, Submission } from '../types/database'
@@ -8,6 +8,7 @@ import { ChapterViewer } from '../components/ChapterViewer'
 import { RichTextEditor } from '../components/RichTextEditor'
 import { ResizableContainer } from '../components/ResizableContainer'
 import { Lexique } from './Lexique'
+import { useNavigationContext, EnhancedBreadcrumb, CourseContextBar } from '../components/NavigationContext'
 import { FileText, ChevronDown, ChevronUp, Target, Lightbulb, BookOpen, MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react'
 
 // Vérifie si le body TipTap contient du contenu substantiel
@@ -54,14 +55,20 @@ export function ItemView() {
   const { itemId } = useParams<{ itemId: string }>()
   const { user, profile } = useAuth()
   const navigate = useNavigate()
+  const { setContext, clearContext } = useNavigationContext()
+  const [searchParams] = useSearchParams()
   const [item, setItem] = useState<Item | null>(null)
   const [submission, setSubmission] = useState<Submission | null>(null)
+  const [viewingUserId, setViewingUserId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [scriptSection, setScriptSection] = useState<ScriptSection | null>(null)
   const [showScript, setShowScript] = useState(false)
   const [courseItems, setCourseItems] = useState<Item[]>([])
   const [currentItemIndex, setCurrentItemIndex] = useState<number>(-1)
+  const [modulesData, setModulesData] = useState<any[]>([])
+  const [programData, setProgramData] = useState<{ id: string; title: string } | null>(null)
+  const [currentModule, setCurrentModule] = useState<{ id: string; title: string } | null>(null)
 
   // Log pour déboguer le profil
   useEffect(() => {
@@ -82,7 +89,25 @@ export function ItemView() {
       setCurrentItemIndex(-1)
       fetchItem()
     }
+    // Nettoyer le contexte de navigation au démontage
+    return () => clearContext()
   }, [itemId]) // Ne pas dépendre de profile ici pour éviter les rechargements
+
+  // Mettre à jour le contexte de navigation quand les données sont chargées
+  useEffect(() => {
+    if (item) {
+      const courseData = (item as any).modules?.courses
+      setContext({
+        program: programData ? { id: programData.id, title: programData.title, type: 'program' } : undefined,
+        course: courseData ? { id: courseData.id, title: courseData.title, type: 'course' } : undefined,
+        module: currentModule ? { id: currentModule.id, title: currentModule.title, type: 'module' } : undefined,
+        item: { id: item.id, title: item.title, type: 'item' },
+        totalItems: courseItems.length,
+        currentItemIndex: currentItemIndex,
+        modules: modulesData
+      })
+    }
+  }, [item, programData, currentModule, courseItems, currentItemIndex, modulesData])
 
   // Charger le script quand le profil est disponible et que l'item est chargé
   useEffect(() => {
@@ -393,16 +418,16 @@ export function ItemView() {
 
       // Récupérer tous les items du cours pour la navigation
       if (courseId) {
-        // Récupérer tous les modules du cours
-        const { data: modulesData } = await supabase
+        // Récupérer tous les modules du cours avec leurs titres
+        const { data: fetchedModules } = await supabase
           .from('modules')
-          .select('id')
+          .select('id, title, position')
           .eq('course_id', courseId)
           .order('position', { ascending: true })
 
-        if (modulesData && modulesData.length > 0) {
-          const moduleIds = modulesData.map(m => m.id)
-          
+        if (fetchedModules && fetchedModules.length > 0) {
+          const moduleIds = fetchedModules.map(m => m.id)
+
           // Récupérer tous les items publiés de ces modules
           const { data: allItemsData } = await supabase
             .from('items')
@@ -423,24 +448,76 @@ export function ItemView() {
             })
 
             setCourseItems(sortedItems)
-            
+
             // Trouver l'index de l'item actuel
             const currentIndex = sortedItems.findIndex(i => i.id === itemId)
             setCurrentItemIndex(currentIndex)
+
+            // Trouver le module de l'item actuel
+            const itemModule = fetchedModules.find(m => m.id === itemData.module_id)
+            if (itemModule) {
+              setCurrentModule({ id: itemModule.id, title: itemModule.title })
+            }
+
+            // Préparer les données des modules pour la mini-map
+            const modulesWithItems = fetchedModules.map(mod => ({
+              id: mod.id,
+              title: mod.title,
+              position: mod.position,
+              items: sortedItems
+                .filter(item => item.module_id === mod.id)
+                .map(item => ({
+                  id: item.id,
+                  title: item.title,
+                  type: item.type,
+                  position: item.position,
+                  completed: false // TODO: récupérer la progression réelle
+                }))
+            }))
+            setModulesData(modulesWithItems)
           }
+        }
+
+        // Chercher si le cours fait partie d'un programme
+        const { data: programCourse } = await supabase
+          .from('program_courses')
+          .select('programs (id, title)')
+          .eq('course_id', courseId)
+          .limit(1)
+          .maybeSingle()
+
+        if (programCourse?.programs) {
+          const prog = programCourse.programs as any
+          setProgramData({ id: prog.id, title: prog.title })
         }
       }
 
       // Récupérer la soumission existante si c'est un exercice ou TP
       if ((itemData.type === 'exercise' || itemData.type === 'tp') && user?.id) {
-        const { data: submissionData } = await supabase
-          .from('submissions')
-          .select('*')
-          .eq('user_id', user.id)
-          .eq('item_id', itemId)
-          .single()
+        // Si c'est un formateur/admin et qu'un userId est spécifié dans l'URL, charger la soumission de cet étudiant
+        const isTrainerOrAdmin = profile?.role === 'admin' || profile?.role === 'trainer' || profile?.role === 'instructor'
+        const targetUserId = searchParams.get('userId') || (isTrainerOrAdmin ? null : user.id)
+        
+        if (targetUserId) {
+          const { data: submissionData, error: submissionError } = await supabase
+            .from('submissions')
+            .select('*')
+            .eq('user_id', targetUserId)
+            .eq('item_id', itemId)
+            .maybeSingle()
 
-        setSubmission(submissionData)
+          // Ignorer les erreurs 406 (Not Acceptable) qui peuvent survenir avec RLS
+          if (submissionError && submissionError.code !== 'PGRST116' && submissionError.code !== '406') {
+            console.error('Error fetching submission:', submissionError)
+          }
+
+          if (submissionData) {
+            setSubmission(submissionData)
+            if (isTrainerOrAdmin && targetUserId !== user.id) {
+              setViewingUserId(targetUserId)
+            }
+          }
+        }
       }
 
       // Le script sera chargé par le useEffect séparé quand le profil sera disponible
@@ -478,6 +555,9 @@ export function ItemView() {
 
   return (
     <div className="min-h-screen bg-gray-50 relative">
+      {/* Barre de contexte de navigation */}
+      <CourseContextBar />
+
       {/* Flèches de navigation latérales pour les slides */}
       {courseItems.length > 1 && item.type === 'slide' && (
         <>
@@ -549,20 +629,13 @@ export function ItemView() {
         <div className="w-full mx-auto">
           <ResizableContainer storageKey="item-view-width" defaultWidth={95} minWidth={60} maxWidth={100}>
             <div className="px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between items-center py-6">
-                <div className="flex items-center space-x-4 flex-1">
-                  <Link
-                    to={`/courses/${item.modules?.courses?.id}`}
-                    className="text-blue-600 hover:text-blue-500"
-                  >
-                    ← Retour à la formation
-                  </Link>
-                  <div className="flex-1">
-                    <h1 className="text-2xl font-bold text-gray-900">{item.title}</h1>
-                    <p className="text-sm text-gray-600">
-                      Formation: {item.modules?.courses?.title}
-                    </p>
-                  </div>
+              {/* Fil d'Ariane amélioré */}
+              <div className="pt-4 pb-2">
+                <EnhancedBreadcrumb />
+              </div>
+              <div className="flex justify-between items-center pb-4">
+                <div className="flex-1">
+                  <h1 className="text-2xl font-bold text-gray-900">{item.title}</h1>
                 </div>
                 
                 {/* Navigation entre slides - Flèches modernes et visibles */}
@@ -674,6 +747,7 @@ export function ItemView() {
                   item={item}
                   submission={submission}
                   onSubmissionUpdate={setSubmission}
+                  viewingUserId={viewingUserId}
                 />
               </div>
 

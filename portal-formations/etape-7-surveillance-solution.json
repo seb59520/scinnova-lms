@@ -1,0 +1,306 @@
+{
+  "type": "resource",
+  "title": "Étape 7 - Solution complète de surveillance",
+  "position": 7,
+  "published": true,
+  "content": {
+    "description": "Solution complète pour la surveillance en continu d'un fichier de logs avec analyse des nouvelles lignes",
+    "body": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": { "level": 1 },
+          "content": [
+            { "type": "text", "text": "ÉTAPE 7 - SOLUTION COMPLÈTE" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Objectif : Implémenter une surveillance en continu avec analyse et traitement des événements détectés" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "Solution complète" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "# ===========================================\n# ÉTAPE 7 - SOLUTION COMPLÈTE DE SURVEILLANCE\n# ===========================================\n# Objectif : surveiller un fichier de logs en continu\n# et analyser/traiter les nouvelles lignes ajoutées\n\nimport time\nimport re\nfrom datetime import datetime\nfrom collections import defaultdict\n\nLOG_FILE = \"auth.log\"\n\n# ===========================================\n# Fonction pour parser une ligne de log\n# ===========================================\ndef parse_log_line(ligne):\n    \"\"\"\n    Parse une ligne de log et extrait les informations pertinentes\n    Retourne un dictionnaire avec les données extraites ou None\n    \"\"\"\n    # Exemple de pattern pour les logs d'authentification\n    # Format typique : Jan 21 10:30:45 hostname sshd[12345]: Failed password for user from 192.168.1.100\n    \n    patterns = {\n        'failed_login': r'Failed password for (.+?) from (.+?) port',\n        'successful_login': r'Accepted password for (.+?) from (.+?) port',\n        'invalid_user': r'Invalid user (.+?) from (.+?)',\n        'connection_closed': r'Connection closed by (.+?)',\n    }\n    \n    for event_type, pattern in patterns.items():\n        match = re.search(pattern, ligne)\n        if match:\n            return {\n                'type': event_type,\n                'timestamp': datetime.now().isoformat(),\n                'line': ligne.strip(),\n                'details': match.groups()\n            }\n    \n    return None\n\n# ===========================================\n# Fonction pour traiter un événement\n# ===========================================\ndef process_event(event):\n    \"\"\"\n    Traite un événement détecté et prend les actions appropriées\n    \"\"\"\n    event_type = event['type']\n    \n    if event_type == 'failed_login':\n        username, ip = event['details']\n        print(f\"⚠️  Tentative de connexion échouée pour '{username}' depuis {ip}\")\n        # Ici on pourrait :\n        # - Enregistrer dans une base de données\n        # - Envoyer une alerte\n        # - Bloquer l'IP après X tentatives\n        \n    elif event_type == 'successful_login':\n        username, ip = event['details']\n        print(f\"✅ Connexion réussie pour '{username}' depuis {ip}\")\n        \n    elif event_type == 'invalid_user':\n        username, ip = event['details']\n        print(f\"🚫 Tentative de connexion avec utilisateur invalide '{username}' depuis {ip}\")\n        \n    elif event_type == 'connection_closed':\n        ip = event['details'][0]\n        print(f\"🔌 Connexion fermée depuis {ip}\")\n\n# ===========================================\n# Fonction principale de surveillance\n# ===========================================\ndef surveiller_logs():\n    \"\"\"\n    Surveille le fichier de logs en continu\n    \"\"\"\n    print(\"🔄 Surveillance en continu activée\")\n    print(\"Appuyez sur Ctrl+C pour arrêter\")\n    print(\"=\" * 50)\n    \n    # Compteur d'événements par type\n    stats = defaultdict(int)\n    \n    # On ouvre le fichier de logs en lecture\n    with open(LOG_FILE, \"r\", encoding=\"utf-8\") as f:\n        \n        # On place le curseur à la FIN du fichier\n        # Cela évite de relire tout l'historique\n        f.seek(0, 2)\n        \n        # Boucle infinie : le script tourne en continu\n        while True:\n            try:\n                # On mémorise la position actuelle dans le fichier\n                position_avant = f.tell()\n                \n                # On lit toutes les nouvelles lignes ajoutées\n                nouvelles_lignes = f.readlines()\n                \n                # Si de nouvelles lignes ont été ajoutées\n                if nouvelles_lignes:\n                    for ligne in nouvelles_lignes:\n                        ligne = ligne.strip()\n                        \n                        if ligne:\n                            # On parse la ligne pour extraire les infos\n                            event = parse_log_line(ligne)\n                            \n                            if event:\n                                # On traite l'événement\n                                process_event(event)\n                                \n                                # On met à jour les statistiques\n                                stats[event['type']] += 1\n                            else:\n                                # Ligne non reconnue, on l'affiche quand même\n                                print(f\"📄 Ligne non analysée : {ligne[:80]}...\")\n                \n                else:\n                    # Aucune nouvelle ligne :\n                    # on revient à la position précédente\n                    f.seek(position_avant)\n                \n                # Affichage périodique des statistiques\n                if sum(stats.values()) > 0 and sum(stats.values()) % 10 == 0:\n                    print(\"\\n📊 Statistiques :\")\n                    for event_type, count in stats.items():\n                        print(f\"   {event_type}: {count}\")\n                    print()\n                \n                # Pause avant la prochaine vérification\n                time.sleep(1)  # Vérification toutes les secondes\n                \n            except KeyboardInterrupt:\n                print(\"\\n\\n🛑 Arrêt de la surveillance demandé\")\n                print(\"\\n📊 Statistiques finales :\")\n                for event_type, count in stats.items():\n                    print(f\"   {event_type}: {count}\")\n                print(f\"\\nTotal d'événements traités : {sum(stats.values())}\")\n                break\n            \n            except FileNotFoundError:\n                print(f\"❌ Erreur : Le fichier {LOG_FILE} n'existe pas\")\n                break\n            \n            except Exception as e:\n                print(f\"❌ Erreur inattendue : {e}\")\n                time.sleep(5)  # Pause plus longue en cas d'erreur\n\n# ===========================================\n# Point d'entrée du programme\n# ===========================================\nif __name__ == \"__main__\":\n    surveiller_logs()\n"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "Explications détaillées" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "1. Fonction parse_log_line()" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Cette fonction utilise des expressions régulières pour identifier différents types d'événements dans les logs :" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Connexions échouées (failed_login)" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Connexions réussies (successful_login)" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Tentatives avec utilisateur invalide (invalid_user)" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Fermetures de connexion (connection_closed)" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "2. Fonction process_event()" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Traite chaque événement détecté et peut :" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Afficher des messages informatifs" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Enregistrer dans une base de données" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Envoyer des alertes (email, SMS, webhook)" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Bloquer des IPs suspectes automatiquement" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "3. Gestion des statistiques" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Le script maintient un compteur d'événements par type et affiche périodiquement les statistiques pour avoir une vue d'ensemble de l'activité." }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "4. Gestion des erreurs" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Le script gère plusieurs cas d'erreur :" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "KeyboardInterrupt : Arrêt propre avec Ctrl+C" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "FileNotFoundError : Fichier de log introuvable" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Autres exceptions : Gestion générique avec pause" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "Améliorations possibles" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Utiliser un système de files d'attente (queue) pour traiter les événements de manière asynchrone" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Implémenter un système de throttling pour éviter de surcharger le système" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Ajouter une détection d'anomalies (trop de tentatives depuis une même IP)" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Persister les statistiques dans un fichier ou une base de données" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Utiliser des threads ou asyncio pour améliorer les performances" }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

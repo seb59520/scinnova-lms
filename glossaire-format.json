@@ -1,0 +1,104 @@
+{
+  "type": "glossary",
+  "title": "Format de glossaire générique",
+  "description": "Format JSON réutilisable pour créer des glossaires avec mot, explication et exemple",
+  "version": "1.0.0",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "metadata": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "description": "Titre du glossaire" },
+          "description": { "type": "string", "description": "Description du glossaire" },
+          "category": { "type": "string", "description": "Catégorie du glossaire (ex: Python, JavaScript, HACCP)" },
+          "version": { "type": "string", "description": "Version du glossaire" },
+          "author": { "type": "string", "description": "Auteur du glossaire" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" }
+        },
+        "required": ["title"]
+      },
+      "categories": {
+        "type": "array",
+        "description": "Catégories pour organiser les termes",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string", "description": "Identifiant unique de la catégorie" },
+            "name": { "type": "string", "description": "Nom de la catégorie" },
+            "description": { "type": "string", "description": "Description de la catégorie" }
+          },
+          "required": ["id", "name"]
+        }
+      },
+      "terms": {
+        "type": "array",
+        "description": "Liste des termes du glossaire",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string", "description": "Identifiant unique du terme" },
+            "word": { "type": "string", "description": "Le mot ou concept à définir" },
+            "explanation": { "type": "string", "description": "Explication détaillée du terme" },
+            "example": { "type": "string", "description": "Exemple d'utilisation du terme" },
+            "category_id": { "type": "string", "description": "ID de la catégorie (optionnel)" },
+            "tags": { "type": "array", "items": { "type": "string" }, "description": "Tags pour faciliter la recherche" },
+            "related_terms": { "type": "array", "items": { "type": "string" }, "description": "IDs des termes liés" },
+            "language": { "type": "string", "description": "Langue du terme (ex: python, javascript)" },
+            "difficulty": { "type": "string", "enum": ["beginner", "intermediate", "advanced"], "description": "Niveau de difficulté" }
+          },
+          "required": ["id", "word", "explanation", "example"]
+        }
+      }
+    },
+    "required": ["metadata", "terms"]
+  },
+  "example": {
+    "metadata": {
+      "title": "Glossaire Python - Concepts de base",
+      "description": "Glossaire des concepts Python essentiels avec exemples",
+      "category": "Python",
+      "version": "1.0.0",
+      "author": "Système",
+      "created_at": "2024-01-15T10:00:00Z",
+      "updated_at": "2024-01-15T10:00:00Z"
+    },
+    "categories": [
+      {
+        "id": "variables",
+        "name": "Variables & Types",
+        "description": "Concepts liés aux variables et types de données"
+      },
+      {
+        "id": "functions",
+        "name": "Fonctions",
+        "description": "Concepts liés aux fonctions"
+      }
+    ],
+    "terms": [
+      {
+        "id": "none",
+        "word": "None",
+        "explanation": "Valeur spéciale en Python qui représente l'absence de valeur. None est un objet singleton, ce qui signifie qu'il n'existe qu'une seule instance de None dans tout le programme Python.",
+        "example": "x = None\nif x is None:\n    print('x n\\'a pas de valeur')",
+        "category_id": "variables",
+        "tags": ["type", "valeur", "absence"],
+        "related_terms": [],
+        "language": "python",
+        "difficulty": "beginner"
+      },
+      {
+        "id": "lambda",
+        "word": "lambda",
+        "explanation": "Mot-clé Python permettant de créer des fonctions anonymes (sans nom). Les fonctions lambda sont utiles pour des opérations courtes et simples, souvent utilisées avec map(), filter(), ou sorted().",
+        "example": "# Fonction lambda simple\nadd = lambda x, y: x + y\nresult = add(3, 5)  # 8\n\n# Utilisation avec map\nnumbers = [1, 2, 3, 4]\nsquared = list(map(lambda x: x**2, numbers))  # [1, 4, 9, 16]",
+        "category_id": "functions",
+        "tags": ["fonction", "anonyme", "fonctionnel"],
+        "related_terms": ["map", "filter"],
+        "language": "python",
+        "difficulty": "intermediate"
+      }
+    ]
+  }
+}

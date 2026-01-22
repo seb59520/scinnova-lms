@@ -1,0 +1,802 @@
+{
+  "type": "resource",
+  "title": "Cours sur __init__.py en Python",
+  "position": 0,
+  "published": true,
+  "content": {
+    "description": "Cours complet sur le fichier __init__.py en Python : rôle, cas d'usage, exemples pratiques, bonnes pratiques et structure de packages.",
+    "body": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "Cours sur __init__.py en Python" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Le fichier __init__.py est un fichier spécial en Python qui transforme un simple répertoire en un package Python. Il peut être vide ou contenir du code d'initialisation." }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Rôle principal" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "1. Marquer un répertoire comme package" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Sans __init__.py, Python ne reconnaît pas un répertoire comme un package, et vous ne pouvez pas importer des modules depuis ce répertoire." }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "text" },
+          "content": [
+            {
+              "type": "text",
+              "text": "mon_projet/\n├── __init__.py          # Rend mon_projet un package\n├── module1.py\n└── sous_package/\n    ├── __init__.py      # Rend sous_package un package\n    └── module2.py"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "2. Contrôler les imports" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Le fichier __init__.py permet de définir ce qui est accessible quand on importe le package." }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Cas d'usage" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Cas 1 : Fichier vide (minimum requis)" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Le fichier __init__.py peut être complètement vide. Sa simple présence suffit à marquer le répertoire comme package." }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "# __init__.py (vide)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Utilisation :" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "# Depuis un autre fichier\nfrom mon_package import module1"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Cas 2 : Exposer des éléments spécifiques" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Vous pouvez définir ce qui est importé avec 'from package import *' via __all__." }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "# __init__.py\nfrom .module1 import fonction_importante\nfrom .module2 import ClasseUtilitaire\n\n__all__ = ['fonction_importante', 'ClasseUtilitaire']"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Utilisation :" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "from mon_package import *  # Importe uniquement ce qui est dans __all__"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Cas 3 : Simplifier les imports" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Vous pouvez rendre les imports plus simples pour les utilisateurs du package." }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "# __init__.py\nfrom .module1 import MaClasse\nfrom .module2 import ma_fonction\n\n# Maintenant, au lieu de :\n# from mon_package.module1 import MaClasse\n# L'utilisateur peut faire :\n# from mon_package import MaClasse"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Utilisation :" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "# Import simplifié\nfrom mon_package import MaClasse, ma_fonction"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Cas 4 : Initialisation du package" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Vous pouvez exécuter du code lors de l'import du package." }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "# __init__.py\nprint(\"Initialisation du package...\")\n\n# Configuration par défaut\nVERSION = \"1.0.0\"\nAUTHOR = \"Votre Nom\"\n\n# Initialisation de ressources\nimport logging\nlogging.basicConfig(level=logging.INFO)"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 4 },
+          "content": [
+            { "type": "text", "text": "Cas 5 : Imports conditionnels" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Vous pouvez gérer des imports optionnels ou conditionnels." }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "# __init__.py\ntry:\n    from .module_avance import fonction_avancee\n    HAS_ADVANCED = True\nexcept ImportError:\n    HAS_ADVANCED = False\n    print(\"Module avancé non disponible\")"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Exemple complet" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Structure de projet :" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "text" },
+          "content": [
+            {
+              "type": "text",
+              "text": "mon_app/\n├── __init__.py\n├── utils/\n│   ├── __init__.py\n│   ├── helpers.py\n│   └── validators.py\n├── models/\n│   ├── __init__.py\n│   └── user.py\n└── main.py"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "mon_app/__init__.py :" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "\"\"\"\nMon application - Package principal\n\"\"\"\n__version__ = \"1.0.0\"\n\nfrom .utils import validate_email, format_date\nfrom .models import User\n\n__all__ = ['User', 'validate_email', 'format_date']"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "mon_app/utils/__init__.py :" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "from .helpers import format_date, format_currency\nfrom .validators import validate_email, validate_phone\n\n__all__ = ['format_date', 'format_currency', 'validate_email', 'validate_phone']"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "mon_app/utils/helpers.py :" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "def format_date(date):\n    return date.strftime(\"%Y-%m-%d\")\n\ndef format_currency(amount):\n    return f\"{amount:.2f} €\""
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "mon_app/utils/validators.py :" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "import re\n\ndef validate_email(email):\n    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'\n    return bool(re.match(pattern, email))\n\ndef validate_phone(phone):\n    return len(phone) == 10 and phone.isdigit()"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "mon_app/models/__init__.py :" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "from .user import User\n\n__all__ = ['User']"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "mon_app/models/user.py :" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "class User:\n    def __init__(self, name, email):\n        self.name = name\n        self.email = email"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "main.py :" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            {
+              "type": "text",
+              "text": "# Import simplifié grâce à __init__.py\nfrom mon_app import User, validate_email, format_date\nfrom datetime import datetime\n\n# Utilisation\nuser = User(\"Alice\", \"alice@example.com\")\nprint(validate_email(user.email))  # True\nprint(format_date(datetime.now()))  # 2024-01-15"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Namespace Packages (Python 3.3+)" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Depuis Python 3.3, il existe les namespace packages qui permettent de créer des packages sans __init__.py. Cependant, il est toujours recommandé de l'utiliser pour :" }
+          ]
+        },
+        {
+          "type": "bulletList",
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "La compatibilité avec les anciennes versions" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "La clarté et l'explicite" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "L'initialisation du package" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Le contrôle des imports" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Bonnes pratiques" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "✅ À faire :" }
+          ]
+        },
+        {
+          "type": "orderedList",
+          "attrs": { "start": 1 },
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Toujours inclure __init__.py dans vos packages" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Utiliser __all__ pour contrôler les imports publics" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Documenter le package avec une docstring" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Simplifier les imports pour les utilisateurs" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Initialiser les ressources si nécessaire" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "❌ À éviter :" }
+          ]
+        },
+        {
+          "type": "orderedList",
+          "attrs": { "start": 1 },
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Mettre trop de logique dans __init__.py (gardez-le simple)" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Importer tout depuis tous les sous-modules (peut ralentir les imports)" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Oublier __init__.py dans les sous-packages" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créer des effets de bord complexes lors de l'import" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 2 },
+          "content": [
+            { "type": "text", "text": "Référence Python par catégories" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "text": "Référence complète des concepts Python essentiels organisés par catégories, avec usage et exemples pratiques." }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Variables & types (bases)" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            { "type": "text", "text": "None          # Valeur spéciale : absence de valeur\nx = None\n\nTrue          # Booléen vrai\nok = True\n\nFalse         # Booléen faux\nok = False\n\nint           # Convertir en entier\nage = int('42')\n\nfloat         # Convertir en nombre décimal\npi = float('3.14')\n\nstr           # Convertir en chaîne\ntxt = str(123)\n\nbool          # Convertir en booléen\nb = bool(0)  # False\n\ntype          # Donner le type d'une valeur\nprint(type(3.14))\n\nisinstance    # Tester si une valeur est d'un type\nisinstance('a', str)\n\nlen           # Longueur d'une collection/chaîne\nlen([1,2,3])\n\ninput         # Lire une saisie utilisateur (texte)\nname = input('Nom: ')\n\nprint         # Afficher du texte/variables\nprint('Bonjour', name)" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Opérateurs & comparaisons" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            { "type": "text", "text": "==           # Égalité (valeur)\na == b\n\n!=           # Différent\na != b\n\n< > <= >=    # Comparaisons numériques/lexicographiques\nx >= 10\n\nand          # ET logique\nx > 0 and x < 10\n\nor           # OU logique\nx == 0 or x == 1\n\nnot          # NON logique\nnot is_valid\n\nin           # Appartenance à une collection\n'a' in 'chat'\n\nis           # Identité (souvent pour None)\nx is None" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Conditions" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            { "type": "text", "text": "if           # Tester une condition\nif x > 0:\n    print('positif')\n\nelif         # Sinon si…\nelif x == 0:\n    print('zéro')\n\nelse         # Sinon…\nelse:\n    print('négatif')\n\nmatch/case   # Pattern matching (>=3.10)\nmatch x:\n    case 0:\n        print('zéro')\n    case _:\n        print('autre')" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Boucles" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            { "type": "text", "text": "for          # Parcourir une collection\nfor item in items:\n    print(item)\n\nwhile        # Boucler tant qu'une condition est vraie\nwhile n > 0:\n    n -= 1\n\nrange        # Générer une suite de nombres\nfor i in range(5):\n    print(i)\n\nbreak        # Sortir d'une boucle\nfor x in xs:\n    if x == 0:\n        break\n\ncontinue     # Passer au tour suivant\nfor x in xs:\n    if x < 0:\n        continue\n    print(x)\n\nenumerate    # Boucler avec index + valeur\nfor i, v in enumerate(items):\n    print(i, v)\n\nzip          # Boucler sur plusieurs listes en parallèle\nfor a, b in zip(xs, ys):\n    print(a, b)" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Fonctions (définir, retourner, outillage)" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            { "type": "text", "text": "def          # Définir une fonction\ndef add(a, b):\n    return a + b\n\nreturn       # Renvoyer un résultat\nreturn total\n\nlambda       # Petite fonction anonyme\nkey_fn = lambda s: s.lower()\n\nmap          # Appliquer une fonction à chaque élément\nlist(map(str, [1,2,3]))\n\nfilter       # Filtrer une liste avec une condition\nlist(filter(lambda x: x>0, nums))\n\nsorted       # Trier (nouvelle liste)\nsorted(names, key=str.lower)\n\nsum          # Somme d'une liste de nombres\nsum([1,2,3])\n\nmin          # Minimum\nmin(nums)\n\nmax          # Maximum\nmax(nums)\n\nabs          # Valeur absolue\nabs(-10)\n\nround        # Arrondir\nround(3.14159, 2)\n\nany          # Vrai si au moins une condition est vraie\nany(x>0 for x in nums)\n\nall          # Vrai si toutes les conditions sont vraies\nall(x>0 for x in nums)" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Listes (list)" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            { "type": "text", "text": "list         # Créer/convertir en liste\nlst = list('abc')\n\nlist.append  # Ajouter un élément à la fin\nlst.append(4)\n\nlist.extend  # Ajouter plusieurs éléments\nlst.extend([5, 6])\n\nlist.insert  # Insérer à un index\nlst.insert(0, 'x')\n\nlist.pop     # Retirer et renvoyer un élément\nlast = lst.pop()\n\nlist.remove  # Retirer une valeur (1ère occurrence)\nlst.remove('a')\n\nlist.sort    # Trier sur place\nlst.sort()" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Dictionnaires (dict)" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            { "type": "text", "text": "dict         # Créer/convertir en dict\nd = dict(a=1, b=2)\n\ndict.get     # Lire une clé avec valeur par défaut\nd.get('c', 0)\n\ndict.items   # Boucler sur (clé, valeur)\nfor k, v in d.items():\n    ...\n\ndict.keys    # Liste des clés\nlist(d.keys())\n\ndict.values  # Liste des valeurs\nlist(d.values())\n\ndict.update  # Fusionner/ajouter des clés\nd.update({'c': 3})\n\ndict.pop     # Retirer une clé et récupérer sa valeur\nd.pop('a', None)" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Ensembles (set)" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            { "type": "text", "text": "set          # Créer un ensemble (unique)\ns = set([1,1,2])  # {1,2}\n\nset.add      # Ajouter un élément\ns.add(3)\n\nset.discard  # Supprimer sans erreur si absent\ns.discard(99)\n\nset.union    # Union de 2 ensembles\ns.union(t)\n\nset.intersection  # Intersection\ns.intersection(t)" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Chaînes de caractères (str)" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            { "type": "text", "text": "str.split    # Découper une chaîne\n'a,b,c'.split(',')\n\nstr.join     # Joindre une liste en texte\n','.join(['a','b'])\n\nstr.strip    # Enlever espaces (début/fin)\n'  hi  '.strip()\n\nstr.replace  # Remplacer un morceau de texte\n'chat'.replace('c','r')\n\nstr.lower    # Minuscule\n'ABC'.lower()\n\nstr.upper    # Majuscule\n'abc'.upper()\n\nstr.startswith  # Commence par…\n'photo.jpg'.startswith('ph')\n\nstr.endswith    # Finit par…\n'photo.jpg'.endswith('.jpg')\n\nf-string     # Interpolation moderne\nname='Ana'\nprint(f'Bonjour {name}')" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Fichiers" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            { "type": "text", "text": "open         # Ouvrir un fichier\nf = open('data.txt', 'r', encoding='utf-8')\n\nwith open(...) as f  # Ouvrir/fermer automatiquement\nwith open('data.txt', 'r', encoding='utf-8') as f:\n    data = f.read()\n\nfile.read     # Lire tout le contenu\ntxt = f.read()\n\nfile.readline # Lire une ligne\nline = f.readline()\n\nfile.readlines  # Lire toutes les lignes\nlines = f.readlines()\n\nfile.write    # Écrire dans un fichier\nwith open('out.txt','w',encoding='utf-8') as f:\n    f.write('hello')" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Erreurs & exceptions" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            { "type": "text", "text": "try/except   # Attraper une erreur attendue\ntry:\n    x=int('a')\nexcept ValueError:\n    print('erreur')\n\nexcept Exception as e  # Capturer l'objet erreur\nexcept Exception as e:\n    print(e)\n\nraise        # Lever une exception\nraise ValueError('donnée invalide')\n\nfinally      # Toujours exécuté (nettoyage)\nfinally:\n    print('fin')\n\nassert       # Vérification (tests / debug)\nassert x > 0" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Debug & introspection" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            { "type": "text", "text": "dir          # Lister attributs/méthodes d'un objet\ndir(str)\n\nhelp         # Aide sur une fonction/classe\nhelp(sorted)\n\nvars         # Dictionnaire d'attributs d'un objet\nvars(obj)\n\ngetattr      # Lire un attribut dynamiquement\ngetattr(obj, 'name', None)\n\nsetattr      # Écrire un attribut dynamiquement\nsetattr(obj, 'name', 'Bob')\n\nhasattr      # Tester si attribut existe\nhasattr(obj, 'name')" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Modules & standard library (très utilisés)" }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": { "language": "python" },
+          "content": [
+            { "type": "text", "text": "import       # Importer un module\nimport math\n\nfrom ... import ...  # Importer un élément précis\nfrom math import sqrt\n\nas           # Alias de module\nimport numpy as np\n\npathlib.Path # Chemins de fichiers modernes\nfrom pathlib import Path\np = Path('data')/'f.txt'\n\nos.path.join # Assembler des chemins (ancien style)\nimport os\np = os.path.join('data','f.txt')\n\njson.dumps   # Convertir objet -> JSON texte\nimport json\ns = json.dumps({'a':1})\n\njson.loads   # Convertir JSON texte -> objet\nobj = json.loads('{\"a\":1}')\n\nre.search    # Chercher un motif regex\nimport re\nm = re.search(r'\\d+', 'id=42')\n\ndatetime.now # Date/heure actuelle\nfrom datetime import datetime\nnow = datetime.now()" }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [
+            { "type": "text", "text": "Résumé" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "Rôle :" },
+            { "type": "text", "text": " Transforme un répertoire en package Python" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "Peut être vide :" },
+            { "type": "text", "text": " Oui, sa présence suffit" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "Peut contenir :" },
+            { "type": "text", "text": " Code d'initialisation, imports, variables, configuration" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "Contrôle :" },
+            { "type": "text", "text": " Définit __all__ pour les imports *" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            { "type": "text", "marks": [{ "type": "bold" }], "text": "Initialisation :" },
+            { "type": "text", "text": " Code exécuté lors de l'import du package" }
+          ]
+        }
+      ]
+    }
+  }
+}

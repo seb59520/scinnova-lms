@@ -4,6 +4,15 @@
 
 ---
 
+## 📖 Concepts clés
+
+### Formation vs Programme
+
+- **Formation** : Contenu pédagogique autonome (cours, TP, exercices)
+- **Programme** : Parcours structuré regroupant plusieurs formations dans un ordre défini
+
+---
+
 
 ## 1. Démarrage et Installation
 

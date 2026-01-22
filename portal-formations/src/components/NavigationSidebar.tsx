@@ -1,18 +1,23 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { 
-  Home, 
-  BookOpen, 
-  Layers, 
-  Settings, 
-  User, 
+import {
+  Home,
+  BookOpen,
+  Layers,
+  Settings,
+  User,
   ClipboardCheck,
   GraduationCap,
   Building2,
   ChevronRight,
-  X
+  ChevronLeft,
+  X,
+  Book,
+  PanelLeftClose,
+  PanelLeft
 } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
 import { useUserRole } from '../hooks/useUserRole'
+import { useSidebar } from '../hooks/useSidebar'
 import { useState, useEffect } from 'react'
 
 interface NavigationItem {
@@ -29,6 +34,7 @@ export function NavigationSidebar() {
   const navigate = useNavigate()
   const { profile } = useAuth()
   const { isAdmin, isTrainer } = useUserRole()
+  const { isCollapsed, toggleCollapse } = useSidebar()
   const [isOpen, setIsOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
@@ -36,12 +42,12 @@ export function NavigationSidebar() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024)
       if (window.innerWidth >= 1024) {
-        setIsOpen(true) // Desktop: toujours ouvert
+        setIsOpen(true) // Desktop: ouvert par défaut (sauf si collapsed)
       } else {
         setIsOpen(false) // Mobile: fermé par défaut
       }
     }
-    
+
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
@@ -74,6 +80,11 @@ export function NavigationSidebar() {
       label: 'Projets à rendre',
       path: '/app#projects',
       icon: ClipboardCheck,
+    },
+    {
+      label: 'Glossaires',
+      path: '/glossaires',
+      icon: Book,
     },
     {
       label: 'Mon profil',
@@ -166,6 +177,26 @@ export function NavigationSidebar() {
         </button>
       )}
 
+      {/* Bouton pour collapse/expand sur desktop */}
+      {!isMobile && (
+        <button
+          onClick={toggleCollapse}
+          className={`
+            fixed top-20 z-50 p-2 rounded-lg bg-white border border-gray-200 shadow-md
+            hover:bg-gray-50 transition-all duration-300
+            ${isCollapsed ? 'left-4' : 'left-[252px]'}
+          `}
+          aria-label={isCollapsed ? 'Afficher le menu' : 'Masquer le menu'}
+          title={isCollapsed ? 'Afficher le menu' : 'Masquer le menu'}
+        >
+          {isCollapsed ? (
+            <PanelLeft className="w-5 h-5 text-gray-600" />
+          ) : (
+            <PanelLeftClose className="w-5 h-5 text-gray-600" />
+          )}
+        </button>
+      )}
+
       {/* Overlay pour mobile */}
       {isMobile && isOpen && (
         <div
@@ -179,9 +210,11 @@ export function NavigationSidebar() {
         className={`
           fixed top-16 left-0 h-[calc(100vh-4rem)] z-40
           bg-white border-r border-gray-200 shadow-lg
-          transition-transform duration-300 ease-in-out
-          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-          lg:translate-x-0
+          transition-all duration-300 ease-in-out
+          ${isMobile
+            ? (isOpen ? 'translate-x-0' : '-translate-x-full')
+            : (isCollapsed ? '-translate-x-full' : 'translate-x-0')
+          }
           w-64
         `}
       >
@@ -231,13 +264,25 @@ export function NavigationSidebar() {
                 <Home className="w-4 h-4 text-gray-400" />
                 <span>Page d'accueil</span>
               </Link>
+              <Link
+                to="/glossaires"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                <Book className="w-4 h-4 text-gray-400" />
+                <span>Tous les glossaires</span>
+              </Link>
             </div>
           </div>
         </div>
       </aside>
 
       {/* Espace pour le sidebar sur desktop */}
-      <div className="hidden lg:block w-64 flex-shrink-0" />
+      <div
+        className={`
+          hidden lg:block flex-shrink-0 transition-all duration-300
+          ${isCollapsed ? 'w-0' : 'w-64'}
+        `}
+      />
     </>
   )
 }

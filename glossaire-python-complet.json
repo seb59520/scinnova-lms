@@ -1,0 +1,1970 @@
+{
+  "metadata": {
+    "title": "Glossaire Python - Référence complète",
+    "description": "Glossaire exhaustif des concepts Python essentiels organisés par catégories, avec explications et exemples pratiques pour chaque terme.",
+    "category": "Python",
+    "version": "1.0.0",
+    "author": "Système",
+    "created_at": "2024-01-15T10:00:00Z",
+    "updated_at": "2024-01-15T10:00:00Z"
+  },
+  "categories": [
+    {
+      "id": "variables-types",
+      "name": "Variables & types (bases)",
+      "description": "Concepts liés aux variables et types de données de base en Python"
+    },
+    {
+      "id": "operateurs",
+      "name": "Opérateurs & comparaisons",
+      "description": "Opérateurs arithmétiques, logiques et de comparaison"
+    },
+    {
+      "id": "conditions",
+      "name": "Conditions",
+      "description": "Structures conditionnelles et contrôle de flux"
+    },
+    {
+      "id": "boucles",
+      "name": "Boucles",
+      "description": "Itérations et structures de boucles"
+    },
+    {
+      "id": "fonctions",
+      "name": "Fonctions (définir, retourner, outillage)",
+      "description": "Définition et utilisation des fonctions, fonctions utilitaires"
+    },
+    {
+      "id": "listes",
+      "name": "Listes (list)",
+      "description": "Manipulation des listes Python"
+    },
+    {
+      "id": "dictionnaires",
+      "name": "Dictionnaires (dict)",
+      "description": "Manipulation des dictionnaires Python"
+    },
+    {
+      "id": "ensembles",
+      "name": "Ensembles (set)",
+      "description": "Manipulation des ensembles Python"
+    },
+    {
+      "id": "chaines",
+      "name": "Chaînes de caractères (str)",
+      "description": "Manipulation des chaînes de caractères"
+    },
+    {
+      "id": "fichiers",
+      "name": "Fichiers",
+      "description": "Lecture et écriture de fichiers"
+    },
+    {
+      "id": "exceptions",
+      "name": "Erreurs & exceptions",
+      "description": "Gestion des erreurs et exceptions"
+    },
+    {
+      "id": "debug",
+      "name": "Debug & introspection",
+      "description": "Outils de débogage et introspection"
+    },
+    {
+      "id": "modules",
+      "name": "Modules & standard library (très utilisés)",
+      "description": "Importation de modules et bibliothèque standard"
+    },
+    {
+      "id": "tuples",
+      "name": "Tuples (tuple)",
+      "description": "Manipulation des tuples Python"
+    }
+  ],
+  "terms": [
+    {
+      "id": "none",
+      "word": "None",
+      "explanation": "Valeur spéciale : absence de valeur.",
+      "example": "x = None",
+      "category_id": "variables-types",
+      "tags": [
+        "type",
+        "valeur",
+        "absence"
+      ],
+      "related_terms": [],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "true",
+      "word": "True",
+      "explanation": "Booléen vrai.",
+      "example": "ok = True",
+      "category_id": "variables-types",
+      "tags": [
+        "booléen",
+        "type"
+      ],
+      "related_terms": [
+        "false"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "false",
+      "word": "False",
+      "explanation": "Booléen faux.",
+      "example": "ok = False",
+      "category_id": "variables-types",
+      "tags": [
+        "booléen",
+        "type"
+      ],
+      "related_terms": [
+        "true"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "int",
+      "word": "int",
+      "explanation": "Convertir en entier.",
+      "example": "age = int('42')",
+      "category_id": "variables-types",
+      "tags": [
+        "conversion",
+        "type",
+        "entier"
+      ],
+      "related_terms": [
+        "float",
+        "str"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "float",
+      "word": "float",
+      "explanation": "Convertir en nombre décimal.",
+      "example": "pi = float('3.14')",
+      "category_id": "variables-types",
+      "tags": [
+        "conversion",
+        "type",
+        "décimal"
+      ],
+      "related_terms": [
+        "int",
+        "str"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "str",
+      "word": "str",
+      "explanation": "Convertir en chaîne.",
+      "example": "txt = str(123)",
+      "category_id": "variables-types",
+      "tags": [
+        "conversion",
+        "type",
+        "chaîne"
+      ],
+      "related_terms": [
+        "int",
+        "float"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "bool",
+      "word": "bool",
+      "explanation": "Convertir en booléen.",
+      "example": "b = bool(0)  # False",
+      "category_id": "variables-types",
+      "tags": [
+        "conversion",
+        "type",
+        "booléen"
+      ],
+      "related_terms": [
+        "true",
+        "false"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "type",
+      "word": "type",
+      "explanation": "Donner le type d'une valeur.",
+      "example": "print(type(3.14))",
+      "category_id": "variables-types",
+      "tags": [
+        "introspection",
+        "type"
+      ],
+      "related_terms": [
+        "isinstance"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "isinstance",
+      "word": "isinstance",
+      "explanation": "Tester si une valeur est d'un type.",
+      "example": "isinstance('a', str)",
+      "category_id": "variables-types",
+      "tags": [
+        "introspection",
+        "type",
+        "vérification"
+      ],
+      "related_terms": [
+        "type"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "len",
+      "word": "len",
+      "explanation": "Longueur d'une collection/chaîne.",
+      "example": "len([1,2,3])",
+      "category_id": "variables-types",
+      "tags": [
+        "fonction",
+        "longueur",
+        "collection"
+      ],
+      "related_terms": [],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "input",
+      "word": "input",
+      "explanation": "Lire une saisie utilisateur (texte).",
+      "example": "name = input('Nom: ')",
+      "category_id": "variables-types",
+      "tags": [
+        "fonction",
+        "saisie",
+        "utilisateur"
+      ],
+      "related_terms": [
+        "print"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "print",
+      "word": "print",
+      "explanation": "Afficher du texte/variables.",
+      "example": "print('Bonjour', name)",
+      "category_id": "variables-types",
+      "tags": [
+        "fonction",
+        "affichage",
+        "sortie"
+      ],
+      "related_terms": [
+        "input"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "egalite",
+      "word": "==",
+      "explanation": "Égalité (valeur).",
+      "example": "a == b",
+      "category_id": "operateurs",
+      "tags": [
+        "opérateur",
+        "comparaison",
+        "égalité"
+      ],
+      "related_terms": [
+        "!=",
+        "is"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "different",
+      "word": "!=",
+      "explanation": "Différent.",
+      "example": "a != b",
+      "category_id": "operateurs",
+      "tags": [
+        "opérateur",
+        "comparaison",
+        "différent"
+      ],
+      "related_terms": [
+        "=="
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "comparaisons",
+      "word": "< > <= >=",
+      "explanation": "Comparaisons numériques/lexicographiques.",
+      "example": "x >= 10",
+      "category_id": "operateurs",
+      "tags": [
+        "opérateur",
+        "comparaison",
+        "ordre"
+      ],
+      "related_terms": [],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "and",
+      "word": "and",
+      "explanation": "ET logique.",
+      "example": "x > 0 and x < 10",
+      "category_id": "operateurs",
+      "tags": [
+        "opérateur",
+        "logique",
+        "ET"
+      ],
+      "related_terms": [
+        "or",
+        "not"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "or",
+      "word": "or",
+      "explanation": "OU logique.",
+      "example": "x == 0 or x == 1",
+      "category_id": "operateurs",
+      "tags": [
+        "opérateur",
+        "logique",
+        "OU"
+      ],
+      "related_terms": [
+        "and",
+        "not"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "not",
+      "word": "not",
+      "explanation": "NON logique.",
+      "example": "not is_valid",
+      "category_id": "operateurs",
+      "tags": [
+        "opérateur",
+        "logique",
+        "NON"
+      ],
+      "related_terms": [
+        "and",
+        "or"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "in",
+      "word": "in",
+      "explanation": "Appartenance à une collection.",
+      "example": "'a' in 'chat'",
+      "category_id": "operateurs",
+      "tags": [
+        "opérateur",
+        "appartenance",
+        "collection"
+      ],
+      "related_terms": [],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "is",
+      "word": "is",
+      "explanation": "Identité (souvent pour None).",
+      "example": "x is None",
+      "category_id": "operateurs",
+      "tags": [
+        "opérateur",
+        "identité",
+        "comparaison"
+      ],
+      "related_terms": [
+        "==",
+        "none"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "if",
+      "word": "if",
+      "explanation": "Tester une condition.",
+      "example": "if x > 0:\n    print('positif')",
+      "category_id": "conditions",
+      "tags": [
+        "condition",
+        "contrôle",
+        "flux"
+      ],
+      "related_terms": [
+        "elif",
+        "else"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "elif",
+      "word": "elif",
+      "explanation": "Sinon si…",
+      "example": "elif x == 0:\n    print('zéro')",
+      "category_id": "conditions",
+      "tags": [
+        "condition",
+        "contrôle",
+        "flux"
+      ],
+      "related_terms": [
+        "if",
+        "else"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "else",
+      "word": "else",
+      "explanation": "Sinon…",
+      "example": "else:\n    print('négatif')",
+      "category_id": "conditions",
+      "tags": [
+        "condition",
+        "contrôle",
+        "flux"
+      ],
+      "related_terms": [
+        "if",
+        "elif"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "match-case",
+      "word": "match/case",
+      "explanation": "Pattern matching (>=3.10).",
+      "example": "match x:\n    case 0:\n        print('zéro')\n    case _:\n        print('autre')",
+      "category_id": "conditions",
+      "tags": [
+        "condition",
+        "pattern",
+        "matching",
+        "python3.10"
+      ],
+      "related_terms": [
+        "if"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "for",
+      "word": "for",
+      "explanation": "Parcourir une collection.",
+      "example": "for item in items:\n    print(item)",
+      "category_id": "boucles",
+      "tags": [
+        "boucle",
+        "itération",
+        "collection"
+      ],
+      "related_terms": [
+        "while",
+        "range",
+        "enumerate"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "while",
+      "word": "while",
+      "explanation": "Boucler tant qu'une condition est vraie.",
+      "example": "while n > 0:\n    n -= 1",
+      "category_id": "boucles",
+      "tags": [
+        "boucle",
+        "itération",
+        "condition"
+      ],
+      "related_terms": [
+        "for",
+        "break"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "range",
+      "word": "range",
+      "explanation": "Générer une suite de nombres.",
+      "example": "for i in range(5):\n    print(i)",
+      "category_id": "boucles",
+      "tags": [
+        "boucle",
+        "génération",
+        "nombres"
+      ],
+      "related_terms": [
+        "for",
+        "enumerate"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "break",
+      "word": "break",
+      "explanation": "Sortir d'une boucle.",
+      "example": "for x in xs:\n    if x == 0:\n        break",
+      "category_id": "boucles",
+      "tags": [
+        "boucle",
+        "contrôle",
+        "sortie"
+      ],
+      "related_terms": [
+        "continue",
+        "for",
+        "while"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "continue",
+      "word": "continue",
+      "explanation": "Passer au tour suivant.",
+      "example": "for x in xs:\n    if x < 0:\n        continue\n    print(x)",
+      "category_id": "boucles",
+      "tags": [
+        "boucle",
+        "contrôle",
+        "itération"
+      ],
+      "related_terms": [
+        "break",
+        "for",
+        "while"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "enumerate",
+      "word": "enumerate",
+      "explanation": "Boucler avec index + valeur.",
+      "example": "for i, v in enumerate(items):\n    print(i, v)",
+      "category_id": "boucles",
+      "tags": [
+        "boucle",
+        "index",
+        "itération"
+      ],
+      "related_terms": [
+        "for",
+        "zip"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "zip",
+      "word": "zip",
+      "explanation": "Boucler sur plusieurs listes en parallèle.",
+      "example": "for a, b in zip(xs, ys):\n    print(a, b)",
+      "category_id": "boucles",
+      "tags": [
+        "boucle",
+        "parallèle",
+        "itération"
+      ],
+      "related_terms": [
+        "for",
+        "enumerate"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "def",
+      "word": "def",
+      "explanation": "Définir une fonction.",
+      "example": "def add(a, b):\n    return a + b",
+      "category_id": "fonctions",
+      "tags": [
+        "fonction",
+        "définition"
+      ],
+      "related_terms": [
+        "return",
+        "lambda"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "return",
+      "word": "return",
+      "explanation": "Renvoyer un résultat.",
+      "example": "return total",
+      "category_id": "fonctions",
+      "tags": [
+        "fonction",
+        "retour",
+        "valeur"
+      ],
+      "related_terms": [
+        "def"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "lambda",
+      "word": "lambda",
+      "explanation": "Petite fonction anonyme.",
+      "example": "key_fn = lambda s: s.lower()",
+      "category_id": "fonctions",
+      "tags": [
+        "fonction",
+        "anonyme",
+        "fonctionnel"
+      ],
+      "related_terms": [
+        "def",
+        "map",
+        "filter"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "map",
+      "word": "map",
+      "explanation": "Appliquer une fonction à chaque élément.",
+      "example": "list(map(str, [1,2,3]))",
+      "category_id": "fonctions",
+      "tags": [
+        "fonction",
+        "itérable",
+        "transformation"
+      ],
+      "related_terms": [
+        "filter",
+        "lambda"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "filter",
+      "word": "filter",
+      "explanation": "Filtrer une liste avec une condition.",
+      "example": "list(filter(lambda x: x>0, nums))",
+      "category_id": "fonctions",
+      "tags": [
+        "fonction",
+        "itérable",
+        "filtrage"
+      ],
+      "related_terms": [
+        "map",
+        "lambda"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "sorted",
+      "word": "sorted",
+      "explanation": "Trier (nouvelle liste).",
+      "example": "sorted(names, key=str.lower)",
+      "category_id": "fonctions",
+      "tags": [
+        "fonction",
+        "tri",
+        "liste"
+      ],
+      "related_terms": [
+        "list.sort"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "sum",
+      "word": "sum",
+      "explanation": "Somme d'une liste de nombres.",
+      "example": "sum([1,2,3])",
+      "category_id": "fonctions",
+      "tags": [
+        "fonction",
+        "mathématique",
+        "somme"
+      ],
+      "related_terms": [
+        "min",
+        "max"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "min",
+      "word": "min",
+      "explanation": "Minimum.",
+      "example": "min(nums)",
+      "category_id": "fonctions",
+      "tags": [
+        "fonction",
+        "mathématique",
+        "minimum"
+      ],
+      "related_terms": [
+        "max",
+        "sum"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "max",
+      "word": "max",
+      "explanation": "Maximum.",
+      "example": "max(nums)",
+      "category_id": "fonctions",
+      "tags": [
+        "fonction",
+        "mathématique",
+        "maximum"
+      ],
+      "related_terms": [
+        "min",
+        "sum"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "abs",
+      "word": "abs",
+      "explanation": "Valeur absolue.",
+      "example": "abs(-10)",
+      "category_id": "fonctions",
+      "tags": [
+        "fonction",
+        "mathématique",
+        "valeur-absolue"
+      ],
+      "related_terms": [],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "round",
+      "word": "round",
+      "explanation": "Arrondir.",
+      "example": "round(3.14159, 2)",
+      "category_id": "fonctions",
+      "tags": [
+        "fonction",
+        "mathématique",
+        "arrondi"
+      ],
+      "related_terms": [],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "any",
+      "word": "any",
+      "explanation": "Vrai si au moins une condition est vraie.",
+      "example": "any(x>0 for x in nums)",
+      "category_id": "fonctions",
+      "tags": [
+        "fonction",
+        "logique",
+        "générateur"
+      ],
+      "related_terms": [
+        "all"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "all",
+      "word": "all",
+      "explanation": "Vrai si toutes les conditions sont vraies.",
+      "example": "all(x>0 for x in nums)",
+      "category_id": "fonctions",
+      "tags": [
+        "fonction",
+        "logique",
+        "générateur"
+      ],
+      "related_terms": [
+        "any"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "list",
+      "word": "list",
+      "explanation": "Créer/convertir en liste.",
+      "example": "lst = list('abc')",
+      "category_id": "listes",
+      "tags": [
+        "liste",
+        "création",
+        "conversion"
+      ],
+      "related_terms": [
+        "list.append",
+        "list.extend"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "list-append",
+      "word": "list.append",
+      "explanation": "Ajouter un élément à la fin.",
+      "example": "lst.append(4)",
+      "category_id": "listes",
+      "tags": [
+        "liste",
+        "méthode",
+        "ajout"
+      ],
+      "related_terms": [
+        "list.extend",
+        "list.insert"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "list-extend",
+      "word": "list.extend",
+      "explanation": "Ajouter plusieurs éléments.",
+      "example": "lst.extend([5, 6])",
+      "category_id": "listes",
+      "tags": [
+        "liste",
+        "méthode",
+        "ajout",
+        "itérable"
+      ],
+      "related_terms": [
+        "list.append"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "list-insert",
+      "word": "list.insert",
+      "explanation": "Insérer à un index.",
+      "example": "lst.insert(0, 'x')",
+      "category_id": "listes",
+      "tags": [
+        "liste",
+        "méthode",
+        "insertion"
+      ],
+      "related_terms": [
+        "list.append"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "list-pop",
+      "word": "list.pop",
+      "explanation": "Retirer et renvoyer un élément.",
+      "example": "last = lst.pop()",
+      "category_id": "listes",
+      "tags": [
+        "liste",
+        "méthode",
+        "retrait"
+      ],
+      "related_terms": [
+        "list.remove"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "list-remove",
+      "word": "list.remove",
+      "explanation": "Retirer une valeur (1ère occurrence).",
+      "example": "lst.remove('a')",
+      "category_id": "listes",
+      "tags": [
+        "liste",
+        "méthode",
+        "retrait"
+      ],
+      "related_terms": [
+        "list.pop"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "list-sort",
+      "word": "list.sort",
+      "explanation": "Trier sur place.",
+      "example": "lst.sort()",
+      "category_id": "listes",
+      "tags": [
+        "liste",
+        "méthode",
+        "tri"
+      ],
+      "related_terms": [
+        "sorted"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "dict",
+      "word": "dict",
+      "explanation": "Créer/convertir en dict.",
+      "example": "d = dict(a=1, b=2)",
+      "category_id": "dictionnaires",
+      "tags": [
+        "dictionnaire",
+        "création",
+        "conversion"
+      ],
+      "related_terms": [
+        "dict.get",
+        "dict.items"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "dict-get",
+      "word": "dict.get",
+      "explanation": "Lire une clé avec valeur par défaut.",
+      "example": "d.get('c', 0)",
+      "category_id": "dictionnaires",
+      "tags": [
+        "dictionnaire",
+        "méthode",
+        "accès",
+        "sécurité"
+      ],
+      "related_terms": [
+        "dict.items",
+        "dict.keys"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "dict-items",
+      "word": "dict.items",
+      "explanation": "Boucler sur (clé, valeur).",
+      "example": "for k, v in d.items():\n    ...",
+      "category_id": "dictionnaires",
+      "tags": [
+        "dictionnaire",
+        "méthode",
+        "itération"
+      ],
+      "related_terms": [
+        "dict.keys",
+        "dict.values"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "dict-keys",
+      "word": "dict.keys",
+      "explanation": "Liste des clés.",
+      "example": "list(d.keys())",
+      "category_id": "dictionnaires",
+      "tags": [
+        "dictionnaire",
+        "méthode",
+        "clés"
+      ],
+      "related_terms": [
+        "dict.values",
+        "dict.items"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "dict-values",
+      "word": "dict.values",
+      "explanation": "Liste des valeurs.",
+      "example": "list(d.values())",
+      "category_id": "dictionnaires",
+      "tags": [
+        "dictionnaire",
+        "méthode",
+        "valeurs"
+      ],
+      "related_terms": [
+        "dict.keys",
+        "dict.items"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "dict-update",
+      "word": "dict.update",
+      "explanation": "Fusionner/ajouter des clés.",
+      "example": "d.update({'c': 3})",
+      "category_id": "dictionnaires",
+      "tags": [
+        "dictionnaire",
+        "méthode",
+        "fusion"
+      ],
+      "related_terms": [],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "dict-pop",
+      "word": "dict.pop",
+      "explanation": "Retirer une clé et récupérer sa valeur.",
+      "example": "d.pop('a', None)",
+      "category_id": "dictionnaires",
+      "tags": [
+        "dictionnaire",
+        "méthode",
+        "retrait"
+      ],
+      "related_terms": [],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "set",
+      "word": "set",
+      "explanation": "Créer un ensemble (unique).",
+      "example": "s = set([1,1,2])  # {1,2}",
+      "category_id": "ensembles",
+      "tags": [
+        "ensemble",
+        "création",
+        "unique"
+      ],
+      "related_terms": [
+        "set.add",
+        "set.union"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "set-add",
+      "word": "set.add",
+      "explanation": "Ajouter un élément.",
+      "example": "s.add(3)",
+      "category_id": "ensembles",
+      "tags": [
+        "ensemble",
+        "méthode",
+        "ajout"
+      ],
+      "related_terms": [
+        "set.discard"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "set-discard",
+      "word": "set.discard",
+      "explanation": "Supprimer sans erreur si absent.",
+      "example": "s.discard(99)",
+      "category_id": "ensembles",
+      "tags": [
+        "ensemble",
+        "méthode",
+        "suppression"
+      ],
+      "related_terms": [
+        "set.add"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "set-union",
+      "word": "set.union",
+      "explanation": "Union de 2 ensembles.",
+      "example": "s.union(t)",
+      "category_id": "ensembles",
+      "tags": [
+        "ensemble",
+        "méthode",
+        "opération",
+        "union"
+      ],
+      "related_terms": [
+        "set.intersection"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "set-intersection",
+      "word": "set.intersection",
+      "explanation": "Intersection.",
+      "example": "s.intersection(t)",
+      "category_id": "ensembles",
+      "tags": [
+        "ensemble",
+        "méthode",
+        "opération",
+        "intersection"
+      ],
+      "related_terms": [
+        "set.union"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "str-split",
+      "word": "str.split",
+      "explanation": "Découper une chaîne.",
+      "example": "'a,b,c'.split(',')",
+      "category_id": "chaines",
+      "tags": [
+        "chaîne",
+        "méthode",
+        "découpage"
+      ],
+      "related_terms": [
+        "str.join"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "str-join",
+      "word": "str.join",
+      "explanation": "Joindre une liste en texte.",
+      "example": "','.join(['a','b'])",
+      "category_id": "chaines",
+      "tags": [
+        "chaîne",
+        "méthode",
+        "jointure"
+      ],
+      "related_terms": [
+        "str.split"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "str-strip",
+      "word": "str.strip",
+      "explanation": "Enlever espaces (début/fin).",
+      "example": "'  hi  '.strip()",
+      "category_id": "chaines",
+      "tags": [
+        "chaîne",
+        "méthode",
+        "nettoyage"
+      ],
+      "related_terms": [],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "str-replace",
+      "word": "str.replace",
+      "explanation": "Remplacer un morceau de texte.",
+      "example": "'chat'.replace('c','r')",
+      "category_id": "chaines",
+      "tags": [
+        "chaîne",
+        "méthode",
+        "remplacement"
+      ],
+      "related_terms": [],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "str-lower",
+      "word": "str.lower",
+      "explanation": "Minuscule.",
+      "example": "'ABC'.lower()",
+      "category_id": "chaines",
+      "tags": [
+        "chaîne",
+        "méthode",
+        "transformation"
+      ],
+      "related_terms": [
+        "str.upper"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "str-upper",
+      "word": "str.upper",
+      "explanation": "Majuscule.",
+      "example": "'abc'.upper()",
+      "category_id": "chaines",
+      "tags": [
+        "chaîne",
+        "méthode",
+        "transformation"
+      ],
+      "related_terms": [
+        "str.lower"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "str-startswith",
+      "word": "str.startswith",
+      "explanation": "Commence par…",
+      "example": "'photo.jpg'.startswith('ph')",
+      "category_id": "chaines",
+      "tags": [
+        "chaîne",
+        "méthode",
+        "vérification"
+      ],
+      "related_terms": [
+        "str.endswith"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "str-endswith",
+      "word": "str.endswith",
+      "explanation": "Finit par…",
+      "example": "'photo.jpg'.endswith('.jpg')",
+      "category_id": "chaines",
+      "tags": [
+        "chaîne",
+        "méthode",
+        "vérification"
+      ],
+      "related_terms": [
+        "str.startswith"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "f-string",
+      "word": "f-string",
+      "explanation": "Interpolation moderne.",
+      "example": "name='Ana'\nprint(f'Bonjour {name}')",
+      "category_id": "chaines",
+      "tags": [
+        "chaîne",
+        "formatage",
+        "interpolation"
+      ],
+      "related_terms": [],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "open",
+      "word": "open",
+      "explanation": "Ouvrir un fichier.",
+      "example": "f = open('data.txt', 'r', encoding='utf-8')",
+      "category_id": "fichiers",
+      "tags": [
+        "fichier",
+        "ouverture"
+      ],
+      "related_terms": [
+        "with open(...) as f"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "with-open",
+      "word": "with open(...) as f",
+      "explanation": "Ouvrir/fermer automatiquement.",
+      "example": "with open('data.txt', 'r', encoding='utf-8') as f:\n    data = f.read()",
+      "category_id": "fichiers",
+      "tags": [
+        "fichier",
+        "contexte",
+        "gestionnaire"
+      ],
+      "related_terms": [
+        "open",
+        "file.read"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "file-read",
+      "word": "file.read",
+      "explanation": "Lire tout le contenu.",
+      "example": "txt = f.read()",
+      "category_id": "fichiers",
+      "tags": [
+        "fichier",
+        "lecture"
+      ],
+      "related_terms": [
+        "file.readline",
+        "file.readlines"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "file-readline",
+      "word": "file.readline",
+      "explanation": "Lire une ligne.",
+      "example": "line = f.readline()",
+      "category_id": "fichiers",
+      "tags": [
+        "fichier",
+        "lecture",
+        "ligne"
+      ],
+      "related_terms": [
+        "file.read",
+        "file.readlines"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "file-readlines",
+      "word": "file.readlines",
+      "explanation": "Lire toutes les lignes.",
+      "example": "lines = f.readlines()",
+      "category_id": "fichiers",
+      "tags": [
+        "fichier",
+        "lecture",
+        "lignes"
+      ],
+      "related_terms": [
+        "file.read",
+        "file.readline"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "file-write",
+      "word": "file.write",
+      "explanation": "Écrire dans un fichier.",
+      "example": "with open('out.txt','w',encoding='utf-8') as f:\n    f.write('hello')",
+      "category_id": "fichiers",
+      "tags": [
+        "fichier",
+        "écriture"
+      ],
+      "related_terms": [
+        "open",
+        "with open(...) as f"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "try-except",
+      "word": "try/except",
+      "explanation": "Attraper une erreur attendue.",
+      "example": "try:\n    x=int('a')\nexcept ValueError:\n    print('erreur')",
+      "category_id": "exceptions",
+      "tags": [
+        "exception",
+        "gestion",
+        "erreur"
+      ],
+      "related_terms": [
+        "raise",
+        "finally"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "except-as",
+      "word": "except Exception as e",
+      "explanation": "Capturer l'objet erreur.",
+      "example": "except Exception as e:\n    print(e)",
+      "category_id": "exceptions",
+      "tags": [
+        "exception",
+        "gestion",
+        "erreur"
+      ],
+      "related_terms": [
+        "try/except"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "raise",
+      "word": "raise",
+      "explanation": "Lever une exception.",
+      "example": "raise ValueError('donnée invalide')",
+      "category_id": "exceptions",
+      "tags": [
+        "exception",
+        "levée",
+        "erreur"
+      ],
+      "related_terms": [
+        "try/except"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "finally",
+      "word": "finally",
+      "explanation": "Toujours exécuté (nettoyage).",
+      "example": "finally:\n    print('fin')",
+      "category_id": "exceptions",
+      "tags": [
+        "exception",
+        "nettoyage",
+        "finalisation"
+      ],
+      "related_terms": [
+        "try/except"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "assert",
+      "word": "assert",
+      "explanation": "Vérification (tests / debug).",
+      "example": "assert x > 0",
+      "category_id": "exceptions",
+      "tags": [
+        "assertion",
+        "test",
+        "debug"
+      ],
+      "related_terms": [],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "dir",
+      "word": "dir",
+      "explanation": "Lister attributs/méthodes d'un objet.",
+      "example": "dir(str)",
+      "category_id": "debug",
+      "tags": [
+        "introspection",
+        "debug",
+        "attributs"
+      ],
+      "related_terms": [
+        "help",
+        "vars"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "help",
+      "word": "help",
+      "explanation": "Aide sur une fonction/classe.",
+      "example": "help(sorted)",
+      "category_id": "debug",
+      "tags": [
+        "aide",
+        "documentation",
+        "introspection"
+      ],
+      "related_terms": [
+        "dir"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "vars",
+      "word": "vars",
+      "explanation": "Dictionnaire d'attributs d'un objet.",
+      "example": "vars(obj)",
+      "category_id": "debug",
+      "tags": [
+        "introspection",
+        "attributs"
+      ],
+      "related_terms": [
+        "dir",
+        "getattr"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "getattr",
+      "word": "getattr",
+      "explanation": "Lire un attribut dynamiquement.",
+      "example": "getattr(obj, 'name', None)",
+      "category_id": "debug",
+      "tags": [
+        "introspection",
+        "attribut",
+        "dynamique"
+      ],
+      "related_terms": [
+        "setattr",
+        "hasattr"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "setattr",
+      "word": "setattr",
+      "explanation": "Écrire un attribut dynamiquement.",
+      "example": "setattr(obj, 'name', 'Bob')",
+      "category_id": "debug",
+      "tags": [
+        "introspection",
+        "attribut",
+        "dynamique"
+      ],
+      "related_terms": [
+        "getattr",
+        "hasattr"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "hasattr",
+      "word": "hasattr",
+      "explanation": "Tester si attribut existe.",
+      "example": "hasattr(obj, 'name')",
+      "category_id": "debug",
+      "tags": [
+        "introspection",
+        "attribut",
+        "vérification"
+      ],
+      "related_terms": [
+        "getattr",
+        "setattr"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "import",
+      "word": "import",
+      "explanation": "Importer un module.",
+      "example": "import math",
+      "category_id": "modules",
+      "tags": [
+        "module",
+        "importation"
+      ],
+      "related_terms": [
+        "from ... import ..."
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "from-import",
+      "word": "from ... import ...",
+      "explanation": "Importer un élément précis.",
+      "example": "from math import sqrt",
+      "category_id": "modules",
+      "tags": [
+        "module",
+        "importation",
+        "sélectif"
+      ],
+      "related_terms": [
+        "import",
+        "as"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "as",
+      "word": "as",
+      "explanation": "Alias de module.",
+      "example": "import numpy as np",
+      "category_id": "modules",
+      "tags": [
+        "module",
+        "importation",
+        "alias"
+      ],
+      "related_terms": [
+        "import",
+        "from ... import ..."
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "pathlib-path",
+      "word": "pathlib.Path",
+      "explanation": "Chemins de fichiers modernes.",
+      "example": "from pathlib import Path\np = Path('data')/'f.txt'",
+      "category_id": "modules",
+      "tags": [
+        "module",
+        "fichier",
+        "chemin",
+        "pathlib"
+      ],
+      "related_terms": [
+        "os.path.join"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "os-path-join",
+      "word": "os.path.join",
+      "explanation": "Assembler des chemins (ancien style).",
+      "example": "import os\np = os.path.join('data','f.txt')",
+      "category_id": "modules",
+      "tags": [
+        "module",
+        "fichier",
+        "chemin",
+        "os"
+      ],
+      "related_terms": [
+        "pathlib.Path"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "json-dumps",
+      "word": "json.dumps",
+      "explanation": "Convertir objet -> JSON texte.",
+      "example": "import json\ns = json.dumps({'a':1})",
+      "category_id": "modules",
+      "tags": [
+        "module",
+        "json",
+        "sérialisation"
+      ],
+      "related_terms": [
+        "json.loads"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "json-loads",
+      "word": "json.loads",
+      "explanation": "Convertir JSON texte -> objet.",
+      "example": "obj = json.loads('{\"a\":1}')",
+      "category_id": "modules",
+      "tags": [
+        "module",
+        "json",
+        "désérialisation"
+      ],
+      "related_terms": [
+        "json.dumps"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "re-search",
+      "word": "re.search",
+      "explanation": "Chercher un motif regex.",
+      "example": "import re\nm = re.search(r'\\d+', 'id=42')",
+      "category_id": "modules",
+      "tags": [
+        "module",
+        "regex",
+        "recherche"
+      ],
+      "related_terms": [],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "datetime-now",
+      "word": "datetime.now",
+      "explanation": "Date/heure actuelle.",
+      "example": "from datetime import datetime\nnow = datetime.now()",
+      "category_id": "modules",
+      "tags": [
+        "module",
+        "date",
+        "heure",
+        "datetime"
+      ],
+      "related_terms": [],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "tuple",
+      "word": "tuple",
+      "explanation": "Créer/convertir en tuple. Structure immuable et ordonnée.",
+      "example": "t = tuple([1, 2, 3])  # (1, 2, 3)",
+      "category_id": "tuples",
+      "tags": [
+        "tuple",
+        "création",
+        "immuable",
+        "ordonné"
+      ],
+      "related_terms": [
+        "list",
+        "set"
+      ],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "list-doublons-oublies",
+      "word": "Liste - Doublons oubliés",
+      "explanation": "Erreur fréquente : les listes acceptent les doublons, ce qui peut causer des problèmes de logique en cybersécurité (comptage incorrect, tests mal placés).",
+      "example": "ips = ['192.168.1.1', '192.168.1.1']  # Doublon non détecté",
+      "category_id": "listes",
+      "tags": [
+        "liste",
+        "erreur",
+        "doublons",
+        "cybersécurité",
+        "fragile"
+      ],
+      "related_terms": [
+        "set",
+        "list"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "set-doublons-elimines",
+      "word": "Set - Doublons éliminés",
+      "explanation": "Les sets éliminent automatiquement les doublons, rendant la logique plus fiable en cybersécurité (comptage correct, tests fiables).",
+      "example": "ips = set(['192.168.1.1', '192.168.1.1'])  # {192.168.1.1} - doublon éliminé",
+      "category_id": "ensembles",
+      "tags": [
+        "set",
+        "doublons",
+        "cybersécurité",
+        "fiable"
+      ],
+      "related_terms": [
+        "list",
+        "set.add"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "list-test-mal-place",
+      "word": "Liste - Test mal placé",
+      "explanation": "Erreur fréquente : tester l'appartenance avec 'in' sur une liste est lent (O(n)) et peut causer des problèmes de performance en cybersécurité.",
+      "example": "if '192.168.1.1' in liste_ips:  # O(n) - lent pour grandes listes",
+      "category_id": "listes",
+      "tags": [
+        "liste",
+        "erreur",
+        "performance",
+        "test",
+        "cybersécurité"
+      ],
+      "related_terms": [
+        "set",
+        "in"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "set-test-rapide",
+      "word": "Set - Test rapide",
+      "explanation": "Tester l'appartenance avec 'in' sur un set est très rapide (O(1)), idéal pour les tests fréquents en cybersécurité.",
+      "example": "if '192.168.1.1' in set_ips:  # O(1) - très rapide",
+      "category_id": "ensembles",
+      "tags": [
+        "set",
+        "performance",
+        "test",
+        "cybersécurité",
+        "excellente"
+      ],
+      "related_terms": [
+        "list",
+        "in"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "list-mauvais-comptage",
+      "word": "Liste - Mauvais comptage",
+      "explanation": "Erreur fréquente : compter les éléments uniques dans une liste nécessite len(set(liste)), sinon les doublons sont comptés plusieurs fois.",
+      "example": "len(['a', 'a', 'b'])  # 3 (incorrect si on veut les uniques)",
+      "category_id": "listes",
+      "tags": [
+        "liste",
+        "erreur",
+        "comptage",
+        "doublons"
+      ],
+      "related_terms": [
+        "set",
+        "len"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "set-comptage-correct",
+      "word": "Set - Comptage correct",
+      "explanation": "Les sets garantissent un comptage correct des éléments uniques, essentiel pour la logique cybersécurité.",
+      "example": "len(set(['a', 'a', 'b']))  # 2 (correct - éléments uniques)",
+      "category_id": "ensembles",
+      "tags": [
+        "set",
+        "comptage",
+        "unique",
+        "cybersécurité"
+      ],
+      "related_terms": [
+        "list",
+        "len"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "tuple-immuable",
+      "word": "Tuple - Immuable",
+      "explanation": "Les tuples sont immuables (non modifiables), ce qui les rend plus sûrs pour stocker des données critiques en cybersécurité (horodatages, signatures).",
+      "example": "timestamp = ('2026-01-10', '08:12:01')  # Ne peut pas être modifié",
+      "category_id": "tuples",
+      "tags": [
+        "tuple",
+        "immuable",
+        "sécurité",
+        "cybersécurité",
+        "fiable"
+      ],
+      "related_terms": [
+        "list",
+        "set"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "list-mutable-fragile",
+      "word": "Liste - Mutable (fragile)",
+      "explanation": "Les listes sont mutables, ce qui peut rendre la logique fragile en cybersécurité si elles sont modifiées accidentellement.",
+      "example": "config = ['admin', 'password']  # Peut être modifié accidentellement",
+      "category_id": "listes",
+      "tags": [
+        "liste",
+        "mutable",
+        "cybersécurité",
+        "fragile"
+      ],
+      "related_terms": [
+        "tuple",
+        "set"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "comparatif-set-list-tuple",
+      "word": "Comparatif SET, LIST, TUPLE",
+      "explanation": "Comparatif complet des trois structures de données Python :\n\nLIST : Ordonnée, mutable, doublons possibles, test d'appartenance O(n) - Performance mauvaise pour les tests fréquents, logique fragile en cybersécurité (doublons oubliés, mauvais comptage, tests mal placés).\n\nSET : Non ordonné, mutable, pas de doublons, test d'appartenance O(1) - Performance excellente pour les tests fréquents, logique fiable en cybersécurité (doublons éliminés, comptage correct, tests rapides).\n\nTUPLE : Ordonné, immuable, doublons possibles, test d'appartenance O(n) - Performance mauvaise pour les tests, mais logique fiable en cybersécurité grâce à l'immuabilité (données protégées contre modifications accidentelles).",
+      "example": "# LIST - Fragile, doublons possibles\nips_list = ['192.168.1.1', '192.168.1.1']  # Doublon\nif '192.168.1.1' in ips_list:  # O(n) - lent\n    pass\n\n# SET - Fiable, pas de doublons, test rapide\nips_set = {'192.168.1.1', '192.168.1.2'}  # Unique\nif '192.168.1.1' in ips_set:  # O(1) - rapide\n    pass\n\n# TUPLE - Fiable, immuable\ntimestamp = ('2026-01-10', '08:12:01')  # Ne peut pas être modifié",
+      "category_id": "ensembles",
+      "tags": [
+        "comparatif",
+        "set",
+        "list",
+        "tuple",
+        "cybersécurité",
+        "performance"
+      ],
+      "related_terms": [
+        "set",
+        "list",
+        "tuple"
+      ],
+      "language": "python",
+      "difficulty": "intermediate"
+    }
+  ]
+}

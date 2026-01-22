@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './hooks/useAuth'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { NetworkStatus } from './components/NetworkStatus'
@@ -11,6 +11,8 @@ import { ResetPassword } from './pages/ResetPassword'
 import { Dashboard } from './pages/Dashboard'
 import { CourseView } from './pages/CourseView'
 import { ProgramView } from './pages/ProgramView'
+import { ProgramGlossaryView } from './pages/ProgramGlossaryView'
+import { GlossairesView } from './pages/GlossairesView'
 import { ItemView } from './pages/ItemView'
 import { Help } from './pages/Help'
 import { AdminCourses } from './pages/admin/AdminCourses'
@@ -61,9 +63,15 @@ import { ProjectEvaluation } from './pages/trainer/ProjectEvaluation'
 import { SessionProjectReport } from './pages/trainer/SessionProjectReport'
 import { ProjectTemplatesManager } from './pages/trainer/ProjectTemplatesManager'
 import { AllProjectsOverview } from './pages/trainer/AllProjectsOverview'
+import { TrainerDashboardByOrg } from './pages/trainer/TrainerDashboardByOrg'
+import { TrainerDashboardByProgram } from './pages/trainer/TrainerDashboardByProgram'
+import { ProgramEvaluationManager } from './pages/trainer/ProgramEvaluationManager'
+import { EvaluationResults } from './pages/trainer/EvaluationResults'
+import { ProgramTpManager } from './pages/trainer/ProgramTpManager'
 import { LearnerGradebook } from './pages/LearnerGradebook'
 import { LiveQuizPlay } from './pages/LiveQuizPlay'
 import { ProjectSubmissionPage } from './pages/ProjectSubmissionPage'
+import { StudentProgramEvaluation } from './pages/StudentProgramEvaluation'
 import { Profile } from './pages/Profile'
 import { DebugProfile } from './pages/DebugProfile'
 import { DiagnosticRole } from './pages/DiagnosticRole'
@@ -76,14 +84,17 @@ import { ChatWidget } from './components/ChatWidget'
 import { TimeTrackingProvider } from './components/TimeTrackingProvider'
 import DataExercisesPage from './pages/DataExercisesPage'
 import { NavigationSidebar } from './components/NavigationSidebar'
+import { NavigationProvider } from './components/NavigationContext'
+import { SidebarProvider, useSidebar } from './hooks/useSidebar'
 import { Breadcrumb } from './components/Breadcrumb'
 import { KeyboardShortcuts } from './components/KeyboardShortcuts'
 import { useLocation } from 'react-router-dom'
 
 function AppContent() {
   const { isOpen, data, closeGammaPresentation } = useGammaPresentation()
+  const { isCollapsed } = useSidebar()
   const location = useLocation()
-  
+
   // Pages qui ne doivent pas avoir la sidebar
   const noSidebarPaths = ['/login', '/register', '/reset-password', '/ghost-login', '/landing']
   const showSidebar = !noSidebarPaths.includes(location.pathname)
@@ -94,7 +105,7 @@ function AppContent() {
       <KeyboardShortcuts />
       <div className="min-h-screen bg-gray-50 pt-8">
         {showSidebar && <NavigationSidebar />}
-        <div className={showSidebar ? 'lg:ml-64' : ''}>
+        <div className={`transition-all duration-300 ${showSidebar && !isCollapsed ? 'lg:ml-64' : ''}`}>
           {showSidebar && <Breadcrumb />}
         <Routes>
           {/* Routes publiques */}
@@ -153,6 +164,22 @@ function AppContent() {
             element={
               <ProtectedRoute>
                 <ProgramView />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/programs/:programId/glossary"
+            element={
+              <ProtectedRoute>
+                <ProgramGlossaryView />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/programs/:programId/evaluation/:evaluationId"
+            element={
+              <ProtectedRoute>
+                <StudentProgramEvaluation />
               </ProtectedRoute>
             }
           />
@@ -221,6 +248,14 @@ function AppContent() {
             }
           />
           <Route
+            path="/glossaires"
+            element={
+              <ProtectedRoute>
+                <GlossairesView />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/debug-profile"
             element={
               <ProtectedRoute>
@@ -245,12 +280,12 @@ function AppContent() {
             }
           />
 
-          {/* Routes admin */}
+          {/* Routes admin - Redirige vers /app */}
           <Route
             path="/admin"
             element={
               <ProtectedRoute requiredRole="admin">
-                <AdminUnified />
+                <Navigate to="/app" replace />
               </ProtectedRoute>
             }
           />
@@ -477,6 +512,46 @@ function AppContent() {
             element={
               <TrainerRouteGuard>
                 <TrainerDashboard />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/dashboard/by-org"
+            element={
+              <TrainerRouteGuard>
+                <TrainerDashboardByOrg />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/dashboard/by-program"
+            element={
+              <TrainerRouteGuard>
+                <TrainerDashboardByProgram />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/programs/:programId/evaluations"
+            element={
+              <TrainerRouteGuard>
+                <ProgramEvaluationManager />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/programs/:programId/evaluations/:evalId/results"
+            element={
+              <TrainerRouteGuard>
+                <EvaluationResults />
+              </TrainerRouteGuard>
+            }
+          />
+          <Route
+            path="/trainer/programs/:programId/tp"
+            element={
+              <TrainerRouteGuard>
+                <ProgramTpManager />
               </TrainerRouteGuard>
             }
           />
@@ -744,9 +819,13 @@ function App() {
   return (
     <AuthProvider>
       <TimeTrackingProvider>
-        <GammaPresentationProvider>
-          <AppContent />
-        </GammaPresentationProvider>
+        <SidebarProvider>
+          <NavigationProvider>
+            <GammaPresentationProvider>
+              <AppContent />
+            </GammaPresentationProvider>
+          </NavigationProvider>
+        </SidebarProvider>
       </TimeTrackingProvider>
     </AuthProvider>
   )

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Search, FileText, BookOpen, Layers, User, Settings, GraduationCap, X, Command } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
@@ -7,11 +7,12 @@ import { supabase } from '../lib/supabaseClient'
 
 interface SearchResult {
   id: string
-  type: 'course' | 'program' | 'item' | 'user' | 'page'
+  type: 'course' | 'program' | 'item' | 'user' | 'page' | 'glossary'
   title: string
   description?: string
   path: string
   icon: React.ComponentType<{ className?: string }>
+  section?: string
 }
 
 export function GlobalSearch() {
@@ -70,7 +71,7 @@ export function GlobalSearch() {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen, results, selectedIndex])
+  }, [isOpen, results, selectedIndex, navigate])
 
   // Scroll vers l'élément sélectionné
   useEffect(() => {
@@ -171,12 +172,20 @@ export function GlobalSearch() {
           .select('id, title, type, module_id, content, description')
           .limit(50) // Récupérer plus d'items pour chercher dans le contenu
 
-        const [coursesResult, programsResult, modulesResult, itemsResult, itemsContentResult] = await Promise.all([
+        // 6. Recherche dans les glossaires des programmes
+        const programsWithGlossaryQuery = supabase
+          .from('programs')
+          .select('id, title, glossary')
+          .not('glossary', 'is', null)
+          .limit(20)
+
+        const [coursesResult, programsResult, modulesResult, itemsResult, itemsContentResult, programsWithGlossaryResult] = await Promise.all([
           coursesQuery,
           programsQuery,
           modulesQuery,
           itemsQuery,
           itemsContentQuery,
+          programsWithGlossaryQuery,
         ])
 
         const courseResults: SearchResult[] =
@@ -318,13 +327,56 @@ export function GlobalSearch() {
           }
         }
 
-        setResults([
+        // Rechercher dans les glossaires
+        const glossaryResults: SearchResult[] = []
+        if (programsWithGlossaryResult.data) {
+          for (const program of programsWithGlossaryResult.data) {
+            if (!program.glossary) continue
+            
+            const glossary = program.glossary as any
+            if (!glossary.terms || !Array.isArray(glossary.terms)) continue
+
+            const matchingTerms = glossary.terms.filter((term: any) => {
+              const termWord = (term.word || '').toLowerCase()
+              const termExplanation = (term.explanation || '').toLowerCase()
+              const termTags = (term.tags || []).map((t: string) => t.toLowerCase())
+              const searchLower = searchQuery.toLowerCase()
+              
+              return termWord.includes(searchLower) ||
+                     termExplanation.includes(searchLower) ||
+                     termTags.some((tag: string) => tag.includes(searchLower))
+            })
+
+            if (matchingTerms.length > 0) {
+              // Limiter à 3 termes par programme pour éviter trop de résultats
+              matchingTerms.slice(0, 3).forEach((term: any) => {
+                glossaryResults.push({
+                  id: `glossary-${program.id}-${term.id}`,
+                  type: 'glossary' as const,
+                  title: term.word,
+                  description: term.explanation?.substring(0, 100) + (term.explanation?.length > 100 ? '...' : ''),
+                  path: `/programs/${program.id}/glossary#term-${term.id}`,
+                  icon: BookOpen,
+                  section: 'Ouvrage de définition'
+                })
+              })
+            }
+          }
+        }
+
+        // Organiser les résultats par section
+        const regularResults = [
           ...filteredPages, 
           ...courseResults, 
           ...programResults, 
           ...moduleResults,
           ...itemResults, 
           ...itemsFromContent
+        ]
+
+        setResults([
+          ...regularResults,
+          ...glossaryResults
         ])
       } catch (error) {
         console.error('Error searching:', error)
@@ -337,12 +389,12 @@ export function GlobalSearch() {
     searchInDatabase()
   }, [query, isAdmin, isTrainer])
 
-  const navigateToResult = (result: SearchResult) => {
+  const navigateToResult = useCallback((result: SearchResult) => {
     navigate(result.path)
     setIsOpen(false)
     setQuery('')
     setResults([])
-  }
+  }, [navigate])
 
   if (!isOpen) {
     return (
@@ -415,40 +467,97 @@ export function GlobalSearch() {
               </div>
             ) : (
               <div className="py-2">
-                {results.map((result, index) => {
-                  const Icon = result.icon
+                {(() => {
+                  // Séparer les résultats par section
+                  const regularResults = results.filter(r => !r.section)
+                  const glossaryResults = results.filter(r => r.section === 'Ouvrage de définition')
+                  
                   return (
-                    <button
-                      key={result.id}
-                      onClick={() => navigateToResult(result)}
-                      className={`w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors flex items-start gap-3 ${
-                        index === selectedIndex ? 'bg-blue-50 border-l-4 border-blue-600' : ''
-                      }`}
-                    >
-                      <Icon className={`w-5 h-5 mt-0.5 ${
-                        index === selectedIndex ? 'text-blue-600' : 'text-gray-400'
-                      }`} />
-                      <div className="flex-1 min-w-0">
-                        <div className={`font-medium ${
-                          index === selectedIndex ? 'text-blue-900' : 'text-gray-900'
-                        }`}>
-                          {result.title}
-                        </div>
-                        {result.description && (
-                          <div className="text-sm text-gray-500 mt-0.5 line-clamp-1">
-                            {result.description}
+                    <>
+                      {regularResults.length > 0 && (
+                        <>
+                          {regularResults.map((result, index) => {
+                            const Icon = result.icon
+                            const actualIndex = index
+                            return (
+                              <button
+                                key={result.id}
+                                onClick={() => navigateToResult(result)}
+                                className={`w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors flex items-start gap-3 ${
+                                  actualIndex === selectedIndex ? 'bg-blue-50 border-l-4 border-blue-600' : ''
+                                }`}
+                              >
+                                <Icon className={`w-5 h-5 mt-0.5 ${
+                                  actualIndex === selectedIndex ? 'text-blue-600' : 'text-gray-400'
+                                }`} />
+                                <div className="flex-1 min-w-0">
+                                  <div className={`font-medium ${
+                                    actualIndex === selectedIndex ? 'text-blue-900' : 'text-gray-900'
+                                  }`}>
+                                    {result.title}
+                                  </div>
+                                  {result.description && (
+                                    <div className="text-sm text-gray-500 mt-0.5 line-clamp-1">
+                                      {result.description}
+                                    </div>
+                                  )}
+                                  <div className="text-xs text-gray-400 mt-1">
+                                    {result.type === 'course' && 'Formation'}
+                                    {result.type === 'program' && 'Programme'}
+                                    {result.type === 'item' && 'Contenu'}
+                                    {result.type === 'page' && 'Page'}
+                                  </div>
+                                </div>
+                              </button>
+                            )
+                          })}
+                        </>
+                      )}
+                      
+                      {glossaryResults.length > 0 && (
+                        <>
+                          <div className="px-4 py-2 bg-indigo-50 border-t border-b border-indigo-200">
+                            <div className="text-xs font-semibold text-indigo-900 uppercase tracking-wide">
+                              Ouvrage de définition
+                            </div>
                           </div>
-                        )}
-                        <div className="text-xs text-gray-400 mt-1">
-                          {result.type === 'course' && 'Formation'}
-                          {result.type === 'program' && 'Programme'}
-                          {result.type === 'item' && 'Contenu'}
-                          {result.type === 'page' && 'Page'}
-                        </div>
-                      </div>
-                    </button>
+                          {glossaryResults.map((result, index) => {
+                            const Icon = result.icon
+                            const actualIndex = regularResults.length + index
+                            return (
+                              <button
+                                key={result.id}
+                                onClick={() => navigateToResult(result)}
+                                className={`w-full px-4 py-3 text-left hover:bg-indigo-50 transition-colors flex items-start gap-3 ${
+                                  actualIndex === selectedIndex ? 'bg-indigo-50 border-l-4 border-indigo-600' : ''
+                                }`}
+                              >
+                                <Icon className={`w-5 h-5 mt-0.5 ${
+                                  actualIndex === selectedIndex ? 'text-indigo-600' : 'text-indigo-400'
+                                }`} />
+                                <div className="flex-1 min-w-0">
+                                  <div className={`font-medium ${
+                                    actualIndex === selectedIndex ? 'text-indigo-900' : 'text-gray-900'
+                                  }`}>
+                                    {result.title}
+                                  </div>
+                                  {result.description && (
+                                    <div className="text-sm text-gray-500 mt-0.5 line-clamp-1">
+                                      {result.description}
+                                    </div>
+                                  )}
+                                  <div className="text-xs text-indigo-500 mt-1">
+                                    Terme du glossaire
+                                  </div>
+                                </div>
+                              </button>
+                            )
+                          })}
+                        </>
+                      )}
+                    </>
                   )
-                })}
+                })()}
               </div>
             )}
           </div>

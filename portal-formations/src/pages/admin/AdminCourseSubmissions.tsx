@@ -482,13 +482,19 @@ export function AdminCourseSubmissions() {
                           )}
 
                           {/* Lien vers l'exercice */}
-                          <div>
+                          <div className="flex items-center gap-2">
                             <Link
-                              to={`/items/${submission.item_id}`}
-                              className="text-blue-600 hover:text-blue-500 text-sm"
+                              to={`/items/${submission.item_id}?userId=${submission.user_id}`}
+                              className="text-blue-600 hover:text-blue-500 text-sm font-medium"
                             >
-                              Voir l'exercice →
+                              {submission.items?.type === 'tp' ? 'Voir et noter le TP →' : 'Voir l\'exercice →'}
                             </Link>
+                            {/* Pour les TP de contrôle, indiquer qu'il y a une grille de notation */}
+                            {submission.items?.type === 'tp' && submission.status === 'submitted' && (
+                              <span className="text-xs text-yellow-600 bg-yellow-50 px-2 py-1 rounded">
+                                Grille de notation disponible
+                              </span>
+                            )}
                           </div>
                         </div>
                       )}

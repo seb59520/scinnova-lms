@@ -1,0 +1,33 @@
+{
+  "title": "Évaluation - [Nom du module]",
+  "description": "Description de l'évaluation",
+  "passing_score": 70,
+  "max_attempts": 3,
+  "time_limit_minutes": null,
+  "questions": [
+    {
+      "question": "Quelle est la bonne réponse ?",
+      "type": "multiple_choice",
+      "options": ["Option A", "Option B", "Option C", "Option D"],
+      "correct_answer": "Option B",
+      "points": 1
+    },
+    {
+      "question": "Python est un langage interprété.",
+      "type": "true_false",
+      "options": ["Vrai", "Faux"],
+      "correct_answer": "Vrai",
+      "points": 1
+    },
+    {
+      "question": "Expliquez le concept de polymorphisme en programmation orientée objet.",
+      "type": "text",
+      "points": 5
+    },
+    {
+      "question": "Écrivez une fonction qui retourne la somme des éléments d'une liste.",
+      "type": "code",
+      "points": 10
+    }
+  ]
+}

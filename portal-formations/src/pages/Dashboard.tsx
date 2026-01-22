@@ -6,6 +6,8 @@ import { isAuthError } from '../lib/supabaseHelpers'
 import { getUserOrg } from '../lib/queries/userQueries'
 import { Course, Enrollment, Program, ProgramEnrollment, Org } from '../types/database'
 import { AppHeader } from '../components/AppHeader'
+import { AdminDashboard } from '../components/AdminDashboard'
+import { StudentDashboardContent } from '../components/StudentDashboardContent'
 import { LayoutGrid, List, Calendar, BookOpen, Layers, Building2, ClipboardCheck, Clock, CheckCircle, AlertCircle, Send, Search, X, Info, Filter, ArrowUpDown, PlayCircle, CheckCircle2, Circle, ArrowRight } from 'lucide-react'
 
 // Type pour les projets à rendre
@@ -676,15 +678,15 @@ export function Dashboard() {
 
       {/* Hero Section - Compact */}
       <div className="bg-white border-b border-gray-200 pt-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-4 md:py-6">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
                 Bienvenue{profile?.full_name ? `, ${profile.full_name}` : ''}
               </h1>
               <p className="text-sm md:text-base text-gray-600 mt-1">
-                {profile?.role === 'admin' 
-                  ? 'Gérez vos formations et suivez les apprenants'
+                {profile?.role === 'admin'
+                  ? 'Tableau de bord administrateur'
                   : 'Découvrez et suivez vos formations'}
               </p>
               {org && (
@@ -694,24 +696,26 @@ export function Dashboard() {
                 </div>
               )}
             </div>
-            {profile?.role === 'admin' && (
-              <Link
-                to="/admin"
-                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors text-sm"
-              >
-                Créer une formation
-              </Link>
-            )}
           </div>
         </div>
       </div>
 
       {/* Main content */}
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <main className="w-full py-6 sm:px-6 lg:px-8">
         <div className="px-4 sm:px-0 space-y-8">
-          
-          {/* Section Projets à rendre - visible aussi pour les admins s'ils sont inscrits comme learner */}
-          {projects.length > 0 && (
+
+          {/* Admin Dashboard */}
+          {profile?.role === 'admin' && (
+            <AdminDashboard />
+          )}
+
+          {/* Student/Trainer Dashboard - same as admin "Vue élève" */}
+          {profile?.role !== 'admin' && (
+            <StudentDashboardContent />
+          )}
+
+          {/* Legacy: Section Projets à rendre - now handled by StudentDashboardContent */}
+          {false && projects.length > 0 && (
             <section data-section="projects">
               <div className="flex items-center gap-3 mb-4">
                 <ClipboardCheck className="w-6 h-6 text-purple-600" />
@@ -811,8 +815,8 @@ export function Dashboard() {
             </section>
           )}
 
-          {/* Section "Continuer où j'en étais" */}
-          {(() => {
+          {/* Section "Continuer où j'en étais" - Uniquement pour les non-admins */}
+          {profile?.role !== 'admin' && (() => {
             const inProgressCourses = courses.filter(c => c.progressStatus === 'in_progress' && c.progressPercent && c.progressPercent > 0)
             const displayedCourses = inProgressCourses
               .sort((a, b) => (b.lastAccessedAt ? new Date(b.lastAccessedAt).getTime() : 0) - (a.lastAccessedAt ? new Date(a.lastAccessedAt).getTime() : 0))
@@ -906,7 +910,8 @@ export function Dashboard() {
             )
           })()}
 
-          {/* Section Formations et Programmes avec navigation par onglets */}
+          {/* Section Formations et Programmes avec navigation par onglets - Uniquement pour les non-admins */}
+          {profile?.role !== 'admin' && (
           <section>
             {/* Navigation par onglets */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-6 overflow-hidden">
@@ -961,17 +966,17 @@ export function Dashboard() {
               
               {/* Explication de la différence */}
               <div className="px-5 py-4 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50">
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 mt-0.5">
+                <div className="flex items-center gap-3">
+                  <div className="flex-shrink-0">
                     <Info className="w-5 h-5 text-blue-600" />
                   </div>
-                  <div className="text-sm text-gray-700 leading-relaxed">
+                  <div className="text-sm text-gray-700 leading-relaxed flex items-center flex-wrap gap-2">
                     <span className="inline-flex items-center gap-1.5">
                       <span className="font-semibold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-md">Formation</span>
                       <span className="text-gray-600">:</span>
                       <span className="text-gray-700">contenu pédagogique autonome (cours, TP, exercices)</span>
                     </span>
-                    <span className="mx-2 text-gray-400">•</span>
+                    <span className="text-gray-400">•</span>
                     <span className="inline-flex items-center gap-1.5">
                       <span className="font-semibold text-purple-700 bg-purple-100 px-2 py-0.5 rounded-md">Programme</span>
                       <span className="text-gray-600">:</span>
@@ -1857,6 +1862,7 @@ export function Dashboard() {
               </div>
             )}
           </section>
+          )}
         </div>
       </main>
       </div>

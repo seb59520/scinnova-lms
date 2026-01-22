@@ -1,0 +1,1697 @@
+{
+  "type": "resource",
+  "title": "Glossaire Python - Concepts essentiels",
+  "position": 0,
+  "published": true,
+  "content": {
+    "description": "Glossaire complet des concepts Python avec explications et exemples pratiques",
+    "body": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Glossaire Python - Concepts essentiels"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Glossaire complet des concepts Python avec explications et exemples pratiques"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Variables & Types"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Concepts liés aux variables et types de données de base"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "None"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Catégorie: "
+            },
+            {
+              "type": "text",
+              "text": "Variables & Types"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Tags: "
+            },
+            {
+              "type": "text",
+              "text": "type, valeur, absence, singleton"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Explication"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Valeur spéciale en Python qui représente l'absence de valeur. None est un objet singleton, ce qui signifie qu'il n'existe qu'une seule instance de None dans tout le programme Python. Utilisé pour initialiser des variables qui n'ont pas encore de valeur ou pour indiquer qu'une fonction ne retourne rien."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Exemple"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "python"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "x = None\nif x is None:\n    print('x n\\'a pas de valeur')\n\n# Fonction sans valeur de retour\n def greet():\n     print('Bonjour')\n     # Retourne None implicitement"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "bool"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Catégorie: "
+            },
+            {
+              "type": "text",
+              "text": "Variables & Types"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Tags: "
+            },
+            {
+              "type": "text",
+              "text": "conversion, type, booléen"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Explication"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Fonction native Python qui convertit une valeur en booléen (True ou False). Les valeurs 'falsy' (False, None, 0, '', [], {}, etc.) retournent False, toutes les autres valeurs retournent True."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Exemple"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "python"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "bool(0)      # False\nbool(1)      # True\nbool('')     # False\nbool('abc')  # True\nbool([])     # False\nbool([1,2])  # True"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Termes liés: "
+            },
+            {
+              "type": "text",
+              "text": "True, False"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "isinstance"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Catégorie: "
+            },
+            {
+              "type": "text",
+              "text": "Variables & Types"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Tags: "
+            },
+            {
+              "type": "text",
+              "text": "type, vérification, introspection"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Explication"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Fonction native Python qui vérifie si un objet est une instance d'une classe ou d'un type donné. Plus recommandé que type() == car elle gère l'héritage correctement."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Exemple"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "python"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "isinstance(42, int)        # True\nisinstance('hello', str)   # True\nisinstance([1,2], list)    # True\nisinstance([1,2], (list, tuple))  # True (plusieurs types)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Termes liés: "
+            },
+            {
+              "type": "text",
+              "text": "type"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Fonctions"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Définition et utilisation des fonctions"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "lambda"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Catégorie: "
+            },
+            {
+              "type": "text",
+              "text": "Fonctions"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Tags: "
+            },
+            {
+              "type": "text",
+              "text": "fonction, anonyme, fonctionnel, map, filter"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Explication"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Mot-clé Python permettant de créer des fonctions anonymes (sans nom). Les fonctions lambda sont utiles pour des opérations courtes et simples, souvent utilisées avec map(), filter(), ou sorted(). Syntaxe: lambda arguments: expression"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Exemple"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "python"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "# Fonction lambda simple\nadd = lambda x, y: x + y\nresult = add(3, 5)  # 8\n\n# Utilisation avec map\nnumbers = [1, 2, 3, 4]\nsquared = list(map(lambda x: x**2, numbers))  # [1, 4, 9, 16]\n\n# Utilisation avec filter\nodds = list(filter(lambda x: x % 2 == 1, numbers))  # [1, 3]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Termes liés: "
+            },
+            {
+              "type": "text",
+              "text": "map, filter, sorted"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "map"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Catégorie: "
+            },
+            {
+              "type": "text",
+              "text": "Fonctions"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Tags: "
+            },
+            {
+              "type": "text",
+              "text": "fonction, itérable, transformation"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Explication"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Fonction native Python qui applique une fonction à chaque élément d'un itérable et retourne un objet map (itérable). Utilisez list() pour convertir le résultat en liste."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Exemple"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "python"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "numbers = [1, 2, 3, 4]\n\n# Avec fonction lambda\nsquared = list(map(lambda x: x**2, numbers))  # [1, 4, 9, 16]\n\n# Avec fonction nommée\ndef double(n):\n    return n * 2\ndoubled = list(map(double, numbers))  # [2, 4, 6, 8]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Termes liés: "
+            },
+            {
+              "type": "text",
+              "text": "lambda, filter, list"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "filter"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Catégorie: "
+            },
+            {
+              "type": "text",
+              "text": "Fonctions"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Tags: "
+            },
+            {
+              "type": "text",
+              "text": "fonction, itérable, filtrage"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Explication"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Fonction native Python qui filtre les éléments d'un itérable en gardant uniquement ceux pour lesquels une fonction retourne True. Retourne un objet filter (itérable)."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Exemple"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "python"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "numbers = [1, 2, 3, 4, 5, 6]\n\n# Filtrer les nombres pairs\nodds = list(filter(lambda x: x % 2 == 1, numbers))  # [1, 3, 5]\n\n# Filtrer avec fonction nommée\ndef is_positive(n):\n    return n > 0\npositives = list(filter(is_positive, [-2, -1, 0, 1, 2]))  # [1, 2]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Termes liés: "
+            },
+            {
+              "type": "text",
+              "text": "lambda, map, list"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Collections"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Listes, dictionnaires, ensembles et tuples"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "list.append"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Catégorie: "
+            },
+            {
+              "type": "text",
+              "text": "Collections"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Tags: "
+            },
+            {
+              "type": "text",
+              "text": "liste, méthode, ajout"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Explication"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Méthode des listes Python qui ajoute un élément à la fin de la liste. Modifie la liste en place (ne retourne rien)."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Exemple"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "python"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "lst = [1, 2, 3]\nlst.append(4)  # lst devient [1, 2, 3, 4]\nlst.append('a')  # lst devient [1, 2, 3, 4, 'a']"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Termes liés: "
+            },
+            {
+              "type": "text",
+              "text": "list, list.extend, list.insert"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "list.extend"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Catégorie: "
+            },
+            {
+              "type": "text",
+              "text": "Collections"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Tags: "
+            },
+            {
+              "type": "text",
+              "text": "liste, méthode, ajout, itérable"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Explication"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Méthode des listes Python qui ajoute tous les éléments d'un itérable à la fin de la liste. Contrairement à append(), extend() ajoute les éléments individuellement plutôt qu'un seul élément."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Exemple"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "python"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "lst = [1, 2, 3]\nlst.extend([4, 5])  # lst devient [1, 2, 3, 4, 5]\nlst.extend('ab')    # lst devient [1, 2, 3, 4, 5, 'a', 'b']\n\n# Différence avec append:\nlst2 = [1, 2]\nlst2.append([3, 4])  # [1, 2, [3, 4]]\nlst2.extend([3, 4])  # [1, 2, 3, 4]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Termes liés: "
+            },
+            {
+              "type": "text",
+              "text": "list, list.append"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "dict.get"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Catégorie: "
+            },
+            {
+              "type": "text",
+              "text": "Collections"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Tags: "
+            },
+            {
+              "type": "text",
+              "text": "dictionnaire, méthode, accès, sécurité"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Explication"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Méthode des dictionnaires Python qui récupère la valeur associée à une clé, ou retourne une valeur par défaut si la clé n'existe pas. Plus sûre que dict[key] car ne lève pas d'erreur si la clé est absente."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Exemple"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "python"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "d = {'a': 1, 'b': 2}\n\n# Clé existante\nvalue = d.get('a')      # 1\n\n# Clé absente avec valeur par défaut\nvalue = d.get('c', 0)   # 0 (au lieu de KeyError)\n\n# Clé absente sans valeur par défaut\nvalue = d.get('c')      # None"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Termes liés: "
+            },
+            {
+              "type": "text",
+              "text": "dict, dict.items, dict.keys"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Chaînes de caractères"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Manipulation des chaînes de caractères"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "str.split"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Catégorie: "
+            },
+            {
+              "type": "text",
+              "text": "Chaînes de caractères"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Tags: "
+            },
+            {
+              "type": "text",
+              "text": "chaîne, méthode, découpage"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Explication"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Méthode des chaînes Python qui découpe une chaîne en une liste de sous-chaînes en utilisant un séparateur. Par défaut, utilise les espaces comme séparateur."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Exemple"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "python"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "'a,b,c'.split(',')        # ['a', 'b', 'c']\n'hello world'.split()      # ['hello', 'world']\n'one two three'.split(' ') # ['one', 'two', 'three']\n'abc'.split()             # ['abc']"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Termes liés: "
+            },
+            {
+              "type": "text",
+              "text": "str, str.join"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "str.join"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Catégorie: "
+            },
+            {
+              "type": "text",
+              "text": "Chaînes de caractères"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Tags: "
+            },
+            {
+              "type": "text",
+              "text": "chaîne, méthode, jointure"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Explication"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Méthode des chaînes Python qui joint les éléments d'un itérable (liste, tuple, etc.) en une seule chaîne, en utilisant la chaîne comme séparateur."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Exemple"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "python"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "','.join(['a', 'b', 'c'])     # 'a,b,c'\n' '.join(['hello', 'world'])  # 'hello world'\n'-'.join(['2024', '01', '15']) # '2024-01-15'\n''.join(['a', 'b', 'c'])       # 'abc'"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Termes liés: "
+            },
+            {
+              "type": "text",
+              "text": "str, str.split"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "f-string"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Catégorie: "
+            },
+            {
+              "type": "text",
+              "text": "Chaînes de caractères"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Tags: "
+            },
+            {
+              "type": "text",
+              "text": "chaîne, formatage, interpolation"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Explication"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Syntaxe Python (depuis 3.6) pour formater des chaînes de caractères de manière concise et lisible. Permet d'insérer des expressions Python directement dans une chaîne en utilisant {expression}."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Exemple"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "python"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "name = 'Alice'\nage = 30\n\n# f-string simple\nmessage = f'Bonjour {name}'  # 'Bonjour Alice'\n\n# Avec expressions\ninfo = f'{name} a {age} ans'  # 'Alice a 30 ans'\n\n# Avec formatage\nprice = 19.99\nformatted = f'Prix: {price:.2f}€'  # 'Prix: 19.99€'"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Termes liés: "
+            },
+            {
+              "type": "text",
+              "text": "str, str.format"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Fichiers"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Lecture et écriture de fichiers"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "with open(...) as"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Catégorie: "
+            },
+            {
+              "type": "text",
+              "text": "Fichiers"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Tags: "
+            },
+            {
+              "type": "text",
+              "text": "fichier, contexte, gestionnaire"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Explication"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Syntaxe Python recommandée pour ouvrir et fermer automatiquement des fichiers. Le gestionnaire de contexte garantit que le fichier est fermé même en cas d'erreur. Plus sûr que open() + close()."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Exemple"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "python"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "# Lecture\nwith open('data.txt', 'r', encoding='utf-8') as f:\n    content = f.read()\n    # Le fichier est automatiquement fermé ici\n\n# Écriture\nwith open('output.txt', 'w', encoding='utf-8') as f:\n    f.write('Hello, World!')\n\n# Lecture ligne par ligne\nwith open('data.txt', 'r', encoding='utf-8') as f:\n    for line in f:\n        print(line.strip())"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Termes liés: "
+            },
+            {
+              "type": "text",
+              "text": "open, file.read, file.write"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Exceptions"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Gestion des erreurs et exceptions"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "try/except"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Catégorie: "
+            },
+            {
+              "type": "text",
+              "text": "Exceptions"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Tags: "
+            },
+            {
+              "type": "text",
+              "text": "exception, gestion, erreur"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Explication"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Structure de contrôle Python pour gérer les exceptions (erreurs). Le bloc try contient le code qui peut lever une exception, et le bloc except contient le code à exécuter si une exception est levée."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 4
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Exemple"
+            }
+          ]
+        },
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "python"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "try:\n    x = int('42')\n    result = 10 / x\nexcept ValueError:\n    print('Erreur: valeur invalide')\nexcept ZeroDivisionError:\n    print('Erreur: division par zéro')\nexcept Exception as e:\n    print(f'Erreur inattendue: {e}')"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Termes liés: "
+            },
+            {
+              "type": "text",
+              "text": "raise, finally"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

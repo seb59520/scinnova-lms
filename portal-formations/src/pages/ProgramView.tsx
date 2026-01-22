@@ -2,23 +2,333 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabaseClient'
-import { Program, ProgramCourseWithCourse, Course } from '../types/database'
+import { Program, ProgramCourseWithCourse, Course, ProgramEvaluation } from '../types/database'
 import { AppHeader } from '../components/AppHeader'
-import { ArrowLeft, Layers, BookOpen, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Layers, BookOpen, ChevronRight, Book, Download, FileText, ClipboardCheck, Award, CheckCircle, Upload, Calendar, AlertCircle, Users, Eye } from 'lucide-react'
+import { FileUpload } from '../components/FileUpload'
 
 export function ProgramView() {
   const { programId } = useParams<{ programId: string }>()
   const { user, profile } = useAuth()
   const [program, setProgram] = useState<Program | null>(null)
   const [programCourses, setProgramCourses] = useState<ProgramCourseWithCourse[]>([])
+  const [evaluations, setEvaluations] = useState<ProgramEvaluation[]>([])
+  const [evaluationAttempts, setEvaluationAttempts] = useState<Record<string, { passed: boolean; percentage: number }>>({})
+  const [programDocuments, setProgramDocuments] = useState<any[]>([])
+  const [documentSubmissions, setDocumentSubmissions] = useState<Record<string, any>>({})
+  const [expectedItems, setExpectedItems] = useState<any[]>([])
+  const [expectedItemsLoaded, setExpectedItemsLoaded] = useState(false)
+  const [itemSubmissions, setItemSubmissions] = useState<Record<string, any[]>>({})
+  const [expandedItemId, setExpandedItemId] = useState<string | null>(null)
+  const [evaluationsLoaded, setEvaluationsLoaded] = useState(false)
+  const [documentsLoaded, setDocumentsLoaded] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [downloadingMarkdown, setDownloadingMarkdown] = useState(false)
+  const [downloadingPdf, setDownloadingPdf] = useState(false)
+  const [uploadingDoc, setUploadingDoc] = useState<string | null>(null)
+  const [selectedFiles, setSelectedFiles] = useState<Record<string, File | null>>({})
 
   useEffect(() => {
     if (programId && user) {
       fetchProgram()
+      fetchEvaluations()
+      fetchProgramDocuments()
+      fetchExpectedItems()
     }
   }, [programId, user])
+
+  const fetchEvaluations = async () => {
+    if (!programId || !user) return
+
+    try {
+      // Charger les évaluations publiées du programme
+      const { data: evalData, error: evalError } = await supabase
+        .from('program_evaluations')
+        .select('*')
+        .eq('program_id', programId)
+        .eq('is_published', true)
+        .order('created_at')
+
+      if (evalError) {
+        console.log('Table program_evaluations non disponible:', evalError.message)
+        setEvaluationsLoaded(true)
+        return
+      }
+
+      console.log('Évaluations chargées:', evalData?.length || 0)
+      setEvaluations(evalData || [])
+      setEvaluationsLoaded(true)
+
+      // Charger les tentatives de l'utilisateur
+      if (evalData && evalData.length > 0) {
+        const evalIds = evalData.map(e => e.id)
+        const { data: attempts } = await supabase
+          .from('program_evaluation_attempts')
+          .select('evaluation_id, is_passed, percentage')
+          .eq('user_id', user.id)
+          .in('evaluation_id', evalIds)
+          .order('percentage', { ascending: false })
+
+        // Garder le meilleur résultat par évaluation
+        const attemptsMap: Record<string, { passed: boolean; percentage: number }> = {}
+        attempts?.forEach(a => {
+          if (!attemptsMap[a.evaluation_id] || a.percentage > attemptsMap[a.evaluation_id].percentage) {
+            attemptsMap[a.evaluation_id] = { passed: a.is_passed, percentage: a.percentage }
+          }
+        })
+        setEvaluationAttempts(attemptsMap)
+      }
+    } catch (err) {
+      console.error('Error fetching evaluations:', err)
+      setEvaluationsLoaded(true)
+    }
+  }
+
+  const fetchProgramDocuments = async () => {
+    if (!programId || !user) return
+
+    try {
+      // Charger les documents du programme (questionnaires début/fin)
+      const { data: docs, error: docsError } = await supabase
+        .from('program_documents')
+        .select('*')
+        .eq('program_id', programId)
+        .eq('is_published', true)
+        .order('position')
+
+      if (docsError) {
+        console.log('Table program_documents non disponible:', docsError.message)
+        setDocumentsLoaded(true)
+        return
+      }
+
+      console.log('Documents chargés:', docs?.length || 0)
+      setProgramDocuments(docs || [])
+      setDocumentsLoaded(true)
+
+      // Charger les soumissions de l'utilisateur
+      if (docs && docs.length > 0) {
+        const docIds = docs.map(d => d.id)
+        const { data: submissions } = await supabase
+          .from('program_document_submissions')
+          .select('*')
+          .eq('user_id', user.id)
+          .in('document_id', docIds)
+
+        const submissionsMap: Record<string, any> = {}
+        submissions?.forEach(s => {
+          submissionsMap[s.document_id] = s
+        })
+        setDocumentSubmissions(submissionsMap)
+      }
+    } catch (err) {
+      console.error('Error fetching program documents:', err)
+      setDocumentsLoaded(true)
+    }
+  }
+
+  const fetchExpectedItems = async () => {
+    if (!programId || !user) return
+
+    try {
+      // Charger les items attendus (TP, quiz, exercices)
+      const { data: expectedItemsData, error: expectedItemsError } = await supabase
+        .from('program_expected_items')
+        .select(`
+          *,
+          items (
+            id,
+            title,
+            type,
+            module_id,
+            is_control_tp,
+            modules (
+              id,
+              title,
+              course_id,
+              courses (
+                id,
+                title
+              )
+            )
+          )
+        `)
+        .eq('program_id', programId)
+        .order('position', { ascending: true })
+
+      if (expectedItemsError) {
+        console.log('Table program_expected_items non disponible:', expectedItemsError.message)
+        setExpectedItemsLoaded(true)
+        return
+      }
+
+      console.log('Items attendus chargés:', expectedItemsData?.length || 0)
+      console.log('📋 Détails des items:', expectedItemsData?.map((ei: any) => ({
+        id: ei.items?.id,
+        title: ei.items?.title,
+        type: ei.items?.type,
+        is_control_tp: ei.items?.is_control_tp
+      })))
+      setExpectedItems(expectedItemsData || [])
+      setExpectedItemsLoaded(true)
+
+      // Si formateur/admin, charger les soumissions pour les TP de contrôle
+      // Attendre que le profil soit disponible
+      if (profile) {
+        const isTrainerOrAdmin = profile.role === 'admin' || profile.role === 'trainer' || profile.role === 'instructor'
+        console.log('👤 Rôle utilisateur:', profile.role, 'isTrainerOrAdmin:', isTrainerOrAdmin)
+        if (isTrainerOrAdmin && expectedItemsData) {
+          const controlTpItems = expectedItemsData.filter((ei: any) => {
+            const isControlTp = ei.items?.type === 'tp' && ei.items?.is_control_tp === true
+            console.log('🔍 Vérification TP contrôle:', {
+              itemId: ei.items?.id,
+              title: ei.items?.title,
+              type: ei.items?.type,
+              is_control_tp: ei.items?.is_control_tp,
+              isControlTp
+            })
+            return isControlTp
+          })
+          
+          console.log('✅ TP de contrôle trouvés:', controlTpItems.length)
+          if (controlTpItems.length > 0) {
+            const itemIds = controlTpItems.map((ei: any) => ei.items.id)
+            console.log('📝 Chargement des soumissions pour items:', itemIds)
+            await fetchSubmissionsForItems(itemIds)
+          }
+        }
+      } else {
+        console.log('⏳ Profil non encore chargé, les soumissions seront chargées plus tard')
+      }
+    } catch (err) {
+      console.error('Error fetching expected items:', err)
+      setExpectedItemsLoaded(true)
+    }
+  }
+
+  const fetchSubmissionsForItems = async (itemIds: string[]) => {
+    if (itemIds.length === 0) return
+
+    try {
+      console.log('📥 Récupération des soumissions pour items:', itemIds)
+      const { data: submissionsData, error: submissionsError } = await supabase
+        .from('submissions')
+        .select(`
+          *,
+          profiles (
+            id,
+            full_name,
+            student_id
+          )
+        `)
+        .in('item_id', itemIds)
+        .order('submitted_at', { ascending: false })
+
+      if (submissionsError) {
+        console.error('❌ Error fetching submissions:', submissionsError)
+        return
+      }
+
+      console.log('✅ Soumissions récupérées:', submissionsData?.length || 0)
+
+      // Grouper les soumissions par item_id
+      const submissionsByItem: Record<string, any[]> = {}
+      submissionsData?.forEach((sub: any) => {
+        if (!submissionsByItem[sub.item_id]) {
+          submissionsByItem[sub.item_id] = []
+        }
+        submissionsByItem[sub.item_id].push(sub)
+      })
+
+      console.log('📊 Soumissions groupées par item:', Object.keys(submissionsByItem).length, 'items')
+      setItemSubmissions(submissionsByItem)
+    } catch (err) {
+      console.error('❌ Error fetching submissions for items:', err)
+    }
+  }
+
+  // Recharger les soumissions quand le profil devient disponible
+  useEffect(() => {
+    if (profile && expectedItems.length > 0) {
+      const isTrainerOrAdmin = profile.role === 'admin' || profile.role === 'trainer' || profile.role === 'instructor'
+      if (isTrainerOrAdmin) {
+        const controlTpItems = expectedItems.filter((ei: any) => 
+          ei.items?.type === 'tp' && ei.items?.is_control_tp === true
+        )
+        if (controlTpItems.length > 0) {
+          const itemIds = controlTpItems.map((ei: any) => ei.items.id)
+          fetchSubmissionsForItems(itemIds)
+        }
+      }
+    }
+  }, [profile, expectedItems])
+
+  const handleDocumentSubmit = async (docId: string, doc: any) => {
+    const file = selectedFiles[docId]
+    if (!file || !user) return
+
+    setUploadingDoc(docId)
+    try {
+      // Vérifier que l'utilisateur est bien authentifié
+      const { data: { user: authUser }, error: authError } = await supabase.auth.getUser()
+      if (authError || !authUser) {
+        throw new Error('Vous devez être connecté pour soumettre un document')
+      }
+
+      // Vérifier que l'utilisateur correspond
+      if (authUser.id !== user.id) {
+        throw new Error('Erreur d\'authentification : l\'utilisateur ne correspond pas')
+      }
+
+      const fileExt = file.name.split('.').pop()
+      // Utiliser le format submissions/ pour correspondre aux politiques RLS
+      // Format: submissions/{program_id}/{user_id}/{document_id}/{timestamp}.{ext}
+      const filePath = `submissions/${programId}/${user.id}/${docId}/${Date.now()}.${fileExt}`
+
+      const { error: uploadError } = await supabase.storage
+        .from('fillable-documents')
+        .upload(filePath, file)
+
+      if (uploadError) {
+        // Messages d'erreur plus explicites
+        if (uploadError.message?.includes('new row violates row-level security')) {
+          throw new Error('Erreur de permissions : vous n\'avez pas les droits pour uploader ce document. Vérifiez que vous êtes bien inscrit au programme.')
+        }
+        if (uploadError.message?.includes('Bucket not found') || uploadError.message?.includes('does not exist')) {
+          throw new Error('Le bucket "fillable-documents" n\'existe pas. Veuillez contacter l\'administrateur.')
+        }
+        throw uploadError
+      }
+
+      const { error: insertError } = await supabase
+        .from('program_document_submissions')
+        .insert({
+          document_id: docId,
+          user_id: user.id,
+          program_id: programId,
+          file_path: filePath,
+          file_name: file.name,
+          submitted_at: new Date().toISOString()
+        })
+
+      if (insertError) {
+        // Messages d'erreur plus explicites pour les erreurs de table
+        if (insertError.message?.includes('new row violates row-level security')) {
+          throw new Error('Erreur de permissions : vous n\'avez pas les droits pour soumettre ce document. Vérifiez que vous êtes bien inscrit au programme.')
+        }
+        throw insertError
+      }
+
+      setSelectedFiles(prev => ({ ...prev, [docId]: null }))
+      fetchProgramDocuments()
+    } catch (err: any) {
+      console.error('Error submitting document:', err)
+      alert(err.message || 'Erreur lors de la soumission du document')
+    } finally {
+      setUploadingDoc(null)
+    }
+  }
 
   const fetchProgram = async () => {
     try {
@@ -131,6 +441,168 @@ export function ProgramView() {
     }
   }
 
+  const handleDownloadMarkdown = async () => {
+    if (!programId || !user) {
+      alert('Vous devez être connecté pour télécharger le Markdown.')
+      return
+    }
+
+    setDownloadingMarkdown(true)
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+      const fullUrl = `${apiUrl}/api/courses/programs/${programId}/markdown`
+
+      console.log('📥 Début du téléchargement Markdown du programme...')
+
+      // Récupérer le token d'authentification
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      if (!session?.access_token) {
+        throw new Error('Vous devez être connecté pour télécharger le Markdown.')
+      }
+
+      const response = await fetch(fullUrl, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+        },
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Erreur inconnue' }))
+        throw new Error(errorData.error || errorData.message || `Erreur ${response.status}: ${response.statusText}`)
+      }
+
+      const blob = await response.blob()
+
+      if (!blob || blob.size === 0) {
+        throw new Error('Le fichier Markdown généré est vide. Vérifiez les logs du serveur.')
+      }
+
+      // Télécharger le fichier
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${program?.title?.replace(/[^a-z0-9]/gi, '_') || 'programme'}.md`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+
+      console.log('✅ Markdown du programme téléchargé avec succès')
+    } catch (error: any) {
+      console.error('❌ Erreur lors du téléchargement du Markdown du programme:', error)
+      
+      const errorMessage = error.message || 'Erreur inconnue lors du téléchargement du Markdown'
+      
+      // Messages d'erreur spécifiques
+      if (errorMessage.includes('Failed to fetch') || errorMessage.includes('NetworkError')) {
+        const fullMessage = 
+          'Impossible de se connecter au serveur backend.\n\n' +
+          'Pour télécharger le Markdown, vous devez démarrer le serveur backend :\n\n' +
+          '1. Ouvrez un terminal dans le dossier portal-formations/server\n' +
+          '2. Exécutez: npm install (si nécessaire)\n' +
+          '3. Exécutez: npm run dev:server\n\n' +
+          'Le serveur doit être accessible sur http://localhost:3001'
+        
+        alert(`Erreur lors du téléchargement du Markdown :\n\n${fullMessage}`)
+      } else {
+        alert(`Erreur lors du téléchargement du Markdown :\n\n${errorMessage}\n\nConsultez les logs du serveur backend pour plus d'informations.`)
+      }
+    } finally {
+      setDownloadingMarkdown(false)
+    }
+  }
+
+  const handleDownloadPdf = async () => {
+    if (!programId || !user) {
+      alert('Vous devez être connecté pour télécharger le PDF.')
+      return
+    }
+
+    setDownloadingPdf(true)
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+      const fullUrl = `${apiUrl}/api/courses/programs/${programId}/pdf`
+
+      console.log('📥 Début du téléchargement PDF du programme...')
+
+      // Récupérer le token d'authentification
+      const { data: { session } } = await supabase.auth.getSession()
+
+      if (!session?.access_token) {
+        throw new Error('Vous devez être connecté pour télécharger le PDF.')
+      }
+
+      const response = await fetch(fullUrl, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+        },
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Erreur inconnue' }))
+        throw new Error(errorData.error || errorData.message || `Erreur ${response.status}: ${response.statusText}`)
+      }
+
+      // Vérifier le Content-Type
+      const contentType = response.headers.get('Content-Type')
+      console.log('Content-Type reçu:', contentType)
+
+      if (!contentType?.includes('application/pdf')) {
+        const text = await response.text()
+        console.error('Réponse non-PDF:', text.substring(0, 500))
+        throw new Error(`Le serveur n'a pas renvoyé un PDF. Content-Type: ${contentType}`)
+      }
+
+      const arrayBuffer = await response.arrayBuffer()
+
+      if (!arrayBuffer || arrayBuffer.byteLength === 0) {
+        throw new Error('Le fichier PDF généré est vide.')
+      }
+
+      console.log('Taille du PDF reçu:', arrayBuffer.byteLength, 'bytes')
+
+      // Créer le blob à partir de l'ArrayBuffer
+      const blob = new Blob([arrayBuffer], { type: 'application/pdf' })
+
+      // Télécharger le fichier
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${program?.title?.replace(/[^a-z0-9]/gi, '_') || 'programme'}.pdf`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+
+      console.log('✅ PDF du programme téléchargé avec succès')
+    } catch (error: any) {
+      console.error('❌ Erreur lors du téléchargement du PDF du programme:', error)
+
+      const errorMessage = error.message || 'Erreur inconnue lors du téléchargement du PDF'
+
+      if (errorMessage.includes('Failed to fetch') || errorMessage.includes('NetworkError')) {
+        const fullMessage =
+          'Impossible de se connecter au serveur backend.\n\n' +
+          'Pour télécharger le PDF, vous devez démarrer le serveur backend :\n\n' +
+          '1. Ouvrez un terminal dans le dossier portal-formations/server\n' +
+          '2. Exécutez: npm install (si nécessaire)\n' +
+          '3. Exécutez: npm run dev\n\n' +
+          'Le serveur doit être accessible sur http://localhost:3001'
+
+        alert(`Erreur lors du téléchargement du PDF :\n\n${fullMessage}`)
+      } else {
+        alert(`Erreur lors du téléchargement du PDF :\n\n${errorMessage}\n\nConsultez les logs du serveur backend pour plus d'informations.`)
+      }
+    } finally {
+      setDownloadingPdf(false)
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -185,6 +657,24 @@ export function ProgramView() {
               {program.description}
             </p>
           )}
+          <div className="mt-6 flex flex-wrap gap-3">
+            <button
+              onClick={handleDownloadPdf}
+              disabled={downloadingPdf}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-purple-600 rounded-lg hover:bg-purple-50 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <FileText className={`w-5 h-5 ${downloadingPdf ? 'animate-spin' : ''}`} />
+              {downloadingPdf ? 'Génération du PDF...' : 'Télécharger en PDF'}
+            </button>
+            <button
+              onClick={handleDownloadMarkdown}
+              disabled={downloadingMarkdown}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Download className={`w-5 h-5 ${downloadingMarkdown ? 'animate-spin' : ''}`} />
+              {downloadingMarkdown ? 'Génération...' : 'Télécharger en Markdown'}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -193,6 +683,431 @@ export function ProgramView() {
         {error && (
           <div className="mb-6 bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded">
             {error}
+          </div>
+        )}
+
+        {/* Section Évaluations */}
+        {evaluationsLoaded && (
+          <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                <ClipboardCheck className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Évaluations du programme</h3>
+                <p className="text-sm text-gray-500">Testez vos connaissances</p>
+              </div>
+            </div>
+            {evaluations.length === 0 ? (
+              <div className="text-center py-6 text-gray-500">
+                <Award className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                <p>Aucune évaluation disponible pour le moment</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {evaluations.map(evaluation => {
+                  const attempt = evaluationAttempts[evaluation.id]
+                  return (
+                    <div
+                      key={evaluation.id}
+                      className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50"
+                    >
+                      <div className="flex items-center gap-3">
+                        {attempt?.passed ? (
+                          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                            <CheckCircle className="w-5 h-5 text-green-600" />
+                          </div>
+                        ) : (
+                          <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                            <Award className="w-5 h-5 text-gray-400" />
+                          </div>
+                        )}
+                        <div>
+                          <h4 className="font-medium text-gray-900">{evaluation.title}</h4>
+                          <p className="text-sm text-gray-500">
+                            {evaluation.questions?.length || 0} questions • Score min: {evaluation.passing_score}%
+                            {attempt && (
+                              <span className={`ml-2 ${attempt.passed ? 'text-green-600' : 'text-orange-600'}`}>
+                                • Votre score: {attempt.percentage}%
+                              </span>
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                      <Link
+                        to={`/programs/${programId}/evaluation/${evaluation.id}`}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
+                      >
+                        {attempt ? 'Réessayer' : 'Commencer'}
+                      </Link>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Section Items attendus (TP, Quiz, Exercices) */}
+        {expectedItemsLoaded && (
+          <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                <FileText className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">TP, Quiz et Exercices</h3>
+                <p className="text-sm text-gray-500">Accédez directement aux activités du programme</p>
+                {/* Debug info */}
+                <p className="text-xs text-gray-400 mt-1">
+                  {expectedItems.length} item(s) chargé(s)
+                </p>
+              </div>
+            </div>
+            {expectedItems.length === 0 ? (
+              <div className="text-center py-6 text-gray-500">
+                <FileText className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                <p>Aucun TP, quiz ou exercice disponible pour le moment</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {expectedItems.map((expectedItem: any, index: number) => {
+                  console.log(`🔍 [${index}] Processing expectedItem:`, expectedItem)
+                  const item = expectedItem.items
+                  console.log(`📦 [${index}] Item extracted:`, item)
+                  if (!item || !item.id) {
+                    console.warn(`⚠️ [${index}] Item invalide ou manquant:`, { expectedItem, item })
+                    return (
+                      <div key={expectedItem.id || index} className="p-4 border border-red-200 bg-red-50 rounded-lg">
+                        <p className="text-red-700 text-sm">
+                          ⚠️ Item invalide: {JSON.stringify({ expectedItem, item })}
+                        </p>
+                      </div>
+                    )
+                  }
+                  
+                  // Log pour débogage
+                  if (item.type === 'tp') {
+                    console.log('🔍 TP trouvé:', {
+                      itemId: item.id,
+                      title: item.title,
+                      type: item.type,
+                      is_control_tp: item.is_control_tp,
+                      is_control_tp_type: typeof item.is_control_tp,
+                      raw_item: item,
+                      expectedItem_raw: expectedItem
+                    })
+                  }
+                  
+                  // Si is_control_tp n'est pas récupéré, le récupérer directement
+                  let isControlTp = item.is_control_tp
+                  if (item.type === 'tp' && isControlTp === undefined) {
+                    // Essayer de récupérer depuis expectedItem directement
+                    isControlTp = expectedItem.items?.is_control_tp
+                  }
+
+                  const getItemTypeIcon = (type: string) => {
+                    switch (type) {
+                      case 'tp':
+                        return <FileText className="w-5 h-5 text-blue-600" />
+                      case 'quiz':
+                        return <ClipboardCheck className="w-5 h-5 text-green-600" />
+                      case 'exercise':
+                        return <AlertCircle className="w-5 h-5 text-orange-600" />
+                      case 'game':
+                        return <Award className="w-5 h-5 text-purple-600" />
+                      default:
+                        return <FileText className="w-5 h-5 text-gray-600" />
+                    }
+                  }
+
+                  const getItemTypeLabel = (type: string) => {
+                    switch (type) {
+                      case 'tp':
+                        return 'TP'
+                      case 'quiz':
+                        return 'Quiz'
+                      case 'exercise':
+                        return 'Exercice'
+                      case 'game':
+                        return 'Jeu'
+                      default:
+                        return type
+                    }
+                  }
+
+                  return (
+                    <div key={expectedItem.id}>
+                      <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                        <div className="flex items-center gap-3 flex-1">
+                          {getItemTypeIcon(item.type)}
+                          <div className="flex-1">
+                            <h4 className="font-medium text-gray-900">{item.title}</h4>
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded">
+                                {getItemTypeLabel(item.type)}
+                              </span>
+                              {expectedItem.is_required && (
+                                <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded">
+                                  Obligatoire
+                                </span>
+                              )}
+                              {item.modules?.courses && (
+                                <span className="text-xs text-gray-500">
+                                  Cours: {item.modules.courses.title}
+                                </span>
+                              )}
+                              {expectedItem.due_date && (
+                                <span className="text-xs text-gray-500 flex items-center gap-1">
+                                  <Calendar className="w-3 h-3" />
+                                  Échéance: {new Date(expectedItem.due_date).toLocaleDateString('fr-FR')}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {item.id ? (
+                            <Link
+                              to={`/items/${item.id}`}
+                              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm font-medium"
+                            >
+                              Accéder
+                            </Link>
+                          ) : (
+                            <span className="text-red-500 text-sm">Erreur: ID manquant</span>
+                          )}
+                        {/* Pour les formateurs/admins et les TP de contrôle, afficher un bouton pour voir les soumissions */}
+                        {(() => {
+                          const isTrainerOrAdmin = profile?.role === 'admin' || profile?.role === 'trainer' || profile?.role === 'instructor'
+                          const isTp = item.type === 'tp'
+                          // Vérifier is_control_tp (peut être true, false, ou undefined)
+                          // Utiliser la variable isControlTp définie plus haut si disponible, sinon vérifier directement
+                          const itemIsControlTp = isControlTp === true || (item as any).is_control_tp === true
+                          const shouldShow = isTrainerOrAdmin && isTp && itemIsControlTp
+                          
+                          // Log pour débogage
+                          if (isTp) {
+                            console.log('🔍 Vérification affichage bouton soumissions:', {
+                              itemId: item.id,
+                              title: item.title,
+                              isTrainerOrAdmin,
+                              isTp,
+                              itemIsControlTp,
+                              shouldShow,
+                              is_control_tp_value: (item as any).is_control_tp,
+                              isControlTp_var: isControlTp,
+                              profile_role: profile?.role
+                            })
+                          }
+                          
+                          return shouldShow ? (
+                            <button
+                              onClick={() => setExpandedItemId(expandedItemId === item.id ? null : item.id)}
+                              className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 text-sm font-medium flex items-center gap-2"
+                            >
+                              <Users className="w-4 h-4" />
+                              Voir les soumissions ({itemSubmissions[item.id]?.length || 0})
+                            </button>
+                          ) : null
+                        })()}
+                        </div>
+                      </div>
+                      {/* Liste des soumissions (pour formateurs/admins) */}
+                      {expandedItemId === item.id && 
+                       (profile?.role === 'admin' || profile?.role === 'trainer' || profile?.role === 'instructor') &&
+                       item.type === 'tp' && (item as any).is_control_tp && (
+                        <div className="mt-4 pt-4 border-t border-gray-200 px-4 pb-4">
+                          <h5 className="text-sm font-medium text-gray-900 mb-3">Soumissions des étudiants</h5>
+                          {!itemSubmissions[item.id] || itemSubmissions[item.id].length === 0 ? (
+                            <p className="text-sm text-gray-500 italic">Aucune soumission pour le moment</p>
+                          ) : (
+                            <div className="space-y-2">
+                              {itemSubmissions[item.id].map((submission: any) => (
+                                <div
+                                  key={submission.id}
+                                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200"
+                                >
+                                  <div className="flex-1">
+                                    <p className="font-medium text-gray-900">
+                                      {submission.profiles?.full_name || submission.profiles?.student_id || 'Étudiant inconnu'}
+                                    </p>
+                                    <div className="flex items-center gap-2 mt-1">
+                                      <span className={`text-xs px-2 py-0.5 rounded ${
+                                        submission.status === 'graded'
+                                          ? 'bg-green-100 text-green-700'
+                                          : submission.status === 'submitted'
+                                          ? 'bg-blue-100 text-blue-700'
+                                          : 'bg-gray-100 text-gray-700'
+                                      }`}>
+                                        {submission.status === 'graded' ? 'Noté' : submission.status === 'submitted' ? 'Soumis' : 'Brouillon'}
+                                      </span>
+                                      {submission.grade !== null && (
+                                        <span className="text-xs font-medium text-gray-700">
+                                          Note: {submission.grade}/20
+                                        </span>
+                                      )}
+                                      <span className="text-xs text-gray-500">
+                                        {new Date(submission.submitted_at).toLocaleDateString('fr-FR')}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <Link
+                                    to={`/items/${item.id}?userId=${submission.user_id}`}
+                                    className="px-3 py-1.5 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 text-sm font-medium"
+                                  >
+                                    Noter
+                                  </Link>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Section Documents / Questionnaires */}
+        {documentsLoaded && (
+          <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                <FileText className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Documents à compléter</h3>
+                <p className="text-sm text-gray-500">Téléchargez, remplissez et soumettez</p>
+              </div>
+            </div>
+            {programDocuments.length === 0 ? (
+              <div className="text-center py-6 text-gray-500">
+                <FileText className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                <p>Aucun document à compléter pour le moment</p>
+              </div>
+            ) : (
+            <div className="space-y-4">
+              {programDocuments.map(doc => {
+                const submission = documentSubmissions[doc.id]
+                return (
+                  <div key={doc.id} className="border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-medium text-gray-900">{doc.title}</h4>
+                          {doc.is_required && (
+                            <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded">Obligatoire</span>
+                          )}
+                          {doc.timing === 'start' && (
+                            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Début de parcours</span>
+                          )}
+                          {doc.timing === 'end' && (
+                            <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">Fin de parcours</span>
+                          )}
+                        </div>
+                        {doc.description && (
+                          <p className="text-sm text-gray-500 mt-1">{doc.description}</p>
+                        )}
+                        {doc.due_date && (
+                          <p className="text-xs text-gray-400 mt-1 flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            Échéance: {new Date(doc.due_date).toLocaleDateString('fr-FR')}
+                          </p>
+                        )}
+                      </div>
+                      {submission && (
+                        <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded flex items-center gap-1">
+                          <CheckCircle className="w-3 h-3" />
+                          Soumis
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Télécharger le template */}
+                    {doc.template_url && (
+                      <a
+                        href={doc.template_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 mb-3"
+                      >
+                        <Download className="w-4 h-4" />
+                        Télécharger le document
+                      </a>
+                    )}
+
+                    {/* Zone de soumission */}
+                    {(!submission || doc.allow_resubmission) && (
+                      <div className="mt-3 pt-3 border-t border-gray-100">
+                        <FileUpload
+                          onFileSelect={(file) => setSelectedFiles(prev => ({ ...prev, [doc.id]: file }))}
+                          accept=".pdf,.doc,.docx,.xls,.xlsx"
+                          maxSize={50}
+                        />
+                        {selectedFiles[doc.id] && (
+                          <div className="mt-2 flex items-center justify-between">
+                            <span className="text-sm text-green-600">
+                              ✓ {selectedFiles[doc.id]!.name}
+                            </span>
+                            <button
+                              onClick={() => handleDocumentSubmit(doc.id, doc)}
+                              disabled={uploadingDoc === doc.id}
+                              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm disabled:opacity-50"
+                            >
+                              {uploadingDoc === doc.id ? 'Envoi...' : 'Soumettre'}
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Soumission existante */}
+                    {submission && (
+                      <div className="mt-3 pt-3 border-t border-gray-100 text-sm text-gray-500">
+                        Soumis le {new Date(submission.submitted_at).toLocaleDateString('fr-FR', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric'
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+            )}
+          </div>
+        )}
+
+        {/* Lien vers le glossaire */}
+        {program?.glossary && (
+          <div className="mb-6 bg-gradient-to-r from-indigo-50 to-purple-50 border-2 border-indigo-200 rounded-xl shadow-sm p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center">
+                  <Book className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                    Glossaire du programme
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Consultez les définitions et exemples des termes utilisés dans ce programme
+                  </p>
+                </div>
+              </div>
+              <Link
+                to={`/programs/${programId}/glossary`}
+                className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium inline-flex items-center gap-2"
+              >
+                <Book className="w-5 h-5" />
+                Ouvrir le glossaire
+              </Link>
+            </div>
           </div>
         )}
 

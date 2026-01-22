@@ -8,8 +8,9 @@ import { CourseFeaturesTiles } from '../components/CourseFeaturesTiles'
 import { Progress } from '../components/Progress'
 import { ReactRenderer } from '../components/ReactRenderer'
 import { CourseSidebar } from '../components/CourseSidebar'
+import { CourseHomePage } from '../components/CourseHomePage'
 import { CourseJson } from '../types/courseJson'
-import { Eye, EyeOff, X, BookOpen, FileText, Download, List, ChevronRight, Home } from 'lucide-react'
+import { Eye, EyeOff, X, BookOpen, FileText, Download, List, ChevronRight, Home, LayoutGrid } from 'lucide-react'
 import { Lexique } from './Lexique'
 import { getCurrentUserRole } from '../lib/queries/userRole'
 import { CourseResourcesViewer } from '../components/CourseResourcesViewer'
@@ -18,6 +19,7 @@ import { FillableDocumentsViewer } from '../components/FillableDocumentsViewer'
 import { CourseGammaSlides } from '../components/CourseGammaSlides'
 import { ErrorBoundary } from '../components/ErrorBoundary'
 import { AppHeader } from '../components/AppHeader'
+import { useNavigationContext, EnhancedBreadcrumb } from '../components/NavigationContext'
 
 interface ModuleWithItems extends Module {
   items: Item[]
@@ -27,6 +29,7 @@ export function CourseView() {
   const { courseId } = useParams<{ courseId: string }>()
   const [searchParams] = useSearchParams()
   const { user, profile } = useAuth()
+  const { setContext, clearContext } = useNavigationContext()
   const [course, setCourse] = useState<Course | null>(null)
   const [modules, setModules] = useState<ModuleWithItems[]>([])
   const [allItems, setAllItems] = useState<Item[]>([])
@@ -42,11 +45,13 @@ export function CourseView() {
   const [isDesktop, setIsDesktop] = useState(false)
   const [isTrainer, setIsTrainer] = useState(false)
   const [courseViewMode, setCourseViewMode] = useState<'all' | 'module'>('all') // 'all' = tout à la suite, 'module' = un module à la fois
+  const [showHomePage, setShowHomePage] = useState(true) // Show homepage overview by default
   const [currentModuleIndex, setCurrentModuleIndex] = useState<number | null>(null)
   const [moduleProgress, setModuleProgress] = useState<Record<string, { percent: number; completed: boolean }>>({})
   const [hasFillableDocuments, setHasFillableDocuments] = useState<boolean | null>(null)
   const [hasCourseResources, setHasCourseResources] = useState<boolean | null>(null)
   const [hasResources, setHasResources] = useState<boolean | null>(null)
+  const [programData, setProgramData] = useState<{ id: string; title: string } | null>(null)
   const viewMode = searchParams.get('view')
 
   // Détecter si on est sur desktop
@@ -201,21 +206,43 @@ export function CourseView() {
     checkTrainerRole()
   }, [user])
 
-  const [downloadingPdf, setDownloadingPdf] = useState(false);
+  // Mettre à jour le contexte de navigation
+  useEffect(() => {
+    if (course) {
+      setContext({
+        program: programData ? {
+          id: programData.id,
+          title: programData.title,
+          type: 'program'
+        } : undefined,
+        course: {
+          id: course.id,
+          title: course.title,
+          type: 'course'
+        }
+      })
+    }
 
-  const handleDownloadPdf = async () => {
+    return () => {
+      clearContext()
+    }
+  }, [course, programData, setContext, clearContext])
+
+  const [downloadingMarkdown, setDownloadingMarkdown] = useState(false);
+
+  const handleDownloadMarkdown = async () => {
     if (!courseId) {
       alert('ID du cours manquant');
       return;
     }
     
-    setDownloadingPdf(true);
+    setDownloadingMarkdown(true);
     
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
-      const fullUrl = `${apiUrl}/api/courses/${courseId}/pdf`;
+      const fullUrl = `${apiUrl}/api/courses/${courseId}/markdown`;
       
-      console.log('📥 Début du téléchargement PDF...');
+      console.log('📥 Début du téléchargement Markdown...');
       console.log('URL API:', apiUrl);
       console.log('URL complète:', fullUrl);
       
@@ -234,7 +261,7 @@ export function CourseView() {
       
       if (!sessionData?.session?.access_token) {
         console.error('Aucun token d\'authentification disponible');
-        throw new Error('Vous devez être connecté pour télécharger le PDF.');
+        throw new Error('Vous devez être connecté pour télécharger le Markdown.');
       }
       
       console.log('Token d\'authentification récupéré');
@@ -246,7 +273,6 @@ export function CourseView() {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${sessionData.session.access_token}`,
-            'Content-Type': 'application/json',
           },
         });
       } catch (fetchError: any) {
@@ -321,32 +347,26 @@ export function CourseView() {
         throw new Error(errorMessage);
       }
 
-      console.log('Téléchargement du blob...');
+      console.log('Téléchargement du fichier Markdown...');
       const blob = await response.blob();
       console.log('Blob reçu, taille:', blob.size, 'bytes');
       
       if (blob.size === 0) {
-        throw new Error('Le PDF généré est vide. Vérifiez les logs du serveur.');
-      }
-      
-      // Vérifier que c'est bien un PDF
-      if (!blob.type.includes('pdf') && !blob.type.includes('application/octet-stream')) {
-        console.warn('Type MIME inattendu:', blob.type);
-        // Essayer quand même de télécharger
+        throw new Error('Le fichier Markdown généré est vide. Vérifiez les logs du serveur.');
       }
       
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${course?.title?.replace(/[^a-z0-9]/gi, '_') || 'cours'}.pdf`;
+      a.download = `${course?.title?.replace(/[^a-z0-9]/gi, '_') || 'cours'}.md`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
       
-      console.log('✅ PDF téléchargé avec succès');
+      console.log('✅ Markdown téléchargé avec succès');
     } catch (error: any) {
-      console.error('❌ Erreur lors du téléchargement du PDF:', error);
+      console.error('❌ Erreur lors du téléchargement du Markdown:', error);
       console.error('Détails:', {
         message: error.message,
         stack: error.stack,
@@ -354,14 +374,14 @@ export function CourseView() {
       });
       
       // Afficher un message d'erreur plus clair à l'utilisateur
-      const errorMessage = error.message || 'Erreur inconnue lors du téléchargement du PDF';
+      const errorMessage = error.message || 'Erreur inconnue lors du téléchargement du Markdown';
       
       // Si c'est une erreur de connexion, afficher un message spécial
       if (errorMessage.includes('Impossible de se connecter') || errorMessage.includes('ERR_CONNECTION_REFUSED')) {
         alert(
           '🚫 Serveur backend non disponible\n\n' +
           'Le serveur backend n\'est pas démarré.\n\n' +
-          'Pour télécharger le PDF, vous devez démarrer le serveur backend :\n\n' +
+          'Pour télécharger le Markdown, vous devez démarrer le serveur backend :\n\n' +
           '1. Ouvrez un terminal\n' +
           '2. Allez dans le dossier portal-formations\n' +
           '3. Exécutez : npm run dev:server\n\n' +
@@ -372,10 +392,10 @@ export function CourseView() {
         const fullMessage = errorMessage.length > 500 
           ? errorMessage.substring(0, 500) + '...\n\n(Voir la console pour plus de détails)'
           : errorMessage;
-        alert(`Erreur lors du téléchargement du PDF :\n\n${fullMessage}\n\nConsultez les logs du serveur backend pour plus d'informations.`);
+        alert(`Erreur lors du téléchargement du Markdown :\n\n${fullMessage}\n\nConsultez les logs du serveur backend pour plus d'informations.`);
       }
     } finally {
-      setDownloadingPdf(false);
+      setDownloadingMarkdown(false);
     }
   };
 
@@ -791,6 +811,19 @@ export function CourseView() {
 
       setCourseJson(courseJsonData)
 
+      // Chercher si le cours fait partie d'un programme
+      const { data: programCourse } = await supabase
+        .from('program_courses')
+        .select('programs (id, title)')
+        .eq('course_id', courseId)
+        .limit(1)
+        .maybeSingle()
+
+      if (programCourse?.programs) {
+        const prog = programCourse.programs as any
+        setProgramData({ id: prog.id, title: prog.title })
+      }
+
       // Récupérer les TP associés directement et les lots de TP
       await fetchCourseTpsAndBatches()
 
@@ -1144,8 +1177,10 @@ export function CourseView() {
         backLabel="Retour"
       />
       <div className="pt-8">
+        {/* Header masque quand page d'accueil affichee - boutons dans le fil d'Ariane */}
+        {!showHomePage && (
         <header className="bg-white border-b border-slate-200" style={{ zIndex: 40 }}>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-6 space-y-6">
+          <div className="mx-auto w-full px-4 sm:px-6 lg:px-10 py-6 space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-500">
               <div className="flex flex-wrap gap-2">
                 {summaryChips.map((chip) => (
@@ -1224,14 +1259,25 @@ export function CourseView() {
                     {showHeaderContent ? 'Masquer' : 'Afficher'}
                   </button>
 
+                  {viewMode !== 'progress' && (
+                    <button
+                      onClick={() => setShowHomePage(!showHomePage)}
+                      className={outlineButton}
+                      title={showHomePage ? 'Voir le contenu detaille' : 'Voir la page d\'accueil'}
+                    >
+                      <LayoutGrid className="w-4 h-4" />
+                      {showHomePage ? 'Contenu' : 'Accueil'}
+                    </button>
+                  )}
+
                   {course.allow_pdf_download && viewMode !== 'progress' && (
                     <button
-                      onClick={handleDownloadPdf}
-                      disabled={downloadingPdf}
+                      onClick={handleDownloadMarkdown}
+                      disabled={downloadingMarkdown}
                       className={`${solidButton} bg-blue-600 hover:bg-blue-700 disabled:opacity-50`}
-                      title="Telecharger le cours en PDF"
+                      title="Télécharger le cours en Markdown"
                     >
-                      {downloadingPdf ? (
+                      {downloadingMarkdown ? (
                         <>
                           <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-white" />
                           Generation...
@@ -1239,7 +1285,7 @@ export function CourseView() {
                       ) : (
                         <>
                           <Download className="w-4 h-4" />
-                          PDF
+                          Markdown
                         </>
                       )}
                     </button>
@@ -1260,6 +1306,7 @@ export function CourseView() {
             </div>
           </div>
         </header>
+        )}
 
       <main 
         className="px-4 sm:px-6 lg:px-10 py-10 transition-all"
@@ -1268,35 +1315,41 @@ export function CourseView() {
           marginLeft: viewMode !== 'progress' && courseJson && sidebarOpen && !isDesktop ? '320px' : undefined
         }}
       >
-        <div className="mx-auto max-w-7xl" style={{ position: 'relative' }}>
-          {/* Fil d'Ariane */}
-          <nav className="mb-6 flex items-center gap-2 text-sm text-slate-600">
-            <Link 
-              to="/app" 
-              className="flex items-center gap-1 hover:text-blue-600 transition-colors"
-            >
-              <Home className="w-4 h-4" />
-              <span>Accueil</span>
-            </Link>
-            <ChevronRight className="w-4 h-4 text-slate-400" />
-            <Link 
-              to="/app" 
-              className="hover:text-blue-600 transition-colors"
-            >
-              Formations
-            </Link>
-            {course && (
-              <>
-                <ChevronRight className="w-4 h-4 text-slate-400" />
-                <span className="text-slate-900 font-medium truncate max-w-xs">
-                  {course.title}
-                </span>
-              </>
+        <div className="mx-auto w-full" style={{ position: 'relative' }}>
+          {/* Fil d'Ariane amélioré + boutons si page d'accueil */}
+          <div className="mb-6 flex items-center justify-between gap-4">
+            <div className="min-w-0 flex-1 overflow-x-auto">
+              <EnhancedBreadcrumb />
+            </div>
+            {showHomePage && viewMode !== 'progress' && (
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {profile?.role === 'admin' && (
+                  <Link
+                    to={`/admin/courses/${course?.id}`}
+                    className={outlineButton}
+                  >
+                    Modifier
+                  </Link>
+                )}
+                <Link
+                  to={`/courses/${courseId}?view=progress`}
+                  className={outlineButton}
+                >
+                  Progression
+                </Link>
+                <button
+                  onClick={() => setShowHomePage(false)}
+                  className={solidButton}
+                >
+                  Voir le contenu
+                </button>
+              </div>
             )}
-          </nav>
+          </div>
 
-          <div className={`grid gap-6 ${viewMode !== 'progress' && courseJson ? 'lg:grid-cols-[320px_minmax(0,1fr)]' : ''}`} style={{ position: 'relative' }}>
-            {viewMode !== 'progress' && courseJson && (
+          {/* Grid avec sidebar uniquement si pas sur la page d'accueil */}
+          <div className={`grid gap-6 ${viewMode !== 'progress' && courseJson && !showHomePage ? 'lg:grid-cols-[320px_minmax(0,1fr)]' : ''}`} style={{ position: 'relative' }}>
+            {viewMode !== 'progress' && courseJson && !showHomePage && (
               <>
                 {/* Sidebar desktop - sticky, suit le scroll */}
                 <aside className="hidden lg:block" style={{ alignSelf: 'start' }}>
@@ -1374,14 +1427,24 @@ export function CourseView() {
             <section className="space-y-6">
               {viewMode === 'progress' ? (
                 <Progress />
+              ) : showHomePage && course ? (
+                /* Course Homepage View */
+                <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+                  <CourseHomePage
+                    course={course}
+                    modules={modules}
+                    onStartCourse={() => setShowHomePage(false)}
+                  />
+                </div>
               ) : (
+                /* Detailed Course Content View */
                 <>
                   {showHeaderContent && course && allItems.length > 0 && (
                     <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
-                      <CourseFeaturesTiles 
-                        course={course} 
-                        items={allItems} 
-                        courseId={courseId!} 
+                      <CourseFeaturesTiles
+                        course={course}
+                        items={allItems}
+                        courseId={courseId!}
                       />
                     </div>
                   )}
@@ -1390,24 +1453,24 @@ export function CourseView() {
                     <>
                       {hasCourseResources === true && (
                         <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
-                          <CourseResourcesViewer 
-                            courseId={courseId} 
+                          <CourseResourcesViewer
+                            courseId={courseId}
                             onHasResourcesChange={setHasCourseResources}
                           />
                         </div>
                       )}
                       {hasCourseResources === null && (
                         <div style={{ display: 'none' }}>
-                          <CourseResourcesViewer 
-                            courseId={courseId} 
+                          <CourseResourcesViewer
+                            courseId={courseId}
                             onHasResourcesChange={setHasCourseResources}
                           />
                         </div>
                       )}
                       {hasResources === true && (
                         <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm mt-6">
-                          <ResourceViewer 
-                            courseId={courseId} 
+                          <ResourceViewer
+                            courseId={courseId}
                             title="Ressources du cours"
                             onHasResourcesChange={setHasResources}
                           />
@@ -1415,8 +1478,8 @@ export function CourseView() {
                       )}
                       {hasResources === null && (
                         <div style={{ display: 'none' }}>
-                          <ResourceViewer 
-                            courseId={courseId} 
+                          <ResourceViewer
+                            courseId={courseId}
                             title="Ressources du cours"
                             onHasResourcesChange={setHasResources}
                           />
@@ -1430,16 +1493,16 @@ export function CourseView() {
                     <>
                       {hasFillableDocuments === true && (
                         <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm mt-6">
-                          <FillableDocumentsViewer 
-                            courseId={courseId} 
+                          <FillableDocumentsViewer
+                            courseId={courseId}
                             onHasDocumentsChange={setHasFillableDocuments}
                           />
                         </div>
                       )}
                       {hasFillableDocuments === null && (
                         <div style={{ display: 'none' }}>
-                          <FillableDocumentsViewer 
-                            courseId={courseId} 
+                          <FillableDocumentsViewer
+                            courseId={courseId}
                             onHasDocumentsChange={setHasFillableDocuments}
                           />
                         </div>
@@ -1460,7 +1523,7 @@ export function CourseView() {
                         console.log('Rendering ReactRenderer with moduleProgress:', moduleProgress, 'modules:', modules.map(m => ({ id: m.id, title: m.title })))
                         return null
                       })()}
-                      <ReactRenderer 
+                      <ReactRenderer
                         courseJson={courseJson}
                         modules={modules}
                         moduleProgress={moduleProgress}

@@ -1,0 +1,209 @@
+{
+  "metadata": {
+    "title": "Glossaire Python - Concepts essentiels",
+    "description": "Glossaire complet des concepts Python avec explications et exemples pratiques",
+    "category": "Python",
+    "version": "1.0.0",
+    "author": "Système",
+    "created_at": "2024-01-15T10:00:00Z",
+    "updated_at": "2024-01-15T10:00:00Z"
+  },
+  "categories": [
+    {
+      "id": "variables",
+      "name": "Variables & Types",
+      "description": "Concepts liés aux variables et types de données de base"
+    },
+    {
+      "id": "operators",
+      "name": "Opérateurs & Comparaisons",
+      "description": "Opérateurs arithmétiques, logiques et de comparaison"
+    },
+    {
+      "id": "control",
+      "name": "Structures de contrôle",
+      "description": "Conditions, boucles et structures de contrôle de flux"
+    },
+    {
+      "id": "functions",
+      "name": "Fonctions",
+      "description": "Définition et utilisation des fonctions"
+    },
+    {
+      "id": "collections",
+      "name": "Collections",
+      "description": "Listes, dictionnaires, ensembles et tuples"
+    },
+    {
+      "id": "strings",
+      "name": "Chaînes de caractères",
+      "description": "Manipulation des chaînes de caractères"
+    },
+    {
+      "id": "files",
+      "name": "Fichiers",
+      "description": "Lecture et écriture de fichiers"
+    },
+    {
+      "id": "exceptions",
+      "name": "Exceptions",
+      "description": "Gestion des erreurs et exceptions"
+    }
+  ],
+  "terms": [
+    {
+      "id": "none",
+      "word": "None",
+      "explanation": "Valeur spéciale en Python qui représente l'absence de valeur. None est un objet singleton, ce qui signifie qu'il n'existe qu'une seule instance de None dans tout le programme Python. Utilisé pour initialiser des variables qui n'ont pas encore de valeur ou pour indiquer qu'une fonction ne retourne rien.",
+      "example": "x = None\nif x is None:\n    print('x n\\'a pas de valeur')\n\n# Fonction sans valeur de retour\n def greet():\n     print('Bonjour')\n     # Retourne None implicitement",
+      "category_id": "variables",
+      "tags": ["type", "valeur", "absence", "singleton"],
+      "related_terms": [],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "bool",
+      "word": "bool",
+      "explanation": "Fonction native Python qui convertit une valeur en booléen (True ou False). Les valeurs 'falsy' (False, None, 0, '', [], {}, etc.) retournent False, toutes les autres valeurs retournent True.",
+      "example": "bool(0)      # False\nbool(1)      # True\nbool('')     # False\nbool('abc')  # True\nbool([])     # False\nbool([1,2])  # True",
+      "category_id": "variables",
+      "tags": ["conversion", "type", "booléen"],
+      "related_terms": ["True", "False"],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "isinstance",
+      "word": "isinstance",
+      "explanation": "Fonction native Python qui vérifie si un objet est une instance d'une classe ou d'un type donné. Plus recommandé que type() == car elle gère l'héritage correctement.",
+      "example": "isinstance(42, int)        # True\nisinstance('hello', str)   # True\nisinstance([1,2], list)    # True\nisinstance([1,2], (list, tuple))  # True (plusieurs types)",
+      "category_id": "variables",
+      "tags": ["type", "vérification", "introspection"],
+      "related_terms": ["type"],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "lambda",
+      "word": "lambda",
+      "explanation": "Mot-clé Python permettant de créer des fonctions anonymes (sans nom). Les fonctions lambda sont utiles pour des opérations courtes et simples, souvent utilisées avec map(), filter(), ou sorted(). Syntaxe: lambda arguments: expression",
+      "example": "# Fonction lambda simple\nadd = lambda x, y: x + y\nresult = add(3, 5)  # 8\n\n# Utilisation avec map\nnumbers = [1, 2, 3, 4]\nsquared = list(map(lambda x: x**2, numbers))  # [1, 4, 9, 16]\n\n# Utilisation avec filter\nodds = list(filter(lambda x: x % 2 == 1, numbers))  # [1, 3]",
+      "category_id": "functions",
+      "tags": ["fonction", "anonyme", "fonctionnel", "map", "filter"],
+      "related_terms": ["map", "filter", "sorted"],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "map",
+      "word": "map",
+      "explanation": "Fonction native Python qui applique une fonction à chaque élément d'un itérable et retourne un objet map (itérable). Utilisez list() pour convertir le résultat en liste.",
+      "example": "numbers = [1, 2, 3, 4]\n\n# Avec fonction lambda\nsquared = list(map(lambda x: x**2, numbers))  # [1, 4, 9, 16]\n\n# Avec fonction nommée\ndef double(n):\n    return n * 2\ndoubled = list(map(double, numbers))  # [2, 4, 6, 8]",
+      "category_id": "functions",
+      "tags": ["fonction", "itérable", "transformation"],
+      "related_terms": ["lambda", "filter", "list"],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "filter",
+      "word": "filter",
+      "explanation": "Fonction native Python qui filtre les éléments d'un itérable en gardant uniquement ceux pour lesquels une fonction retourne True. Retourne un objet filter (itérable).",
+      "example": "numbers = [1, 2, 3, 4, 5, 6]\n\n# Filtrer les nombres pairs\nodds = list(filter(lambda x: x % 2 == 1, numbers))  # [1, 3, 5]\n\n# Filtrer avec fonction nommée\ndef is_positive(n):\n    return n > 0\npositives = list(filter(is_positive, [-2, -1, 0, 1, 2]))  # [1, 2]",
+      "category_id": "functions",
+      "tags": ["fonction", "itérable", "filtrage"],
+      "related_terms": ["lambda", "map", "list"],
+      "language": "python",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "list_append",
+      "word": "list.append",
+      "explanation": "Méthode des listes Python qui ajoute un élément à la fin de la liste. Modifie la liste en place (ne retourne rien).",
+      "example": "lst = [1, 2, 3]\nlst.append(4)  # lst devient [1, 2, 3, 4]\nlst.append('a')  # lst devient [1, 2, 3, 4, 'a']",
+      "category_id": "collections",
+      "tags": ["liste", "méthode", "ajout"],
+      "related_terms": ["list", "list.extend", "list.insert"],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "list_extend",
+      "word": "list.extend",
+      "explanation": "Méthode des listes Python qui ajoute tous les éléments d'un itérable à la fin de la liste. Contrairement à append(), extend() ajoute les éléments individuellement plutôt qu'un seul élément.",
+      "example": "lst = [1, 2, 3]\nlst.extend([4, 5])  # lst devient [1, 2, 3, 4, 5]\nlst.extend('ab')    # lst devient [1, 2, 3, 4, 5, 'a', 'b']\n\n# Différence avec append:\nlst2 = [1, 2]\nlst2.append([3, 4])  # [1, 2, [3, 4]]\nlst2.extend([3, 4])  # [1, 2, 3, 4]",
+      "category_id": "collections",
+      "tags": ["liste", "méthode", "ajout", "itérable"],
+      "related_terms": ["list", "list.append"],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "dict_get",
+      "word": "dict.get",
+      "explanation": "Méthode des dictionnaires Python qui récupère la valeur associée à une clé, ou retourne une valeur par défaut si la clé n'existe pas. Plus sûre que dict[key] car ne lève pas d'erreur si la clé est absente.",
+      "example": "d = {'a': 1, 'b': 2}\n\n# Clé existante\nvalue = d.get('a')      # 1\n\n# Clé absente avec valeur par défaut\nvalue = d.get('c', 0)   # 0 (au lieu de KeyError)\n\n# Clé absente sans valeur par défaut\nvalue = d.get('c')      # None",
+      "category_id": "collections",
+      "tags": ["dictionnaire", "méthode", "accès", "sécurité"],
+      "related_terms": ["dict", "dict.items", "dict.keys"],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "str_split",
+      "word": "str.split",
+      "explanation": "Méthode des chaînes Python qui découpe une chaîne en une liste de sous-chaînes en utilisant un séparateur. Par défaut, utilise les espaces comme séparateur.",
+      "example": "'a,b,c'.split(',')        # ['a', 'b', 'c']\n'hello world'.split()      # ['hello', 'world']\n'one two three'.split(' ') # ['one', 'two', 'three']\n'abc'.split()             # ['abc']",
+      "category_id": "strings",
+      "tags": ["chaîne", "méthode", "découpage"],
+      "related_terms": ["str", "str.join"],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "str_join",
+      "word": "str.join",
+      "explanation": "Méthode des chaînes Python qui joint les éléments d'un itérable (liste, tuple, etc.) en une seule chaîne, en utilisant la chaîne comme séparateur.",
+      "example": "','.join(['a', 'b', 'c'])     # 'a,b,c'\n' '.join(['hello', 'world'])  # 'hello world'\n'-'.join(['2024', '01', '15']) # '2024-01-15'\n''.join(['a', 'b', 'c'])       # 'abc'",
+      "category_id": "strings",
+      "tags": ["chaîne", "méthode", "jointure"],
+      "related_terms": ["str", "str.split"],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "f_string",
+      "word": "f-string",
+      "explanation": "Syntaxe Python (depuis 3.6) pour formater des chaînes de caractères de manière concise et lisible. Permet d'insérer des expressions Python directement dans une chaîne en utilisant {expression}.",
+      "example": "name = 'Alice'\nage = 30\n\n# f-string simple\nmessage = f'Bonjour {name}'  # 'Bonjour Alice'\n\n# Avec expressions\ninfo = f'{name} a {age} ans'  # 'Alice a 30 ans'\n\n# Avec formatage\nprice = 19.99\nformatted = f'Prix: {price:.2f}€'  # 'Prix: 19.99€'",
+      "category_id": "strings",
+      "tags": ["chaîne", "formatage", "interpolation"],
+      "related_terms": ["str", "str.format"],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "try_except",
+      "word": "try/except",
+      "explanation": "Structure de contrôle Python pour gérer les exceptions (erreurs). Le bloc try contient le code qui peut lever une exception, et le bloc except contient le code à exécuter si une exception est levée.",
+      "example": "try:\n    x = int('42')\n    result = 10 / x\nexcept ValueError:\n    print('Erreur: valeur invalide')\nexcept ZeroDivisionError:\n    print('Erreur: division par zéro')\nexcept Exception as e:\n    print(f'Erreur inattendue: {e}')",
+      "category_id": "exceptions",
+      "tags": ["exception", "gestion", "erreur"],
+      "related_terms": ["raise", "finally"],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "with_open",
+      "word": "with open(...) as",
+      "explanation": "Syntaxe Python recommandée pour ouvrir et fermer automatiquement des fichiers. Le gestionnaire de contexte garantit que le fichier est fermé même en cas d'erreur. Plus sûr que open() + close().",
+      "example": "# Lecture\nwith open('data.txt', 'r', encoding='utf-8') as f:\n    content = f.read()\n    # Le fichier est automatiquement fermé ici\n\n# Écriture\nwith open('output.txt', 'w', encoding='utf-8') as f:\n    f.write('Hello, World!')\n\n# Lecture ligne par ligne\nwith open('data.txt', 'r', encoding='utf-8') as f:\n    for line in f:\n        print(line.strip())",
+      "category_id": "files",
+      "tags": ["fichier", "contexte", "gestionnaire"],
+      "related_terms": ["open", "file.read", "file.write"],
+      "language": "python",
+      "difficulty": "beginner"
+    }
+  ]
+}

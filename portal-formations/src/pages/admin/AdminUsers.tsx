@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Profile, UserRole } from '../../types/database'
-import { Trash2, UserPlus, Search, X, Shield, BookOpen, GraduationCap, UserX, UserCheck, Ghost, Key } from 'lucide-react'
+import { Trash2, UserPlus, Search, X, Shield, BookOpen, GraduationCap, UserX, UserCheck, Ghost, Key, Edit2, Check } from 'lucide-react'
 import { AppHeader } from '../../components/AppHeader'
 import { Link } from 'react-router-dom'
 
@@ -24,6 +24,8 @@ export function AdminUsers() {
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [editingRole, setEditingRole] = useState<string | null>(null)
+  const [editingName, setEditingName] = useState<string | null>(null)
+  const [editingNameValue, setEditingNameValue] = useState<string>('')
   const [formData, setFormData] = useState<CreateUserForm>({
     email: '',
     studentId: '',
@@ -237,6 +239,41 @@ export function AdminUsers() {
 
   const handleCancelEditRole = () => {
     setEditingRole(null)
+  }
+
+  const handleEditName = (userId: string, currentName: string | null) => {
+    setEditingName(userId)
+    setEditingNameValue(currentName || '')
+  }
+
+  const handleCancelEditName = () => {
+    setEditingName(null)
+    setEditingNameValue('')
+  }
+
+  const handleUpdateName = async (userId: string) => {
+    if (!editingNameValue.trim()) {
+      setError('Le nom ne peut pas être vide')
+      return
+    }
+
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ full_name: editingNameValue.trim() })
+        .eq('id', userId)
+
+      if (error) throw error
+
+      setSuccess('Nom mis à jour avec succès')
+      setEditingName(null)
+      setEditingNameValue('')
+      await fetchUsers()
+    } catch (error: any) {
+      console.error('Error updating name:', error)
+      setError(error.message || 'Erreur lors de la mise à jour du nom.')
+      setEditingName(null)
+    }
   }
 
   const handleToggleActive = async (userId: string, currentStatus: boolean) => {
@@ -593,9 +630,51 @@ export function AdminUsers() {
                         className={`hover:bg-gray-50 ${!isActive ? 'opacity-60 bg-gray-50' : ''}`}
                       >
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-gray-900">
-                            {user.full_name || 'Sans nom'}
-                          </div>
+                          {editingName === user.id ? (
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="text"
+                                value={editingNameValue}
+                                onChange={(e) => setEditingNameValue(e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    handleUpdateName(user.id)
+                                  } else if (e.key === 'Escape') {
+                                    handleCancelEditName()
+                                  }
+                                }}
+                                className="text-sm font-medium text-gray-900 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full max-w-xs"
+                                autoFocus
+                              />
+                              <button
+                                onClick={() => handleUpdateName(user.id)}
+                                className="text-green-600 hover:text-green-800"
+                                title="Valider"
+                              >
+                                <Check className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={handleCancelEditName}
+                                className="text-gray-500 hover:text-gray-700"
+                                title="Annuler"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-medium text-gray-900">
+                                {user.full_name || 'Sans nom'}
+                              </span>
+                              <button
+                                onClick={() => handleEditName(user.id, user.full_name)}
+                                className="text-blue-600 hover:text-blue-800"
+                                title="Modifier le nom"
+                              >
+                                <Edit2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-500 font-mono text-xs">

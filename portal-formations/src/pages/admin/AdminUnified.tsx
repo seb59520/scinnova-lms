@@ -163,7 +163,7 @@ export function AdminUnified() {
       <AppHeader title="Administration" />
 
       <main className="pt-8 pb-12 px-4 sm:px-6 lg:px-10">
-        <div className="mx-auto w-full max-w-7xl space-y-8">
+        <div className="w-full space-y-8">
           <section className="rounded-3xl border border-slate-100 bg-white shadow-sm">
             <div className="flex flex-col gap-6 p-6 lg:flex-row lg:items-center lg:justify-between">
               <div className="space-y-3">

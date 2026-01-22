@@ -11,6 +11,13 @@ Application web de formation en ligne avec React, Vite, TypeScript et Supabase.
 - **Administration** : Interface complète pour gérer le contenu
 - **Préparation paiement** : Structure prête pour Stripe (formations payantes)
 
+## 📚 Concepts clés
+
+### Formation vs Programme
+
+- **Formation** : Contenu pédagogique autonome (cours, TP, exercices)
+- **Programme** : Parcours structuré regroupant plusieurs formations dans un ordre défini
+
 ## 🛠️ Stack Technique
 
 - **Frontend** : React 18 + Vite + TypeScript

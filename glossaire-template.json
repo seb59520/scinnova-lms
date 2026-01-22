@@ -1,0 +1,42 @@
+{
+  "metadata": {
+    "title": "Mon Glossaire",
+    "description": "Description de mon glossaire",
+    "category": "Catégorie",
+    "version": "1.0.0",
+    "author": "Votre nom",
+    "created_at": "2024-01-15T10:00:00Z",
+    "updated_at": "2024-01-15T10:00:00Z"
+  },
+  "categories": [
+    {
+      "id": "categorie1",
+      "name": "Ma Catégorie",
+      "description": "Description de la catégorie"
+    }
+  ],
+  "terms": [
+    {
+      "id": "terme1",
+      "word": "MonTerme",
+      "explanation": "Explication détaillée du terme. Vous pouvez utiliser plusieurs lignes.\n\nChaque ligne sera convertie en paragraphe séparé.",
+      "example": "# Exemple d'utilisation\ncode = 'exemple'\nresultat = fonction(code)\nprint(resultat)",
+      "category_id": "categorie1",
+      "tags": ["tag1", "tag2"],
+      "related_terms": [],
+      "language": "python",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "terme2",
+      "word": "AutreTerme",
+      "explanation": "Explication de l'autre terme.",
+      "example": "autre_exemple = 'code ici'",
+      "category_id": "categorie1",
+      "tags": ["tag1"],
+      "related_terms": ["terme1"],
+      "language": "python",
+      "difficulty": "intermediate"
+    }
+  ]
+}

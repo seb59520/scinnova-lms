@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { createClient } from '@supabase/supabase-js';
 import puppeteer from 'puppeteer';
 import { tipTapToHtml, pedagogicalContextToHtml } from '../utils/tipTapToHtml';
+import { tipTapToMarkdown, pedagogicalContextToMarkdown } from '../utils/tipTapToMarkdown';
 import * as fs from 'fs';
 import * as path from 'path';
 import { promisify } from 'util';
@@ -910,6 +911,1827 @@ function generatePdfHtml(course: any, slides: any[], supabaseClient: any): strin
 </body>
 </html>
   `;
+}
+
+/**
+ * GET /api/courses/programs/:programId/pdf
+ * Génère un PDF du programme complet avec arborescence structurée
+ * Structure: Programme > Cours > Modules > Items
+ */
+router.get('/programs/:programId/pdf', async (req: Request, res: Response) => {
+  const startTime = Date.now();
+  console.log(`[PDF Program] Début de la génération PDF pour le programme ${req.params.programId}`);
+  
+  try {
+    const { programId } = req.params;
+
+    if (!supabase) {
+      console.error('[PDF Program] Configuration Supabase manquante');
+      return res.status(500).json({ 
+        error: 'Configuration Supabase manquante',
+        details: 'Les variables d\'environnement VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY doivent être configurées'
+      });
+    }
+    
+    // Récupérer le token d'authentification
+    const authHeader = req.headers.authorization;
+    const token = authHeader?.replace('Bearer ', '');
+    
+    if (!token) {
+      return res.status(401).json({ 
+        error: 'Authentification requise',
+        details: 'Vous devez être connecté pour télécharger le PDF'
+      });
+    }
+
+    // Vérifier les permissions avec le token utilisateur
+    const userClient = createClient(supabaseUrl!, supabaseAnonKey!, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    });
+    
+    const { data: userProgram, error: userProgramError } = await userClient
+      .from('programs')
+      .select('id, title, description')
+      .eq('id', programId)
+      .single();
+
+    if (userProgramError || !userProgram) {
+      return res.status(404).json({ 
+        error: 'Programme non trouvé',
+        details: userProgramError?.message || 'Le programme avec cet ID n\'existe pas ou vous n\'y avez pas accès'
+      });
+    }
+
+    // Récupérer le programme avec service role key (incluant le glossaire)
+    const { data: program, error: programError } = await supabase
+      .from('programs')
+      .select('id, title, description, glossary')
+      .eq('id', programId)
+      .single();
+
+    if (programError || !program) {
+      return res.status(404).json({
+        error: 'Programme non trouvé',
+        details: programError?.message || 'Le programme avec cet ID n\'existe pas'
+      });
+    }
+
+    console.log('[PDF Program] Programme trouvé:', program.title);
+
+    // Récupérer tous les cours du programme avec leur ordre
+    const { data: programCourses, error: programCoursesError } = await supabase
+      .from('program_courses')
+      .select(`
+        position,
+        courses (
+          id,
+          title,
+          description
+        )
+      `)
+      .eq('program_id', programId)
+      .order('position', { ascending: true });
+
+    if (programCoursesError) {
+      console.error('[PDF Program] Erreur lors de la récupération des cours:', programCoursesError);
+      return res.status(500).json({ 
+        error: 'Erreur lors de la récupération des cours',
+        details: programCoursesError.message
+      });
+    }
+
+    if (!programCourses || programCourses.length === 0) {
+      return res.status(404).json({ 
+        error: 'Aucun cours trouvé',
+        details: 'Le programme ne contient aucun cours'
+      });
+    }
+
+    console.log('[PDF Program] Cours récupérés:', programCourses.length);
+
+    // Pour chaque cours, récupérer les modules et items
+    const coursesData: any[] = [];
+    
+    for (const pc of programCourses) {
+      const course = (pc as any).courses;
+      if (!course) continue;
+
+      const { data: modules, error: modulesError } = await supabase
+        .from('modules')
+        .select(`
+          id,
+          title,
+          position,
+          items (
+            id,
+            type,
+            title,
+            content,
+            asset_path,
+            position,
+            published,
+            chapters (
+              id,
+              title,
+              position,
+              content
+            )
+          )
+        `)
+        .eq('course_id', course.id)
+        .order('position', { ascending: true });
+
+      if (modulesError) {
+        console.warn(`[PDF Program] Erreur pour le cours ${course.title}:`, modulesError);
+        continue;
+      }
+
+      // Filtrer les items publiés avec du contenu
+      const modulesWithContent = (modules || []).map((module: any) => ({
+        ...module,
+        items: (module.items || [])
+          .filter((item: any) =>
+            item.published !== false &&
+            (item.content?.body || item.asset_path || item.content?.description || item.content?.question || item.content?.instructions || (item.chapters && item.chapters.length > 0))
+          )
+          .sort((a: any, b: any) => a.position - b.position)
+      })).filter((module: any) => module.items.length > 0);
+
+      if (modulesWithContent.length > 0) {
+        coursesData.push({
+          ...course,
+          position: (pc as any).position,
+          modules: modulesWithContent
+        });
+      }
+    }
+
+    if (coursesData.length === 0) {
+      return res.status(404).json({ 
+        error: 'Aucun contenu trouvé',
+        details: 'Le programme ne contient aucun contenu publié'
+      });
+    }
+
+    console.log('[PDF Program] Données préparées pour', coursesData.length, 'cours');
+
+    // Générer le HTML avec arborescence (incluant le glossaire)
+    const html = generateProgramPdfHtml(program, coursesData, program.glossary, supabase);
+
+    // Générer le PDF avec Puppeteer
+    console.log('[PDF Program] Lancement de Puppeteer...');
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1920, height: 1080 });
+    
+    await page.setContent(html, { 
+      waitUntil: 'networkidle0',
+      timeout: 120000 // 2 minutes pour les gros programmes
+    });
+
+    // Attendre le chargement des images
+    await page.evaluate(() => {
+      return Promise.all(
+        Array.from(document.images)
+          .map((img: HTMLImageElement) => {
+            if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+            return new Promise((resolve) => {
+              img.onload = resolve;
+              img.onerror = resolve;
+              setTimeout(resolve, 5000);
+            });
+          })
+      );
+    });
+
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    const pdfUint8Array = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+      margin: {
+        top: '2cm',
+        right: '2cm',
+        bottom: '2cm',
+        left: '2cm'
+      },
+      displayHeaderFooter: true,
+      headerTemplate: '<div style="font-size: 10px; text-align: center; width: 100%; color: #7f8c8d;">' + escapeHtml(program.title) + '</div>',
+      footerTemplate: '<div style="font-size: 10px; text-align: center; width: 100%; color: #7f8c8d;">Page <span class="pageNumber"></span> sur <span class="totalPages"></span></div>',
+      timeout: 120000
+    });
+
+    await browser.close();
+
+    // Convertir Uint8Array en Buffer
+    const pdfBuffer = Buffer.from(pdfUint8Array);
+
+    // Valider que c'est bien un PDF
+    console.log(`[PDF Program] Buffer généré: ${pdfBuffer.length} bytes`);
+    const headerBytes = pdfBuffer.slice(0, 4);
+    const isValidPdf = headerBytes[0] === 0x25 && // '%'
+                       headerBytes[1] === 0x50 && // 'P'
+                       headerBytes[2] === 0x44 && // 'D'
+                       headerBytes[3] === 0x46;   // 'F'
+
+    if (!isValidPdf) {
+      console.error('[PDF Program] ❌ Buffer PDF invalide');
+      console.error('[PDF Program] Header reçu:', headerBytes.toString('ascii'));
+      console.error('[PDF Program] Premiers 200 bytes:', pdfBuffer.slice(0, 200).toString('utf8').substring(0, 200));
+      throw new Error('Le PDF généré est invalide. Vérifiez les logs du serveur.');
+    }
+
+    console.log('[PDF Program] ✅ PDF validé (header: %PDF...)');
+
+    const duration = Date.now() - startTime;
+    console.log(`[PDF Program] ✅ PDF généré avec succès en ${duration}ms (${(pdfBuffer.length / 1024).toFixed(2)} KB)`);
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Length', pdfBuffer.length.toString());
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename="${encodeURIComponent(program.title.replace(/[^a-z0-9]/gi, '_'))}.pdf"`
+    );
+    res.setHeader('Cache-Control', 'no-cache');
+
+    res.send(pdfBuffer);
+
+  } catch (error: any) {
+    const duration = Date.now() - startTime;
+    console.error(`[PDF Program] ❌ Erreur lors de la génération du PDF (${duration}ms)`);
+    console.error('[PDF Program] Erreur:', error?.message);
+    
+    res.status(500).json({ 
+      error: 'Erreur lors de la génération du PDF',
+      message: error?.message || 'Erreur inconnue'
+    });
+  }
+});
+
+/**
+ * Génère le HTML pour le PDF d'un programme complet avec arborescence
+ */
+function generateProgramPdfHtml(program: any, coursesData: any[], glossary: any, supabaseClient: any): string {
+  // Construire la table des matières
+  let tocHtml = '<div class="toc"><h2>Table des matières</h2><ul>';
+  let courseIndex = 1;
+
+  coursesData.forEach((course) => {
+    tocHtml += `<li><strong>${courseIndex}. ${escapeHtml(course.title)}</strong>`;
+    if (course.modules && course.modules.length > 0) {
+      tocHtml += '<ul>';
+      course.modules.forEach((module: any) => {
+        tocHtml += `<li>${escapeHtml(module.title)}`;
+        if (module.items && module.items.length > 0) {
+          tocHtml += '<ul>';
+          module.items.forEach((item: any) => {
+            tocHtml += `<li>${escapeHtml(item.title)}</li>`;
+          });
+          tocHtml += '</ul>';
+        }
+        tocHtml += '</li>';
+      });
+      tocHtml += '</ul>';
+    }
+    tocHtml += '</li>';
+    courseIndex++;
+  });
+
+  // Ajouter le glossaire à la table des matières s'il existe
+  if (glossary?.terms && glossary.terms.length > 0) {
+    tocHtml += `<li><strong>${courseIndex}. Glossaire</strong></li>`;
+  }
+
+  tocHtml += '</ul></div>';
+
+  // Construire le contenu
+  let contentHtml = '';
+  courseIndex = 1;
+
+  coursesData.forEach((course) => {
+    contentHtml += `<div class="course-section"><h1>${courseIndex}. ${escapeHtml(course.title)}</h1>`;
+
+    if (course.description) {
+      contentHtml += `<p class="course-description">${escapeHtml(course.description)}</p>`;
+    }
+
+    if (course.modules && course.modules.length > 0) {
+      course.modules.forEach((module: any) => {
+        contentHtml += `<div class="module-section"><h2>${escapeHtml(module.title)}</h2>`;
+
+        if (module.items && module.items.length > 0) {
+          module.items.forEach((item: any) => {
+            const itemTypeLabel = getItemTypeLabel(item.type);
+            contentHtml += `<div class="item-section"><h3>${escapeHtml(item.title)}${itemTypeLabel ? ` <span class="item-type">(${escapeHtml(itemTypeLabel)})</span>` : ''}</h3>`;
+
+            // Asset (image ou PDF)
+            if (item.asset_path && supabaseClient) {
+              const { data } = supabaseClient.storage
+                .from('course-assets')
+                .getPublicUrl(item.asset_path);
+
+              if (item.asset_path.endsWith('.pdf')) {
+                contentHtml += `<div class="item-content"><p class="note"><strong>Fichier PDF:</strong> ${escapeHtml(item.title)}</p></div>`;
+              } else if (data?.publicUrl) {
+                const imageUrl = data.publicUrl.replace(/"/g, '&quot;');
+                contentHtml += `<div class="item-content"><img src="${imageUrl}" alt="${escapeHtml(item.title)}" class="item-image" /></div>`;
+              }
+            }
+
+            // Contenu body (pour resource, slide, etc.)
+            if (item.content?.body) {
+              try {
+                const tipTapHtml = tipTapToHtml(item.content.body, 100000);
+                contentHtml += `<div class="item-content">${tipTapHtml}</div>`;
+              } catch (error) {
+                console.warn(`[PDF Program] Erreur conversion body pour "${item.title}":`, error);
+              }
+            }
+
+            // Chapitres (sous-sections de l'item)
+            if (item.chapters && Array.isArray(item.chapters) && item.chapters.length > 0) {
+              item.chapters
+                .sort((a: any, b: any) => (a.position || 0) - (b.position || 0))
+                .forEach((chapter: any) => {
+                  contentHtml += `<div class="chapter-section"><h4>${escapeHtml(chapter.title)}</h4>`;
+                  if (chapter.content) {
+                    try {
+                      const chapterHtml = tipTapToHtml(chapter.content, 100000);
+                      contentHtml += `<div class="chapter-content">${chapterHtml}</div>`;
+                    } catch (error) {
+                      console.warn(`[PDF Program] Erreur chapitre "${chapter.title}":`, error);
+                    }
+                  }
+                  contentHtml += '</div>';
+                });
+            }
+
+            // Question (pour exercise, quiz)
+            if (item.content?.question) {
+              contentHtml += '<div class="item-content"><p class="content-label"><strong>Question:</strong></p>';
+              try {
+                const questionHtml = tipTapToHtml(item.content.question, 50000);
+                contentHtml += questionHtml;
+              } catch (error) {
+                console.warn(`[PDF Program] Erreur question pour "${item.title}":`, error);
+              }
+              contentHtml += '</div>';
+            }
+
+            // Correction (pour exercise)
+            if (item.content?.correction) {
+              contentHtml += '<div class="item-content correction"><p class="content-label"><strong>Correction:</strong></p>';
+              try {
+                const correctionHtml = tipTapToHtml(item.content.correction, 50000);
+                contentHtml += correctionHtml;
+              } catch (error) {
+                console.warn(`[PDF Program] Erreur correction pour "${item.title}":`, error);
+              }
+              contentHtml += '</div>';
+            }
+
+            // Instructions (pour TP)
+            if (item.content?.instructions) {
+              contentHtml += '<div class="item-content"><p class="content-label"><strong>Instructions:</strong></p>';
+              try {
+                const instructionsHtml = tipTapToHtml(item.content.instructions, 50000);
+                contentHtml += instructionsHtml;
+              } catch (error) {
+                console.warn(`[PDF Program] Erreur instructions pour "${item.title}":`, error);
+              }
+              contentHtml += '</div>';
+            }
+
+            // Checklist (pour TP)
+            if (item.content?.checklist && Array.isArray(item.content.checklist)) {
+              contentHtml += '<div class="item-content"><p class="content-label"><strong>Checklist:</strong></p><ul class="checklist">';
+              item.content.checklist.forEach((task: string) => {
+                contentHtml += `<li>☐ ${escapeHtml(task)}</li>`;
+              });
+              contentHtml += '</ul></div>';
+            }
+
+            // Description
+            if (item.content?.description && !item.content?.body) {
+              contentHtml += `<div class="item-content"><p>${escapeHtml(item.content.description)}</p></div>`;
+            }
+
+            // Contexte pédagogique (pour slides)
+            if (item.content?.pedagogical_context) {
+              contentHtml += '<div class="item-content pedagogical"><p class="content-label"><strong>Contexte pédagogique:</strong></p>';
+              try {
+                const contextHtml = pedagogicalContextToHtml(item.content.pedagogical_context, 50000);
+                contentHtml += contextHtml;
+              } catch (error) {
+                console.warn(`[PDF Program] Erreur contexte pédagogique pour "${item.title}":`, error);
+              }
+              contentHtml += '</div>';
+            }
+
+            contentHtml += '</div>';
+          });
+        }
+
+        contentHtml += '</div>';
+      });
+    }
+
+    contentHtml += '</div>';
+    courseIndex++;
+  });
+
+  // Ajouter le glossaire si disponible
+  if (glossary?.terms && glossary.terms.length > 0) {
+    contentHtml += `<div class="course-section glossary-section"><h1>${courseIndex}. Glossaire</h1>`;
+
+    if (glossary.metadata?.title) {
+      contentHtml += `<h2>${escapeHtml(glossary.metadata.title)}</h2>`;
+    }
+    if (glossary.metadata?.description) {
+      contentHtml += `<p class="course-description">${escapeHtml(glossary.metadata.description)}</p>`;
+    }
+
+    const categories = glossary.categories || [];
+    const terms = glossary.terms || [];
+
+    if (categories.length > 0) {
+      // Termes par catégorie
+      categories.forEach((category: any) => {
+        const categoryTerms = terms.filter((t: any) => t.category_id === category.id);
+        if (categoryTerms.length === 0) return;
+
+        contentHtml += `<div class="glossary-category"><h3>${escapeHtml(category.name)}</h3>`;
+        if (category.description) {
+          contentHtml += `<p class="category-description">${escapeHtml(category.description)}</p>`;
+        }
+
+        categoryTerms.forEach((term: any) => {
+          contentHtml += `<div class="glossary-term"><h4>${escapeHtml(term.word)}</h4>`;
+          contentHtml += `<p>${escapeHtml(term.explanation)}</p>`;
+          if (term.example) {
+            contentHtml += `<p class="term-example"><strong>Exemple:</strong> ${escapeHtml(term.example)}</p>`;
+          }
+          if (term.tags && term.tags.length > 0) {
+            contentHtml += `<p class="term-tags"><strong>Tags:</strong> ${term.tags.map((t: string) => escapeHtml(t)).join(', ')}</p>`;
+          }
+          contentHtml += '</div>';
+        });
+
+        contentHtml += '</div>';
+      });
+
+      // Termes sans catégorie
+      const uncategorizedTerms = terms.filter((t: any) => !t.category_id || !categories.find((c: any) => c.id === t.category_id));
+      if (uncategorizedTerms.length > 0) {
+        contentHtml += '<div class="glossary-category"><h3>Autres termes</h3>';
+        uncategorizedTerms.forEach((term: any) => {
+          contentHtml += `<div class="glossary-term"><h4>${escapeHtml(term.word)}</h4>`;
+          contentHtml += `<p>${escapeHtml(term.explanation)}</p>`;
+          if (term.example) {
+            contentHtml += `<p class="term-example"><strong>Exemple:</strong> ${escapeHtml(term.example)}</p>`;
+          }
+          contentHtml += '</div>';
+        });
+        contentHtml += '</div>';
+      }
+    } else {
+      // Pas de catégories, afficher tous les termes
+      terms.forEach((term: any) => {
+        contentHtml += `<div class="glossary-term"><h4>${escapeHtml(term.word)}</h4>`;
+        contentHtml += `<p>${escapeHtml(term.explanation)}</p>`;
+        if (term.example) {
+          contentHtml += `<p class="term-example"><strong>Exemple:</strong> ${escapeHtml(term.example)}</p>`;
+        }
+        contentHtml += '</div>';
+      });
+    }
+
+    contentHtml += '</div>';
+  }
+
+  return `
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${escapeHtml(program.title)}</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 2cm;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Helvetica', 'Arial', sans-serif;
+      font-size: 11pt;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .cover-page {
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 30px;
+    }
+
+    .cover-page h1 {
+      font-size: 28pt;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    .cover-page .subtitle {
+      font-size: 14pt;
+      color: #7f8c8d;
+      margin-top: 10px;
+    }
+
+    .cover-page .date {
+      font-size: 10pt;
+      color: #95a5a6;
+      margin-top: 30px;
+    }
+
+    .toc {
+      page-break-after: always;
+      margin-bottom: 30px;
+    }
+
+    .toc h2 {
+      font-size: 18pt;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 10px;
+    }
+
+    .toc ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .toc ul ul {
+      padding-left: 30px;
+      margin-top: 5px;
+    }
+
+    .toc ul ul ul {
+      padding-left: 30px;
+    }
+
+    .toc li {
+      margin: 8px 0;
+      line-height: 1.8;
+    }
+
+    .toc li strong {
+      color: #2c3e50;
+    }
+
+    .course-section {
+      page-break-before: always;
+      margin-bottom: 40px;
+    }
+
+    .course-section h1 {
+      font-size: 22pt;
+      color: #2c3e50;
+      margin-bottom: 15px;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 10px;
+      page-break-after: avoid;
+    }
+
+    .course-description {
+      font-size: 11pt;
+      color: #555;
+      margin-bottom: 25px;
+      font-style: italic;
+    }
+
+    .module-section {
+      margin-bottom: 30px;
+      page-break-inside: avoid;
+    }
+
+    .module-section h2 {
+      font-size: 16pt;
+      color: #34495e;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #95a5a6;
+      padding-bottom: 8px;
+      page-break-after: avoid;
+    }
+
+    .item-section {
+      margin-bottom: 25px;
+      page-break-inside: avoid;
+    }
+
+    .item-section h3 {
+      font-size: 13pt;
+      color: #7f8c8d;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      page-break-after: avoid;
+    }
+
+    .item-content {
+      margin-left: 15px;
+      margin-bottom: 15px;
+    }
+
+    .item-content p {
+      margin: 8px 0;
+      text-align: justify;
+    }
+
+    .item-image {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 15px auto;
+      page-break-inside: avoid;
+    }
+
+    .item-content h1, .item-content h2, .item-content h3, .item-content h4 {
+      margin-top: 15px;
+      margin-bottom: 10px;
+      page-break-after: avoid;
+    }
+
+    .item-content code {
+      background-color: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+
+    .item-content pre {
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      page-break-inside: avoid;
+      margin: 15px 0;
+    }
+
+    .item-content pre code {
+      background-color: transparent;
+      color: inherit;
+      padding: 0;
+    }
+
+    .item-content ul, .item-content ol {
+      margin: 10px 0;
+      padding-left: 30px;
+    }
+
+    .item-content blockquote {
+      border-left: 4px solid #3498db;
+      padding-left: 15px;
+      margin: 15px 0;
+      color: #555;
+      font-style: italic;
+    }
+
+    .note {
+      color: #7f8c8d;
+      font-style: italic;
+    }
+
+    .error {
+      color: #e74c3c;
+      font-weight: bold;
+    }
+
+    .item-type {
+      font-size: 10pt;
+      color: #95a5a6;
+      font-weight: normal;
+    }
+
+    .content-label {
+      margin-bottom: 8px;
+      color: #2c3e50;
+    }
+
+    .chapter-section {
+      margin: 15px 0 15px 20px;
+      padding-left: 15px;
+      border-left: 3px solid #bdc3c7;
+    }
+
+    .chapter-section h4 {
+      font-size: 12pt;
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    .chapter-content {
+      margin-left: 0;
+    }
+
+    .correction {
+      background-color: #e8f8f5;
+      padding: 10px 15px;
+      border-radius: 5px;
+      border-left: 4px solid #27ae60;
+    }
+
+    .pedagogical {
+      background-color: #fef9e7;
+      padding: 10px 15px;
+      border-radius: 5px;
+      border-left: 4px solid #f39c12;
+    }
+
+    .checklist {
+      list-style-type: none;
+      padding-left: 10px;
+    }
+
+    .checklist li {
+      margin: 5px 0;
+    }
+
+    /* Glossaire */
+    .glossary-section {
+      page-break-before: always;
+    }
+
+    .glossary-category {
+      margin-bottom: 25px;
+    }
+
+    .glossary-category h3 {
+      font-size: 14pt;
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 5px;
+      margin-bottom: 15px;
+    }
+
+    .category-description {
+      font-style: italic;
+      color: #7f8c8d;
+      margin-bottom: 15px;
+    }
+
+    .glossary-term {
+      margin-bottom: 15px;
+      padding-left: 15px;
+      border-left: 3px solid #ecf0f1;
+    }
+
+    .glossary-term h4 {
+      font-size: 12pt;
+      color: #34495e;
+      margin-bottom: 5px;
+    }
+
+    .term-example {
+      color: #7f8c8d;
+      font-style: italic;
+      margin-top: 5px;
+    }
+
+    .term-tags {
+      color: #95a5a6;
+      font-size: 10pt;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="cover-page">
+    <h1>${escapeHtml(program.title)}</h1>
+    ${program.description ? `<p class="subtitle">${escapeHtml(program.description)}</p>` : ''}
+    <p class="date">Généré le ${new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+  </div>
+
+  ${tocHtml}
+
+  ${contentHtml}
+</body>
+</html>
+  `;
+}
+
+/**
+ * GET /api/courses/programs/:programId/markdown
+ * Génère un fichier Markdown du programme complet avec arborescence structurée
+ */
+router.get('/programs/:programId/markdown', async (req: Request, res: Response) => {
+  const startTime = Date.now();
+  console.log(`[Markdown Program] Début de la génération Markdown pour le programme ${req.params.programId}`);
+  
+  try {
+    const { programId } = req.params;
+
+    if (!supabase) {
+      console.error('[Markdown Program] Configuration Supabase manquante');
+      return res.status(500).json({ 
+        error: 'Configuration Supabase manquante',
+        details: 'Les variables d\'environnement VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY doivent être configurées'
+      });
+    }
+    
+    // Récupérer le token d'authentification
+    const authHeader = req.headers.authorization;
+    const token = authHeader?.replace('Bearer ', '');
+    
+    if (!token) {
+      return res.status(401).json({ 
+        error: 'Authentification requise',
+        details: 'Vous devez être connecté pour télécharger le Markdown'
+      });
+    }
+
+    // Vérifier les permissions avec le token utilisateur
+    const userClient = createClient(supabaseUrl!, supabaseAnonKey!, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    });
+    
+    const { data: userProgram, error: userProgramError } = await userClient
+      .from('programs')
+      .select('id, title, description')
+      .eq('id', programId)
+      .single();
+
+    if (userProgramError || !userProgram) {
+      return res.status(404).json({
+        error: 'Programme non trouvé',
+        details: userProgramError?.message || 'Le programme avec cet ID n\'existe pas ou vous n\'y avez pas accès'
+      });
+    }
+
+    // Récupérer le programme avec service role key (incluant le glossaire)
+    const { data: program, error: programError } = await supabase
+      .from('programs')
+      .select('id, title, description, glossary')
+      .eq('id', programId)
+      .single();
+
+    if (programError || !program) {
+      return res.status(404).json({
+        error: 'Programme non trouvé',
+        details: programError?.message || 'Le programme avec cet ID n\'existe pas dans la base de données'
+      });
+    }
+
+    // Récupérer les cours du programme
+    const { data: programCourses, error: programCoursesError } = await supabase
+      .from('program_courses')
+      .select(`
+        course_id,
+        position,
+        courses (
+          id,
+          title,
+          description
+        )
+      `)
+      .eq('program_id', programId)
+      .order('position', { ascending: true });
+
+    if (programCoursesError) {
+      return res.status(500).json({ 
+        error: 'Erreur lors de la récupération des cours',
+        details: programCoursesError.message
+      });
+    }
+
+    if (!programCourses || programCourses.length === 0) {
+      return res.status(404).json({ 
+        error: 'Aucun cours trouvé',
+        details: 'Le programme ne contient aucun cours'
+      });
+    }
+
+    // Récupérer les modules et items pour chaque cours
+    const parts: string[] = [];
+    
+    // En-tête du document
+    parts.push(`# ${program.title}\n\n`);
+    
+    if (program.description) {
+      parts.push(`${program.description}\n\n`);
+    }
+    
+    parts.push(`---\n\n`);
+    parts.push(`## Table des matières\n\n`);
+    
+    // Générer la table des matières
+    programCourses.forEach((pc: any, courseIndex: number) => {
+      const course = pc.courses;
+      if (!course) return;
+
+      parts.push(`${courseIndex + 1}. [${course.title}](#cours-${courseIndex + 1})\n`);
+    });
+
+    // Ajouter le glossaire à la table des matières s'il existe
+    if (program.glossary && typeof program.glossary === 'object') {
+      const glossary = program.glossary as { terms?: Array<unknown> };
+      if (glossary.terms && glossary.terms.length > 0) {
+        parts.push(`${programCourses.length + 1}. [Glossaire](#glossaire)\n`);
+      }
+    }
+
+    parts.push(`\n---\n\n`);
+
+    // Générer le contenu pour chaque cours
+    for (let courseIndex = 0; courseIndex < programCourses.length; courseIndex++) {
+      const pc = programCourses[courseIndex];
+      const course = pc.courses;
+      if (!course) continue;
+
+      parts.push(`## ${courseIndex + 1}. ${course.title} {#cours-${courseIndex + 1}}\n\n`);
+      
+      if (course.description) {
+        parts.push(`${course.description}\n\n`);
+      }
+
+      // Récupérer les modules du cours (avec chapitres)
+      const { data: modules, error: modulesError } = await supabase
+        .from('modules')
+        .select(`
+          id,
+          title,
+          position,
+          items (
+            id,
+            type,
+            title,
+            content,
+            asset_path,
+            position,
+            published,
+            chapters (
+              id,
+              title,
+              position,
+              content
+            )
+          )
+        `)
+        .eq('course_id', course.id)
+        .order('position', { ascending: true });
+
+      if (modulesError) {
+        console.error(`[Markdown Program] Erreur pour le cours ${course.id}:`, modulesError);
+        parts.push(`*Erreur lors de la récupération des modules*\n\n`);
+        continue;
+      }
+
+      if (modules && modules.length > 0) {
+        modules.forEach((module: any) => {
+          parts.push(`### ${module.title}\n\n`);
+
+          if (module.items && module.items.length > 0) {
+            // Trier et filtrer les items publiés
+            const publishedItems = module.items
+              .filter((item: any) => item.published !== false)
+              .sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
+
+            publishedItems.forEach((item: any) => {
+              // Titre de l'item avec son type
+              const itemTypeLabel = getItemTypeLabel(item.type);
+              parts.push(`#### ${item.title}${itemTypeLabel ? ` (${itemTypeLabel})` : ''}\n\n`);
+
+              // Asset (image ou PDF)
+              if (item.asset_path && supabase) {
+                const { data } = supabase.storage
+                  .from('course-assets')
+                  .getPublicUrl(item.asset_path);
+
+                if (item.asset_path.endsWith('.pdf')) {
+                  parts.push(`**Fichier PDF:** ${item.title}\n\n`);
+                } else if (data?.publicUrl) {
+                  parts.push(`![${item.title}](${data.publicUrl})\n\n`);
+                }
+              }
+
+              // Contenu body (pour resource, slide, etc.)
+              if (item.content?.body) {
+                try {
+                  const markdownContent = tipTapToMarkdown(item.content.body, 100000);
+                  if (markdownContent && markdownContent.trim()) {
+                    parts.push(`${markdownContent}\n\n`);
+                  }
+                } catch (error) {
+                  console.warn(`[Markdown Program] Erreur body pour l'item ${item.id}:`, error);
+                }
+              }
+
+              // Chapitres (contenu supplémentaire organisé)
+              if (item.chapters && Array.isArray(item.chapters) && item.chapters.length > 0) {
+                item.chapters
+                  .sort((a: any, b: any) => (a.position || 0) - (b.position || 0))
+                  .forEach((chapter: any) => {
+                    parts.push(`##### ${chapter.title}\n\n`);
+                    if (chapter.content) {
+                      try {
+                        const chapterMarkdown = tipTapToMarkdown(chapter.content, 100000);
+                        if (chapterMarkdown && chapterMarkdown.trim()) {
+                          parts.push(`${chapterMarkdown}\n\n`);
+                        }
+                      } catch (error) {
+                        console.warn(`[Markdown Program] Erreur chapitre "${chapter.title}":`, error);
+                      }
+                    }
+                  });
+              }
+
+              // Question (pour exercise, quiz)
+              if (item.content?.question) {
+                parts.push(`**Question:**\n\n`);
+                try {
+                  const questionMarkdown = tipTapToMarkdown(item.content.question, 50000);
+                  if (questionMarkdown) {
+                    parts.push(`${questionMarkdown}\n\n`);
+                  }
+                } catch (error) {
+                  console.warn(`[Markdown Program] Erreur question pour l'item ${item.id}:`, error);
+                }
+              }
+
+              // Correction (pour exercise)
+              if (item.content?.correction) {
+                parts.push(`**Correction:**\n\n`);
+                try {
+                  const correctionMarkdown = tipTapToMarkdown(item.content.correction, 50000);
+                  if (correctionMarkdown) {
+                    parts.push(`${correctionMarkdown}\n\n`);
+                  }
+                } catch (error) {
+                  console.warn(`[Markdown Program] Erreur correction pour l'item ${item.id}:`, error);
+                }
+              }
+
+              // Instructions (pour TP)
+              if (item.content?.instructions) {
+                parts.push(`**Instructions:**\n\n`);
+                try {
+                  const instructionsMarkdown = tipTapToMarkdown(item.content.instructions, 50000);
+                  if (instructionsMarkdown) {
+                    parts.push(`${instructionsMarkdown}\n\n`);
+                  }
+                } catch (error) {
+                  console.warn(`[Markdown Program] Erreur instructions pour l'item ${item.id}:`, error);
+                }
+              }
+
+              // Checklist (pour TP)
+              if (item.content?.checklist && Array.isArray(item.content.checklist)) {
+                parts.push(`**Checklist:**\n\n`);
+                item.content.checklist.forEach((task: string) => {
+                  parts.push(`- [ ] ${task}\n`);
+                });
+                parts.push(`\n`);
+              }
+
+              // Description
+              if (item.content?.description) {
+                parts.push(`${item.content.description}\n\n`);
+              }
+
+              // Contexte pédagogique (pour slides)
+              if (item.content?.pedagogical_context) {
+                parts.push(`##### Contexte pédagogique\n\n`);
+                try {
+                  const contextMarkdown = pedagogicalContextToMarkdown(item.content.pedagogical_context, 50000);
+                  if (contextMarkdown) {
+                    parts.push(`${contextMarkdown}\n\n`);
+                  }
+                } catch (error) {
+                  console.warn(`[Markdown Program] Erreur contexte pédagogique pour l'item ${item.id}:`, error);
+                }
+              }
+            });
+          }
+        });
+      }
+      
+      parts.push(`---\n\n`);
+    }
+
+    // Ajouter le glossaire du programme s'il existe
+    if (program.glossary && typeof program.glossary === 'object') {
+      const glossary = program.glossary as {
+        metadata?: { title?: string; description?: string };
+        categories?: Array<{ id: string; name: string; description?: string }>;
+        terms?: Array<{
+          id: string;
+          word: string;
+          explanation: string;
+          example?: string;
+          category_id?: string;
+          tags?: string[];
+          related_terms?: string[];
+          difficulty?: string;
+        }>;
+      };
+
+      const categories = glossary.categories || [];
+      const terms = glossary.terms || [];
+
+      // Ne générer le glossaire que s'il y a des termes
+      if (terms.length > 0) {
+        parts.push(`# Glossaire {#glossaire}\n\n`);
+
+        // Titre et description du glossaire
+        if (glossary.metadata?.title) {
+          parts.push(`## ${glossary.metadata.title}\n\n`);
+        }
+        if (glossary.metadata?.description) {
+          parts.push(`${glossary.metadata.description}\n\n`);
+        }
+
+        if (categories.length > 0) {
+          // Afficher les termes par catégorie
+          for (const category of categories) {
+            const categoryTerms = terms.filter(t => t.category_id === category.id);
+            if (categoryTerms.length === 0) continue;
+
+            parts.push(`### ${category.name}\n\n`);
+            if (category.description) {
+              parts.push(`${category.description}\n\n`);
+            }
+
+            for (const term of categoryTerms) {
+              parts.push(`#### ${term.word}\n\n`);
+              parts.push(`${term.explanation}\n\n`);
+
+              if (term.example) {
+                parts.push(`**Exemple :** ${term.example}\n\n`);
+              }
+
+              if (term.tags && term.tags.length > 0) {
+                parts.push(`**Tags :** ${term.tags.join(', ')}\n\n`);
+              }
+
+              if (term.difficulty) {
+                const difficultyLabels: Record<string, string> = {
+                  beginner: 'Débutant',
+                  intermediate: 'Intermédiaire',
+                  advanced: 'Avancé'
+                };
+                parts.push(`**Niveau :** ${difficultyLabels[term.difficulty] || term.difficulty}\n\n`);
+              }
+            }
+          }
+
+          // Termes sans catégorie
+          const uncategorizedTerms = terms.filter(t => !t.category_id || !categories.find(c => c.id === t.category_id));
+          if (uncategorizedTerms.length > 0) {
+            parts.push(`### Sans catégorie\n\n`);
+            for (const term of uncategorizedTerms) {
+              parts.push(`#### ${term.word}\n\n`);
+              parts.push(`${term.explanation}\n\n`);
+
+              if (term.example) {
+                parts.push(`**Exemple :** ${term.example}\n\n`);
+              }
+
+              if (term.tags && term.tags.length > 0) {
+                parts.push(`**Tags :** ${term.tags.join(', ')}\n\n`);
+              }
+            }
+          }
+        } else {
+          // Pas de catégories, afficher tous les termes
+          for (const term of terms) {
+            parts.push(`### ${term.word}\n\n`);
+            parts.push(`${term.explanation}\n\n`);
+
+            if (term.example) {
+              parts.push(`**Exemple :** ${term.example}\n\n`);
+            }
+
+            if (term.tags && term.tags.length > 0) {
+              parts.push(`**Tags :** ${term.tags.join(', ')}\n\n`);
+            }
+          }
+        }
+
+        parts.push(`---\n\n`);
+        console.log(`[Markdown Program] ✅ Glossaire ajouté avec ${terms.length} termes`);
+      }
+    }
+
+    const markdown = parts.join('');
+    const markdownSize = Buffer.byteLength(markdown, 'utf8');
+
+    const duration = Date.now() - startTime;
+    console.log(`[Markdown Program] ✅ Markdown généré avec succès en ${duration}ms (${(markdownSize / 1024).toFixed(2)} KB)`);
+    
+    res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+    res.setHeader('Content-Length', markdownSize.toString());
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename="${encodeURIComponent(program.title.replace(/[^a-z0-9]/gi, '_'))}.md"`
+    );
+    res.setHeader('Cache-Control', 'no-cache');
+    
+    res.send(markdown);
+
+  } catch (error: any) {
+    const duration = Date.now() - startTime;
+    
+    console.error(`[Markdown Program] ❌ Erreur lors de la génération du Markdown (${duration}ms)`);
+    console.error('[Markdown Program] Message:', error?.message?.substring(0, 500) || 'Erreur inconnue');
+    
+    res.status(500).json({ 
+      error: 'Erreur lors de la génération du Markdown',
+      message: (error?.message || 'Erreur inconnue').substring(0, 500)
+    });
+  }
+});
+
+/**
+ * GET /api/courses/:courseId/markdown
+ * Génère un fichier Markdown du cours complet
+ */
+router.get('/:courseId/markdown', async (req: Request, res: Response) => {
+  const startTime = Date.now();
+  console.log(`[Markdown] Début de la génération Markdown pour le cours ${req.params.courseId}`);
+  
+  try {
+    const { courseId } = req.params;
+
+    if (!supabase) {
+      console.error('[Markdown] Configuration Supabase manquante');
+      return res.status(500).json({ 
+        error: 'Configuration Supabase manquante',
+        details: 'Les variables d\'environnement VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY doivent être configurées'
+      });
+    }
+    
+    console.log('[Markdown] Configuration Supabase OK');
+
+    // Récupérer le token d'authentification depuis le header
+    const authHeader = req.headers.authorization;
+    const token = authHeader?.replace('Bearer ', '');
+    
+    if (!token) {
+      console.log('[Markdown] Aucun token d\'authentification fourni');
+      return res.status(401).json({ 
+        error: 'Authentification requise',
+        details: 'Vous devez être connecté pour télécharger le Markdown'
+      });
+    }
+
+    // 1. Vérifier les permissions de l'utilisateur avec le token
+    console.log('[Markdown] Vérification des permissions utilisateur...');
+    
+    if (!supabaseUrl || !supabaseAnonKey) {
+      console.error('[Markdown] Configuration Supabase incomplète');
+      return res.status(500).json({ 
+        error: 'Configuration serveur incomplète',
+        details: 'Les variables d\'environnement Supabase ne sont pas configurées correctement'
+      });
+    }
+    
+    const userClient = createClient(supabaseUrl, supabaseAnonKey, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    });
+    
+    // Vérifier que l'utilisateur a accès au cours
+    const { data: userCourse, error: userCourseError } = await userClient
+      .from('courses')
+      .select('id, title, description, allow_pdf_download')
+      .eq('id', courseId)
+      .single();
+
+    if (userCourseError || !userCourse) {
+      if (userCourseError?.code === 'PGRST301' || userCourseError?.message?.includes('permission')) {
+        return res.status(403).json({ 
+          error: 'Accès refusé',
+          details: 'Vous n\'avez pas les permissions nécessaires pour accéder à ce cours.'
+        });
+      }
+      
+      if (userCourseError?.code === 'PGRST116' || userCourseError?.message?.includes('not found')) {
+        return res.status(404).json({ 
+          error: 'Cours non trouvé',
+          details: 'Le cours avec cet ID n\'existe pas dans la base de données'
+        });
+      }
+      
+      return res.status(404).json({ 
+        error: 'Cours non trouvé',
+        details: userCourseError?.message || 'Le cours avec cet ID n\'existe pas ou vous n\'y avez pas accès'
+      });
+    }
+    
+    console.log('[Markdown] ✅ Permissions vérifiées, accès autorisé');
+
+    // 2. Utiliser le service role key pour récupérer toutes les données
+    if (!supabase) {
+      console.error('[Markdown] Client Supabase non disponible');
+      return res.status(500).json({ 
+        error: 'Configuration Supabase manquante',
+        details: 'Impossible de créer le client Supabase'
+      });
+    }
+    
+    const finalCourse = userCourse;
+    console.log('[Markdown] Cours trouvé:', finalCourse.title);
+
+    // 3. Vérifier que le téléchargement est activé (utiliser allow_pdf_download pour compatibilité)
+    if (!finalCourse.allow_pdf_download) {
+      console.warn('[Markdown] Téléchargement non activé pour ce cours');
+      return res.status(403).json({ 
+        error: 'Le téléchargement n\'est pas activé pour ce cours',
+        details: 'Activez cette option dans les paramètres du cours'
+      });
+    }
+
+    // 4. Récupérer les modules et items (avec chapitres)
+    console.log('[Markdown] Récupération des modules et items...');
+    const { data: modules, error: modulesError } = await supabase
+      .from('modules')
+      .select(`
+        id,
+        title,
+        position,
+        items (
+          id,
+          type,
+          title,
+          content,
+          asset_path,
+          position,
+          published,
+          chapters (
+            id,
+            title,
+            position,
+            content
+          )
+        )
+      `)
+      .eq('course_id', courseId)
+      .order('position', { ascending: true });
+
+    if (modulesError) {
+      console.error('[Markdown] Erreur lors de la récupération des modules:', modulesError);
+      return res.status(500).json({ 
+        error: 'Erreur lors de la récupération des modules',
+        details: modulesError.message
+      });
+    }
+    
+    console.log('[Markdown] Modules récupérés:', modules?.length || 0);
+
+    // 5. Organiser les modules avec leurs items (inclure TOUS les types d'items publiés)
+    const modulesWithItems = (modules || [])
+      .map(module => {
+        const publishedItems = (module.items as any[] || [])
+          .filter(item => item.published !== false)
+          .sort((a, b) => (a.position || 0) - (b.position || 0));
+        
+        console.log(`[Markdown] Module "${module.title}": ${publishedItems.length} items publiés sur ${(module.items as any[] || []).length} total`);
+        
+        return {
+          ...module,
+          items: publishedItems
+        };
+      })
+      .sort((a, b) => (a.position || 0) - (b.position || 0)); // Inclure TOUS les modules, même vides
+
+    console.log(`[Markdown] Modules organisés: ${modulesWithItems.length}`);
+    const totalItems = modulesWithItems.reduce((sum, m) => sum + m.items.length, 0);
+    console.log(`[Markdown] Total items publiés: ${totalItems}`);
+    
+    // Log détaillé des types d'items
+    const itemsByType = modulesWithItems
+      .flatMap(m => m.items)
+      .reduce((acc: any, item: any) => {
+        acc[item.type] = (acc[item.type] || 0) + 1;
+        return acc;
+      }, {});
+    console.log(`[Markdown] Items par type:`, itemsByType);
+
+    // 6. Récupérer le glossaire si disponible (vérifier d'abord au niveau du cours, puis du programme)
+    let glossary = null;
+    try {
+      console.log('[Markdown] Recherche du glossaire...');
+      // Vérifier si le cours fait partie d'un programme avec un glossaire
+      const { data: programCourses, error: programCoursesError } = await supabase
+        .from('program_courses')
+        .select('program_id')
+        .eq('course_id', courseId)
+        .limit(1);
+
+      if (programCoursesError) {
+        console.warn('[Markdown] Erreur lors de la recherche du programme:', programCoursesError);
+      } else if (programCourses && programCourses.length > 0) {
+        console.log(`[Markdown] Cours trouvé dans le programme: ${programCourses[0].program_id}`);
+        const { data: programWithGlossary, error: programError } = await supabase
+          .from('programs')
+          .select('glossary, title')
+          .eq('id', programCourses[0].program_id)
+          .single();
+
+        if (programError) {
+          console.warn('[Markdown] Erreur lors de la récupération du programme:', programError);
+        } else {
+          console.log(`[Markdown] Programme récupéré: ${programWithGlossary?.title || 'N/A'}`);
+          if (programWithGlossary?.glossary) {
+            glossary = programWithGlossary.glossary;
+            const termCount = glossary.terms?.length || 0;
+            const categoryCount = glossary.categories?.length || 0;
+            console.log(`[Markdown] ✅ Glossaire trouvé: ${termCount} termes, ${categoryCount} catégories`);
+          } else {
+            console.log('[Markdown] Programme trouvé mais sans glossaire');
+          }
+        }
+      } else {
+        console.log('[Markdown] Cours non associé à un programme');
+      }
+    } catch (glossaryError) {
+      console.warn('[Markdown] Erreur lors de la récupération du glossaire:', glossaryError);
+      // Continuer sans glossaire
+    }
+    
+    if (!glossary) {
+      console.log('[Markdown] Aucun glossaire disponible pour ce cours');
+    }
+
+    if (modulesWithItems.length === 0 && !glossary) {
+      console.warn('[Markdown] Aucun contenu trouvé pour le Markdown');
+      return res.status(404).json({ 
+        error: 'Aucun contenu trouvé dans ce cours',
+        details: 'Le cours ne contient aucun module avec des items publiés.'
+      });
+    }
+
+    // 7. Générer le Markdown
+    console.log('[Markdown] Génération du Markdown...');
+    const markdown = generateMarkdown(finalCourse, modulesWithItems, glossary, supabase);
+    const markdownSize = Buffer.byteLength(markdown, 'utf8');
+    console.log('[Markdown] Markdown généré, taille:', (markdownSize / 1024).toFixed(2), 'KB');
+
+    // 7. Envoyer le Markdown
+    const duration = Date.now() - startTime;
+    console.log(`[Markdown] ✅ Markdown généré avec succès en ${duration}ms (${(markdownSize / 1024).toFixed(2)} KB)`);
+    
+    res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+    res.setHeader('Content-Length', markdownSize.toString());
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename="${encodeURIComponent(finalCourse.title.replace(/[^a-z0-9]/gi, '_'))}.md"`
+    );
+    res.setHeader('Cache-Control', 'no-cache');
+    
+    res.send(markdown);
+
+  } catch (error: any) {
+    const duration = Date.now() - startTime;
+    
+    console.error(`[Markdown] ❌ Erreur lors de la génération du Markdown (${duration}ms)`);
+    console.error('[Markdown] Type d\'erreur:', error?.constructor?.name || 'Unknown');
+    console.error('[Markdown] Message:', error?.message?.substring(0, 500) || 'Erreur inconnue');
+    
+    let errorMessage = 'Erreur lors de la génération du Markdown';
+    let errorDetails = (error?.message || 'Erreur inconnue').substring(0, 500);
+    
+    const isDevelopment = process.env.NODE_ENV !== 'production';
+    const response: any = { 
+      error: errorMessage,
+      message: errorDetails
+    };
+    
+    if (isDevelopment && error?.stack) {
+      response.stack = error.stack.substring(0, 2000);
+      response.type = error?.constructor?.name || 'Unknown';
+    }
+    
+    res.status(500).json(response);
+  }
+});
+
+/**
+ * Génère le Markdown pour le cours
+ */
+function generateMarkdown(course: any, modules: any[], glossary: any, supabaseClient: any): string {
+  const parts: string[] = [];
+  
+  console.log(`[generateMarkdown] Début génération: ${modules.length} modules, glossaire: ${glossary ? 'présent' : 'absent'}`);
+  if (glossary) {
+    console.log(`[generateMarkdown] Glossaire détails:`, {
+      hasMetadata: !!glossary.metadata,
+      categoriesCount: glossary.categories?.length || 0,
+      termsCount: glossary.terms?.length || 0
+    });
+  }
+  
+  // En-tête du document
+  parts.push(`# ${course.title}\n\n`);
+  
+  if (course.description) {
+    parts.push(`${course.description}\n\n`);
+  }
+  
+  parts.push(`---\n\n`);
+  
+  // Parcourir les modules
+  modules.forEach((module, moduleIndex) => {
+    console.log(`[generateMarkdown] Module ${moduleIndex + 1}/${modules.length}: "${module.title}" (${module.items?.length || 0} items)`);
+    // Titre du module
+    parts.push(`## ${module.title}\n\n`);
+    
+    // Parcourir les items du module
+    if (module.items && module.items.length > 0) {
+      module.items.forEach((item: any, itemIndex: number) => {
+        console.log(`[generateMarkdown] Item ${itemIndex + 1}: "${item.title}" (type: ${item.type})`);
+        console.log(`[generateMarkdown]   - has content.body: ${!!item.content?.body}`);
+        console.log(`[generateMarkdown]   - has chapters: ${!!(item.chapters && item.chapters.length > 0)}`);
+        if (item.content?.body) {
+          console.log(`[generateMarkdown]   - content.body type:`, typeof item.content.body);
+          if (typeof item.content.body === 'object') {
+            console.log(`[generateMarkdown]   - content.body.type:`, item.content.body.type);
+            console.log(`[generateMarkdown]   - content.body.content length:`, item.content.body.content?.length || 0);
+          }
+        }
+        
+        // Titre de l'item avec son type
+        const itemTypeLabel = getItemTypeLabel(item.type);
+        parts.push(`### ${item.title}${itemTypeLabel ? ` (${itemTypeLabel})` : ''}\n\n`);
+        
+        // Contenu selon le type d'item
+        if (item.asset_path && supabaseClient) {
+          const { data } = supabaseClient.storage
+            .from('course-assets')
+            .getPublicUrl(item.asset_path);
+          
+          if (item.asset_path.endsWith('.pdf')) {
+            parts.push(`**Fichier PDF:** ${item.title}\n\n`);
+            parts.push(`*Note: Le contenu PDF ne peut pas être affiché dans cette extraction.*\n\n`);
+          } else if (data?.publicUrl) {
+            parts.push(`![${item.title}](${data.publicUrl})\n\n`);
+          } else {
+            parts.push(`*Fichier: ${item.asset_path}*\n\n`);
+          }
+        }
+        
+        // Contenu body (pour resource, slide, etc.)
+        if (item.content?.body) {
+          try {
+            console.log(`[generateMarkdown] Conversion du contenu body pour "${item.title}"`);
+            const markdownContent = tipTapToMarkdown(item.content.body, 100000);
+            if (markdownContent && markdownContent.trim()) {
+              parts.push(`${markdownContent}\n\n`);
+              console.log(`[generateMarkdown] Contenu body converti: ${markdownContent.length} caractères`);
+            } else {
+              console.warn(`[generateMarkdown] Contenu body vide ou invalide pour "${item.title}"`);
+            }
+          } catch (error) {
+            console.warn(`[Markdown] Erreur lors de la conversion TipTap pour item "${item.title}":`, error);
+          }
+        } else {
+          console.log(`[generateMarkdown] Pas de contenu body pour "${item.title}"`);
+        }
+        
+        // Chapitres (contenu supplémentaire organisé)
+        if (item.chapters && Array.isArray(item.chapters) && item.chapters.length > 0) {
+          console.log(`[generateMarkdown] ${item.chapters.length} chapitres trouvés pour "${item.title}"`);
+          item.chapters
+            .sort((a: any, b: any) => (a.position || 0) - (b.position || 0))
+            .forEach((chapter: any) => {
+              parts.push(`#### ${chapter.title}\n\n`);
+              if (chapter.content) {
+                try {
+                  const chapterMarkdown = tipTapToMarkdown(chapter.content, 100000);
+                  if (chapterMarkdown && chapterMarkdown.trim()) {
+                    parts.push(`${chapterMarkdown}\n\n`);
+                  }
+                } catch (error) {
+                  console.warn(`[Markdown] Erreur lors de la conversion du chapitre "${chapter.title}":`, error);
+                }
+              }
+            });
+        }
+        
+        // Question (pour exercise, quiz)
+        if (item.content?.question) {
+          parts.push(`**Question:**\n\n`);
+          try {
+            const questionMarkdown = tipTapToMarkdown(item.content.question, 50000);
+            if (questionMarkdown) {
+              parts.push(`${questionMarkdown}\n\n`);
+            }
+          } catch (error) {
+            console.warn(`[Markdown] Erreur lors de la conversion de la question pour item "${item.title}":`, error);
+          }
+        }
+        
+        // Correction (pour exercise)
+        if (item.content?.correction) {
+          parts.push(`**Correction:**\n\n`);
+          try {
+            const correctionMarkdown = tipTapToMarkdown(item.content.correction, 50000);
+            if (correctionMarkdown) {
+              parts.push(`${correctionMarkdown}\n\n`);
+            }
+          } catch (error) {
+            console.warn(`[Markdown] Erreur lors de la conversion de la correction pour item "${item.title}":`, error);
+          }
+        }
+        
+        // Instructions (pour TP)
+        if (item.content?.instructions) {
+          parts.push(`**Instructions:**\n\n`);
+          try {
+            const instructionsMarkdown = tipTapToMarkdown(item.content.instructions, 50000);
+            if (instructionsMarkdown) {
+              parts.push(`${instructionsMarkdown}\n\n`);
+            }
+          } catch (error) {
+            console.warn(`[Markdown] Erreur lors de la conversion des instructions pour item "${item.title}":`, error);
+          }
+        }
+        
+        // Checklist (pour TP)
+        if (item.content?.checklist && Array.isArray(item.content.checklist)) {
+          parts.push(`**Checklist:**\n\n`);
+          item.content.checklist.forEach((task: string) => {
+            parts.push(`- [ ] ${task}\n`);
+          });
+          parts.push(`\n`);
+        }
+        
+        // Description
+        if (item.content?.description) {
+          parts.push(`${item.content.description}\n\n`);
+        }
+        
+        // Contexte pédagogique (pour slides)
+        if (item.content?.pedagogical_context) {
+          parts.push(`#### Contexte pédagogique\n\n`);
+          try {
+            const contextMarkdown = pedagogicalContextToMarkdown(item.content.pedagogical_context, 50000);
+            if (contextMarkdown) {
+              parts.push(`${contextMarkdown}\n\n`);
+            } else {
+              parts.push(`*Aucun contexte pédagogique disponible.*\n\n`);
+            }
+          } catch (error) {
+            console.warn(`[Markdown] Erreur lors de la conversion du contexte pédagogique pour item "${item.title}":`, error);
+          }
+        }
+        
+        parts.push(`---\n\n`);
+      });
+    } else {
+      parts.push(`*Ce module ne contient aucun élément publié.*\n\n`);
+      parts.push(`---\n\n`);
+    }
+  });
+  
+  // Ajouter le glossaire si disponible
+  console.log(`[generateMarkdown] Vérification du glossaire:`, glossary ? 'présent' : 'absent');
+  if (glossary) {
+    console.log(`[generateMarkdown] Ajout du glossaire avec ${glossary.terms?.length || 0} termes`);
+    parts.push(`# Glossaire\n\n`);
+    
+    // Le glossaire est au format JSONB avec metadata, categories, terms
+    const metadata = glossary.metadata || {};
+    if (metadata.title) {
+      parts.push(`## ${metadata.title}\n\n`);
+    }
+    
+    if (metadata.description) {
+      parts.push(`${metadata.description}\n\n`);
+    }
+    
+    // Organiser les termes par catégorie
+    const categories = (glossary.categories || []).sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
+    const terms = (glossary.terms || []).sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
+    
+    if (categories.length > 0) {
+      categories.forEach((category: any) => {
+        const categoryTerms = terms.filter((t: any) => t.categoryId === category.id || t.category_id === category.id);
+        if (categoryTerms.length > 0) {
+          parts.push(`### ${category.name || category.title}\n\n`);
+          if (category.description) {
+            parts.push(`${category.description}\n\n`);
+          }
+          categoryTerms.forEach((term: any) => {
+            const termWord = term.word || term.term;
+            parts.push(`#### ${termWord}\n\n`);
+            if (term.explanation || term.definition) {
+              parts.push(`${term.explanation || term.definition}\n\n`);
+            }
+            if (term.examples && Array.isArray(term.examples) && term.examples.length > 0) {
+              parts.push(`**Exemples:**\n\n`);
+              term.examples.forEach((example: string) => {
+                parts.push(`- ${example}\n`);
+              });
+              parts.push(`\n`);
+            }
+            if (term.tags && Array.isArray(term.tags) && term.tags.length > 0) {
+              parts.push(`**Tags:** ${term.tags.join(', ')}\n\n`);
+            }
+          });
+        }
+      });
+      
+      // Termes sans catégorie
+      const uncategorizedTerms = terms.filter((t: any) => !t.categoryId && !t.category_id);
+      if (uncategorizedTerms.length > 0) {
+        parts.push(`### Sans catégorie\n\n`);
+        uncategorizedTerms.forEach((term: any) => {
+          const termWord = term.word || term.term;
+          parts.push(`#### ${termWord}\n\n`);
+          if (term.explanation || term.definition) {
+            parts.push(`${term.explanation || term.definition}\n\n`);
+          }
+          if (term.examples && Array.isArray(term.examples) && term.examples.length > 0) {
+            parts.push(`**Exemples:**\n\n`);
+            term.examples.forEach((example: string) => {
+              parts.push(`- ${example}\n`);
+            });
+            parts.push(`\n`);
+          }
+          if (term.tags && Array.isArray(term.tags) && term.tags.length > 0) {
+            parts.push(`**Tags:** ${term.tags.join(', ')}\n\n`);
+          }
+        });
+      }
+    } else {
+      // Pas de catégories, afficher tous les termes
+      terms.forEach((term: any) => {
+        const termWord = term.word || term.term;
+        parts.push(`### ${termWord}\n\n`);
+        if (term.explanation || term.definition) {
+          parts.push(`${term.explanation || term.definition}\n\n`);
+        }
+        if (term.examples && Array.isArray(term.examples) && term.examples.length > 0) {
+          parts.push(`**Exemples:**\n\n`);
+          term.examples.forEach((example: string) => {
+            parts.push(`- ${example}\n`);
+          });
+          parts.push(`\n`);
+        }
+        if (term.tags && Array.isArray(term.tags) && term.tags.length > 0) {
+          parts.push(`**Tags:** ${term.tags.join(', ')}\n\n`);
+        }
+      });
+    }
+  }
+  
+  return parts.join('');
+}
+
+/**
+ * Retourne le label pour un type d'item
+ */
+function getItemTypeLabel(type: string): string {
+  const labels: { [key: string]: string } = {
+    'resource': 'Ressource',
+    'slide': 'Support',
+    'exercise': 'Exercice',
+    'tp': 'Travaux Pratiques',
+    'game': 'Jeu',
+    'quiz': 'Quiz',
+    'activity': 'Activité'
+  };
+  return labels[type] || '';
 }
 
 export default router;
