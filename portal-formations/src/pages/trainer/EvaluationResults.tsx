@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useProgramEvaluations } from '../../hooks/useProgramEvaluations';
 import { TrainerHeader } from '../../components/trainer/TrainerHeader';
+import { supabase } from '../../lib/supabaseClient';
 import {
   ArrowLeft,
   Users,
@@ -16,7 +17,8 @@ import {
   Search,
   ChevronDown,
   ChevronUp,
-  FileText
+  FileText,
+  Building2
 } from 'lucide-react';
 
 export function EvaluationResults() {
@@ -33,6 +35,7 @@ export function EvaluationResults() {
   const [sortField, setSortField] = useState<'name' | 'score' | 'date'>('date');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [showDetails, setShowDetails] = useState<string | null>(null);
+  const [orgsMap, setOrgsMap] = useState<Map<string, { name: string }>>(new Map());
 
   // Filtrer et trier les tentatives
   const filteredAttempts = useMemo(() => {
@@ -380,6 +383,336 @@ export function EvaluationResults() {
     URL.revokeObjectURL(url);
   };
 
+  const handleExportOrgSummary = () => {
+    if (!currentEvaluation || !attempts || attempts.length === 0) return;
+
+    // Grouper les tentatives par organisation
+    const attemptsByOrg = new Map<string, any[]>();
+    
+    attempts.forEach(attempt => {
+      const orgId = attempt.org_id || 'sans_organisation';
+      if (!attemptsByOrg.has(orgId)) {
+        attemptsByOrg.set(orgId, []);
+      }
+      attemptsByOrg.get(orgId)!.push(attempt);
+    });
+
+    // Pour chaque organisation, garder la meilleure tentative par participant
+    const orgSummaries: Array<{
+      orgId: string;
+      orgName: string;
+      participants: Array<{
+        name: string;
+        bestAttempt: any;
+      }>;
+    }> = [];
+
+    attemptsByOrg.forEach((orgAttempts, orgId) => {
+      const orgName = orgId === 'sans_organisation' 
+        ? 'Sans organisation' 
+        : (orgsMap.get(orgId)?.name || 'Organisation inconnue');
+
+      // Grouper par utilisateur et garder la meilleure tentative
+      const participantsMap = new Map<string, any>();
+      
+      orgAttempts.forEach(attempt => {
+        const userId = attempt.user_id;
+        const participantName = (attempt as any).profiles?.full_name || 'Utilisateur';
+        
+        if (!participantsMap.has(userId)) {
+          participantsMap.set(userId, {
+            name: participantName,
+            bestAttempt: attempt
+          });
+        } else {
+          const current = participantsMap.get(userId)!;
+          // Garder la tentative avec le meilleur score
+          if ((attempt.percentage || 0) > (current.bestAttempt.percentage || 0)) {
+            current.bestAttempt = attempt;
+          }
+        }
+      });
+
+      orgSummaries.push({
+        orgId,
+        orgName,
+        participants: Array.from(participantsMap.values()).sort((a, b) => 
+          (b.bestAttempt.percentage || 0) - (a.bestAttempt.percentage || 0)
+        )
+      });
+    });
+
+    // Générer le PDF
+    const html = generateOrgSummaryPdfHtml(currentEvaluation, orgSummaries);
+    
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Synthèse_${currentEvaluation.title.replace(/\s+/g, '_')}_par_organisation.html`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const generateOrgSummaryPdfHtml = (
+    evaluation: any,
+    orgSummaries: Array<{
+      orgId: string;
+      orgName: string;
+      participants: Array<{
+        name: string;
+        bestAttempt: any;
+      }>;
+    }>
+  ): string => {
+    const escapeHtml = (text: string) => {
+      const map: { [key: string]: string } = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return text.replace(/[&<>"']/g, (m) => map[m]);
+    };
+
+    const orgSections = orgSummaries.map(org => {
+      const totalParticipants = org.participants.length;
+      const passedCount = org.participants.filter(p => p.bestAttempt.is_passed).length;
+      const failedCount = totalParticipants - passedCount;
+      const avgScore = org.participants.length > 0
+        ? org.participants.reduce((sum, p) => sum + (p.bestAttempt.percentage || 0), 0) / org.participants.length
+        : 0;
+
+      const participantsRows = org.participants.map((participant, idx) => {
+        const attempt = participant.bestAttempt;
+        return `
+          <tr class="${attempt.is_passed ? 'row-passed' : 'row-failed'}">
+            <td>${idx + 1}</td>
+            <td>${escapeHtml(participant.name)}</td>
+            <td class="text-center">${attempt.score || 0} / ${attempt.total_points || 0}</td>
+            <td class="text-center ${attempt.is_passed ? 'score-passed' : 'score-failed'}">
+              ${attempt.percentage?.toFixed(1) || '0'}%
+            </td>
+            <td class="text-center">
+              ${attempt.is_passed ? '<span class="badge-passed">✓ Réussi</span>' : '<span class="badge-failed">✗ Échoué</span>'}
+            </td>
+            <td class="text-center">#${attempt.attempt_number}</td>
+            <td>${attempt.submitted_at ? formatDate(attempt.submitted_at) : '-'}</td>
+          </tr>
+        `;
+      }).join('');
+
+      return `
+        <div class="org-section">
+          <h2>${escapeHtml(org.orgName)}</h2>
+          <div class="org-stats">
+            <div class="stat-item">
+              <span class="stat-label">Participants:</span>
+              <span class="stat-value">${totalParticipants}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Réussis:</span>
+              <span class="stat-value stat-success">${passedCount}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Échoués:</span>
+              <span class="stat-value stat-failed">${failedCount}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Score moyen:</span>
+              <span class="stat-value">${avgScore.toFixed(1)}%</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Taux de réussite:</span>
+              <span class="stat-value">${totalParticipants > 0 ? Math.round((passedCount / totalParticipants) * 100) : 0}%</span>
+            </div>
+          </div>
+          <table class="participants-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Participant</th>
+                <th>Score</th>
+                <th>Pourcentage</th>
+                <th>Résultat</th>
+                <th>Tentative</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${participantsRows}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }).join('');
+
+    return `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Synthèse par organisation - ${escapeHtml(evaluation.title)}</title>
+  <style>
+    @page {
+      margin: 2cm;
+      size: A4;
+    }
+    body {
+      font-family: 'Helvetica', 'Arial', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 100%;
+      margin: 0;
+      padding: 20px;
+    }
+    .header {
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    h1 {
+      color: #2c3e50;
+      margin: 0 0 10px 0;
+      font-size: 1.8em;
+    }
+    .evaluation-info {
+      background-color: #ecf0f1;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+    }
+    .evaluation-info p {
+      margin: 5px 0;
+    }
+    .org-section {
+      page-break-inside: avoid;
+      margin: 30px 0;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 5px;
+      border-left: 4px solid #3498db;
+    }
+    .org-section h2 {
+      color: #2c3e50;
+      margin: 0 0 15px 0;
+      font-size: 1.4em;
+      border-bottom: 2px solid #95a5a6;
+      padding-bottom: 8px;
+    }
+    .org-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin: 15px 0;
+      padding: 15px;
+      background-color: white;
+      border-radius: 5px;
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      min-width: 120px;
+    }
+    .stat-label {
+      font-size: 0.85em;
+      color: #7f8c8d;
+      margin-bottom: 5px;
+    }
+    .stat-value {
+      font-size: 1.3em;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    .stat-success {
+      color: #27ae60;
+    }
+    .stat-failed {
+      color: #e74c3c;
+    }
+    .participants-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background-color: white;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .participants-table thead {
+      background-color: #3498db;
+      color: white;
+    }
+    .participants-table th {
+      padding: 12px;
+      text-align: left;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+    .participants-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #ecf0f1;
+    }
+    .participants-table tbody tr:hover {
+      background-color: #f8f9fa;
+    }
+    .row-passed {
+      background-color: #d5f4e6;
+    }
+    .row-failed {
+      background-color: #fadbd8;
+    }
+    .score-passed {
+      color: #27ae60;
+      font-weight: bold;
+    }
+    .score-failed {
+      color: #e74c3c;
+      font-weight: bold;
+    }
+    .badge-passed {
+      display: inline-block;
+      padding: 4px 10px;
+      background-color: #27ae60;
+      color: white;
+      border-radius: 3px;
+      font-size: 0.85em;
+      font-weight: bold;
+    }
+    .badge-failed {
+      display: inline-block;
+      padding: 4px 10px;
+      background-color: #e74c3c;
+      color: white;
+      border-radius: 3px;
+      font-size: 0.85em;
+      font-weight: bold;
+    }
+    .text-center {
+      text-align: center;
+    }
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Fiche de synthèse par organisation</h1>
+    <div class="evaluation-info">
+      <p><strong>Évaluation:</strong> ${escapeHtml(evaluation.title)}</p>
+      <p><strong>Score minimum requis:</strong> ${evaluation.passing_score}%</p>
+      <p><strong>Date de génération:</strong> ${new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+    </div>
+  </div>
+
+  ${orgSections}
+</body>
+</html>`;
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -420,10 +753,20 @@ export function EvaluationResults() {
                   Score min: {currentEvaluation.passing_score}%
                 </p>
               </div>
-              <button className="flex items-center gap-2 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
-                <Download className="w-4 h-4" />
-                Exporter CSV
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handleExportOrgSummary()}
+                  className="flex items-center gap-2 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                  title="Fiche de synthèse par organisation"
+                >
+                  <Building2 className="w-4 h-4" />
+                  Synthèse par organisation
+                </button>
+                <button className="flex items-center gap-2 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                  <Download className="w-4 h-4" />
+                  Exporter CSV
+                </button>
+              </div>
             </div>
           </div>
 
