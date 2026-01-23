@@ -1265,6 +1265,92 @@ export function TpControlRenderer({ item, submission, onSubmissionUpdate, viewin
               </div>
             </div>
             
+            {/* Bouton de validation de la correction */}
+            <div className="mt-6 pt-4 border-t border-yellow-300">
+              <button
+                onClick={async () => {
+                  if (!submission) return;
+                  
+                  setGradingLoading(true);
+                  try {
+                    // Calculer le score final
+                    const totalPoints = gradingCriteria
+                      .filter(c => c.checked)
+                      .reduce((total, c) => {
+                        const score = c.customScore !== null && c.customScore !== undefined 
+                          ? c.customScore 
+                          : c.points;
+                        return total + score;
+                      }, 0);
+                    
+                    const finalScore = useManualScore && manualScore ? manualScore.numerator : totalPoints;
+                    
+                    // Préparer les données à sauvegarder
+                    const updatedAnswerJson = {
+                      ...(submission.answer_json || {}),
+                      gradingCriteria,
+                      manualGrade: finalScore,
+                      manualScore: useManualScore && manualScore ? manualScore : null,
+                      useManualScore,
+                      appreciation: appreciation || null,
+                      improvementAreas: improvementAreas || null,
+                    };
+
+                    // Sauvegarder toutes les données et valider la correction
+                    const { data, error } = await supabase
+                      .from('submissions')
+                      .update({
+                        answer_json: updatedAnswerJson,
+                        grade: finalScore,
+                        status: 'graded',
+                        graded_at: new Date().toISOString(),
+                        appreciation: appreciation || null,
+                        improvement_areas: improvementAreas || null,
+                      })
+                      .eq('id', submission.id)
+                      .select()
+                      .single();
+
+                    if (error) throw error;
+
+                    if (onSubmissionUpdate && data) {
+                      onSubmissionUpdate(data);
+                    }
+
+                    // Afficher un message de confirmation
+                    alert('✅ Correction validée avec succès !\n\nL\'étudiant peut maintenant voir sa note, l\'appréciation et les axes d\'amélioration.');
+                  } catch (err: any) {
+                    console.error('Error validating correction:', err);
+                    alert('❌ Erreur lors de la validation de la correction. Vérifiez la console pour plus de détails.');
+                    setError('Erreur lors de la validation de la correction');
+                  } finally {
+                    setGradingLoading(false);
+                  }
+                }}
+                disabled={gradingLoading || !submission}
+                className={`w-full px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 text-base font-semibold flex items-center justify-center gap-2 transition-colors ${
+                  gradingLoading ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+              >
+                {gradingLoading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    Validation en cours...
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle className="w-5 h-5" />
+                    {submission?.status === 'graded' ? 'Mettre à jour la correction' : 'Valider la correction'}
+                  </>
+                )}
+              </button>
+              {submission?.status === 'graded' && (
+                <p className="mt-2 text-sm text-green-700 text-center">
+                  ✓ Correction validée - L'étudiant peut voir sa note et les commentaires
+                </p>
+              )}
+            </div>
+            
             {/* Bouton d'export PDF */}
             {submission && viewingUserId && viewingUserId !== user?.id && (
               <div className="mt-4 pt-4 border-t border-yellow-300">
