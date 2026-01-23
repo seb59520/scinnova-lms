@@ -15,7 +15,8 @@ import {
   Download,
   Search,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  FileText
 } from 'lucide-react';
 
 export function EvaluationResults() {
@@ -111,6 +112,272 @@ export function EvaluationResults() {
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  const generateEvaluationPdfHtml = (
+    evaluation: any,
+    attempt: any,
+    participantName: string
+  ): string => {
+    const escapeHtml = (text: string) => {
+      const map: { [key: string]: string } = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return text.replace(/[&<>"']/g, (m) => map[m]);
+    };
+
+    const formatAnswer = (answer: any): string => {
+      if (Array.isArray(answer)) {
+        return answer.join(', ');
+      }
+      return String(answer || '-');
+    };
+
+    const questionsHtml = evaluation.questions.map((q: any, idx: number) => {
+      const detail = attempt.results_detail?.[q.id];
+      const isCorrect = detail?.is_correct || false;
+      const userAnswer = formatAnswer(detail?.user_answer);
+      const correctAnswer = formatAnswer(detail?.correct_answer);
+
+      let answerDisplay = '';
+      if (q.type === 'multiple_choice' || q.type === 'single_choice') {
+        // Pour les QCM, afficher les options
+        const options = q.options || [];
+        answerDisplay = `<div class="answer-options">
+          <p><strong>Options disponibles:</strong></p>
+          <ul>${options.map((opt: string) => `<li>${escapeHtml(opt)}</li>`).join('')}</ul>
+        </div>`;
+      }
+
+      return `
+        <div class="question-item ${isCorrect ? 'correct' : 'incorrect'}">
+          <div class="question-header">
+            <span class="question-number">Question ${idx + 1}</span>
+            <span class="question-points">(${q.points} point${q.points > 1 ? 's' : ''})</span>
+            <span class="question-status ${isCorrect ? 'status-correct' : 'status-incorrect'}">
+              ${isCorrect ? '✓ Correcte' : '✗ Incorrecte'}
+            </span>
+          </div>
+          <div class="question-text">${escapeHtml(q.question)}</div>
+          ${answerDisplay}
+          <div class="answer-section">
+            <p><strong>Réponse du participant:</strong> <span class="user-answer">${escapeHtml(userAnswer)}</span></p>
+            ${!isCorrect && correctAnswer ? `
+              <p><strong>Réponse attendue:</strong> <span class="correct-answer">${escapeHtml(correctAnswer)}</span></p>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    return `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Résultats - ${escapeHtml(evaluation.title)} - ${escapeHtml(participantName)}</title>
+  <style>
+    @page {
+      margin: 2cm;
+      size: A4;
+    }
+    body {
+      font-family: 'Helvetica', 'Arial', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 100%;
+      margin: 0;
+      padding: 20px;
+    }
+    .header {
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    h1 {
+      color: #2c3e50;
+      margin: 0 0 10px 0;
+      font-size: 1.8em;
+    }
+    .participant-info {
+      background-color: #ecf0f1;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+    }
+    .participant-info p {
+      margin: 5px 0;
+    }
+    .summary {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 5px;
+      margin: 20px 0;
+      text-align: center;
+    }
+    .score-large {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: ${attempt.is_passed ? '#27ae60' : '#e74c3c'};
+      margin: 10px 0;
+    }
+    .summary-details {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    .summary-item {
+      margin: 10px;
+    }
+    .summary-label {
+      font-size: 0.9em;
+      color: #7f8c8d;
+    }
+    .summary-value {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    .question-item {
+      margin: 25px 0;
+      padding: 15px;
+      border-left: 4px solid #bdc3c7;
+      background-color: #f8f9fa;
+      page-break-inside: avoid;
+    }
+    .question-item.correct {
+      border-left-color: #27ae60;
+      background-color: #d5f4e6;
+    }
+    .question-item.incorrect {
+      border-left-color: #e74c3c;
+      background-color: #fadbd8;
+    }
+    .question-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .question-number {
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    .question-points {
+      color: #7f8c8d;
+      font-size: 0.9em;
+    }
+    .question-status {
+      padding: 4px 10px;
+      border-radius: 3px;
+      font-size: 0.85em;
+      font-weight: bold;
+    }
+    .status-correct {
+      background-color: #27ae60;
+      color: white;
+    }
+    .status-incorrect {
+      background-color: #e74c3c;
+      color: white;
+    }
+    .question-text {
+      font-size: 1.1em;
+      margin: 15px 0;
+      color: #2c3e50;
+    }
+    .answer-section {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: white;
+      border-radius: 3px;
+    }
+    .user-answer {
+      color: #e74c3c;
+      font-weight: bold;
+    }
+    .correct-answer {
+      color: #27ae60;
+      font-weight: bold;
+    }
+    .answer-options {
+      margin: 10px 0;
+      padding: 10px;
+      background-color: white;
+      border-radius: 3px;
+    }
+    .answer-options ul {
+      margin: 5px 0;
+      padding-left: 20px;
+    }
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>${escapeHtml(evaluation.title)}</h1>
+    <div class="participant-info">
+      <p><strong>Participant:</strong> ${escapeHtml(participantName)}</p>
+      <p><strong>Date de soumission:</strong> ${formatDate(attempt.submitted_at || '')}</p>
+      <p><strong>Tentative:</strong> #${attempt.attempt_number}</p>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="score-large">${attempt.percentage?.toFixed(1)}%</div>
+    <div class="summary-details">
+      <div class="summary-item">
+        <div class="summary-label">Score</div>
+        <div class="summary-value">${attempt.score} / ${attempt.total_points}</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">Résultat</div>
+        <div class="summary-value" style="color: ${attempt.is_passed ? '#27ae60' : '#e74c3c'}">
+          ${attempt.is_passed ? 'Réussi ✓' : 'Échoué ✗'}
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">Score minimum requis</div>
+        <div class="summary-value">${evaluation.passing_score}%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <h2 style="color: #2c3e50; border-bottom: 2px solid #95a5a6; padding-bottom: 8px; margin-top: 25px;">
+    Détail des questions et réponses
+  </h2>
+
+  ${questionsHtml}
+</body>
+</html>`;
+  };
+
+  const handleExportPdf = (attempt: any) => {
+    if (!currentEvaluation) return;
+
+    const participantName = (attempt as any).profiles?.full_name || 'Utilisateur';
+    const html = generateEvaluationPdfHtml(currentEvaluation, attempt, participantName);
+
+    // Créer un blob et télécharger
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${participantName.replace(/\s+/g, '_')}_${currentEvaluation.title.replace(/\s+/g, '_')}_Tentative_${attempt.attempt_number}.html`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   if (isLoading) {
@@ -404,12 +671,22 @@ export function EvaluationResults() {
                             {attempt.submitted_at ? formatDate(attempt.submitted_at) : '-'}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-right">
-                            <button
-                              onClick={() => setShowDetails(showDetails === attempt.id ? null : attempt.id)}
-                              className="text-sm text-blue-600 hover:text-blue-800"
-                            >
-                              {showDetails === attempt.id ? 'Masquer' : 'Détails'}
-                            </button>
+                            <div className="flex items-center justify-end gap-2">
+                              <button
+                                onClick={() => handleExportPdf(attempt)}
+                                className="flex items-center gap-1 px-3 py-1.5 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                                title="Exporter en PDF"
+                              >
+                                <FileText className="w-4 h-4" />
+                                PDF
+                              </button>
+                              <button
+                                onClick={() => setShowDetails(showDetails === attempt.id ? null : attempt.id)}
+                                className="text-sm text-blue-600 hover:text-blue-800"
+                              >
+                                {showDetails === attempt.id ? 'Masquer' : 'Détails'}
+                              </button>
+                            </div>
                           </td>
                         </tr>
                         {showDetails === attempt.id && (
