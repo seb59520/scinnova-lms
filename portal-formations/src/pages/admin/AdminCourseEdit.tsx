@@ -3,15 +3,11 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Course, Module, Item, PedagogicalObjective, Prerequisite, FinalSynthesis, EvaluationsConfig } from '../../types/database'
-import { Save, Plus, Edit, Trash2, GripVertical, ChevronUp, ChevronDown, Code, Presentation, Link as LinkIcon, Image, X, Target, BookOpen, CheckSquare, FileText } from 'lucide-react'
+import { Save, Plus, Edit, Trash2, GripVertical, ChevronUp, ChevronDown, Code, Presentation, Link as LinkIcon, Image, X, BookOpen, CheckSquare, FileText } from 'lucide-react'
 import { LinkedInPostModal } from '../../components/LinkedInPostModal'
 import { ImageUploadCarousel } from '../../components/ImageUploadCarousel'
 import { CourseResourcesManager } from '../../components/CourseResourcesManager'
 import { FillableDocumentsManager } from '../../components/FillableDocumentsManager'
-import { ObjectivesEditor } from '../../components/admin/ObjectivesEditor'
-import { PrerequisitesEditor } from '../../components/admin/PrerequisitesEditor'
-import { EvaluationsConfigEditor } from '../../components/admin/EvaluationsConfigEditor'
-import { SynthesisEditor } from '../../components/admin/SynthesisEditor'
 
 interface ModuleWithItems extends Module {
   items: Item[]
@@ -32,14 +28,9 @@ export function AdminCourseEdit() {
     currency: 'EUR',
     is_paid: false,
     thumbnail_image_path: null,
-    pedagogical_objectives: [],
-    prerequisites: [],
-    recommended_path: null,
-    final_synthesis: null,
-    evaluations_config: null,
     created_by: user?.id
   })
-  const [activeTab, setActiveTab] = useState<'general' | 'pedagogy' | 'modules' | 'resources'>('general')
+  const [activeTab, setActiveTab] = useState<'general' | 'modules' | 'resources'>('general')
   const [uploadingThumbnail, setUploadingThumbnail] = useState(false)
   const [modules, setModules] = useState<ModuleWithItems[]>([])
   const [loading, setLoading] = useState(!isNew)
@@ -285,11 +276,6 @@ export function AdminCourseEdit() {
         is_paid: course.access_type === 'paid',
         allow_pdf_download: course.allow_pdf_download || false,
         is_public: course.is_public || false,
-        pedagogical_objectives: course.pedagogical_objectives || [],
-        prerequisites: course.prerequisites || [],
-        recommended_path: course.recommended_path || null,
-        final_synthesis: course.final_synthesis || null,
-        evaluations_config: course.evaluations_config || null,
         created_by: isNew ? (user?.id || course.created_by) : course.created_by,
         updated_at: new Date().toISOString()
       }
@@ -1116,18 +1102,6 @@ export function AdminCourseEdit() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setActiveTab('pedagogy')}
-                  className={`flex items-center gap-2 px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
-                    activeTab === 'pedagogy'
-                      ? 'border-blue-500 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  <Target className="w-4 h-4" />
-                  Pedagogie
-                </button>
-                <button
-                  type="button"
                   onClick={() => setActiveTab('modules')}
                   className={`flex items-center gap-2 px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
                     activeTab === 'modules'
@@ -1372,59 +1346,6 @@ export function AdminCourseEdit() {
             </div>
           </div>
           </>
-          )}
-
-          {/* Tab: Pedagogie */}
-          {activeTab === 'pedagogy' && (
-          <div className="space-y-6">
-            {/* Objectifs pedagogiques */}
-            <div className="bg-white shadow rounded-lg p-6">
-              <ObjectivesEditor
-                objectives={course.pedagogical_objectives || []}
-                onChange={(objectives) => setCourse({ ...course, pedagogical_objectives: objectives })}
-              />
-            </div>
-
-            {/* Prerequis */}
-            <div className="bg-white shadow rounded-lg p-6">
-              <PrerequisitesEditor
-                prerequisites={course.prerequisites || []}
-                onChange={(prerequisites) => setCourse({ ...course, prerequisites: prerequisites })}
-              />
-            </div>
-
-            {/* Parcours conseille */}
-            <div className="bg-white shadow rounded-lg p-6">
-              <h3 className="text-sm font-medium text-gray-700 mb-3">Parcours conseille</h3>
-              <textarea
-                value={course.recommended_path || ''}
-                onChange={(e) => setCourse({ ...course, recommended_path: e.target.value || null })}
-                rows={4}
-                className="input-field text-sm"
-                placeholder="Decrivez le parcours d'apprentissage recommande pour cette formation..."
-              />
-              <p className="text-xs text-gray-400 mt-2">
-                Ce texte guidera les apprenants sur la meilleure facon de suivre la formation.
-              </p>
-            </div>
-
-            {/* Configuration des evaluations */}
-            <div className="bg-white shadow rounded-lg p-6">
-              <EvaluationsConfigEditor
-                courseId={courseId || 'new'}
-                config={course.evaluations_config || null}
-                onChange={(config) => setCourse({ ...course, evaluations_config: config })}
-              />
-            </div>
-
-            {/* Synthese finale */}
-            <div className="bg-white shadow rounded-lg p-6">
-              <SynthesisEditor
-                synthesis={course.final_synthesis || null}
-                onChange={(synthesis) => setCourse({ ...course, final_synthesis: synthesis })}
-              />
-            </div>
-          </div>
           )}
 
           {/* Tab: Modules et éléments */}

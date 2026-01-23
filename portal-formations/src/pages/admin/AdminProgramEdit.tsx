@@ -9,6 +9,11 @@ import { GlossaryEditor } from '../../components/GlossaryEditor'
 import { ProgramDocumentsManager } from '../../components/admin/ProgramDocumentsManager'
 import { ProgramExpectedItemsManager } from '../../components/admin/ProgramExpectedItemsManager'
 import { useProgramEvaluations } from '../../hooks/useProgramEvaluations'
+import { ObjectivesEditor } from '../../components/admin/ObjectivesEditor'
+import { PrerequisitesEditor } from '../../components/admin/PrerequisitesEditor'
+import { EvaluationsConfigEditor } from '../../components/admin/EvaluationsConfigEditor'
+import { SynthesisEditor } from '../../components/admin/SynthesisEditor'
+import { Target } from 'lucide-react'
 
 export function AdminProgramEdit() {
   const { programId } = useParams<{ programId: string }>()
@@ -26,6 +31,11 @@ export function AdminProgramEdit() {
     summary_pdf_path: null,
     thumbnail_image_path: null,
     glossary: null,
+    pedagogical_objectives: [],
+    prerequisites: [],
+    recommended_path: null,
+    final_synthesis: null,
+    evaluations_config: null,
     created_by: user?.id
   })
   const [uploadingPdf, setUploadingPdf] = useState(false)
@@ -469,6 +479,11 @@ export function AdminProgramEdit() {
     try {
       const programData = {
         ...program,
+        pedagogical_objectives: program.pedagogical_objectives || [],
+        prerequisites: program.prerequisites || [],
+        recommended_path: program.recommended_path || null,
+        final_synthesis: program.final_synthesis || null,
+        evaluations_config: program.evaluations_config || null,
         updated_at: new Date().toISOString()
       }
 
@@ -992,6 +1007,76 @@ export function AdminProgramEdit() {
                 glossary={program.glossary || null}
                 onChange={(glossary) => setProgram({ ...program, glossary })}
               />
+            </div>
+            )}
+          </div>
+
+          {/* Pédagogie */}
+          <div className="bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-200 shadow-lg rounded-lg p-6 mb-6">
+            <button
+              onClick={() => toggleSection('pedagogie')}
+              className="w-full flex items-center justify-between text-left"
+            >
+              <h2 className="text-lg font-semibold text-purple-900 flex items-center gap-2">
+                <div className="w-1 h-6 bg-purple-600 rounded"></div>
+                <Target className="w-5 h-5" />
+                Pédagogie
+              </h2>
+              {isSectionExpanded('pedagogie') ? (
+                <ChevronDown className="w-5 h-5 text-purple-600" />
+              ) : (
+                <ChevronRight className="w-5 h-5 text-purple-600" />
+              )}
+            </button>
+            {isSectionExpanded('pedagogie') && (
+            <div className="mt-4 space-y-6">
+              {/* Objectifs pédagogiques */}
+              <div className="bg-white shadow rounded-lg p-6">
+                <ObjectivesEditor
+                  objectives={program.pedagogical_objectives || []}
+                  onChange={(objectives) => setProgram({ ...program, pedagogical_objectives: objectives })}
+                />
+              </div>
+
+              {/* Prérequis */}
+              <div className="bg-white shadow rounded-lg p-6">
+                <PrerequisitesEditor
+                  prerequisites={program.prerequisites || []}
+                  onChange={(prerequisites) => setProgram({ ...program, prerequisites: prerequisites })}
+                />
+              </div>
+
+              {/* Parcours conseillé */}
+              <div className="bg-white shadow rounded-lg p-6">
+                <h3 className="text-sm font-medium text-gray-700 mb-3">Parcours conseillé</h3>
+                <textarea
+                  value={program.recommended_path || ''}
+                  onChange={(e) => setProgram({ ...program, recommended_path: e.target.value || null })}
+                  rows={4}
+                  className="input-field text-sm w-full"
+                  placeholder="Décrivez le parcours d'apprentissage recommandé pour ce programme..."
+                />
+                <p className="text-xs text-gray-400 mt-2">
+                  Ce texte guidera les apprenants sur la meilleure façon de suivre le programme.
+                </p>
+              </div>
+
+              {/* Configuration des évaluations */}
+              <div className="bg-white shadow rounded-lg p-6">
+                <EvaluationsConfigEditor
+                  courseId={programId || 'new'}
+                  config={program.evaluations_config || null}
+                  onChange={(config) => setProgram({ ...program, evaluations_config: config })}
+                />
+              </div>
+
+              {/* Synthèse finale */}
+              <div className="bg-white shadow rounded-lg p-6">
+                <SynthesisEditor
+                  synthesis={program.final_synthesis || null}
+                  onChange={(synthesis) => setProgram({ ...program, final_synthesis: synthesis })}
+                />
+              </div>
             </div>
             )}
           </div>

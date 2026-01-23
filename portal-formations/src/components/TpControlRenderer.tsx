@@ -47,6 +47,8 @@ export function TpControlRenderer({ item, submission, onSubmissionUpdate, viewin
   const [gradingLoading, setGradingLoading] = useState(false);
   const [manualScore, setManualScore] = useState<{ numerator: number; denominator: number } | null>(null);
   const [useManualScore, setUseManualScore] = useState(false);
+  const [appreciation, setAppreciation] = useState<string>('');
+  const [improvementAreas, setImprovementAreas] = useState<string>('');
 
   const isSubmitted = submission?.status === 'submitted' || submission?.status === 'graded';
   const solutionCode = (item as any).solution_code || '';
@@ -125,6 +127,21 @@ export function TpControlRenderer({ item, submission, onSubmissionUpdate, viewin
     if (submission?.answer_json?.manualScore) {
       setManualScore(submission.answer_json.manualScore);
       setUseManualScore(submission.answer_json.useManualScore || false);
+    }
+    // Charger l'appréciation et les axes d'amélioration depuis les colonnes dédiées ou answer_json (rétrocompatibilité)
+    if (submission?.appreciation) {
+      setAppreciation(submission.appreciation);
+    } else if (submission?.answer_json?.appreciation) {
+      setAppreciation(submission.answer_json.appreciation);
+    } else {
+      setAppreciation('');
+    }
+    if (submission?.improvement_areas) {
+      setImprovementAreas(submission.improvement_areas);
+    } else if (submission?.answer_json?.improvementAreas) {
+      setImprovementAreas(submission.answer_json.improvementAreas);
+    } else {
+      setImprovementAreas('');
     }
   }, [submission]);
 
@@ -307,6 +324,8 @@ export function TpControlRenderer({ item, submission, onSubmissionUpdate, viewin
           grade: finalScore,
           status: 'graded',
           graded_at: new Date().toISOString(),
+          appreciation: appreciation || null,
+          improvement_areas: improvementAreas || null,
         })
         .eq('id', submission.id)
         .select()
@@ -341,7 +360,7 @@ export function TpControlRenderer({ item, submission, onSubmissionUpdate, viewin
       const studentName = studentProfile?.full_name || studentProfile?.student_id || 'Étudiant';
 
       // Générer le HTML pour le PDF
-      const html = generatePdfHtml(item, submission, studentName, code, solutionCode, gradingCriteria, manualScore, useManualScore);
+      const html = generatePdfHtml(item, submission, studentName, code, solutionCode, gradingCriteria, manualScore, useManualScore, appreciation, improvementAreas);
 
       // Créer un blob et télécharger
       const blob = new Blob([html], { type: 'text/html' });
@@ -448,7 +467,9 @@ export function TpControlRenderer({ item, submission, onSubmissionUpdate, viewin
     solutionCode: string,
     criteria: GradingCriteria[],
     manualScore: { numerator: number; denominator: number } | null,
-    useManual: boolean
+    useManual: boolean,
+    appreciation: string = '',
+    improvementAreas: string = ''
   ): string => {
     const totalPoints = useManual && manualScore ? manualScore.numerator : criteria.filter(c => c.checked).reduce((sum, c) => sum + c.points, 0);
     const maxPoints = useManual && manualScore ? manualScore.denominator : 20;
@@ -589,6 +610,30 @@ export function TpControlRenderer({ item, submission, onSubmissionUpdate, viewin
       Note: ${totalPoints} / ${maxPoints}
     </div>
   </div>
+
+  ${appreciation || improvementAreas ? `
+  <div class="page-break"></div>
+
+  <div class="section">
+    <h2>5. Appréciation et axes d'amélioration</h2>
+    ${appreciation ? `
+    <div style="margin-bottom: 20px;">
+      <h3 style="color: #27ae60; margin-bottom: 10px;">Appréciation</h3>
+      <div style="background-color: #d5f4e6; padding: 15px; border-radius: 5px; border-left: 4px solid #27ae60;">
+        <p style="white-space: pre-wrap; margin: 0;">${appreciation}</p>
+      </div>
+    </div>
+    ` : ''}
+    ${improvementAreas ? `
+    <div>
+      <h3 style="color: #e67e22; margin-bottom: 10px;">Axes d'amélioration</h3>
+      <div style="background-color: #fdebd0; padding: 15px; border-radius: 5px; border-left: 4px solid #e67e22;">
+        <p style="white-space: pre-wrap; margin: 0;">${improvementAreas}</p>
+      </div>
+    </div>
+    ` : ''}
+  </div>
+  ` : ''}
 </body>
 </html>`;
   };
@@ -749,6 +794,99 @@ export function TpControlRenderer({ item, submission, onSubmissionUpdate, viewin
           )}
         </div>
       </div>
+
+      {/* Affichage de l'appréciation et axes d'amélioration pour les étudiants */}
+      {isSubmitted && submission?.status === 'graded' && !isTrainerOrAdmin && (
+        <div className="bg-white border border-gray-300 rounded-lg p-6 space-y-4">
+          {submission.grade !== null && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <span className="text-lg font-semibold text-green-900">Note finale</span>
+                <span className="text-2xl font-bold text-green-700">
+                  {submission.grade} / {getMaxPoints()}
+                </span>
+              </div>
+            </div>
+          )}
+          
+          {(submission.appreciation || submission.answer_json?.appreciation) && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <h4 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-blue-600" />
+                Appréciation
+              </h4>
+              <p className="text-blue-800 whitespace-pre-wrap">{submission.appreciation || submission.answer_json?.appreciation}</p>
+            </div>
+          )}
+          
+          {(submission.improvement_areas || submission.answer_json?.improvementAreas) && (
+            <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+              <h4 className="font-semibold text-orange-900 mb-2 flex items-center gap-2">
+                <AlertCircle className="w-5 h-5 text-orange-600" />
+                Axes d'amélioration
+              </h4>
+              <p className="text-orange-800 whitespace-pre-wrap">{submission.improvement_areas || submission.answer_json?.improvementAreas}</p>
+            </div>
+          )}
+
+          {/* Bouton d'export PDF pour les étudiants */}
+          {submission && user && submission.status === 'graded' && (
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <button
+                onClick={async () => {
+                  try {
+                    // Récupérer les informations de l'étudiant
+                    const studentName = profile?.full_name || profile?.student_id || 'Étudiant';
+                    
+                    // Récupérer l'appréciation et les axes d'amélioration
+                    const currentAppreciation = submission.appreciation || submission.answer_json?.appreciation || '';
+                    const currentImprovementAreas = submission.improvement_areas || submission.answer_json?.improvementAreas || '';
+                    
+                    // Récupérer les critères de notation depuis la soumission (pour les étudiants)
+                    const submissionCriteria = submission.answer_json?.gradingCriteria || gradingCriteria;
+                    const submissionManualScore = submission.answer_json?.manualScore || manualScore;
+                    const submissionUseManual = submission.answer_json?.useManualScore || useManualScore;
+                    
+                    // Générer le HTML pour le PDF
+                    const html = generatePdfHtml(
+                      item, 
+                      submission, 
+                      studentName, 
+                      code, 
+                      solutionCode, 
+                      submissionCriteria, 
+                      submissionManualScore, 
+                      submissionUseManual, 
+                      currentAppreciation, 
+                      currentImprovementAreas
+                    );
+
+                    // Créer un blob et télécharger
+                    const blob = new Blob([html], { type: 'text/html' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `${item.title}_${studentName.replace(/[^a-z0-9]/gi, '_')}.html`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+
+                    alert('Fichier HTML généré. Ouvrez-le et utilisez "Imprimer > Enregistrer en PDF" pour créer le PDF.');
+                  } catch (error) {
+                    console.error('Error exporting PDF:', error);
+                    alert('Erreur lors de l\'export. Vérifiez la console pour plus de détails.');
+                  }
+                }}
+                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium flex items-center justify-center gap-2"
+              >
+                <FileDown className="w-4 h-4" />
+                Télécharger la correction complète (PDF)
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Résultat de la comparaison */}
       {isSubmitted && comparisonResult && (
@@ -959,6 +1097,8 @@ export function TpControlRenderer({ item, submission, onSubmissionUpdate, viewin
                               manualGrade: manualScore.numerator,
                               manualScore,
                               useManualScore: true,
+                              appreciation: appreciation || null,
+                              improvementAreas: improvementAreas || null,
                             };
                             const { error } = await supabase
                               .from('submissions')
@@ -967,6 +1107,8 @@ export function TpControlRenderer({ item, submission, onSubmissionUpdate, viewin
                                 grade: manualScore.numerator,
                                 status: 'graded',
                                 graded_at: new Date().toISOString(),
+                                appreciation: appreciation || null,
+                                improvement_areas: improvementAreas || null,
                               })
                               .eq('id', submission.id);
                             if (error) throw error;
@@ -1006,6 +1148,8 @@ export function TpControlRenderer({ item, submission, onSubmissionUpdate, viewin
                               manualGrade: manualScore.numerator,
                               manualScore,
                               useManualScore: true,
+                              appreciation: appreciation || null,
+                              improvementAreas: improvementAreas || null,
                             };
                             const { error } = await supabase
                               .from('submissions')
@@ -1014,6 +1158,8 @@ export function TpControlRenderer({ item, submission, onSubmissionUpdate, viewin
                                 grade: manualScore.numerator,
                                 status: 'graded',
                                 graded_at: new Date().toISOString(),
+                                appreciation: appreciation || null,
+                                improvement_areas: improvementAreas || null,
                               })
                               .eq('id', submission.id);
                             if (error) throw error;
@@ -1037,6 +1183,87 @@ export function TpControlRenderer({ item, submission, onSubmissionUpdate, viewin
             {gradingLoading && (
               <p className="text-sm text-yellow-700 italic">Sauvegarde en cours...</p>
             )}
+            
+            {/* Affichage de la note finale */}
+            {submission?.status === 'graded' && submission?.grade !== null && (
+              <div className="mt-4 pt-4 border-t border-yellow-300">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-semibold text-green-900">Note finale</span>
+                    <span className="text-2xl font-bold text-green-700">
+                      {submission.grade} / {getMaxPoints()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Appréciation et axes d'amélioration */}
+            <div className="mt-6 pt-4 border-t border-yellow-300 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-yellow-900 mb-2">
+                  Appréciation
+                </label>
+                <textarea
+                  value={appreciation}
+                  onChange={async (e) => {
+                    setAppreciation(e.target.value);
+                    // Sauvegarder automatiquement après un délai
+                    if (submission) {
+                      const value = e.target.value;
+                      setTimeout(async () => {
+                        try {
+                          await supabase
+                            .from('submissions')
+                            .update({ appreciation: value || null })
+                            .eq('id', submission.id);
+                        } catch (err) {
+                          console.error('Error saving appreciation:', err);
+                        }
+                      }, 1000);
+                    }
+                  }}
+                  rows={4}
+                  className="w-full px-3 py-2 border border-yellow-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 text-sm"
+                  placeholder="Écrivez votre appréciation générale du travail de l'étudiant..."
+                />
+                <p className="text-xs text-yellow-600 mt-1">
+                  Commentaire positif sur les points forts du travail
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-yellow-900 mb-2">
+                  Axes d'amélioration
+                </label>
+                <textarea
+                  value={improvementAreas}
+                  onChange={async (e) => {
+                    setImprovementAreas(e.target.value);
+                    // Sauvegarder automatiquement après un délai
+                    if (submission) {
+                      const value = e.target.value;
+                      setTimeout(async () => {
+                        try {
+                          await supabase
+                            .from('submissions')
+                            .update({ improvement_areas: value || null })
+                            .eq('id', submission.id);
+                        } catch (err) {
+                          console.error('Error saving improvement areas:', err);
+                        }
+                      }, 1000);
+                    }
+                  }}
+                  rows={4}
+                  className="w-full px-3 py-2 border border-yellow-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 text-sm"
+                  placeholder="Indiquez les points à améliorer pour progresser..."
+                />
+                <p className="text-xs text-yellow-600 mt-1">
+                  Suggestions constructives pour aider l'étudiant à progresser
+                </p>
+              </div>
+            </div>
             
             {/* Bouton d'export PDF */}
             {submission && viewingUserId && viewingUserId !== user?.id && (

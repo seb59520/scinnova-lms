@@ -28,6 +28,7 @@ export function ProgramView() {
   const [downloadingPdf, setDownloadingPdf] = useState(false)
   const [uploadingDoc, setUploadingDoc] = useState<string | null>(null)
   const [selectedFiles, setSelectedFiles] = useState<Record<string, File | null>>({})
+  const [documentUrls, setDocumentUrls] = useState<Record<string, string>>({})
 
   useEffect(() => {
     if (programId && user) {
@@ -121,6 +122,24 @@ export function ProgramView() {
           submissionsMap[s.document_id] = s
         })
         setDocumentSubmissions(submissionsMap)
+
+        // Générer les URLs publiques pour les documents avec template_file_path (bucket public)
+        const urlsMap: Record<string, string> = {}
+        for (const doc of docs) {
+          if (doc.template_url) {
+            // Utiliser l'URL stockée si elle existe
+            urlsMap[doc.id] = doc.template_url
+          } else if (doc.template_file_path) {
+            // Générer l'URL publique depuis le chemin (bucket public)
+            const { data } = supabase.storage
+              .from('fillable-documents')
+              .getPublicUrl(doc.template_file_path)
+            if (data) {
+              urlsMap[doc.id] = data.publicUrl
+            }
+          }
+        }
+        setDocumentUrls(urlsMap)
       }
     } catch (err) {
       console.error('Error fetching program documents:', err)
@@ -1028,12 +1047,13 @@ export function ProgramView() {
                     </div>
 
                     {/* Télécharger le template */}
-                    {doc.template_url && (
+                    {(doc.template_url || doc.template_file_path) && (
                       <a
-                        href={doc.template_url}
+                        href={documentUrls[doc.id] || doc.template_url || '#'}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 mb-3"
+                        download
                       >
                         <Download className="w-4 h-4" />
                         Télécharger le document

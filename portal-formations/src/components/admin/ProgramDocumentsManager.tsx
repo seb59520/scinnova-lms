@@ -594,7 +594,7 @@ export function ProgramDocumentsManager({ programId }: ProgramDocumentsManagerPr
         throw uploadError;
       }
 
-      // Get public URL
+      // Le bucket est public, on peut utiliser getPublicUrl()
       const { data: urlData } = supabase.storage
         .from('fillable-documents')
         .getPublicUrl(filePath);

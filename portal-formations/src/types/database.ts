@@ -119,6 +119,8 @@ export interface Submission {
   file_path: string | null;
   status: SubmissionStatus;
   grade: number | null;
+  appreciation: string | null;
+  improvement_areas: string | null;
   submitted_at: string;
   graded_at: string | null;
 }
@@ -345,6 +347,11 @@ export interface Program {
   summary_pdf_path: string | null;
   thumbnail_image_path: string | null;
   glossary: Glossary | null;
+  pedagogical_objectives: PedagogicalObjective[] | null;
+  prerequisites: Prerequisite[] | null;
+  recommended_path: string | null;
+  final_synthesis: FinalSynthesis | null;
+  evaluations_config: EvaluationsConfig | null;
   created_by: string;
   created_at: string;
   updated_at: string;
