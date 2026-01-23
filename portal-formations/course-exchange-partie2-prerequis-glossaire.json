@@ -1,0 +1,960 @@
+{
+  "metadata": {
+    "name": "Glossaire - Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+    "description": "Glossaire extrait automatiquement depuis le cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+    "version": "1.0.0",
+    "language": "fr",
+    "createdAt": "2026-01-23T19:26:47.673Z",
+    "lastUpdated": "2026-01-23T19:26:47.673Z"
+  },
+  "entries": [
+    {
+      "term": "AAAA",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Active Directory",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Autodiscover",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "But",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Capacit",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Certificats",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Chaque",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Checklist",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Choisir",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "CNAME",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Comment",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Comprendre",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Configuration",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Configurer",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Contexte Microsoft",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Crit",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Dans",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Defender",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "DKIM",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "DMARC",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "DNS",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Documenter",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Domaine",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Droits",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "ECP",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "EHLO",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Enregistrement",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Enregistrements",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Exchange",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Exchange Online",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Gestion",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Global Catalog",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Gmail",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "HTTPS",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Identified Mail",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Identifier",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Inclut",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Les",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Livrabilit",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Livrables",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Mail",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Mauvais",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Message",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Mettre",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Microsoft",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Microsoft Exchange",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.672Z"
+    },
+    {
+      "term": "Module",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Objectif",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Objectifs",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Orange",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Outlook",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "OWA",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Param",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Partie",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "PKI",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Point",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Pour",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Pour Microsoft",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Pourquoi Exchange",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Quel",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Quels",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Quiz",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Receive Connector",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Recommandation Microsoft",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Sans",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Sant",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Sender Policy Framework",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Services",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Signature",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "SMTP",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "SPF",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "SSL",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "STARTTLS",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Tester",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "TLS",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "TXT",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Uniquement",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Validation",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    },
+    {
+      "term": "Zone",
+      "definition": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "category": "Extrait du cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "examples": [],
+      "relatedTerms": [],
+      "source": "portal-formations/course-exchange-partie2-prerequis.json",
+      "lastUpdated": "2026-01-23T19:26:47.673Z"
+    }
+  ]
+}

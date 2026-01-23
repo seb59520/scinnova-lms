@@ -1,0 +1,1007 @@
+{
+  "title": "Microsoft Exchange — Partie 4 : Administration des boîtes aux lettres (2 heures)",
+  "description": "Administration des boîtes aux lettres Exchange : types de boîtes (utilisateur, partagée, archivage), gestion des quotas, permissions (Full Access, Send As, Send on Behalf), stratégies de rétention et conformité. Inclut un TP pratique complet.",
+  "status": "draft",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3B82F6",
+    "secondaryColor": "#8B5CF6",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 4 — Administration des boîtes aux lettres Exchange",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#3B82F6",
+        "secondaryColor": "#8B5CF6",
+        "fontFamily": "Inter"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Types de boîtes aux lettres dans Exchange",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 Objectifs pédagogiques" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Créer et administrer différents types de boîtes aux lettres Exchange" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Comprendre les usages des boîtes utilisateur, partagées et archivées" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Configurer des quotas de stockage" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Gérer les permissions d'accès et d'envoi" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Appliquer des stratégies de rétention" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Mettre en place une configuration conforme aux bonnes pratiques d'entreprise" }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "👤 Boîte aux lettres utilisateur" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "C'est la boîte la plus courante :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Associée à un compte Active Directory" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Utilisée par une personne physique" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Accessible via Outlook, OWA, mobile" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Cas d'usage" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Salarié" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Administratif" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Direction" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "👉 Chaque utilisateur authentifié possède sa propre identité, ses droits et son espace de stockage." }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "👥 Boîte aux lettres partagée" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Une boîte partagée :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "N'est pas destinée à une seule personne" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Est utilisée par plusieurs utilisateurs" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Ne nécessite pas de licence (dans certains contextes)" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "S'accède via délégation de droits" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Exemples" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "contact@entreprise.fr" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "support@entreprise.fr" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "comptabilite@entreprise.fr" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "👉 Elle favorise la collaboration sans multiplier les comptes utilisateurs." }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🗄️ Boîte aux lettres d'archivage" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "L'archive permet de :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Stocker les emails anciens" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Alléger la boîte principale" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Répondre à des exigences de conservation" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Elle est :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Associée à une boîte utilisateur" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Transparente pour l'utilisateur (visible dans Outlook)" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "👉 L'archive est une réponse technique et réglementaire (conformité, traçabilité)." }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "4.2 Gestion des quotas de boîtes aux lettres",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 Pourquoi des quotas ?" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Les quotas permettent de :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Contrôler la consommation disque" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Éviter la saturation des bases Exchange" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Inciter à une bonne gestion des emails" }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "Types de quotas" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Un quota définit plusieurs seuils :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Avertissement (warning)" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Interdiction d'envoi" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Interdiction d'envoi et de réception" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "👉 Ces seuils peuvent être :" }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "• hérités de la base de données" }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "• ou définis par utilisateur" }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "Bonnes pratiques" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Définir des quotas réalistes" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Informer les utilisateurs" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Utiliser l'archive plutôt qu'augmenter sans limite" }] }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "4.3 Gestion des permissions sur les boîtes aux lettres",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "Les permissions déterminent qui peut accéder à quoi." }]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🔑 Principales permissions Exchange" }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Full Access" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Accès complet à la boîte" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Lecture / suppression / gestion des emails" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Ne permet pas d'envoyer des emails" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Send As" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Permet d'envoyer un mail en tant que la boîte" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "L'expéditeur visible est la boîte partagée" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Send on Behalf" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Permet d'envoyer au nom de" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "L'expéditeur indique : Utilisateur au nom de Boîte" }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "Cas d'usage typiques" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "Besoin" },
+                    { "type": "text", "text": " → " },
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "Permission" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Lecture et gestion → Full Access" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Réponse client anonyme → Send As" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Collaboration visible → Send on Behalf" }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "Bonnes pratiques" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Donner les droits au minimum nécessaire" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Documenter les délégations" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Réviser régulièrement les accès" }] }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "4.4 Stratégies de rétention et conformité",
+          "position": 4,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 Pourquoi la rétention ?" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Les stratégies de rétention servent à :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Conserver les emails selon une durée définie" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Répondre aux obligations légales" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Éviter la suppression non maîtrisée" }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "Principes" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Les emails peuvent être :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "conservés" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "archivés" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "supprimés automatiquement" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Les règles s'appliquent :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "par utilisateur" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "par boîte" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "par dossier ou type de message" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "👉 La rétention est un levier de gouvernance des données." }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "tp",
+          "title": "TP — Configurer des boîtes aux lettres avec quotas et permissions",
+          "position": 5,
+          "published": true,
+          "content": {
+            "description": "Créer plusieurs types de boîtes aux lettres (utilisateur, partagée, archive), appliquer des quotas, configurer des permissions adaptées et tester les accès et les envois.",
+            "instructions": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 Objectifs" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Créer plusieurs types de boîtes aux lettres" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Appliquer des quotas" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Configurer des permissions adaptées" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Tester les accès et les envois" }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🔧 Scénario proposé" }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Entreprise fictive TechNova" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "1 utilisateur : alice@technova.local" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "1 boîte partagée : support@technova.local" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "1 archive activée pour Alice" }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "📋 Étapes guidées" }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "1️⃣ Créer une boîte utilisateur" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Créer l'utilisateur Alice" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Vérifier l'accès via Outlook / OWA" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "2️⃣ Créer une boîte partagée" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Créer support@technova.local" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Ne pas associer de licence utilisateur" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "3️⃣ Configurer les permissions" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "Alice :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Full Access sur la boîte support" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Send As sur la boîte support" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "4️⃣ Configurer les quotas" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Définir un quota personnalisé pour Alice" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Ajouter un seuil d'avertissement" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "5️⃣ Activer l'archive" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Activer l'archive de la boîte Alice" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Vérifier son apparition dans Outlook" }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "✅ Critères de validation" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "Élément" },
+                    { "type": "text", "text": " → " },
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "Attendu" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Boîte utilisateur → Fonctionnelle" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Boîte partagée → Accessible par Alice" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Permissions → Full Access + Send As opérationnels" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Quotas → Appliqués et visibles" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Archive → Active et accessible" }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🧠 À retenir (synthèse)" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "L'administration des boîtes aux lettres est un équilibre entre usage, sécurité, performance et conformité." }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Un bon administrateur Exchange anticipe les besoins tout en maîtrisant les ressources." }
+                  ]
+                }
+              ]
+            },
+            "checklist": [
+              "Créer l'utilisateur Alice avec boîte aux lettres",
+              "Vérifier l'accès à la boîte via Outlook/OWA",
+              "Créer la boîte partagée support@technova.local",
+              "Configurer Full Access pour Alice sur la boîte support",
+              "Configurer Send As pour Alice sur la boîte support",
+              "Définir un quota personnalisé pour Alice avec seuil d'avertissement",
+              "Activer l'archive pour la boîte d'Alice",
+              "Vérifier l'apparition de l'archive dans Outlook",
+              "Tester l'envoi d'email depuis la boîte support avec Send As",
+              "Valider que tous les éléments sont fonctionnels"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

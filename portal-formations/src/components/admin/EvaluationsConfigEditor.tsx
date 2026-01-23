@@ -2,26 +2,34 @@ import { useState, useEffect } from 'react'
 import { Plus, Trash2, Search, X, CheckCircle } from 'lucide-react'
 import { EvaluationsConfig, EvaluationItem, Item } from '../../types/database'
 import { supabase } from '../../lib/supabaseClient'
+import { useAuth } from '../../hooks/useAuth'
 
 interface EvaluationsConfigEditorProps {
-  courseId: string
+  courseId?: string
+  programId?: string
   config: EvaluationsConfig | null
   onChange: (config: EvaluationsConfig | null) => void
 }
 
-export function EvaluationsConfigEditor({ courseId, config, onChange }: EvaluationsConfigEditorProps) {
+export function EvaluationsConfigEditor({ courseId, programId, config, onChange }: EvaluationsConfigEditorProps) {
+  const { profile } = useAuth()
   const [availableItems, setAvailableItems] = useState<Item[]>([])
+  const [availableEvaluations, setAvailableEvaluations] = useState<Array<{id: string, title: string}>>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [showItemSelector, setShowItemSelector] = useState(false)
+  
+  const isAdmin = profile?.role === 'admin' || profile?.role === 'trainer' || profile?.role === 'instructor'
 
   useEffect(() => {
     if (courseId && courseId !== 'new') {
       fetchCourseItems()
+    } else if (programId && programId !== 'new') {
+      fetchProgramItems()
     } else {
       setLoading(false)
     }
-  }, [courseId])
+  }, [courseId, programId, profile])
 
   const fetchCourseItems = async () => {
     try {
@@ -55,6 +63,167 @@ export function EvaluationsConfigEditor({ courseId, config, onChange }: Evaluati
     }
   }
 
+  const fetchProgramItems = async () => {
+    try {
+      setLoading(true)
+      
+      // Calculer isAdmin localement pour éviter les problèmes de closure
+      const currentIsAdmin = profile?.role === 'admin' || profile?.role === 'trainer' || profile?.role === 'instructor'
+      
+      // 1. Récupérer les cours du programme
+      const { data: programCourses, error: pcError } = await supabase
+        .from('program_courses')
+        .select('course_id')
+        .eq('program_id', programId)
+
+      if (pcError) {
+        console.error('❌ Erreur lors de la récupération des cours du programme:', pcError)
+        throw pcError
+      }
+
+      console.log('📚 Cours du programme trouvés:', programCourses?.length || 0)
+
+      const courseIds = (programCourses || []).map(pc => pc.course_id)
+      
+      // 2. Récupérer les modules de ces cours (seulement si on a des cours)
+      let moduleIds: string[] = []
+      if (courseIds.length > 0) {
+        const { data: modules, error: modulesError } = await supabase
+          .from('modules')
+          .select('id, course_id')
+          .in('course_id', courseIds)
+
+        if (modulesError) {
+          console.error('❌ Erreur lors de la récupération des modules:', modulesError)
+          throw modulesError
+        }
+
+        moduleIds = (modules || []).map(m => m.id)
+        console.log('📦 Modules trouvés:', moduleIds.length)
+
+        // 3. Récupérer les items (TP, exercices, jeux) de ces modules
+        if (moduleIds.length > 0) {
+          const { data: items, error: itemsError } = await supabase
+            .from('items')
+            .select('*')
+            .in('module_id', moduleIds)
+            .in('type', ['exercise', 'activity', 'tp', 'game'])
+            .eq('published', true)
+            .order('position', { ascending: true })
+
+          if (itemsError) {
+            console.error('❌ Erreur lors de la récupération des items:', itemsError)
+            throw itemsError
+          }
+          console.log('✅ Items trouvés:', items?.length || 0)
+          setAvailableItems(items || [])
+        } else {
+          setAvailableItems([])
+        }
+      } else {
+        setAvailableItems([])
+      }
+
+      // 4. Récupérer les évaluations de programme (quiz)
+      console.log('🔍 Récupération des évaluations de programme pour programId:', programId)
+      console.log('👤 Utilisateur actuel:', { 
+        profileId: profile?.id, 
+        role: profile?.role,
+        isAdmin: currentIsAdmin 
+      })
+      
+      try {
+        // Essayer d'abord sans filtre pour voir toutes les évaluations
+        const { data: allEvaluations, error: allError } = await supabase
+          .from('program_evaluations')
+          .select('id, title, is_published, program_id, created_at')
+          .eq('program_id', programId)
+          .order('created_at', { ascending: true })
+
+        console.log('📊 Résultat COMPLET de la requête program_evaluations:', {
+          allEvaluations,
+          error: allError,
+          count: allEvaluations?.length || 0,
+          isAdmin: currentIsAdmin,
+          programId,
+          errorDetails: allError ? {
+            code: allError.code,
+            message: allError.message,
+            details: allError.details,
+            hint: allError.hint
+          } : null
+        })
+
+        if (allError) {
+          console.error('❌ Error fetching program evaluations:', {
+            error: allError,
+            code: allError.code,
+            message: allError.message,
+            details: allError.details,
+            hint: allError.hint
+          })
+          setAvailableEvaluations([])
+        } else {
+          // Pour les admins, afficher toutes les évaluations (publiées et non publiées)
+          // Pour les autres, afficher uniquement les publiées
+          const filteredEvaluations = currentIsAdmin 
+            ? (allEvaluations || [])
+            : (allEvaluations || []).filter(evaluation => evaluation.is_published === true)
+          
+          console.log('✅ Évaluations après filtrage:', {
+            total: allEvaluations?.length || 0,
+            filtered: filteredEvaluations.length,
+            isAdmin: currentIsAdmin,
+            evaluations: filteredEvaluations.map(e => ({
+              id: e.id,
+              title: e.title,
+              is_published: e.is_published
+            }))
+          })
+          
+          setAvailableEvaluations(filteredEvaluations.map(e => ({ id: e.id, title: e.title })))
+          
+          // Si aucune évaluation n'est trouvée, essayer une requête alternative
+          if (filteredEvaluations.length === 0 && allEvaluations?.length === 0) {
+            console.warn('⚠️ Aucune évaluation trouvée. Vérification si des évaluations existent pour ce programme...')
+            
+            // Essayer une requête plus simple pour voir si le problème vient de RLS
+            const { data: countData, error: countError } = await supabase
+              .from('program_evaluations')
+              .select('id', { count: 'exact', head: true })
+              .eq('program_id', programId)
+            
+            console.log('🔍 Test de comptage (head: true):', { 
+              count: countData, 
+              error: countError 
+            })
+            
+            // Essayer aussi sans filtre program_id pour voir toutes les évaluations
+            if (currentIsAdmin) {
+              const { data: allProgramEvals, error: allEvalsError } = await supabase
+                .from('program_evaluations')
+                .select('id, title, program_id, is_published')
+                .limit(10)
+              
+              console.log('🔍 Toutes les évaluations (admin, limit 10):', {
+                data: allProgramEvals,
+                error: allEvalsError,
+                count: allProgramEvals?.length || 0
+              })
+            }
+          }
+        }
+      } catch (fetchError) {
+        console.error('❌ Exception lors de la récupération des évaluations:', fetchError)
+        setAvailableEvaluations([])
+      }
+    } catch (error) {
+      console.error('Error fetching program items:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const currentItems = config?.items || []
   const passingScore = config?.passingScore ?? 60
 
@@ -62,6 +231,24 @@ export function EvaluationsConfigEditor({ courseId, config, onChange }: Evaluati
     const newEvalItem: EvaluationItem = {
       itemId: item.id,
       title: item.title,
+      weight: 1,
+      threshold: undefined
+    }
+
+    const newConfig: EvaluationsConfig = {
+      items: [...currentItems, newEvalItem],
+      passingScore
+    }
+
+    onChange(newConfig)
+    setShowItemSelector(false)
+    setSearchTerm('')
+  }
+
+  const addEvaluation = (evaluation: {id: string, title: string}) => {
+    const newEvalItem: EvaluationItem = {
+      itemId: evaluation.id, // Pour les évaluations, on utilise l'ID de l'évaluation
+      title: evaluation.title,
       weight: 1,
       threshold: undefined
     }
@@ -109,7 +296,13 @@ export function EvaluationsConfigEditor({ courseId, config, onChange }: Evaluati
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-  if (courseId === 'new') {
+  const filteredAvailableEvaluations = availableEvaluations.filter(evaluation =>
+    !currentItems.some(ci => ci.itemId === evaluation.id) &&
+    evaluation.title.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+  const idToCheck = courseId || programId
+  if (idToCheck === 'new') {
     return (
       <div className="text-center py-8 border-2 border-dashed border-gray-200 rounded-lg">
         <p className="text-gray-500 text-sm">
@@ -262,12 +455,40 @@ export function EvaluationsConfigEditor({ courseId, config, onChange }: Evaluati
                 <div className="flex items-center justify-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 </div>
-              ) : filteredAvailableItems.length === 0 ? (
+              ) : filteredAvailableItems.length === 0 && filteredAvailableEvaluations.length === 0 ? (
                 <div className="text-center py-8 text-gray-500 text-sm">
                   {searchTerm ? 'Aucun element trouve' : 'Aucun element disponible'}
                 </div>
               ) : (
                 <div className="space-y-2">
+                  {/* Afficher les évaluations de programme (quiz) en premier */}
+                  {filteredAvailableEvaluations.length > 0 && (
+                    <>
+                      <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 px-2">
+                        Quiz / Évaluations
+                      </div>
+                      {filteredAvailableEvaluations.map(evaluation => (
+                        <button
+                          key={evaluation.id}
+                          onClick={() => addEvaluation(evaluation)}
+                          className="w-full flex items-center gap-3 p-3 text-left bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 hover:border-blue-300 transition-colors"
+                        >
+                          <span className="w-3 h-3 rounded-full flex-shrink-0 bg-blue-500" />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">{evaluation.title}</p>
+                            <p className="text-xs text-gray-500">Quiz</p>
+                          </div>
+                          <Plus className="w-4 h-4 text-gray-400" />
+                        </button>
+                      ))}
+                      {filteredAvailableItems.length > 0 && (
+                        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 mt-4 px-2">
+                          TP / Exercices
+                        </div>
+                      )}
+                    </>
+                  )}
+                  {/* Afficher les items (TP, exercices) */}
                   {filteredAvailableItems.map(item => (
                     <button
                       key={item.id}

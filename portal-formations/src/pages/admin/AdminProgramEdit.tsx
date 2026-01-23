@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Program, ProgramCourse, ProgramCourseWithCourse, Course } from '../../types/database'
-import { Save, Plus, Trash2, ChevronUp, ChevronDown, X, GripVertical, FileText, Download, Trash, Image, ChevronRight } from 'lucide-react'
+import { Save, Plus, Trash2, ChevronUp, ChevronDown, X, GripVertical, FileText, Download, Trash, Image, ChevronRight, Edit, ExternalLink } from 'lucide-react'
 import { FileUpload } from '../../components/FileUpload'
 import { GlossaryEditor } from '../../components/GlossaryEditor'
 import { ProgramDocumentsManager } from '../../components/admin/ProgramDocumentsManager'
@@ -50,7 +50,7 @@ export function AdminProgramEdit() {
   const [selectedCourseIds, setSelectedCourseIds] = useState<string[]>([])
   const [draggedCourseId, setDraggedCourseId] = useState<string | null>(null)
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set())
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['informations']))
   
   // Récupérer les évaluations du programme avec les fonctions CRUD
   const { 
@@ -106,7 +106,12 @@ export function AdminProgramEdit() {
           console.log('⚠️ Requête annulée (composant démonté)')
           return
         }
-        throw programError
+        console.error('Error fetching program:', programError)
+        if (isMounted) {
+          setError(`Erreur lors du chargement du programme: ${programError.message || 'Erreur inconnue'}`)
+          setLoading(false)
+        }
+        return
       }
       
       setProgram(programData)
@@ -150,7 +155,8 @@ export function AdminProgramEdit() {
       }
       
       console.error('Error fetching program:', error)
-      setError('Erreur lors du chargement.')
+      setError(`Erreur lors du chargement: ${error?.message || 'Erreur inconnue'}`)
+      setLoading(false)
     } finally {
       if (isMounted) {
         setLoading(false)
@@ -753,7 +759,15 @@ export function AdminProgramEdit() {
         <div className="w-full px-4 py-6 sm:px-0">
           {error && (
             <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-              {error}
+              <strong>Erreur :</strong> {error}
+            </div>
+          )}
+          
+          {!error && !loading && expandedSections.size === 0 && (
+            <div className="mb-4 bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded">
+              <p className="text-sm">
+                💡 <strong>Astuce :</strong> Cliquez sur les sections ci-dessous pour les développer et voir leur contenu.
+              </p>
             </div>
           )}
 
@@ -1064,7 +1078,7 @@ export function AdminProgramEdit() {
               {/* Configuration des évaluations */}
               <div className="bg-white shadow rounded-lg p-6">
                 <EvaluationsConfigEditor
-                  courseId={programId || 'new'}
+                  programId={programId || undefined}
                   config={program.evaluations_config || null}
                   onChange={(config) => setProgram({ ...program, evaluations_config: config })}
                 />
@@ -1186,13 +1200,35 @@ export function AdminProgramEdit() {
                         )}
                       </div>
                     </div>
-                    <button
-                      onClick={() => handleRemoveCourse(pc.id)}
-                      className="text-red-400 hover:text-red-600 p-2 rounded transition-colors"
-                      title="Retirer"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                    <div className="flex items-center gap-2">
+                      {pc.courses?.id && (
+                        <>
+                          <Link
+                            to={`/admin/courses/${pc.courses.id}`}
+                            className="text-indigo-400 hover:text-indigo-600 p-2 rounded transition-colors"
+                            title="Éditer la formation"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <Edit className="w-4 h-4" />
+                          </Link>
+                          <Link
+                            to={`/courses/${pc.courses.id}`}
+                            className="text-blue-400 hover:text-blue-600 p-2 rounded transition-colors"
+                            title="Voir la formation"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </Link>
+                        </>
+                      )}
+                      <button
+                        onClick={() => handleRemoveCourse(pc.id)}
+                        className="text-red-400 hover:text-red-600 p-2 rounded transition-colors"
+                        title="Retirer"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </li>
                 ))}
               </ul>

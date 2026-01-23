@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { CourseResource, CourseResourceType } from '../types/database'
+import { CourseResourcesImportModal } from './CourseResourcesImportModal'
 import { 
   FileText, 
   Link2, 
@@ -29,6 +30,7 @@ export function CourseResourcesManager({ courseId, readOnly = false }: CourseRes
   const [resources, setResources] = useState<CourseResource[]>([])
   const [loading, setLoading] = useState(true)
   const [showAddModal, setShowAddModal] = useState(false)
+  const [showImportModal, setShowImportModal] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -151,13 +153,23 @@ export function CourseResourcesManager({ courseId, readOnly = false }: CourseRes
           Ressources de la formation
         </h3>
         {!readOnly && (
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
-          >
-            <Plus className="w-4 h-4" />
-            Ajouter une ressource
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowImportModal(true)}
+              className="flex items-center gap-2 px-3 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors text-sm"
+              title="Importer des ressources en masse"
+            >
+              <Upload className="w-4 h-4" />
+              Importer
+            </button>
+            <button
+              onClick={() => setShowAddModal(true)}
+              className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+            >
+              <Plus className="w-4 h-4" />
+              Ajouter une ressource
+            </button>
+          </div>
         )}
       </div>
 
@@ -268,6 +280,19 @@ export function CourseResourcesManager({ courseId, readOnly = false }: CourseRes
             fetchResources()
           }}
           nextPosition={resources.length}
+        />
+      )}
+
+      {/* Modal d'import de ressources */}
+      {showImportModal && (
+        <CourseResourcesImportModal
+          courseId={courseId}
+          isOpen={showImportModal}
+          onClose={() => setShowImportModal(false)}
+          onSuccess={() => {
+            setShowImportModal(false)
+            fetchResources()
+          }}
         />
       )}
     </div>

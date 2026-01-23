@@ -3,7 +3,8 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Course, Module, Item, PedagogicalObjective, Prerequisite, FinalSynthesis, EvaluationsConfig } from '../../types/database'
-import { Save, Plus, Edit, Trash2, GripVertical, ChevronUp, ChevronDown, Code, Presentation, Link as LinkIcon, Image, X, BookOpen, CheckSquare, FileText } from 'lucide-react'
+import { CourseJson } from '../../types/courseJson'
+import { Save, Plus, Edit, Trash2, GripVertical, ChevronUp, ChevronDown, Code, Presentation, Link as LinkIcon, Image, X, BookOpen, CheckSquare, FileText, Download, Eye } from 'lucide-react'
 import { LinkedInPostModal } from '../../components/LinkedInPostModal'
 import { ImageUploadCarousel } from '../../components/ImageUploadCarousel'
 import { CourseResourcesManager } from '../../components/CourseResourcesManager'
@@ -30,7 +31,10 @@ export function AdminCourseEdit() {
     thumbnail_image_path: null,
     created_by: user?.id
   })
-  const [activeTab, setActiveTab] = useState<'general' | 'modules' | 'resources'>('general')
+  const [activeTab, setActiveTab] = useState<'general' | 'modules' | 'resources' | 'json'>('general')
+  const [jsonContent, setJsonContent] = useState<string>('')
+  const [parsedJson, setParsedJson] = useState<CourseJson | null>(null)
+  const [jsonError, setJsonError] = useState('')
   const [uploadingThumbnail, setUploadingThumbnail] = useState(false)
   const [modules, setModules] = useState<ModuleWithItems[]>([])
   const [loading, setLoading] = useState(!isNew)
@@ -120,6 +124,8 @@ export function AdminCourseEdit() {
 
       if (isMounted) {
         setModules(sortedModules)
+        // Générer le JSON initial à partir des données chargées
+        generateJsonFromCourse(courseData, sortedModules)
       }
     } catch (error: any) {
       if (!isMounted) return
@@ -136,6 +142,128 @@ export function AdminCourseEdit() {
       if (isMounted) {
         setLoading(false)
       }
+    }
+  }
+
+  const generateJsonFromCourse = async (courseData: Course, modulesData: ModuleWithItems[]) => {
+    try {
+      // Récupérer tous les chapitres pour tous les items
+      const allItemIds = modulesData.flatMap(m => m.items.map(i => i.id))
+      let chaptersMap = new Map<string, any[]>()
+      
+      if (allItemIds.length > 0) {
+        const { data: chaptersData } = await supabase
+          .from('chapters')
+          .select('*')
+          .in('item_id', allItemIds)
+          .order('position', { ascending: true })
+
+        if (chaptersData) {
+          chaptersData.forEach(ch => {
+            if (!chaptersMap.has(ch.item_id)) {
+              chaptersMap.set(ch.item_id, [])
+            }
+            chaptersMap.get(ch.item_id)!.push({
+              title: ch.title,
+              position: ch.position,
+              content: ch.content || undefined
+            })
+          })
+        }
+      }
+
+      // Construire le JSON
+      const courseJson: CourseJson = {
+        title: courseData.title,
+        description: courseData.description || '',
+        status: courseData.status as 'draft' | 'published',
+        access_type: courseData.access_type as 'free' | 'paid' | 'invite',
+        price_cents: courseData.price_cents || undefined,
+        currency: courseData.currency || undefined,
+        is_public: courseData.is_public || false,
+        modules: modulesData.map(module => ({
+          id: module.id,
+          title: module.title,
+          position: module.position,
+          items: module.items.map(item => ({
+            id: item.id,
+            type: item.type as any,
+            title: item.title,
+            position: item.position,
+            published: item.published,
+            content: item.content || {},
+            chapters: chaptersMap.get(item.id) || undefined,
+            asset_path: item.asset_path || undefined,
+            external_url: item.external_url || undefined
+          }))
+        }))
+      }
+
+      setJsonContent(JSON.stringify(courseJson, null, 2))
+      setParsedJson(courseJson)
+    } catch (err) {
+      console.error('Error generating JSON:', err)
+    }
+  }
+
+  const handleJsonChange = (value: string) => {
+    setJsonContent(value)
+    try {
+      const parsed = JSON.parse(value) as any
+      setParsedJson(parsed)
+      setJsonError('')
+    } catch (e) {
+      setJsonError('JSON invalide')
+    }
+  }
+
+  const handleSaveJson = async () => {
+    if (!parsedJson || !courseId || isNew) {
+      setError('Impossible de sauvegarder le JSON. Veuillez d\'abord sauvegarder la formation.')
+      return
+    }
+
+    setSaving(true)
+    setError('')
+    setJsonError('')
+
+    try {
+      const jsonToSave = parsedJson
+
+      if (!jsonToSave.title) {
+        setJsonError('Le champ "title" est obligatoire dans le JSON.')
+        setSaving(false)
+        return
+      }
+
+      const courseData = {
+        title: jsonToSave.title.trim(),
+        description: jsonToSave.description || null,
+        status: jsonToSave.status || 'draft',
+        access_type: jsonToSave.access_type || 'free',
+        price_cents: jsonToSave.price_cents || null,
+        currency: jsonToSave.currency || 'EUR',
+        is_paid: jsonToSave.access_type === 'paid',
+        updated_at: new Date().toISOString()
+      }
+
+      // Mettre à jour le cours
+      const { error: updateError } = await supabase
+        .from('courses')
+        .update(courseData)
+        .eq('id', courseId)
+
+      if (updateError) throw updateError
+
+      alert('Métadonnées du cours sauvegardées avec succès !\n\nNote: Pour sauvegarder les modules et items depuis le JSON, utilisez la page d\'édition JSON complète.')
+      
+      // Recharger les données
+      await fetchCourse(true)
+    } catch (err: any) {
+      console.error('Error saving JSON:', err)
+      setJsonError(err.message || 'Erreur lors de la sauvegarde')
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -1126,6 +1254,26 @@ export function AdminCourseEdit() {
                     Ressources
                   </button>
                 )}
+                {!isNew && courseId && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveTab('json')
+                      // Générer le JSON si pas déjà fait
+                      if (!jsonContent && course && modules.length > 0) {
+                        generateJsonFromCourse(course as Course, modules)
+                      }
+                    }}
+                    className={`flex items-center gap-2 px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
+                      activeTab === 'json'
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    <Code className="w-4 h-4" />
+                    JSON
+                  </button>
+                )}
               </nav>
             </div>
           </div>
@@ -1761,6 +1909,61 @@ export function AdminCourseEdit() {
               </div>
             )}
           </div>
+          )}
+
+          {/* Tab: JSON */}
+          {activeTab === 'json' && !isNew && courseId && (
+            <div className="bg-white shadow rounded-lg p-6">
+              <div className="mb-4 flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-medium text-gray-900 mb-2">
+                    Édition JSON de la formation
+                  </h2>
+                  <p className="text-sm text-gray-500">
+                    Modifiez le JSON de la formation. Les modifications des métadonnées seront sauvegardées.
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleSaveJson}
+                    disabled={saving || !parsedJson}
+                    className="btn-primary inline-flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <Save className="w-4 h-4" />
+                    {saving ? 'Sauvegarde...' : 'Sauvegarder'}
+                  </button>
+                  <Link
+                    to={`/admin/courses/${courseId}/json`}
+                    className="btn-secondary inline-flex items-center space-x-2"
+                  >
+                    <Eye className="w-4 h-4" />
+                    Édition complète
+                  </Link>
+                </div>
+              </div>
+
+              {jsonError && (
+                <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                  {jsonError}
+                </div>
+              )}
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  JSON de la formation
+                </label>
+                <textarea
+                  value={jsonContent}
+                  onChange={(e) => handleJsonChange(e.target.value)}
+                  rows={20}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+                  placeholder="JSON de la formation..."
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Modifiez le JSON directement. Les erreurs de syntaxe seront signalées.
+                </p>
+              </div>
+            </div>
           )}
 
           {/* Tab: Ressources */}

@@ -1,0 +1,1160 @@
+{
+  "title": "Microsoft Exchange — Partie 3 : Installation & configuration initiale (60-90 min)",
+  "description": "Installation d'Exchange Server et rôles associés. Configuration initiale : connecteurs, authentification et sécurité. Inclut 2 TP pratiques (installation Exchange et configuration flux mail) et un quiz de validation.",
+  "status": "draft",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3B82F6",
+    "secondaryColor": "#8B5CF6",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 3 — Installation & configuration initiale de Microsoft Exchange",
+      "position": 2,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#059669",
+        "fontFamily": "Inter"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Installation d'Exchange Server et rôles associés",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 Contexte" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Microsoft Exchange Server s'installe généralement dans un environnement Active Directory existant. Il s'appuie sur plusieurs rôles internes, mais depuis Exchange 2016/2019, la simplification est complète : il n'y a plus de multiple rôles physiques indépendants (CAS / HUB / Mailbox séparés), mais un rôle principal unique — Mailbox — avec des services intégrés." }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Source officielle :" },
+                        { "type": "text", "text": " docs Microsoft Learn — Exchange Server architecture & roles." }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "⚙️ Quels sont les rôles / services ?" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Même si Exchange 2019 n'utilise plus plusieurs rôles \"physiques\", sur le plan fonctionnel, plusieurs fonctions cohabitent sur le Mailbox Server :" }
+                  ]
+                },
+                {
+                  "type": "table",
+                  "attrs": {
+                    "colwidths": [150, null]
+                  },
+                  "content": [
+                    {
+                      "type": "tableRow",
+                      "content": [
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "marks": [{ "type": "bold" }], "text": "Fonction" }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "marks": [{ "type": "bold" }], "text": "Description" }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "tableRow",
+                      "content": [
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "text": "Transport des emails" }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "text": "Gère le routage interne/externe des courriers" }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "tableRow",
+                      "content": [
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "text": "Boîtes aux lettres" }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "text": "Stockage des emails des utilisateurs" }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "tableRow",
+                      "content": [
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "text": "Accès client" }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "text": "Protocoles Outlook (MAPI/HTTP), ActiveSync, OWA" }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "tableRow",
+                      "content": [
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "text": "Services de messagerie" }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "text": "Files de transport, files de réception et d'envoi" }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "👉 Résumé :" },
+                        { "type": "text", "text": " c'est Mailbox Server qui fait tout — stockage + transport + accès, ce qui simplifie l'installation et la maintenance par rapport aux versions antérieures d'Exchange." }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Configuration initiale : connecteurs, authentification et sécurité",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "📋 Introduction" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Une fois Exchange installé, plusieurs éléments critiques pour un flux mail fonctionnel doivent être configurés." }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "📩 Connecteurs Exchange (Send/Receive)" }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Connecteurs de réception (\"Receive Connectors\")" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Permettent à Exchange de recevoir des emails externes (et internes)" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "On peut restreindre qui peut se connecter à quel connecteur (par adresse IP / authentification)" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Connecteurs d'envoi (\"Send Connectors\")" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Permettent à Exchange d'envoyer des emails vers Internet" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Ils déterminent quel serveur relais est utilisé, quel routage employé (via smart host ou DNS direct)" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "👉 Microsoft explique :" },
+                        { "type": "text", "text": " comment configurer les connecteurs SMTP dans Exchange Administration Center (EAC) ou via Exchange Management Shell (PowerShell)." }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "👉 Source : docs Microsoft — Configure mail flow connectors." }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🔐 Authentification & Sécurité" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Plusieurs niveaux d'authentification peuvent être ajustés :" }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": { "start": 1 },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Authentification client" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Pour Outlook (MAPI/HTTP), OWA (form-based), ActiveSync …" }] }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Peut utiliser NTLM / Kerberos / Basic + TLS" }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Sécurité du transport SMTP" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Exchange peut exiger TLS pour certaines connexions" }] }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Pour les flux externes, il faut configurer un certificat valide (non auto-signé)" }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Autodiscover" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Service permettant aux clients Outlook de se configurer automatiquement" }] }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Nécessite des enregistrements DNS corrects + certificat SSL correspondant" }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "👉 L'importance d'un certificat valide :" },
+                        { "type": "text", "text": " (non auto-signé) est soulignée par Microsoft pour éviter les erreurs de connexion clients et les avertissements de sécurité." }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "👉 Source : docs Microsoft — Exchange services and certificates." }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🛡️ Rappels de sécurité pratiques" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Toujours chiffrer les communications (HTTPS/TLS)" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Limiter les connecteurs de réception selon les besoins (par IP, domaine)" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Appliquer les bonnes pratiques SMTP (anti-spam, anti-malware, politiques)" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "Microsoft met à disposition des guides de hardening (renforcement) pour Exchange Server." }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "👉 Source : Microsoft Security Baselines" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "tp",
+          "title": "TP 1 — Installer Exchange Server dans un environnement de test",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Installer Exchange Server 2019 (ou la version requise) dans une VM de test. Vérifier les prérequis AD / DNS. Installer les rôles nécessaires.",
+            "instructions": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 Objectifs" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Installer Exchange Server 2019 (ou la version requise) dans une VM de test" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Vérifier les prérequis AD / DNS" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Installer les rôles nécessaires" }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🔧 Environnement recommandé" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "DC01 — Domain Controller + DNS + AD DS (for AD + DNS)" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "EX01 — Serveur Windows Server (2019/2022) + Exchange Server installé" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "CLIENT01 — Machine Windows avec Outlook (pour tests post-installation)" }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "📋 Étapes principales" }]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": { "start": 1 },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Vérifier AD & DNS" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Assurer que DC01 est Global Catalog" }] }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Que la zone DNS interne résout correctement" }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Préparer le serveur EX01" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Installer les prérequis Windows (IIS, .NET Framework, etc.)" }] }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Joindre EX01 au domaine AD" }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Exécuter l'installation Exchange" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Passer par l'assistant ou la ligne de commande" }] }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Entrer les paramètres de base" }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Vérifier que tous les services démarrent" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "⚠️ Dépannage fréquent" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Erreurs liées à AD (permissions ou réplication), ou à DNS (résolution échouée)." }
+                  ]
+                }
+              ]
+            },
+            "checklist": [
+              "DC01 vérifié comme Global Catalog",
+              "Zone DNS interne résout correctement les noms",
+              "Prérequis Windows installés sur EX01 (IIS, .NET Framework, etc.)",
+              "EX01 joint au domaine AD",
+              "Installation Exchange exécutée sans erreur",
+              "Tous les services Exchange démarrés sans erreur",
+              "Exchange Administration Center (EAC) accessible",
+              "Vérification des logs d'installation pour erreurs éventuelles"
+            ]
+          }
+        },
+        {
+          "type": "tp",
+          "title": "TP 2 — Effectuer les premières configurations pour un flux de messagerie fonctionnel",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Configurer les connecteurs SMTP. Assurer l'authentification sécurisée. Tester un envoi email interne/externe. Vérifier le bon fonctionnement d'Autodiscover.",
+            "instructions": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 Objectifs" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Configurer les connecteurs SMTP" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Assurer l'authentification sécurisée" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Tester un envoi email interne/externe" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Vérifier le bon fonctionnement d'Autodiscover" }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🔧 Étapes suggérées" }]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": { "start": 1 },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Créer un Send Connector" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Nom : \"Internet Send\"" }] }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Type : Internet" }] }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Routage : via DNS (ou Smart Host selon scénario)" }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Vérifier les Receive Connectors" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "S'assurer qu'un connecteur accepte des mails externes si besoin" }] }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Sécuriser si nécessaire (restreindre IP / authentification)" }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Certificat SSL" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Importer et assigner un certificat valide pour SMTP/HTTPS" }] }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Assigner le certificat pour IIS, SMTP, etc." }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Tester depuis Outlook" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Configurer un compte test" }] }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Envoyer un email interne/externe" }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Vérifier Autodiscover" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "Outlook doit se configurer automatiquement à l'aide d'Autodiscover" }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "✅ Résultats attendus (critères de validation)" }]
+                },
+                {
+                  "type": "table",
+                  "attrs": {
+                    "colwidths": [200, null]
+                  },
+                  "content": [
+                    {
+                      "type": "tableRow",
+                      "content": [
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "marks": [{ "type": "bold" }], "text": "Critère" }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "marks": [{ "type": "bold" }], "text": "Succès attendu" }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "tableRow",
+                      "content": [
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "text": "Send Connector fonctionnel" }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "text": "Emails sortants valident sans erreur" }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "tableRow",
+                      "content": [
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "text": "Receive Connector" }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "text": "Emails entrants acceptés (selon scénario)" }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "tableRow",
+                      "content": [
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "text": "Certificat SSL valide" }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "text": "Pas d'avertissement dans Outlook" }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "tableRow",
+                      "content": [
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "text": "Autodiscover" }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "tableCell",
+                          "attrs": { "colspan": 1, "rowspan": 1 },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                { "type": "text", "text": "Outlook se configure automatiquement" }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "checklist": [
+              "Send Connector \"Internet Send\" créé et configuré",
+              "Receive Connector vérifié et sécurisé si nécessaire",
+              "Certificat SSL valide importé et assigné",
+              "Certificat assigné pour IIS et SMTP",
+              "Compte test configuré dans Outlook",
+              "Email interne envoyé avec succès",
+              "Email externe envoyé avec succès (si scénario applicable)",
+              "Autodiscover fonctionne : Outlook se configure automatiquement",
+              "Pas d'avertissement de certificat dans Outlook",
+              "Vérification des logs Exchange pour erreurs éventuelles"
+            ]
+          }
+        },
+        {
+          "type": "game",
+          "title": "Quiz — Validation installation & configuration Exchange",
+          "position": 4,
+          "published": true,
+          "content": {
+            "gameType": "quiz",
+            "description": "Quiz rapide de 5 questions pour valider la compréhension de l'installation et de la configuration initiale d'Exchange : rôles, connecteurs, authentification et sécurité.",
+            "instructions": "Répondez aux 5 questions suivantes pour valider vos connaissances sur l'installation et la configuration d'Exchange. Chaque question a une seule bonne réponse.",
+            "scoring": {
+              "totalQuestions": 5,
+              "pointsPerQuestion": 1,
+              "passingScore": 4
+            },
+            "levels": [
+              {
+                "level": 1,
+                "name": "Validation installation & configuration Exchange",
+                "questions": [
+                  {
+                    "id": "q1-exchange-roles",
+                    "type": "mcq",
+                    "prompt": "Depuis Exchange 2016/2019, quel est le rôle principal unique qui remplace les anciens rôles CAS, HUB et Mailbox séparés ?",
+                    "options": [
+                      "Client Access Server (CAS)",
+                      "Hub Transport Server",
+                      "Mailbox Server (avec services intégrés)",
+                      "Edge Transport Server"
+                    ],
+                    "answer": "Mailbox Server (avec services intégrés)",
+                    "explanation": "Depuis Exchange 2016/2019, la simplification est complète : il n'y a plus de multiple rôles physiques indépendants (CAS / HUB / Mailbox séparés), mais un rôle principal unique — Mailbox Server — avec des services intégrés (stockage + transport + accès). Cela simplifie l'installation et la maintenance.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q2-send-connector",
+                    "type": "mcq",
+                    "prompt": "À quoi sert un Send Connector dans Exchange ?",
+                    "options": [
+                      "À recevoir des emails externes",
+                      "À envoyer des emails vers Internet",
+                      "À configurer l'authentification client",
+                      "À gérer les certificats SSL"
+                    ],
+                    "answer": "À envoyer des emails vers Internet",
+                    "explanation": "Les Send Connectors permettent à Exchange d'envoyer des emails vers Internet. Ils déterminent quel serveur relais est utilisé et quel routage est employé (via smart host ou DNS direct). Ils sont configurés dans Exchange Administration Center (EAC) ou via Exchange Management Shell (PowerShell).",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q3-receive-connector",
+                    "type": "mcq",
+                    "prompt": "Quelle est la fonction principale d'un Receive Connector dans Exchange ?",
+                    "options": [
+                      "À envoyer des emails vers Internet",
+                      "À recevoir des emails externes (et internes)",
+                      "À configurer Autodiscover",
+                      "À gérer les boîtes aux lettres"
+                    ],
+                    "answer": "À recevoir des emails externes (et internes)",
+                    "explanation": "Les Receive Connectors permettent à Exchange de recevoir des emails externes (et internes). On peut restreindre qui peut se connecter à quel connecteur (par adresse IP / authentification) pour sécuriser les flux entrants.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q4-certificate-importance",
+                    "type": "mcq",
+                    "prompt": "Pourquoi est-il important d'utiliser un certificat valide (non auto-signé) pour Exchange ?",
+                    "options": [
+                      "Pour améliorer les performances",
+                      "Pour éviter les erreurs de connexion clients et les avertissements de sécurité",
+                      "Pour réduire l'utilisation de la mémoire",
+                      "Pour simplifier l'installation"
+                    ],
+                    "answer": "Pour éviter les erreurs de connexion clients et les avertissements de sécurité",
+                    "explanation": "L'importance d'un certificat valide (non auto-signé) est soulignée par Microsoft pour éviter les erreurs de connexion clients et les avertissements de sécurité. Un certificat auto-signé génère des avertissements dans les clients (Outlook, navigateurs) et peut bloquer certaines connexions sécurisées.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q5-autodiscover",
+                    "type": "mcq",
+                    "prompt": "Qu'est-ce qu'Autodiscover et quels sont ses prérequis ?",
+                    "options": [
+                      "Un service de sauvegarde qui nécessite un certificat",
+                      "Un service permettant aux clients Outlook de se configurer automatiquement, nécessitant des enregistrements DNS corrects + certificat SSL correspondant",
+                      "Un connecteur SMTP pour l'envoi d'emails",
+                      "Un rôle Exchange séparé"
+                    ],
+                    "answer": "Un service permettant aux clients Outlook de se configurer automatiquement, nécessitant des enregistrements DNS corrects + certificat SSL correspondant",
+                    "explanation": "Autodiscover est un service permettant aux clients Outlook de se configurer automatiquement. Il nécessite des enregistrements DNS corrects (généralement autodiscover.votredomaine.com) et un certificat SSL correspondant pour fonctionner correctement. C'est un élément clé pour simplifier la configuration des clients.",
+                    "difficulty": 2
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

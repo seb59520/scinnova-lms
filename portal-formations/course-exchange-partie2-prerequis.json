@@ -1,0 +1,853 @@
+{
+  "title": "Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+  "description": "Prérequis système et réseau pour Exchange : DNS, Active Directory, certificats SSL/TLS. Configuration des enregistrements DNS (MX, SPF, DKIM). Gestion des dépendances avec Active Directory. Inclut 2 TP pratiques et un quiz de validation.",
+  "status": "draft",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3B82F6",
+    "secondaryColor": "#8B5CF6",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 2 — Prérequis système & réseau pour Exchange",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#10B981",
+        "secondaryColor": "#059669",
+        "fontFamily": "Inter"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Prérequis système et réseau : DNS, Active Directory, certificats SSL",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 Objectifs de la séquence (45-60 min)" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Comprendre l'importance de DNS pour Exchange (autodiscover, MX, SPF/DKIM)." }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Identifier les dépendances avec Active Directory (Global Catalog, sites AD, réplication)." }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Comprendre le rôle des certificats SSL/TLS pour sécuriser les échanges (HTTPS, SMTP + STARTTLS)." }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Configurer les enregistrements DNS nécessaires (MX, SPF, DKIM) pour une messagerie professionnelle." }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🌐 DNS : \"la plomberie\" indispensable" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Exchange dépend fortement de DNS, parce que :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Les clients (Outlook, mobiles) ont besoin de retrouver automatiquement le bon serveur (autodiscover)." }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Les serveurs mail externes utilisent DNS pour savoir où livrer les emails (MX)." }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Les mécanismes anti-usurpation (SPF/DKIM) sont des enregistrements DNS." }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "À retenir :" },
+                        { "type": "text", "text": " Dans l'écosystème Microsoft 365, Microsoft rappelle que les 3 enregistrements \"de base\" côté DNS sont Autodiscover, MX et SPF. Même en Exchange on-prem, le raisonnement reste le même : sans DNS propre, les clients et le flux mail deviennent instables." }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🏛️ Active Directory : la dépendance structurante" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Exchange est conçu pour fonctionner avec Active Directory : comptes, groupes, permissions, objets Exchange, etc." }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Prérequis critique :" },
+                        { "type": "text", "text": " Dans le site AD où tu installes Exchange, il faut au minimum un contrôleur de domaine inscriptible (writeable) qui soit aussi Global Catalog, sinon l'installation échoue." }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "➡️ Message pédagogique :" },
+                    { "type": "text", "text": " Exchange = messagerie, mais AD = identité et autorisations. Sans AD cohérent (sites, réplication, GC), Exchange souffre (ou ne s'installe pas)." }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🔐 Certificats SSL/TLS : pour sécuriser (vraiment) les échanges" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Exchange utilise TLS/SSL pour plusieurs usages :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "HTTPS (OWA/ECP/Services web Outlook)" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "SMTP + STARTTLS (chiffrement des échanges mail)" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Point technique :" },
+                        { "type": "text", "text": " Côté SMTP (Receive Connector), Microsoft indique que les connexions TLS chiffrées nécessitent un certificat serveur dont le nom correspond à ce que le connecteur annonce (EHLO), et que les serveurs externes utilisent généralement un certificat de confiance (autorité publique)." }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Configuration des enregistrements DNS nécessaires (MX, SPF, DKIM)",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 Objectif" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Livrabilité + bonne configuration client + protection contre le spoofing." }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "📬 MX (Mail eXchanger) — \"où livrer le courrier\"" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Un serveur externe (Gmail, Orange, autre) regarde ton MX pour savoir où envoyer les mails du domaine." }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Mauvais MX = mails qui partent ailleurs / ou n'arrivent pas." }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "Microsoft explique comment ajouter le MX dans un contexte Microsoft 365 (principe identique : priorité, cible, etc.)." }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🛡️ SPF — \"qui a le droit d'envoyer pour le domaine\"" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "SPF est un TXT record qui dit :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "✅ \"les serveurs suivants sont autorisés à envoyer des emails pour @mondomaine.fr\"" }] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Recommandation Microsoft :" },
+                        { "type": "text", "text": " SPF est explicitement recommandé comme enregistrement \"primaire\" à configurer avec MX et Autodiscover." }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🔑 DKIM — \"signature cryptographique des emails\"" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "DKIM ajoute une signature dans l'en-tête (DKIM-Signature) et publie une clé publique en DNS." }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Contexte Microsoft :" },
+                        { "type": "text", "text": " Microsoft rappelle que DKIM s'appuie sur la PKI et des enregistrements DNS (souvent CNAME en M365) et que DKIM est une brique d'une stratégie d'authentification email plus globale (avec SPF/DMARC)." }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "👉 Pour Microsoft 365, l'activation de DKIM passe par la création de CNAME DKIM dans DNS (selectors)." }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Même si ton cours parle \"Exchange\", pédagogiquement tu peux présenter DKIM comme \"DNS + cryptographie + réputation d'envoi\", et préciser que la mise en place varie selon on-prem vs Exchange Online." }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "2.3 Gestion des dépendances avec Active Directory",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🔍 Ce qu'il faut vérifier (logique admin)" }]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": { "start": 1 },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Santé AD : réplication OK, DNS AD OK, sites AD cohérents" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Global Catalog disponible dans le site Exchange (sinon blocage d'installation)" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Résolution DNS interne fiable (clients + Exchange)" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Droits / comptes : les comptes d'admin utilisés doivent être adaptés au contexte (sans détailler ici si tu gardes la suite pour un module \"installation\")." }] }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "tp",
+          "title": "TP 1 — Configurer un environnement réseau compatible avec Exchange",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Mettre en place une base \"propre\" : DNS interne + AD + prérequis réseau pour qu'Exchange puisse être installé et fonctionner.",
+            "instructions": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 But du TP (niveau débutant/interop)" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Mettre en place une base \"propre\" : DNS interne + AD + prérequis réseau pour qu'Exchange puisse être installé et fonctionner." }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "✅ Livrables attendus" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "AD opérationnel (DC + GC)" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "DNS interne opérationnel" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Résolution de noms cohérente" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Checklist validée" }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🧩 Scénario simple (lab)" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "1 VM : DC01 (AD DS + DNS)" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "1 VM : EX01 (futur Exchange)" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "1 VM : CLIENT01 (Outlook / tests)" }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "📋 Étapes (guidées)" }]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": { "start": 1 },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Configurer AD DS sur DC01" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Vérifier que DC01 est Global Catalog et que EX01 est dans le même site AD (ou site correctement configuré)" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "DNS interne :" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "zone entreprise.local (exemple)" }] }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "A records : dc01, ex01" }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Tester depuis EX01 :" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "ping dc01" }] }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "résolution DNS de dc01 et ex01" }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Documenter une checklist \"OK / KO\"" }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "✅ Critère de réussite (pédagogique)" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "EX01 résout DC01 sans erreur" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "DC01 est GC et accessible en écriture (pré-requis installation Exchange)" }] }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "checklist": [
+              "AD DS installé et configuré sur DC01",
+              "DC01 configuré comme Global Catalog",
+              "Zone DNS interne créée (ex: entreprise.local)",
+              "Enregistrements A créés pour dc01 et ex01",
+              "EX01 peut résoudre DC01 via DNS",
+              "EX01 peut ping DC01",
+              "DC01 est accessible en écriture depuis EX01",
+              "Checklist documentée avec statut OK/KO"
+            ]
+          }
+        },
+        {
+          "type": "tp",
+          "title": "TP 2 — Paramétrer les entrées DNS pour un domaine professionnel",
+          "position": 4,
+          "published": true,
+          "content": {
+            "description": "Créer les enregistrements DNS nécessaires pour une messagerie \"pro\" : MX, SPF, DKIM (logique + exemple de selectors).",
+            "instructions": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 But du TP" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Créer les enregistrements DNS nécessaires pour une messagerie \"pro\" :" }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "MX" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "SPF" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "DKIM (logique + exemple de selectors)" }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "📋 Étapes" }]
+                },
+                {
+                  "type": "orderedList",
+                  "attrs": { "start": 1 },
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Choisir un domaine d'exemple : mondomaine.fr" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Créer :" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "MX → cible mail.mondomaine.fr (exemple pédagogique)" }] }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "TXT SPF → autoriser la/les sources d'envoi (selon scénario)" }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "DKIM (approche \"Microsoft 365 / Defender\" pour l'exemple) :" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "créer les CNAME selectors DKIM (selector1/selector2) comme décrit dans la doc Microsoft" }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "text": "Vérifier cohérence :" }
+                          ]
+                        },
+                        {
+                          "type": "bulletList",
+                          "content": [
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "\"MX pointe vers la bonne cible\"" }] }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "\"SPF existe\"" }] }
+                              ]
+                            },
+                            {
+                              "type": "listItem",
+                              "content": [
+                                { "type": "paragraph", "content": [{ "type": "text", "text": "\"DKIM selectors publiés\"" }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "✅ Critère de réussite" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Les enregistrements existent et sont cohérents avec l'objectif (réception / envoi / protection anti spoofing)" }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Les étudiants savent expliquer \"à quoi sert chaque record\"" }] }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "checklist": [
+              "Domaine d'exemple choisi (mondomaine.fr)",
+              "Enregistrement MX créé pointant vers mail.mondomaine.fr",
+              "Enregistrement TXT SPF créé avec les sources d'envoi autorisées",
+              "CNAME DKIM selector1 créé (ex: selector1._domainkey.mondomaine.fr)",
+              "CNAME DKIM selector2 créé (ex: selector2._domainkey.mondomaine.fr)",
+              "Vérification de cohérence : MX pointe vers la bonne cible",
+              "Vérification de cohérence : SPF existe et est valide",
+              "Vérification de cohérence : DKIM selectors publiés",
+              "Capacité à expliquer le rôle de chaque enregistrement DNS"
+            ]
+          }
+        },
+        {
+          "type": "game",
+          "title": "Quiz — Validation des prérequis Exchange (DNS, AD, certificats)",
+          "position": 5,
+          "published": true,
+          "content": {
+            "gameType": "quiz",
+            "description": "Quiz rapide de 5 questions pour valider la compréhension des prérequis système et réseau pour Exchange : MX, SPF, DKIM, Active Directory et certificats TLS.",
+            "instructions": "Répondez aux 5 questions suivantes pour valider vos connaissances sur les prérequis Exchange. Chaque question a une seule bonne réponse.",
+            "scoring": {
+              "totalQuestions": 5,
+              "pointsPerQuestion": 1,
+              "passingScore": 4
+            },
+            "levels": [
+              {
+                "level": 1,
+                "name": "Validation des prérequis Exchange",
+                "questions": [
+                  {
+                    "id": "q1-dns-exchange",
+                    "type": "mcq",
+                    "prompt": "Quels sont les 3 enregistrements DNS \"de base\" recommandés par Microsoft pour Exchange (selon la documentation Microsoft 365) ?",
+                    "options": [
+                      "MX, A, CNAME",
+                      "Autodiscover, MX et SPF",
+                      "MX, SPF et DKIM",
+                      "A, AAAA et MX"
+                    ],
+                    "answer": "Autodiscover, MX et SPF",
+                    "explanation": "Microsoft recommande explicitement Autodiscover, MX et SPF comme les 3 enregistrements DNS \"de base\" à configurer. Autodiscover permet aux clients de trouver automatiquement le serveur Exchange, MX indique où livrer les emails, et SPF protège contre l'usurpation d'identité.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q2-ad-global-catalog",
+                    "type": "mcq",
+                    "prompt": "Quel est le prérequis critique concernant Active Directory pour l'installation d'Exchange dans un site AD ?",
+                    "options": [
+                      "Il faut au minimum un contrôleur de domaine en lecture seule",
+                      "Il faut au minimum un contrôleur de domaine inscriptible (writeable) qui soit aussi Global Catalog",
+                      "Il faut au minimum deux contrôleurs de domaine",
+                      "Il n'y a pas de prérequis AD spécifique"
+                    ],
+                    "answer": "Il faut au minimum un contrôleur de domaine inscriptible (writeable) qui soit aussi Global Catalog",
+                    "explanation": "Microsoft est très clair : dans le site AD où tu installes Exchange, il faut au minimum un contrôleur de domaine inscriptible (writeable) qui soit aussi Global Catalog, sinon l'installation échoue. Exchange a besoin d'écrire dans AD et d'accéder au Global Catalog pour les opérations d'annuaire.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q3-spf-protection",
+                    "type": "mcq",
+                    "prompt": "À quoi sert l'enregistrement SPF (Sender Policy Framework) ?",
+                    "options": [
+                      "À indiquer où livrer les emails (comme MX)",
+                      "À signer cryptographiquement les emails",
+                      "À autoriser quels serveurs peuvent envoyer des emails pour le domaine",
+                      "À permettre la découverte automatique du serveur Exchange"
+                    ],
+                    "answer": "À autoriser quels serveurs peuvent envoyer des emails pour le domaine",
+                    "explanation": "SPF est un enregistrement TXT qui dit \"les serveurs suivants sont autorisés à envoyer des emails pour @mondomaine.fr\". C'est un mécanisme anti-usurpation qui permet aux serveurs de réception de vérifier que l'email provient bien d'un serveur autorisé.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q4-dkim-signature",
+                    "type": "mcq",
+                    "prompt": "Comment fonctionne DKIM (DomainKeys Identified Mail) ?",
+                    "options": [
+                      "DKIM utilise uniquement des enregistrements MX",
+                      "DKIM ajoute une signature dans l'en-tête (DKIM-Signature) et publie une clé publique en DNS",
+                      "DKIM remplace complètement SPF",
+                      "DKIM ne nécessite pas de configuration DNS"
+                    ],
+                    "answer": "DKIM ajoute une signature dans l'en-tête (DKIM-Signature) et publie une clé publique en DNS",
+                    "explanation": "DKIM ajoute une signature cryptographique dans l'en-tête de l'email (DKIM-Signature) et publie une clé publique en DNS (souvent via des CNAME en Microsoft 365, avec des selectors comme selector1 et selector2). DKIM s'appuie sur la PKI et fait partie d'une stratégie d'authentification email globale avec SPF/DMARC.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "q5-tls-certificates",
+                    "type": "mcq",
+                    "prompt": "Pourquoi Exchange utilise-t-il des certificats SSL/TLS ?",
+                    "options": [
+                      "Uniquement pour HTTPS (OWA/ECP)",
+                      "Uniquement pour SMTP",
+                      "Pour HTTPS (OWA/ECP/Services web Outlook) ET pour SMTP + STARTTLS (chiffrement des échanges mail)",
+                      "Les certificats ne sont pas nécessaires pour Exchange"
+                    ],
+                    "answer": "Pour HTTPS (OWA/ECP/Services web Outlook) ET pour SMTP + STARTTLS (chiffrement des échanges mail)",
+                    "explanation": "Exchange utilise TLS/SSL pour plusieurs usages : HTTPS pour les services web (OWA/ECP/Services web Outlook) et SMTP + STARTTLS pour le chiffrement des échanges mail. Côté SMTP (Receive Connector), les connexions TLS chiffrées nécessitent un certificat serveur dont le nom correspond à ce que le connecteur annonce (EHLO).",
+                    "difficulty": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

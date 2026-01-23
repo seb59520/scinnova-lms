@@ -1,0 +1,455 @@
+{
+  "title": "Administration Microsoft Exchange — Introduction & Architecture (Partie 1)",
+  "description": "Première partie (30 min) : présentation générale de Microsoft Exchange. Objectifs : comprendre les fonctionnalités clés (messagerie, collaboration, calendriers), l'architecture (rôles et composants), ainsi que les avantages et limites. Inclut une slide récapitulative unique.",
+  "status": "draft",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#3B82F6",
+    "secondaryColor": "#8B5CF6",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 — Présentation générale de Microsoft Exchange (30 min)",
+      "position": 1,
+      "theme": {
+        "primaryColor": "#3B82F6",
+        "secondaryColor": "#8B5CF6",
+        "fontFamily": "Inter"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Présentation générale : rôle, usages et objectifs",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🎯 Objectifs de la séquence (30 min)" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Comprendre le rôle de Microsoft Exchange dans une entreprise." }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Identifier les fonctionnalités principales : messagerie, calendriers, collaboration." }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Comprendre l'architecture globale : composants, rôles, dépendances." }] }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        { "type": "paragraph", "content": [{ "type": "text", "text": "Connaître les avantages et limites d'Exchange." }] }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "📌 Qu'est-ce que Microsoft Exchange ?" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Microsoft Exchange est une solution de " },
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "messagerie et de collaboration" },
+                    { "type": "text", "text": " utilisée en entreprise. Elle centralise la gestion des emails, des calendriers, des contacts et de certaines règles de sécurité/conformité." }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "À retenir :" },
+                        { "type": "text", "text": " Exchange = cœur des communications (emails + calendrier + annuaire) dans l'écosystème Microsoft." }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Fonctionnalités clés d'Exchange",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "📧 Messagerie" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Envoi / réception d'emails, boîtes aux lettres centralisées." }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Règles (routing, filtrage), quotas, délégations." }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Archivage et conservation (selon la politique de l'entreprise)." }] }]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "📅 Calendriers & collaboration" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Calendriers partagés, invitations, disponibilité (free/busy)." }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ressources : salles, équipements (réservation)." }] }]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "👥 Contacts & annuaire" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Liste d'adresses globale (GAL) synchronisée avec Active Directory." }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Groupes de distribution, gestion des droits d'accès." }] }]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🔐 Sécurité & conformité (vue globale)" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Contrôles d'accès, audit, politiques de conservation (selon contexte)." }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Protection antispam/antimalware (natif ou via solutions dédiées)." }] }]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.3 Architecture d'un serveur Exchange : rôles & composants",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🧱 Vue d'ensemble (client/serveur)" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Les clients (Outlook, Webmail/OWA, mobiles) se connectent à Exchange, qui stocke les boîtes aux lettres, traite les flux de messagerie et applique les politiques." }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Clients : Outlook / Web / Mobile" }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Serveur Exchange : stockage + transport + accès client" }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Active Directory : identités, authentification, groupes, droits" }] }]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "⚙️ Rôles (vision simplifiée Exchange 2016/2019)" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Mailbox Server :" },
+                            { "type": "text", "text": " rôle principal (boîtes aux lettres, bases, transport, accès clients)." }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            { "type": "text", "marks": [{ "type": "bold" }], "text": "Edge Transport (optionnel) :" },
+                            { "type": "text", "text": " serveur périmétrique (filtrage, sécurité en DMZ)." }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "marks": [{ "type": "bold" }], "text": "Dépendance clé :" },
+                        { "type": "text", "text": " Exchange s'appuie fortement sur Active Directory (comptes, groupes, permissions)." }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.4 Avantages & limites d'Exchange",
+          "position": 4,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "✅ Avantages" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Robuste, très utilisé en entreprise." }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Bonne intégration avec Outlook et l'écosystème Microsoft." }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Administration centralisée, politiques de conformité possibles." }] }] }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "❌ Limites" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Coût (licences + infrastructure on-prem)." }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Complexité d'administration et de dépannage." }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Maintenance régulière (mises à jour, sécurité, sauvegardes)." }] }] }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "slide",
+          "title": "Slide unique — Microsoft Exchange : récapitulatif",
+          "position": 5,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 1 },
+                  "content": [{ "type": "text", "text": "Microsoft Exchange — Vue d'ensemble" }]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🧩 Rôle" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "text": "Messagerie & collaboration en entreprise → emails • calendriers • contacts • sécurité" }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "⚙️ Fonctionnalités clés" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "📧 Messagerie (boîtes, règles, archivage)" }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "📅 Calendriers & réunions (partage, ressources)" }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "👥 Annuaire (GAL, groupes)" }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "🔐 Sécurité & conformité (politiques, audit)" }] }]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "🧱 Architecture simplifiée" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Clients : Outlook / Web / Mobile" }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Serveur Exchange : stockage + transport + accès" }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Active Directory : identités & droits" }] }]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "✅ Avantages" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Robuste et fiable" }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Intégration Microsoft" }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Centralisation & contrôle" }] }]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "❌ Limites" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Coût" }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Complexité" }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Maintenance requise" }] }]
+                    }
+                  ]
+                },
+                { "type": "paragraph" },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        { "type": "text", "text": "🧠 Phrase clé : Exchange est le cœur des communications d'entreprise dans l'écosystème Microsoft." }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

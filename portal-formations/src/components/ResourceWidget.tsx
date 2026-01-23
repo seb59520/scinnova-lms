@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../hooks/useAuth'
 import { FileUpload } from './FileUpload'
+import { ResourceImportModal } from './ResourceImportModal'
 import { 
   Download, 
   Trash2, 
@@ -18,7 +19,8 @@ import {
   File,
   ExternalLink,
   CheckCircle,
-  XCircle
+  XCircle,
+  Upload
 } from 'lucide-react'
 import type { Resource, ResourceType, ResourceParentType, ResourceFormData } from '../types/resourcesWidget'
 
@@ -45,6 +47,7 @@ export function ResourceWidget({
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [showForm, setShowForm] = useState(false)
+  const [showImportModal, setShowImportModal] = useState(false)
   const [signedUrls, setSignedUrls] = useState<Record<string, string>>({})
   const [newResource, setNewResource] = useState<ResourceFormData>({
     title: '',
@@ -386,13 +389,23 @@ export function ResourceWidget({
           {title}
         </h3>
         {!readOnly && (
-          <button
-            onClick={() => setShowForm(!showForm)}
-            className="btn-primary flex items-center space-x-2"
-          >
-            <Plus className="w-4 h-4" />
-            <span>{showForm ? 'Annuler' : 'Ajouter une ressource'}</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowImportModal(true)}
+              className="btn-secondary flex items-center space-x-2"
+              title="Importer des ressources en masse"
+            >
+              <Upload className="w-4 h-4" />
+              <span>Importer</span>
+            </button>
+            <button
+              onClick={() => setShowForm(!showForm)}
+              className="btn-primary flex items-center space-x-2"
+            >
+              <Plus className="w-4 h-4" />
+              <span>{showForm ? 'Annuler' : 'Ajouter une ressource'}</span>
+            </button>
+          </div>
         )}
       </div>
       
@@ -640,6 +653,21 @@ export function ResourceWidget({
         <p className="text-sm text-gray-500 italic">
           Aucune ressource. {!readOnly && 'Cliquez sur "Ajouter une ressource" pour en créer une.'}
         </p>
+      )}
+
+      {/* Modal d'import */}
+      {showImportModal && (
+        <ResourceImportModal
+          courseId={courseId}
+          moduleId={moduleId}
+          itemId={itemId}
+          isOpen={showImportModal}
+          onClose={() => setShowImportModal(false)}
+          onSuccess={() => {
+            setShowImportModal(false)
+            fetchResources()
+          }}
+        />
       )}
     </div>
   )

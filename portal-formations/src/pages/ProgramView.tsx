@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabaseClient'
 import { Program, ProgramCourseWithCourse, Course, ProgramEvaluation } from '../types/database'
 import { AppHeader } from '../components/AppHeader'
-import { ArrowLeft, Layers, BookOpen, ChevronRight, Book, Download, FileText, ClipboardCheck, Award, CheckCircle, Upload, Calendar, AlertCircle, Users, Eye } from 'lucide-react'
+import { ArrowLeft, Layers, BookOpen, ChevronRight, Book, Download, FileText, ClipboardCheck, Award, CheckCircle, Upload, Calendar, AlertCircle, Users, Eye, Edit, BarChart3 } from 'lucide-react'
 import { FileUpload } from '../components/FileUpload'
 
 export function ProgramView() {
@@ -29,6 +29,13 @@ export function ProgramView() {
   const [uploadingDoc, setUploadingDoc] = useState<string | null>(null)
   const [selectedFiles, setSelectedFiles] = useState<Record<string, File | null>>({})
   const [documentUrls, setDocumentUrls] = useState<Record<string, string>>({})
+  const [studentGrades, setStudentGrades] = useState<Record<string, {
+    profile: any;
+    tpGrades: Record<string, number>;
+    quizGrades: Record<string, number>;
+    average: number;
+  }>>({})
+  const [gradesLoading, setGradesLoading] = useState(false)
 
   useEffect(() => {
     if (programId && user) {
@@ -38,6 +45,40 @@ export function ProgramView() {
       fetchExpectedItems()
     }
   }, [programId, user])
+
+  useEffect(() => {
+    // Charger les notes des étudiants si on est admin/trainer et que le programme est chargé
+    // Essayer même si le profil n'est pas encore chargé (on vérifiera côté serveur avec RLS)
+    console.log('🔍 Vérification conditions pour charger les notes:', {
+      programId,
+      user: user ? { id: user.id } : null,
+      profile: profile ? { id: profile.id, role: profile.role } : null,
+      program: program ? { id: program.id, title: program.title } : null,
+      isAdmin: profile?.role === 'admin',
+      isTrainer: profile?.role === 'trainer',
+      isInstructor: profile?.role === 'instructor',
+      shouldFetch: programId && user && program
+    })
+    // Essayer de charger même si le profil n'est pas encore chargé
+    // La RLS côté serveur empêchera l'accès si l'utilisateur n'est pas admin/trainer
+    if (programId && user && program) {
+      // Si le profil est chargé et qu'on est admin/trainer, charger immédiatement
+      if (profile && (profile.role === 'admin' || profile.role === 'trainer' || profile.role === 'instructor')) {
+        console.log('✅ Conditions remplies, chargement des notes...')
+        fetchStudentGrades()
+      } else if (!profile) {
+        // Si le profil n'est pas encore chargé, attendre un peu puis essayer
+        // La RLS côté serveur gérera l'accès
+        const timeoutId = setTimeout(() => {
+          console.log('⏳ Tentative de chargement des notes (profil peut-être chargé maintenant)...')
+          fetchStudentGrades()
+        }, 2000)
+        return () => clearTimeout(timeoutId)
+      }
+    } else {
+      console.log('❌ Conditions non remplies pour charger les notes')
+    }
+  }, [programId, user, profile, program])
 
   const fetchEvaluations = async () => {
     if (!programId || !user) return
@@ -282,6 +323,192 @@ export function ProgramView() {
       }
     }
   }, [profile, expectedItems])
+
+  const fetchStudentGrades = async () => {
+    if (!programId || !program) {
+      console.log('❌ fetchStudentGrades: programId ou program manquant', { programId, program: program ? program.id : null })
+      return
+    }
+
+    console.log('📊 Début du chargement des notes pour le programme:', programId)
+    setGradesLoading(true)
+    try {
+      // 1. Récupérer tous les étudiants inscrits au programme
+      const { data: enrollments, error: enrollmentsError } = await supabase
+        .from('program_enrollments')
+        .select(`
+          user_id,
+          profiles (
+            id,
+            full_name,
+            student_id,
+            email
+          )
+        `)
+        .eq('program_id', programId)
+        .eq('status', 'active')
+
+      if (enrollmentsError) {
+        console.error('Error fetching enrollments:', enrollmentsError)
+        return
+      }
+
+      if (!enrollments || enrollments.length === 0) {
+        console.log('⚠️ Aucun étudiant inscrit au programme')
+        setStudentGrades({})
+        setGradesLoading(false)
+        return
+      }
+
+      console.log('✅ Étudiants trouvés:', enrollments.length)
+
+      const userIds = enrollments.map(e => e.user_id)
+      const gradesMap: Record<string, {
+        profile: any;
+        tpGrades: Record<string, number>;
+        quizGrades: Record<string, number>;
+        average: number;
+      }> = {}
+
+      // Initialiser les données pour chaque étudiant
+      enrollments.forEach((e: any) => {
+        if (e.profiles) {
+          gradesMap[e.user_id] = {
+            profile: e.profiles,
+            tpGrades: {},
+            quizGrades: {},
+            average: 0
+          }
+        }
+      })
+
+      // 2. Récupérer les notes des TP (submissions avec grade)
+      // D'abord, récupérer les itemIds des formations du programme
+      const { data: programCoursesData } = await supabase
+        .from('program_courses')
+        .select('course_id')
+        .eq('program_id', programId)
+
+      if (programCoursesData && programCoursesData.length > 0) {
+        const courseIds = programCoursesData.map(pc => pc.course_id)
+        
+        // Récupérer tous les items de ces formations
+        const { data: modulesData } = await supabase
+          .from('modules')
+          .select('id')
+          .in('course_id', courseIds)
+
+        if (modulesData && modulesData.length > 0) {
+          const moduleIds = modulesData.map(m => m.id)
+          
+          // Récupérer les items de type TP
+          const { data: itemsData } = await supabase
+            .from('items')
+            .select('id, title')
+            .in('module_id', moduleIds)
+            .eq('type', 'tp')
+
+          if (itemsData && itemsData.length > 0) {
+            const itemIds = itemsData.map(i => i.id)
+            
+            // Récupérer les soumissions avec notes pour ces items
+            const { data: submissionsData } = await supabase
+              .from('submissions')
+              .select('user_id, item_id, grade, items (id, title)')
+              .in('user_id', userIds)
+              .in('item_id', itemIds)
+              .eq('status', 'graded')
+              .not('grade', 'is', null)
+
+            submissionsData?.forEach((sub: any) => {
+              if (sub.user_id && sub.grade !== null && sub.items) {
+                if (!gradesMap[sub.user_id]) return
+                gradesMap[sub.user_id].tpGrades[sub.item_id] = sub.grade
+              }
+            })
+          }
+        }
+      }
+
+      // 3. Récupérer les notes des Quiz/Évaluations (program_evaluation_attempts)
+      const { data: evaluationsData } = await supabase
+        .from('program_evaluations')
+        .select('id, title')
+        .eq('program_id', programId)
+        .eq('is_published', true)
+
+      if (evaluationsData && evaluationsData.length > 0) {
+        const evalIds = evaluationsData.map(e => e.id)
+        
+        // Récupérer les meilleures tentatives pour chaque étudiant
+        const { data: attemptsData } = await supabase
+          .from('program_evaluation_attempts')
+          .select('user_id, evaluation_id, percentage')
+          .in('user_id', userIds)
+          .in('evaluation_id', evalIds)
+
+        // Garder le meilleur résultat par évaluation pour chaque étudiant
+        const bestAttempts: Record<string, Record<string, number>> = {}
+        attemptsData?.forEach((attempt: any) => {
+          if (!bestAttempts[attempt.user_id]) {
+            bestAttempts[attempt.user_id] = {}
+          }
+          const currentBest = bestAttempts[attempt.user_id][attempt.evaluation_id]
+          // Convertir le pourcentage en note sur 20
+          const scoreOn20 = (attempt.percentage / 100) * 20
+          if (!currentBest || scoreOn20 > currentBest) {
+            bestAttempts[attempt.user_id][attempt.evaluation_id] = scoreOn20
+          }
+        })
+
+        // Ajouter les notes aux gradesMap
+        Object.keys(bestAttempts).forEach(userId => {
+          if (gradesMap[userId]) {
+            gradesMap[userId].quizGrades = bestAttempts[userId]
+          }
+        })
+      }
+
+      // 4. Calculer les moyennes selon evaluations_config
+      const evalConfig = program.evaluations_config
+      if (evalConfig && evalConfig.items) {
+        Object.keys(gradesMap).forEach(userId => {
+          const student = gradesMap[userId]
+          let totalWeightedScore = 0
+          let totalWeight = 0
+
+          evalConfig.items.forEach((item: any) => {
+            const weight = item.weight || 1
+            let score: number | null = null
+
+            // Chercher la note dans les TP (itemId correspond à un item_id)
+            if (student.tpGrades[item.itemId] !== undefined) {
+              score = student.tpGrades[item.itemId]
+            }
+            // Chercher la note dans les Quiz (itemId correspond à une evaluation_id)
+            else if (student.quizGrades[item.itemId] !== undefined) {
+              score = student.quizGrades[item.itemId]
+            }
+
+            if (score !== null) {
+              totalWeightedScore += score * weight
+              totalWeight += weight
+            }
+          })
+
+          if (totalWeight > 0) {
+            student.average = Math.round((totalWeightedScore / totalWeight) * 100) / 100
+          }
+        })
+      }
+
+      setStudentGrades(gradesMap)
+    } catch (err) {
+      console.error('Error fetching student grades:', err)
+    } finally {
+      setGradesLoading(false)
+    }
+  }
 
   const handleDocumentSubmit = async (docId: string, doc: any) => {
     const file = selectedFiles[docId]
@@ -702,6 +929,129 @@ export function ProgramView() {
         {error && (
           <div className="mb-6 bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded">
             {error}
+          </div>
+        )}
+
+        {/* Section Notes des étudiants (pour admins/trainers) - Placée en haut pour visibilité */}
+        {(() => {
+          // Afficher la section si l'utilisateur est connecté
+          // La RLS côté serveur gérera l'accès aux données
+          const shouldShow = !!user
+          const isAdminOrTrainer = profile && (profile.role === 'admin' || profile.role === 'trainer' || profile.role === 'instructor')
+          console.log('📊 Affichage section notes - Debug:', {
+            user: user ? { id: user.id } : null,
+            profile: profile ? { id: profile.id, role: profile.role } : null,
+            isAdminOrTrainer,
+            shouldShow,
+            studentGradesCount: Object.keys(studentGrades).length,
+            gradesLoading,
+            evaluationsConfig: program?.evaluations_config ? {
+              hasItems: !!program.evaluations_config.items,
+              itemsCount: program.evaluations_config.items?.length || 0,
+              items: program.evaluations_config.items
+            } : null
+          })
+          return shouldShow
+        })() && (
+          <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
+                <BarChart3 className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Notes des étudiants</h3>
+                <p className="text-sm text-gray-500">Vue d'ensemble des notes avec moyenne calculée automatiquement</p>
+              </div>
+            </div>
+
+            {gradesLoading ? (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto"></div>
+                <p className="text-sm text-gray-500 mt-2">Chargement des notes...</p>
+              </div>
+            ) : Object.keys(studentGrades).length === 0 ? (
+              <div className="text-center py-6 text-gray-500">
+                <Users className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                <p>Aucun étudiant inscrit au programme</p>
+              </div>
+            ) : !program?.evaluations_config || !program.evaluations_config.items || program.evaluations_config.items.length === 0 ? (
+              <div className="text-center py-6 text-gray-500">
+                <AlertCircle className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                <p className="font-medium mb-1">Configuration manquante</p>
+                <p className="text-sm">Veuillez configurer les évaluations dans les paramètres du programme (Pédagogie → Configuration des évaluations) pour afficher les notes</p>
+                <Link
+                  to={`/admin/programs/${programId}`}
+                  className="mt-3 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
+                >
+                  Configurer les évaluations
+                </Link>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Étudiant
+                      </th>
+                      {program.evaluations_config.items.map((item: any) => (
+                        <th key={item.itemId} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          {item.title}
+                          {item.weight && item.weight !== 1 && (
+                            <span className="ml-1 text-gray-400">(×{item.weight})</span>
+                          )}
+                        </th>
+                      ))}
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-green-50">
+                        Moyenne
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {Object.values(studentGrades).map((student) => (
+                      <tr key={student.profile.id} className="hover:bg-gray-50">
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <div>
+                            <div className="text-sm font-medium text-gray-900">
+                              {student.profile.full_name || student.profile.student_id || 'Étudiant'}
+                            </div>
+                            {student.profile.student_id && (
+                              <div className="text-xs text-gray-500">{student.profile.student_id}</div>
+                            )}
+                          </div>
+                        </td>
+                        {program.evaluations_config.items.map((item: any) => {
+                          const tpGrade = student.tpGrades[item.itemId]
+                          const quizGrade = student.quizGrades[item.itemId]
+                          const grade = tpGrade !== undefined ? tpGrade : (quizGrade !== undefined ? quizGrade : null)
+                          
+                          return (
+                            <td key={item.itemId} className="px-4 py-3 whitespace-nowrap">
+                              {grade !== null ? (
+                                <span className={`text-sm font-medium ${
+                                  grade >= (item.threshold || 10) ? 'text-green-600' : 'text-red-600'
+                                }`}>
+                                  {grade}/20
+                                </span>
+                              ) : (
+                                <span className="text-sm text-gray-400">-</span>
+                              )}
+                            </td>
+                          )
+                        })}
+                        <td className="px-4 py-3 whitespace-nowrap bg-green-50">
+                          <span className={`text-sm font-bold ${
+                            student.average >= (program.evaluations_config?.passingScore || 10) ? 'text-green-600' : 'text-red-600'
+                          }`}>
+                            {student.average > 0 ? `${student.average.toFixed(2)}/20` : '-'}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
 
@@ -1197,13 +1547,25 @@ export function ProgramView() {
                                 )}
                               </div>
                             </div>
-                            <Link
-                              to={`/courses/${course.id}`}
-                              className="btn-primary inline-flex items-center space-x-2 flex-shrink-0"
-                            >
-                              <span>Accéder</span>
-                              <ChevronRight className="w-4 h-4" />
-                            </Link>
+                            <div className="flex items-center gap-2 flex-shrink-0">
+                              {profile && (profile.role === 'admin' || profile.role === 'trainer' || profile.role === 'instructor') && (
+                                <Link
+                                  to={`/admin/courses/${course.id}`}
+                                  className="btn-secondary inline-flex items-center space-x-2"
+                                  title="Éditer la formation"
+                                >
+                                  <Edit className="w-4 h-4" />
+                                  <span>Éditer</span>
+                                </Link>
+                              )}
+                              <Link
+                                to={`/courses/${course.id}`}
+                                className="btn-primary inline-flex items-center space-x-2"
+                              >
+                                <span>Accéder</span>
+                                <ChevronRight className="w-4 h-4" />
+                              </Link>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1214,6 +1576,7 @@ export function ProgramView() {
             </div>
           </div>
         )}
+
       </main>
     </div>
   )

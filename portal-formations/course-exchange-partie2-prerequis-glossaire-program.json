@@ -1,0 +1,1045 @@
+{
+  "metadata": {
+    "title": "Glossaire - Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+    "description": "Glossaire extrait automatiquement depuis le cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+    "version": "1.0.0",
+    "created_at": "2026-01-23T19:26:47.673Z",
+    "updated_at": "2026-01-23T19:26:47.673Z"
+  },
+  "categories": [
+    {
+      "id": "extrait-du-cours",
+      "name": "Extrait Du Cours",
+      "description": ""
+    }
+  ],
+  "terms": [
+    {
+      "id": "aaaa",
+      "word": "AAAA",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "active-directory",
+      "word": "Active Directory",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "autodiscover",
+      "word": "Autodiscover",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "but",
+      "word": "But",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "capacit",
+      "word": "Capacit",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "certificats",
+      "word": "Certificats",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "chaque",
+      "word": "Chaque",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "checklist",
+      "word": "Checklist",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "choisir",
+      "word": "Choisir",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "cname",
+      "word": "CNAME",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "comment",
+      "word": "Comment",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "comprendre",
+      "word": "Comprendre",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "configuration",
+      "word": "Configuration",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "configurer",
+      "word": "Configurer",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "contexte-microsoft",
+      "word": "Contexte Microsoft",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "crit",
+      "word": "Crit",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "dans",
+      "word": "Dans",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "defender",
+      "word": "Defender",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "dkim",
+      "word": "DKIM",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "dmarc",
+      "word": "DMARC",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "dns",
+      "word": "DNS",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "documenter",
+      "word": "Documenter",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "domaine",
+      "word": "Domaine",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "droits",
+      "word": "Droits",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "ecp",
+      "word": "ECP",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "ehlo",
+      "word": "EHLO",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "enregistrement",
+      "word": "Enregistrement",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "enregistrements",
+      "word": "Enregistrements",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "exchange",
+      "word": "Exchange",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "exchange-online",
+      "word": "Exchange Online",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "gestion",
+      "word": "Gestion",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "global-catalog",
+      "word": "Global Catalog",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "gmail",
+      "word": "Gmail",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "https",
+      "word": "HTTPS",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "identified-mail",
+      "word": "Identified Mail",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "identifier",
+      "word": "Identifier",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "inclut",
+      "word": "Inclut",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "les",
+      "word": "Les",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "livrabilit",
+      "word": "Livrabilit",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "livrables",
+      "word": "Livrables",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "mail",
+      "word": "Mail",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "mauvais",
+      "word": "Mauvais",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "message",
+      "word": "Message",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "mettre",
+      "word": "Mettre",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "microsoft",
+      "word": "Microsoft",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "microsoft-exchange",
+      "word": "Microsoft Exchange",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "module",
+      "word": "Module",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "objectif",
+      "word": "Objectif",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "objectifs",
+      "word": "Objectifs",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "orange",
+      "word": "Orange",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "outlook",
+      "word": "Outlook",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "owa",
+      "word": "OWA",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "param",
+      "word": "Param",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "partie",
+      "word": "Partie",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "pki",
+      "word": "PKI",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "point",
+      "word": "Point",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "pour",
+      "word": "Pour",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "pour-microsoft",
+      "word": "Pour Microsoft",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "pourquoi-exchange",
+      "word": "Pourquoi Exchange",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "quel",
+      "word": "Quel",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "quels",
+      "word": "Quels",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "quiz",
+      "word": "Quiz",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "receive-connector",
+      "word": "Receive Connector",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "recommandation-microsoft",
+      "word": "Recommandation Microsoft",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "sans",
+      "word": "Sans",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "sant",
+      "word": "Sant",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "sender-policy-framework",
+      "word": "Sender Policy Framework",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "services",
+      "word": "Services",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "signature",
+      "word": "Signature",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "smtp",
+      "word": "SMTP",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "spf",
+      "word": "SPF",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "ssl",
+      "word": "SSL",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "starttls",
+      "word": "STARTTLS",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "tester",
+      "word": "Tester",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "tls",
+      "word": "TLS",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "txt",
+      "word": "TXT",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "uniquement",
+      "word": "Uniquement",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "validation",
+      "word": "Validation",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "zone",
+      "word": "Zone",
+      "explanation": "Terme extrait du cours : Microsoft Exchange — Partie 2 : Prérequis système & réseau (45-60 min)",
+      "example": "",
+      "category_id": "extrait-du-cours",
+      "tags": [
+        "auto-extracted"
+      ],
+      "related_terms": [],
+      "language": "fr",
+      "difficulty": "beginner"
+    }
+  ]
+}
