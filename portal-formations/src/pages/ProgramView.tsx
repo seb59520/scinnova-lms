@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import { useUserRole } from '../hooks/useUserRole'
 import { supabase } from '../lib/supabaseClient'
 import { Program, ProgramCourseWithCourse, Course, ProgramEvaluation } from '../types/database'
 import { AppHeader } from '../components/AppHeader'
@@ -10,6 +11,7 @@ import { FileUpload } from '../components/FileUpload'
 export function ProgramView() {
   const { programId } = useParams<{ programId: string }>()
   const { user, profile } = useAuth()
+  const { isAdmin, isStudent } = useUserRole()
   const [program, setProgram] = useState<Program | null>(null)
   const [programCourses, setProgramCourses] = useState<ProgramCourseWithCourse[]>([])
   const [evaluations, setEvaluations] = useState<ProgramEvaluation[]>([])
@@ -47,38 +49,45 @@ export function ProgramView() {
   }, [programId, user])
 
   useEffect(() => {
-    // Charger les notes des étudiants si on est admin/trainer et que le programme est chargé
-    // Essayer même si le profil n'est pas encore chargé (on vérifiera côté serveur avec RLS)
+    // Charger les notes selon le rôle de l'utilisateur
+    // - Admin/Trainer: toutes les notes de tous les étudiants
+    // - Étudiant: uniquement sa propre note
     console.log('🔍 Vérification conditions pour charger les notes:', {
       programId,
       user: user ? { id: user.id } : null,
       profile: profile ? { id: profile.id, role: profile.role } : null,
       program: program ? { id: program.id, title: program.title } : null,
-      isAdmin: profile?.role === 'admin',
-      isTrainer: profile?.role === 'trainer',
-      isInstructor: profile?.role === 'instructor',
+      isAdmin,
+      isStudent,
       shouldFetch: programId && user && program
     })
-    // Essayer de charger même si le profil n'est pas encore chargé
-    // La RLS côté serveur empêchera l'accès si l'utilisateur n'est pas admin/trainer
+    
     if (programId && user && program) {
-      // Si le profil est chargé et qu'on est admin/trainer, charger immédiatement
-      if (profile && (profile.role === 'admin' || profile.role === 'trainer' || profile.role === 'instructor')) {
-        console.log('✅ Conditions remplies, chargement des notes...')
+      // Admin/Trainer: charger toutes les notes
+      if (isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))) {
+        console.log('✅ Admin/Trainer: chargement de toutes les notes...')
         fetchStudentGrades()
+      } 
+      // Étudiant: charger uniquement sa propre note
+      else if (isStudent && user.id) {
+        console.log('✅ Étudiant: chargement de sa propre note...')
+        fetchStudentGrades(user.id)
       } else if (!profile) {
         // Si le profil n'est pas encore chargé, attendre un peu puis essayer
-        // La RLS côté serveur gérera l'accès
         const timeoutId = setTimeout(() => {
           console.log('⏳ Tentative de chargement des notes (profil peut-être chargé maintenant)...')
-          fetchStudentGrades()
+          if (isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))) {
+            fetchStudentGrades()
+          } else if (isStudent && user.id) {
+            fetchStudentGrades(user.id)
+          }
         }, 2000)
         return () => clearTimeout(timeoutId)
       }
     } else {
       console.log('❌ Conditions non remplies pour charger les notes')
     }
-  }, [programId, user, profile, program])
+  }, [programId, user, profile, program, isAdmin, isStudent])
 
   const fetchEvaluations = async () => {
     if (!programId || !user) return
@@ -324,17 +333,18 @@ export function ProgramView() {
     }
   }, [profile, expectedItems])
 
-  const fetchStudentGrades = async () => {
+  const fetchStudentGrades = async (filterByUserId?: string) => {
     if (!programId || !program) {
       console.log('❌ fetchStudentGrades: programId ou program manquant', { programId, program: program ? program.id : null })
       return
     }
 
-    console.log('📊 Début du chargement des notes pour le programme:', programId)
+    console.log('📊 Début du chargement des notes pour le programme:', programId, filterByUserId ? `(filtre: ${filterByUserId})` : '(tous les étudiants)')
     setGradesLoading(true)
     try {
-      // 1. Récupérer tous les étudiants inscrits au programme
-      const { data: enrollments, error: enrollmentsError } = await supabase
+      // 1. Récupérer les étudiants inscrits au programme
+      // Si filterByUserId est fourni, ne récupérer que cet étudiant
+      let enrollmentsQuery = supabase
         .from('program_enrollments')
         .select(`
           user_id,
@@ -347,6 +357,12 @@ export function ProgramView() {
         `)
         .eq('program_id', programId)
         .eq('status', 'active')
+      
+      if (filterByUserId) {
+        enrollmentsQuery = enrollmentsQuery.eq('user_id', filterByUserId)
+      }
+      
+      const { data: enrollments, error: enrollmentsError } = await enrollmentsQuery
 
       if (enrollmentsError) {
         console.error('Error fetching enrollments:', enrollmentsError)
@@ -932,15 +948,19 @@ export function ProgramView() {
           </div>
         )}
 
-        {/* Section Notes des étudiants (pour admins/trainers) - Placée en haut pour visibilité */}
+        {/* Section Notes des étudiants */}
         {(() => {
-          // Afficher la section si l'utilisateur est connecté
-          // La RLS côté serveur gérera l'accès aux données
-          const shouldShow = !!user
-          const isAdminOrTrainer = profile && (profile.role === 'admin' || profile.role === 'trainer' || profile.role === 'instructor')
+          // Afficher la section uniquement si:
+          // - L'utilisateur est admin/trainer (voit toutes les notes)
+          // - L'utilisateur est étudiant (voit uniquement sa note)
+          const isAdminOrTrainer = isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))
+          const shouldShow = !!user && (isAdminOrTrainer || isStudent)
+          
           console.log('📊 Affichage section notes - Debug:', {
             user: user ? { id: user.id } : null,
             profile: profile ? { id: profile.id, role: profile.role } : null,
+            isAdmin,
+            isStudent,
             isAdminOrTrainer,
             shouldShow,
             studentGradesCount: Object.keys(studentGrades).length,
@@ -959,8 +979,16 @@ export function ProgramView() {
                 <BarChart3 className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Notes des étudiants</h3>
-                <p className="text-sm text-gray-500">Vue d'ensemble des notes avec moyenne calculée automatiquement</p>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor')) 
+                    ? 'Notes des étudiants' 
+                    : 'Mes notes'}
+                </h3>
+                <p className="text-sm text-gray-500">
+                  {isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))
+                    ? 'Vue d\'ensemble des notes avec moyenne calculée automatiquement'
+                    : 'Votre progression et vos résultats'}
+                </p>
               </div>
             </div>
 
@@ -972,7 +1000,11 @@ export function ProgramView() {
             ) : Object.keys(studentGrades).length === 0 ? (
               <div className="text-center py-6 text-gray-500">
                 <Users className="w-12 h-12 mx-auto mb-2 text-gray-300" />
-                <p>Aucun étudiant inscrit au programme</p>
+                <p>
+                  {isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))
+                    ? 'Aucun étudiant inscrit au programme'
+                    : 'Aucune note disponible pour le moment'}
+                </p>
               </div>
             ) : !program?.evaluations_config || !program.evaluations_config.items || program.evaluations_config.items.length === 0 ? (
               <div className="text-center py-6 text-gray-500">
@@ -991,9 +1023,12 @@ export function ProgramView() {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Étudiant
-                      </th>
+                      {/* Colonne "Étudiant" uniquement visible pour les admins/trainers */}
+                      {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))) && (
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Étudiant
+                        </th>
+                      )}
                       {program.evaluations_config.items.map((item: any) => (
                         <th key={item.itemId} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           {item.title}
@@ -1010,16 +1045,19 @@ export function ProgramView() {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {Object.values(studentGrades).map((student) => (
                       <tr key={student.profile.id} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 whitespace-nowrap">
-                          <div>
-                            <div className="text-sm font-medium text-gray-900">
-                              {student.profile.full_name || student.profile.student_id || 'Étudiant'}
+                        {/* Colonne "Étudiant" uniquement visible pour les admins/trainers */}
+                        {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))) && (
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            <div>
+                              <div className="text-sm font-medium text-gray-900">
+                                {student.profile.full_name || student.profile.student_id || 'Étudiant'}
+                              </div>
+                              {student.profile.student_id && (
+                                <div className="text-xs text-gray-500">{student.profile.student_id}</div>
+                              )}
                             </div>
-                            {student.profile.student_id && (
-                              <div className="text-xs text-gray-500">{student.profile.student_id}</div>
-                            )}
-                          </div>
-                        </td>
+                          </td>
+                        )}
                         {program.evaluations_config.items.map((item: any) => {
                           const tpGrade = student.tpGrades[item.itemId]
                           const quizGrade = student.quizGrades[item.itemId]
