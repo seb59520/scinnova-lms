@@ -994,34 +994,36 @@ export function ProgramView() {
           </div>
         )}
 
-        {/* Section Notes des étudiants */}
-        {(() => {
-          // Afficher la section uniquement si:
-          // - L'utilisateur est admin/trainer (voit toutes les notes)
-          // - L'utilisateur est étudiant (voit uniquement sa note)
-          const userRole = profile?.role
-          const isAdminOrTrainer = isAdmin || userRole === 'admin' || userRole === 'trainer' || userRole === 'instructor'
-          const isStudentUser = isStudent || userRole === 'student'
-          const shouldShow = !!user && (isAdminOrTrainer || isStudentUser)
-          
-          console.log('📊 Affichage section notes - Debug:', {
-            user: user ? { id: user.id } : null,
-            profile: profile ? { id: profile.id, role: profile.role } : null,
-            isAdmin,
-            isStudent,
-            isAdminOrTrainer,
-            shouldShow,
-            studentGradesCount: Object.keys(studentGrades).length,
-            gradesLoading,
-            evaluationsConfig: program?.evaluations_config ? {
-              hasItems: !!program.evaluations_config.items,
-              itemsCount: program.evaluations_config.items?.length || 0,
-              items: program.evaluations_config.items
-            } : null
-          })
-          return shouldShow
-        })() && (
-          <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+        {/* Section Notes des étudiants et Évaluations - Côte à côte */}
+        <div className="mb-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Section Notes des étudiants */}
+          {(() => {
+            // Afficher la section uniquement si:
+            // - L'utilisateur est admin/trainer (voit toutes les notes)
+            // - L'utilisateur est étudiant (voit uniquement sa note)
+            const userRole = profile?.role
+            const isAdminOrTrainer = isAdmin || userRole === 'admin' || userRole === 'trainer' || userRole === 'instructor'
+            const isStudentUser = isStudent || userRole === 'student'
+            const shouldShow = !!user && (isAdminOrTrainer || isStudentUser)
+            
+            console.log('📊 Affichage section notes - Debug:', {
+              user: user ? { id: user.id } : null,
+              profile: profile ? { id: profile.id, role: profile.role } : null,
+              isAdmin,
+              isStudent,
+              isAdminOrTrainer,
+              shouldShow,
+              studentGradesCount: Object.keys(studentGrades).length,
+              gradesLoading,
+              evaluationsConfig: program?.evaluations_config ? {
+                hasItems: !!program.evaluations_config.items,
+                itemsCount: program.evaluations_config.items?.length || 0,
+                items: program.evaluations_config.items
+              } : null
+            })
+            return shouldShow
+          })() && (
+            <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
                 <BarChart3 className="w-5 h-5 text-white" />
@@ -1140,12 +1142,12 @@ export function ProgramView() {
                 </table>
               </div>
             )}
-          </div>
-        )}
+            </div>
+          )}
 
-        {/* Section Évaluations */}
-        {evaluationsLoaded && (
-          <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+          {/* Section Évaluations */}
+          {evaluationsLoaded && (
+            <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
                 <ClipboardCheck className="w-5 h-5 text-white" />
@@ -1202,8 +1204,9 @@ export function ProgramView() {
                 })}
               </div>
             )}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
 
         {/* Section Items attendus (TP, Quiz, Exercices) */}
         {expectedItemsLoaded && (
@@ -1460,7 +1463,7 @@ export function ProgramView() {
                 <p>Aucun document à compléter pour le moment</p>
               </div>
             ) : (
-            <div className="space-y-4">
+            <div className={`grid grid-cols-1 ${programDocuments.length >= 2 ? 'md:grid-cols-2' : ''} gap-4`}>
               {programDocuments.map(doc => {
                 const submission = documentSubmissions[doc.id]
                 return (
