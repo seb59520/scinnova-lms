@@ -5,13 +5,16 @@ import { useUserRole } from '../hooks/useUserRole'
 import { supabase } from '../lib/supabaseClient'
 import { Program, ProgramCourseWithCourse, Course, ProgramEvaluation } from '../types/database'
 import { AppHeader } from '../components/AppHeader'
-import { ArrowLeft, Layers, BookOpen, ChevronRight, Book, Download, FileText, ClipboardCheck, Award, CheckCircle, Upload, Calendar, AlertCircle, Users, Eye, Edit, BarChart3 } from 'lucide-react'
+import { ArrowLeft, Layers, BookOpen, ChevronRight, Book, Download, FileText, ClipboardCheck, Award, CheckCircle, Upload, Calendar, AlertCircle, Users, Eye, Edit, BarChart3, TrendingUp } from 'lucide-react'
 import { FileUpload } from '../components/FileUpload'
+import { StepByStepTpProgressViewer } from '../components/trainer/StepByStepTpProgressViewer'
+import { useNavigationContext } from '../components/NavigationContext'
 
 export function ProgramView() {
   const { programId } = useParams<{ programId: string }>()
   const { user, profile } = useAuth()
   const { isAdmin, isStudent } = useUserRole()
+  const { setContext, clearContext } = useNavigationContext()
   const [program, setProgram] = useState<Program | null>(null)
   const [programCourses, setProgramCourses] = useState<ProgramCourseWithCourse[]>([])
   const [evaluations, setEvaluations] = useState<ProgramEvaluation[]>([])
@@ -46,7 +49,22 @@ export function ProgramView() {
       fetchProgramDocuments()
       fetchExpectedItems()
     }
-  }, [programId, user])
+    // Nettoyer le contexte de navigation au démontage
+    return () => clearContext()
+  }, [programId, user, clearContext])
+
+  // Mettre à jour le contexte de navigation quand le programme est chargé
+  useEffect(() => {
+    if (program) {
+      setContext({
+        program: {
+          id: program.id,
+          title: program.title,
+          type: 'program'
+        }
+      })
+    }
+  }, [program, setContext])
 
   useEffect(() => {
     // Charger les notes selon le rôle de l'utilisateur
@@ -59,30 +77,38 @@ export function ProgramView() {
       program: program ? { id: program.id, title: program.title } : null,
       isAdmin,
       isStudent,
+      profileRole: profile?.role,
       shouldFetch: programId && user && program
     })
     
     if (programId && user && program) {
+      // Vérifier le rôle depuis le profil directement si useUserRole n'est pas encore prêt
+      const userRole = profile?.role || (isAdmin ? 'admin' : isStudent ? 'student' : null)
+      
       // Admin/Trainer: charger toutes les notes
-      if (isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))) {
+      if (isAdmin || userRole === 'admin' || userRole === 'trainer' || userRole === 'instructor') {
         console.log('✅ Admin/Trainer: chargement de toutes les notes...')
         fetchStudentGrades()
       } 
       // Étudiant: charger uniquement sa propre note
-      else if (isStudent && user.id) {
-        console.log('✅ Étudiant: chargement de sa propre note...')
+      else if ((isStudent || userRole === 'student') && user.id) {
+        console.log('✅ Étudiant: chargement de sa propre note...', { userId: user.id })
         fetchStudentGrades(user.id)
       } else if (!profile) {
         // Si le profil n'est pas encore chargé, attendre un peu puis essayer
+        console.log('⏳ Profil non chargé, attente de 2 secondes...')
         const timeoutId = setTimeout(() => {
           console.log('⏳ Tentative de chargement des notes (profil peut-être chargé maintenant)...')
-          if (isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))) {
+          const retryRole = profile?.role
+          if (retryRole === 'admin' || retryRole === 'trainer' || retryRole === 'instructor') {
             fetchStudentGrades()
-          } else if (isStudent && user.id) {
+          } else if (retryRole === 'student' && user.id) {
             fetchStudentGrades(user.id)
           }
         }, 2000)
         return () => clearTimeout(timeoutId)
+      } else {
+        console.log('⚠️ Rôle non reconnu ou conditions non remplies:', { userRole, isAdmin, isStudent })
       }
     } else {
       console.log('❌ Conditions non remplies pour charger les notes')
@@ -322,11 +348,21 @@ export function ProgramView() {
     if (profile && expectedItems.length > 0) {
       const isTrainerOrAdmin = profile.role === 'admin' || profile.role === 'trainer' || profile.role === 'instructor'
       if (isTrainerOrAdmin) {
+        // Récupérer les soumissions pour les TP de contrôle
         const controlTpItems = expectedItems.filter((ei: any) => 
           ei.items?.type === 'tp' && ei.items?.is_control_tp === true
         )
-        if (controlTpItems.length > 0) {
-          const itemIds = controlTpItems.map((ei: any) => ei.items.id)
+        // Récupérer les soumissions pour les TPs pas à pas
+        const stepByStepTpItems = expectedItems.filter((ei: any) => {
+          const item = ei.items
+          return item?.type === 'tp' && 
+                 (item.content?.type === 'step-by-step' || (item.content?.steps && Array.isArray(item.content.steps)))
+        })
+        
+        // Combiner les deux types de TPs
+        const allTpItems = [...controlTpItems, ...stepByStepTpItems]
+        if (allTpItems.length > 0) {
+          const itemIds = allTpItems.map((ei: any) => ei.items.id)
           fetchSubmissionsForItems(itemIds)
         }
       }
@@ -351,8 +387,7 @@ export function ProgramView() {
           profiles (
             id,
             full_name,
-            student_id,
-            email
+            student_id
           )
         `)
         .eq('program_id', programId)
@@ -365,18 +400,29 @@ export function ProgramView() {
       const { data: enrollments, error: enrollmentsError } = await enrollmentsQuery
 
       if (enrollmentsError) {
-        console.error('Error fetching enrollments:', enrollmentsError)
+        console.error('❌ Error fetching enrollments:', enrollmentsError)
+        setGradesLoading(false)
         return
       }
 
       if (!enrollments || enrollments.length === 0) {
-        console.log('⚠️ Aucun étudiant inscrit au programme')
+        console.log('⚠️ Aucun étudiant inscrit au programme', { 
+          filterByUserId, 
+          programId,
+          enrollmentsCount: enrollments?.length || 0 
+        })
         setStudentGrades({})
         setGradesLoading(false)
         return
       }
 
-      console.log('✅ Étudiants trouvés:', enrollments.length)
+      console.log('✅ Étudiants trouvés:', enrollments.length, { 
+        filterByUserId,
+        enrollments: enrollments.map((e: any) => ({ 
+          userId: e.user_id, 
+          name: e.profiles?.full_name || e.profiles?.student_id 
+        }))
+      })
 
       const userIds = enrollments.map(e => e.user_id)
       const gradesMap: Record<string, {
@@ -953,8 +999,10 @@ export function ProgramView() {
           // Afficher la section uniquement si:
           // - L'utilisateur est admin/trainer (voit toutes les notes)
           // - L'utilisateur est étudiant (voit uniquement sa note)
-          const isAdminOrTrainer = isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))
-          const shouldShow = !!user && (isAdminOrTrainer || isStudent)
+          const userRole = profile?.role
+          const isAdminOrTrainer = isAdmin || userRole === 'admin' || userRole === 'trainer' || userRole === 'instructor'
+          const isStudentUser = isStudent || userRole === 'student'
+          const shouldShow = !!user && (isAdminOrTrainer || isStudentUser)
           
           console.log('📊 Affichage section notes - Debug:', {
             user: user ? { id: user.id } : null,
@@ -980,12 +1028,12 @@ export function ProgramView() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">
-                  {isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor')) 
+                  {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor')))
                     ? 'Notes des étudiants' 
                     : 'Mes notes'}
                 </h3>
                 <p className="text-sm text-gray-500">
-                  {isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))
+                  {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor')))
                     ? 'Vue d\'ensemble des notes avec moyenne calculée automatiquement'
                     : 'Votre progression et vos résultats'}
                 </p>
@@ -1001,9 +1049,11 @@ export function ProgramView() {
               <div className="text-center py-6 text-gray-500">
                 <Users className="w-12 h-12 mx-auto mb-2 text-gray-300" />
                 <p>
-                  {isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))
+                  {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor')))
                     ? 'Aucun étudiant inscrit au programme'
-                    : 'Aucune note disponible pour le moment'}
+                    : gradesLoading 
+                      ? 'Chargement de vos notes...'
+                      : 'Aucune note disponible pour le moment. Assurez-vous d\'être inscrit au programme et d\'avoir complété des évaluations.'}
                 </p>
               </div>
             ) : !program?.evaluations_config || !program.evaluations_config.items || program.evaluations_config.items.length === 0 ? (
@@ -1284,46 +1334,45 @@ export function ProgramView() {
                           ) : (
                             <span className="text-red-500 text-sm">Erreur: ID manquant</span>
                           )}
-                        {/* Pour les formateurs/admins et les TP de contrôle, afficher un bouton pour voir les soumissions */}
+                        {/* Pour les formateurs/admins et les TP de contrôle ou pas à pas, afficher un bouton pour voir les soumissions/progression */}
                         {(() => {
                           const isTrainerOrAdmin = profile?.role === 'admin' || profile?.role === 'trainer' || profile?.role === 'instructor'
                           const isTp = item.type === 'tp'
                           // Vérifier is_control_tp (peut être true, false, ou undefined)
-                          // Utiliser la variable isControlTp définie plus haut si disponible, sinon vérifier directement
                           const itemIsControlTp = isControlTp === true || (item as any).is_control_tp === true
-                          const shouldShow = isTrainerOrAdmin && isTp && itemIsControlTp
-                          
-                          // Log pour débogage
-                          if (isTp) {
-                            console.log('🔍 Vérification affichage bouton soumissions:', {
-                              itemId: item.id,
-                              title: item.title,
-                              isTrainerOrAdmin,
-                              isTp,
-                              itemIsControlTp,
-                              shouldShow,
-                              is_control_tp_value: (item as any).is_control_tp,
-                              isControlTp_var: isControlTp,
-                              profile_role: profile?.role
-                            })
-                          }
+                          // Vérifier si c'est un TP pas à pas
+                          const isStepByStepTp = item.content?.type === 'step-by-step' || (item.content?.steps && Array.isArray(item.content.steps))
+                          const shouldShow = isTrainerOrAdmin && isTp && (itemIsControlTp || isStepByStepTp)
                           
                           return shouldShow ? (
                             <button
                               onClick={() => setExpandedItemId(expandedItemId === item.id ? null : item.id)}
-                              className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 text-sm font-medium flex items-center gap-2"
+                              className={`px-4 py-2 text-white rounded-lg text-sm font-medium flex items-center gap-2 ${
+                                isStepByStepTp 
+                                  ? 'bg-blue-600 hover:bg-blue-700' 
+                                  : 'bg-yellow-600 hover:bg-yellow-700'
+                              }`}
                             >
-                              <Users className="w-4 h-4" />
-                              Voir les soumissions ({itemSubmissions[item.id]?.length || 0})
+                              {isStepByStepTp ? (
+                                <>
+                                  <TrendingUp className="w-4 h-4" />
+                                  Voir la progression ({itemSubmissions[item.id]?.length || 0})
+                                </>
+                              ) : (
+                                <>
+                                  <Users className="w-4 h-4" />
+                                  Voir les soumissions ({itemSubmissions[item.id]?.length || 0})
+                                </>
+                              )}
                             </button>
                           ) : null
                         })()}
                         </div>
                       </div>
-                      {/* Liste des soumissions (pour formateurs/admins) */}
+                      {/* Liste des soumissions (pour formateurs/admins) - TP de contrôle */}
                       {expandedItemId === item.id && 
                        (profile?.role === 'admin' || profile?.role === 'trainer' || profile?.role === 'instructor') &&
-                       item.type === 'tp' && (item as any).is_control_tp && (
+                       item.type === 'tp' && (item as any).is_control_tp && !(item.content?.type === 'step-by-step' || (item.content?.steps && Array.isArray(item.content.steps))) && (
                         <div className="mt-4 pt-4 border-t border-gray-200 px-4 pb-4">
                           <h5 className="text-sm font-medium text-gray-900 mb-3">Soumissions des étudiants</h5>
                           {!itemSubmissions[item.id] || itemSubmissions[item.id].length === 0 ? (
@@ -1355,7 +1404,7 @@ export function ProgramView() {
                                         </span>
                                       )}
                                       <span className="text-xs text-gray-500">
-                                        {new Date(submission.submitted_at).toLocaleDateString('fr-FR')}
+                                        {submission.submitted_at ? new Date(submission.submitted_at).toLocaleDateString('fr-FR') : 'Non soumis'}
                                       </span>
                                     </div>
                                   </div>
@@ -1369,6 +1418,20 @@ export function ProgramView() {
                               ))}
                             </div>
                           )}
+                        </div>
+                      )}
+
+                      {/* Vue de progression pour les TPs pas à pas (pour formateurs/admins) */}
+                      {expandedItemId === item.id && 
+                       (profile?.role === 'admin' || profile?.role === 'trainer' || profile?.role === 'instructor') &&
+                       item.type === 'tp' && 
+                       (item.content?.type === 'step-by-step' || (item.content?.steps && Array.isArray(item.content.steps))) && (
+                        <div className="mt-4 pt-4 border-t border-gray-200 px-4 pb-4">
+                          <StepByStepTpProgressViewer
+                            itemId={item.id}
+                            courseId={item.modules?.courses?.id || undefined}
+                            sessionId={undefined}
+                          />
                         </div>
                       )}
                     </div>

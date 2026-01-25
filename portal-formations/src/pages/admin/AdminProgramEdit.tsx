@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Program, ProgramCourse, ProgramCourseWithCourse, Course } from '../../types/database'
-import { Save, Plus, Trash2, ChevronUp, ChevronDown, X, GripVertical, FileText, Download, Trash, Image, ChevronRight, Edit, ExternalLink } from 'lucide-react'
+import { Save, Plus, Trash2, ChevronUp, ChevronDown, X, GripVertical, FileText, Download, Trash, Image, ChevronRight, Edit, ExternalLink, Search } from 'lucide-react'
 import { FileUpload } from '../../components/FileUpload'
 import { GlossaryEditor } from '../../components/GlossaryEditor'
 import { ProgramDocumentsManager } from '../../components/admin/ProgramDocumentsManager'
@@ -14,11 +14,13 @@ import { PrerequisitesEditor } from '../../components/admin/PrerequisitesEditor'
 import { EvaluationsConfigEditor } from '../../components/admin/EvaluationsConfigEditor'
 import { SynthesisEditor } from '../../components/admin/SynthesisEditor'
 import { Target } from 'lucide-react'
+import { useNavigationContext } from '../../components/NavigationContext'
 
 export function AdminProgramEdit() {
   const { programId } = useParams<{ programId: string }>()
   const { user } = useAuth()
   const navigate = useNavigate()
+  const { setContext, clearContext } = useNavigationContext()
   const isNew = programId === 'new'
 
   const [program, setProgram] = useState<Partial<Program>>({
@@ -43,6 +45,8 @@ export function AdminProgramEdit() {
   const [pdfFile, setPdfFile] = useState<File | null>(null)
   const [programCourses, setProgramCourses] = useState<ProgramCourseWithCourse[]>([])
   const [availableCourses, setAvailableCourses] = useState<Course[]>([])
+  const [coursePrograms, setCoursePrograms] = useState<Record<string, Program[]>>({}) // Programmes par formation
+  const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(!isNew)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
@@ -84,10 +88,25 @@ export function AdminProgramEdit() {
     }
     fetchAvailableCourses(isMounted)
     
+    // Nettoyer le contexte de navigation au démontage
     return () => {
       isMounted = false
+      clearContext()
     }
-  }, [programId, isNew])
+  }, [programId, isNew, clearContext])
+
+  // Mettre à jour le contexte de navigation quand le programme est chargé
+  useEffect(() => {
+    if (program && program.id && program.title && !isNew) {
+      setContext({
+        program: {
+          id: program.id,
+          title: program.title,
+          type: 'program'
+        }
+      })
+    }
+  }, [program, isNew, setContext])
 
   const fetchProgram = async (isMounted: boolean = true) => {
     try {
@@ -184,6 +203,11 @@ export function AdminProgramEdit() {
       
       if (isMounted) {
         setAvailableCourses(data || [])
+        
+        // Récupérer les programmes pour chaque formation
+        if (data && data.length > 0) {
+          fetchCoursePrograms(data.map(c => c.id), isMounted)
+        }
       }
     } catch (error: any) {
       if (!isMounted) return
@@ -195,6 +219,65 @@ export function AdminProgramEdit() {
       }
       
       console.error('Error fetching courses:', error)
+    }
+  }
+
+  const fetchCoursePrograms = async (courseIds: string[], isMounted: boolean = true) => {
+    try {
+      // Récupérer tous les program_courses pour ces formations
+      const { data: programCoursesData, error: programCoursesError } = await supabase
+        .from('program_courses')
+        .select(`
+          course_id,
+          program_id,
+          programs (
+            id,
+            title,
+            status
+          )
+        `)
+        .in('course_id', courseIds)
+
+      if (!isMounted) return
+
+      if (programCoursesError) {
+        // Ignorer les erreurs d'abort
+        if (programCoursesError.message?.includes('aborted') || programCoursesError.message?.includes('AbortError')) {
+          console.log('⚠️ Requête annulée (composant démonté)')
+          return
+        }
+        console.error('Error fetching course programs:', programCoursesError)
+        return
+      }
+
+      if (isMounted && programCoursesData) {
+        // Grouper les programmes par course_id
+        const programsByCourse: Record<string, Program[]> = {}
+        
+        programCoursesData.forEach((pc: any) => {
+          if (pc.programs && pc.course_id) {
+            if (!programsByCourse[pc.course_id]) {
+              programsByCourse[pc.course_id] = []
+            }
+            // Éviter les doublons
+            if (!programsByCourse[pc.course_id].some(p => p.id === pc.programs.id)) {
+              programsByCourse[pc.course_id].push(pc.programs)
+            }
+          }
+        })
+        
+        setCoursePrograms(programsByCourse)
+      }
+    } catch (error: any) {
+      if (!isMounted) return
+      
+      // Ignorer les erreurs d'abort
+      if (error?.message?.includes('aborted') || error?.name === 'AbortError') {
+        console.log('⚠️ Requête annulée (composant démonté)')
+        return
+      }
+      
+      console.error('Error fetching course programs:', error)
     }
   }
 
@@ -701,7 +784,19 @@ export function AdminProgramEdit() {
   }
 
   const enrolledCourseIds = programCourses.map(pc => pc.course_id)
-  const availableCoursesFiltered = availableCourses.filter(c => !enrolledCourseIds.includes(c.id))
+  const availableCoursesFiltered = availableCourses.filter(c => {
+    // Filtrer les formations déjà dans le programme
+    if (enrolledCourseIds.includes(c.id)) return false
+    
+    // Filtrer par terme de recherche
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase()
+      return c.title?.toLowerCase().includes(searchLower) || 
+             c.description?.toLowerCase().includes(searchLower)
+    }
+    
+    return true
+  })
 
   const toggleSection = (sectionId: string) => {
     setExpandedSections(prev => {
@@ -1556,6 +1651,7 @@ export function AdminProgramEdit() {
                 onClick={() => {
                   setShowAddModal(false)
                   setSelectedCourseIds([])
+                  setSearchTerm('')
                 }}
                 className="text-gray-400 hover:text-gray-600"
               >
@@ -1563,41 +1659,80 @@ export function AdminProgramEdit() {
               </button>
             </div>
 
+            {/* Champ de recherche */}
+            <div className="mb-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Rechercher une formation..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+
             <div className="max-h-96 overflow-y-auto mb-4 border border-gray-200 rounded-md">
               {availableCoursesFiltered.length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
-                  Toutes les formations sont déjà dans le programme.
+                  {searchTerm 
+                    ? `Aucune formation trouvée pour "${searchTerm}".`
+                    : 'Toutes les formations sont déjà dans le programme.'}
                 </div>
               ) : (
                 <ul className="divide-y divide-gray-200">
-                  {availableCoursesFiltered.map((course) => (
-                    <li key={course.id} className="px-4 py-3 hover:bg-gray-50">
-                      <label className="flex items-center space-x-3 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={selectedCourseIds.includes(course.id)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setSelectedCourseIds([...selectedCourseIds, course.id])
-                            } else {
-                              setSelectedCourseIds(selectedCourseIds.filter(id => id !== course.id))
-                            }
-                          }}
-                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                        />
-                        <div className="flex-1">
-                          <p className="text-sm font-medium text-gray-900">
-                            {course.title}
-                          </p>
-                          {course.description && (
-                            <p className="text-xs text-gray-500 mt-1 line-clamp-2">
-                              {course.description}
+                  {availableCoursesFiltered.map((course) => {
+                    const courseProgramsList = coursePrograms[course.id] || []
+                    return (
+                      <li key={course.id} className="px-4 py-3 hover:bg-gray-50">
+                        <label className="flex items-start space-x-3 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={selectedCourseIds.includes(course.id)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedCourseIds([...selectedCourseIds, course.id])
+                              } else {
+                                setSelectedCourseIds(selectedCourseIds.filter(id => id !== course.id))
+                              }
+                            }}
+                            className="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900">
+                              {course.title}
                             </p>
-                          )}
-                        </div>
-                      </label>
-                    </li>
-                  ))}
+                            {course.description && (
+                              <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+                                {course.description}
+                              </p>
+                            )}
+                            {/* Afficher les programmes existants */}
+                            {courseProgramsList.length > 0 && (
+                              <div className="mt-2 flex flex-wrap gap-1">
+                                <span className="text-xs text-gray-500 font-medium">
+                                  Déjà dans:
+                                </span>
+                                {courseProgramsList.map((program) => (
+                                  <span
+                                    key={program.id}
+                                    className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200"
+                                    title={program.status === 'draft' ? 'Brouillon' : 'Publié'}
+                                  >
+                                    {program.title}
+                                    {program.status === 'draft' && (
+                                      <span className="ml-1 text-blue-600">(brouillon)</span>
+                                    )}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </label>
+                      </li>
+                    )
+                  })}
                 </ul>
               )}
             </div>
