@@ -640,7 +640,18 @@ export function TpControlRenderer({ item, submission, onSubmissionUpdate, viewin
 
   return (
     <div className="space-y-6">
-      {/* Instructions du TP - EN PREMIER */}
+      {/* Contenu pédagogique du TP (body) - EN PREMIER */}
+      {item.content?.body && (
+        <div className="prose max-w-none">
+          <RichTextEditor
+            content={item.content.body}
+            onChange={() => {}}
+            editable={false}
+          />
+        </div>
+      )}
+
+      {/* Instructions du TP */}
       {item.content?.instructions && (
         <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
           <h3 className="font-medium text-purple-900 mb-2">Consignes du TP</h3>

@@ -8,6 +8,7 @@ import { RichTextEditor } from './RichTextEditor'
 import { GameRenderer } from './GameRenderer'
 import { ItemDocuments } from './ItemDocuments'
 import { TpControlRenderer } from './TpControlRenderer'
+import { StepByStepTpRenderer } from './StepByStepTpRenderer'
 import { Presentation, Eye, Columns, Sparkles, FileJson } from 'lucide-react'
 import { correctAnswer, CorrectionResult } from '../lib/answerCorrector'
 import { TitanicJsonUploader } from './TitanicJsonUploader'
@@ -1341,6 +1342,14 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate, viewingUser
       // Utiliser le composant spécialisé pour les TP de contrôle
       return <TpControlRenderer item={item} submission={submission} onSubmissionUpdate={onSubmissionUpdate} viewingUserId={viewingUserId || undefined} />;
     }
+
+    // Vérifier si c'est un TP pas à pas
+    const isStepByStepTp = item.content?.type === 'step-by-step' || (item.content?.steps && Array.isArray(item.content.steps));
+    
+    if (isStepByStepTp) {
+      // Utiliser le composant spécialisé pour les TPs pas à pas
+      return <StepByStepTpRenderer item={item} submission={submission} onSubmissionUpdate={onSubmissionUpdate} viewingUserId={viewingUserId || undefined} />;
+    }
     const isSubmitted = submission?.status === 'submitted'
     const isGraded = submission?.status === 'graded'
     
@@ -1369,6 +1378,17 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate, viewingUser
 
     return (
       <div className="space-y-6">
+        {/* Contenu pédagogique du TP (body) - EN PREMIER */}
+        {item.content?.body && (
+          <div className="prose max-w-none">
+            <RichTextEditor
+              content={item.content.body}
+              onChange={() => {}}
+              editable={false}
+            />
+          </div>
+        )}
+
         {/* Documents disponibles pour le TP */}
         <ItemDocuments itemId={item.id} />
 
@@ -1403,28 +1423,31 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate, viewingUser
           </div>
         )}
 
+        {/* Instructions du TP */}
         {item.content?.instructions && (
-          <div className="bg-purple-50 p-4 rounded-lg">
+          <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
             <h3 className="font-medium text-purple-900 mb-2">Consignes du TP</h3>
             {typeof item.content.instructions === 'object' ? (
-              <RichTextEditor
-                content={item.content.instructions}
-                onChange={() => {}}
-                editable={false}
-              />
+              <div className="prose max-w-none text-purple-800">
+                <RichTextEditor
+                  content={item.content.instructions}
+                  onChange={() => {}}
+                  editable={false}
+                />
+              </div>
             ) : (
-              <p className="text-purple-800">{item.content.instructions}</p>
+              <p className="text-purple-800 whitespace-pre-wrap">{item.content.instructions}</p>
             )}
-          {item.content?.checklist && (
-            <div className="mt-4">
-              <h4 className="font-medium text-purple-900">Checklist</h4>
-              <ul className="list-disc list-inside text-purple-800 mt-2">
-                {item.content.checklist.map((item: string, index: number) => (
-                  <li key={index}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          )}
+            {item.content?.checklist && (
+              <div className="mt-4">
+                <h4 className="font-medium text-purple-900">Checklist</h4>
+                <ul className="list-disc list-inside text-purple-800 mt-2">
+                  {item.content.checklist.map((item: string, index: number) => (
+                    <li key={index}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         )}
 
