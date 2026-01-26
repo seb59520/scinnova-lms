@@ -1376,16 +1376,62 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate, viewingUser
       }
     }
 
+    // Debug: vérifier le contenu du TP
+    const hasBody = item.content?.body && (
+      (typeof item.content.body === 'string' && item.content.body.trim().length > 0) ||
+      (typeof item.content.body === 'object' && Object.keys(item.content.body).length > 0)
+    )
+    
+    console.log('🔍 renderTp - Item content:', {
+      itemId: item.id,
+      itemType: item.type,
+      hasContent: !!item.content,
+      hasBody: !!hasBody,
+      bodyType: typeof item.content?.body,
+      bodyIsObject: item.content?.body && typeof item.content.body === 'object',
+      bodyIsString: typeof item.content?.body === 'string',
+      bodyLength: item.content?.body ? (typeof item.content.body === 'string' ? item.content.body.length : JSON.stringify(item.content.body).length) : 0,
+      contentKeys: item.content ? Object.keys(item.content) : [],
+      bodyPreview: item.content?.body ? (typeof item.content.body === 'string' ? item.content.body.substring(0, 100) : JSON.stringify(item.content.body).substring(0, 100)) : 'null'
+    })
+
     return (
       <div className="space-y-6">
+        {/* Debug: Afficher les clés disponibles (uniquement en dev ou si body manquant) */}
+        {(!hasBody && item.content) && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm">
+            <p className="font-medium text-yellow-900 mb-2">⚠️ Debug: Contenu disponible</p>
+            <p className="text-yellow-800">Clés dans content: {Object.keys(item.content).join(', ')}</p>
+            {item.content.description && (
+              <p className="text-yellow-800 mt-2">Description: {typeof item.content.description === 'string' ? item.content.description.substring(0, 100) : 'Object'}</p>
+            )}
+          </div>
+        )}
+
         {/* Contenu pédagogique du TP (body) - EN PREMIER */}
-        {item.content?.body && (
+        {hasBody && (
           <div className="prose max-w-none">
             <RichTextEditor
               content={item.content.body}
               onChange={() => {}}
               editable={false}
             />
+          </div>
+        )}
+
+        {/* Fallback: Afficher description si body n'existe pas */}
+        {!hasBody && item.content?.description && (
+          <div className="prose max-w-none bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h3 className="font-medium text-blue-900 mb-2">Description du TP</h3>
+            {typeof item.content.description === 'object' ? (
+              <RichTextEditor
+                content={item.content.description}
+                onChange={() => {}}
+                editable={false}
+              />
+            ) : (
+              <p className="text-blue-800 whitespace-pre-wrap">{item.content.description}</p>
+            )}
           </div>
         )}
 

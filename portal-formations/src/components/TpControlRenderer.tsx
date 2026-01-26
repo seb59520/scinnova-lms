@@ -638,10 +638,29 @@ export function TpControlRenderer({ item, submission, onSubmissionUpdate, viewin
 </html>`;
   };
 
+  // Debug: vérifier le contenu du TP
+  const hasBody = item.content?.body && (
+    (typeof item.content.body === 'string' && item.content.body.trim().length > 0) ||
+    (typeof item.content.body === 'object' && Object.keys(item.content.body).length > 0)
+  )
+  
+  console.log('🔍 TpControlRenderer - Item content:', {
+    itemId: item.id,
+    itemType: item.type,
+    hasContent: !!item.content,
+    hasBody: !!hasBody,
+    bodyType: typeof item.content?.body,
+    bodyIsObject: item.content?.body && typeof item.content.body === 'object',
+    bodyIsString: typeof item.content?.body === 'string',
+    bodyLength: item.content?.body ? (typeof item.content.body === 'string' ? item.content.body.length : JSON.stringify(item.content.body).length) : 0,
+    contentKeys: item.content ? Object.keys(item.content) : [],
+    bodyPreview: item.content?.body ? (typeof item.content.body === 'string' ? item.content.body.substring(0, 100) : JSON.stringify(item.content.body).substring(0, 100)) : 'null'
+  })
+
   return (
     <div className="space-y-6">
       {/* Contenu pédagogique du TP (body) - EN PREMIER */}
-      {item.content?.body && (
+      {hasBody && (
         <div className="prose max-w-none">
           <RichTextEditor
             content={item.content.body}

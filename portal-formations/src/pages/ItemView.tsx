@@ -8,8 +8,9 @@ import { ChapterViewer } from '../components/ChapterViewer'
 import { RichTextEditor } from '../components/RichTextEditor'
 import { ResizableContainer } from '../components/ResizableContainer'
 import { Lexique } from './Lexique'
+import { StepByStepTpProgressViewer } from '../components/trainer/StepByStepTpProgressViewer'
 import { useNavigationContext, EnhancedBreadcrumb, CourseContextBar } from '../components/NavigationContext'
-import { FileText, ChevronDown, ChevronUp, Target, Lightbulb, BookOpen, MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react'
+import { FileText, ChevronDown, ChevronUp, Target, Lightbulb, BookOpen, MessageSquare, ChevronLeft, ChevronRight, Users } from 'lucide-react'
 
 // Vérifie si le body TipTap contient du contenu substantiel
 // (plus qu'un simple paragraphe de description courte)
@@ -69,6 +70,8 @@ export function ItemView() {
   const [modulesData, setModulesData] = useState<any[]>([])
   const [programData, setProgramData] = useState<{ id: string; title: string } | null>(null)
   const [currentModule, setCurrentModule] = useState<{ id: string; title: string } | null>(null)
+  const [courseId, setCourseId] = useState<string | null>(null)
+  const [sessionId, setSessionId] = useState<string | null>(null)
 
   // Log pour déboguer le profil
   useEffect(() => {
@@ -335,6 +338,22 @@ export function ItemView() {
 
       if (itemError) throw itemError
 
+      // Debug: vérifier le contenu récupéré depuis la base de données
+      console.log('🔍 ItemView - Item récupéré depuis DB:', {
+        id: itemData.id,
+        type: itemData.type,
+        title: itemData.title,
+        hasContent: !!itemData.content,
+        contentType: typeof itemData.content,
+        hasBody: !!itemData.content?.body,
+        bodyType: typeof itemData.content?.body,
+        bodyIsObject: itemData.content?.body && typeof itemData.content.body === 'object',
+        bodyIsString: typeof itemData.content?.body === 'string',
+        bodyLength: itemData.content?.body ? (typeof itemData.content.body === 'string' ? itemData.content.body.length : JSON.stringify(itemData.content.body).length) : 0,
+        contentKeys: itemData.content ? Object.keys(itemData.content) : [],
+        contentPreview: itemData.content ? JSON.stringify(itemData.content).substring(0, 200) : 'null'
+      })
+
       // Vérifier l'accès à la formation (seulement si pas admin)
       const courseId = itemData.modules?.courses?.id
       const courseData = itemData.modules?.courses
@@ -490,6 +509,24 @@ export function ItemView() {
           const prog = programCourse.programs as any
           setProgramData({ id: prog.id, title: prog.title })
         }
+      }
+
+      // Récupérer le courseId depuis le module
+      if (itemData.module_id) {
+        const { data: moduleData } = await supabase
+          .from('modules')
+          .select('course_id')
+          .eq('id', itemData.module_id)
+          .single()
+        if (moduleData) {
+          setCourseId(moduleData.course_id)
+        }
+      }
+
+      // Récupérer le sessionId depuis l'URL ou les paramètres
+      const sessionIdFromUrl = searchParams.get('sessionId')
+      if (sessionIdFromUrl) {
+        setSessionId(sessionIdFromUrl)
       }
 
       // Récupérer la soumission existante si c'est un exercice ou TP
@@ -750,6 +787,25 @@ export function ItemView() {
                   viewingUserId={viewingUserId}
                 />
               </div>
+
+              {/* Vue de progression pour les TPs pas à pas (visible uniquement pour les formateurs/admins) */}
+              {item.type === 'tp' && 
+               (item.content?.type === 'step-by-step' || (item.content?.steps && Array.isArray(item.content.steps))) &&
+               (profile?.role === 'admin' || profile?.role === 'trainer' || profile?.role === 'instructor') && (
+                <div className="bg-blue-50 border-2 border-blue-200 rounded-lg shadow p-6 lg:p-8 mt-6">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <Users className="w-6 h-6 text-blue-600" />
+                    <h2 className="text-xl font-bold text-blue-900">
+                      Suivi de progression des étudiants
+                    </h2>
+                  </div>
+                  <StepByStepTpProgressViewer
+                    itemId={item.id}
+                    courseId={courseId || undefined}
+                    sessionId={sessionId || undefined}
+                  />
+                </div>
+              )}
 
               {/* Script formateur pour les slides (visible uniquement pour les formateurs/admins) */}
               {(item.type === 'slide' || item.type === 'resource') && 
