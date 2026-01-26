@@ -1377,9 +1377,15 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate, viewingUser
     }
 
     // Debug: vérifier le contenu du TP
+    // Pour les TP, on affiche le body s'il existe, même s'il est court
     const hasBody = item.content?.body && (
       (typeof item.content.body === 'string' && item.content.body.trim().length > 0) ||
-      (typeof item.content.body === 'object' && Object.keys(item.content.body).length > 0)
+      (typeof item.content.body === 'object' && (
+        // Si c'est un objet TipTap, vérifier qu'il a du contenu
+        (item.content.body.content && Array.isArray(item.content.body.content) && item.content.body.content.length > 0) ||
+        // Sinon, vérifier qu'il a des clés
+        Object.keys(item.content.body).length > 0
+      ))
     )
     
     console.log('🔍 renderTp - Item content:', {
@@ -1392,19 +1398,30 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate, viewingUser
       bodyIsString: typeof item.content?.body === 'string',
       bodyLength: item.content?.body ? (typeof item.content.body === 'string' ? item.content.body.length : JSON.stringify(item.content.body).length) : 0,
       contentKeys: item.content ? Object.keys(item.content) : [],
-      bodyPreview: item.content?.body ? (typeof item.content.body === 'string' ? item.content.body.substring(0, 100) : JSON.stringify(item.content.body).substring(0, 100)) : 'null'
+      bodyPreview: item.content?.body ? (typeof item.content.body === 'string' ? item.content.body.substring(0, 100) : JSON.stringify(item.content.body).substring(0, 100)) : 'null',
+      bodyContent: item.content?.body && typeof item.content.body === 'object' && item.content.body.content ? `Array(${item.content.body.content.length})` : 'N/A'
     })
 
     return (
       <div className="space-y-6">
-        {/* Debug: Afficher les clés disponibles (uniquement en dev ou si body manquant) */}
+        {/* Debug: Afficher les clés disponibles (uniquement si body manquant) */}
         {(!hasBody && item.content) && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm">
-            <p className="font-medium text-yellow-900 mb-2">⚠️ Debug: Contenu disponible</p>
-            <p className="text-yellow-800">Clés dans content: {Object.keys(item.content).join(', ')}</p>
+          <div className="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-4 text-sm">
+            <p className="font-bold text-yellow-900 mb-2">⚠️ DEBUG: Body non trouvé pour ce TP</p>
+            <p className="text-yellow-800 mb-1"><strong>Clés disponibles dans content:</strong> {Object.keys(item.content).join(', ') || 'Aucune'}</p>
+            <p className="text-yellow-800 mb-1"><strong>Type de content:</strong> {typeof item.content}</p>
             {item.content.description && (
-              <p className="text-yellow-800 mt-2">Description: {typeof item.content.description === 'string' ? item.content.description.substring(0, 100) : 'Object'}</p>
+              <p className="text-yellow-800 mt-2"><strong>Description:</strong> {typeof item.content.description === 'string' ? item.content.description.substring(0, 200) : 'Object'}</p>
             )}
+            {item.content.instructions && (
+              <p className="text-yellow-800 mt-2"><strong>Instructions:</strong> {typeof item.content.instructions === 'string' ? item.content.instructions.substring(0, 200) : 'Object'}</p>
+            )}
+            <details className="mt-2">
+              <summary className="cursor-pointer text-yellow-700 font-medium">Voir tout le content (JSON)</summary>
+              <pre className="mt-2 p-2 bg-white rounded text-xs overflow-auto max-h-60">
+                {JSON.stringify(item.content, null, 2)}
+              </pre>
+            </details>
           </div>
         )}
 
