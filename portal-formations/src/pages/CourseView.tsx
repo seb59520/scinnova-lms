@@ -10,7 +10,7 @@ import { ReactRenderer } from '../components/ReactRenderer'
 import { CourseSidebar } from '../components/CourseSidebar'
 import { CourseHomePage } from '../components/CourseHomePage'
 import { CourseJson } from '../types/courseJson'
-import { Eye, EyeOff, X, BookOpen, FileText, Download, List, ChevronRight, Home, LayoutGrid } from 'lucide-react'
+import { Eye, EyeOff, X, BookOpen, FileText, Download, List, ChevronRight, Home, LayoutGrid, ArrowRight, ArrowLeft } from 'lucide-react'
 import { Lexique } from './Lexique'
 import { getCurrentUserRole } from '../lib/queries/userRole'
 import { CourseResourcesViewer } from '../components/CourseResourcesViewer'
@@ -52,7 +52,82 @@ export function CourseView() {
   const [hasCourseResources, setHasCourseResources] = useState<boolean | null>(null)
   const [hasResources, setHasResources] = useState<boolean | null>(null)
   const [programData, setProgramData] = useState<{ id: string; title: string } | null>(null)
+  const [showNextItemButton, setShowNextItemButton] = useState(false)
+  const [currentItemId, setCurrentItemId] = useState<string | null>(null)
+  const [currentModuleId, setCurrentModuleId] = useState<string | null>(null)
+  const [detectedModuleId, setDetectedModuleId] = useState<string | null>(null)
   const viewMode = searchParams.get('view')
+
+  // Détecter le module actuellement visible via scroll
+  useEffect(() => {
+    if (showHomePage || !courseJson || modules.length === 0) {
+      // Réinitialiser la détection si on revient à la page d'accueil
+      setDetectedModuleId(null)
+      return
+    }
+
+    const handleScroll = () => {
+      // Trouver le module le plus proche du haut de la fenêtre
+      let closestModule: { id: string; distance: number } | null = null
+
+      modules.forEach((module, moduleIndex) => {
+        // Chercher un élément avec l'ID du module dans le DOM
+        // ReactRenderer utilise module-{index} mais on peut aussi chercher par data-module-id
+        const moduleElement = document.getElementById(`module-${moduleIndex}`) || 
+                             document.querySelector(`[data-module-id="${module.id}"]`) ||
+                             document.querySelector(`[id*="module-${module.id}"]`)
+        
+        if (moduleElement) {
+          const rect = moduleElement.getBoundingClientRect()
+          // Si le module est visible (même partiellement) et proche du haut
+          if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+            const distance = Math.abs(rect.top)
+            if (!closestModule || distance < closestModule.distance) {
+              closestModule = { id: module.id, distance }
+            }
+          }
+        }
+      })
+
+      if (closestModule) {
+        setDetectedModuleId(closestModule.id)
+      } else if (modules.length > 0) {
+        // Si aucun module n'est détecté, chercher le dernier module qui a été scrollé
+        let lastVisibleId: string | null = null
+        for (let i = modules.length - 1; i >= 0; i--) {
+          const module = modules[i]
+          const moduleElement = document.getElementById(`module-${i}`) || 
+                               document.querySelector(`[data-module-id="${module.id}"]`)
+          if (moduleElement) {
+            const rect = moduleElement.getBoundingClientRect()
+            // Si le module est au-dessus du bas de la fenêtre (a été scrollé)
+            if (rect.top < window.innerHeight) {
+              lastVisibleId = module.id
+              break
+            }
+          }
+        }
+        // Si toujours rien, prendre le premier module par défaut (on est en haut de page)
+        // Ne pas forcer la mise à jour si on n'a rien trouvé (garder la valeur précédente)
+        if (lastVisibleId) {
+          setDetectedModuleId(lastVisibleId)
+        } else if (!detectedModuleId) {
+          // Seulement définir le premier module si on n'a jamais détecté de module
+          setDetectedModuleId(modules[0].id)
+        }
+      }
+    }
+
+    // Détecter au scroll
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    // Détecter au chargement avec un petit délai pour laisser le DOM se charger
+    const timeoutId = setTimeout(handleScroll, 1000)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      clearTimeout(timeoutId)
+    }
+  }, [showHomePage, courseJson, modules])
 
   // Détecter si on est sur desktop
   useEffect(() => {
@@ -523,18 +598,36 @@ export function CourseView() {
       }
 
       // Récupérer les modules
+      console.log('🔍 [CourseView] Récupération des modules pour course_id:', courseId)
       const { data: modulesData, error: modulesError } = await supabase
         .from('modules')
         .select('*')
         .eq('course_id', courseId)
         .order('position', { ascending: true })
 
+      console.log('🔍 [CourseView] Résultat de la requête modules:', {
+        modulesData,
+        modulesCount: modulesData?.length || 0,
+        modulesError,
+        courseId
+      })
+
       if (modulesError) {
+        console.error('❌ [CourseView] Erreur lors de la récupération des modules:', modulesError)
         if (isAuthError(modulesError)) {
           setError('Session expirée. Veuillez vous reconnecter.')
           return
         }
         throw modulesError
+      }
+
+      if (modulesData) {
+        console.log('✅ [CourseView] Modules récupérés:', modulesData.map(m => ({
+          id: m.id,
+          title: m.title,
+          position: m.position,
+          course_id: m.course_id
+        })))
       }
 
       // Récupérer les items séparément pour éviter les problèmes RLS avec les jointures
@@ -601,6 +694,22 @@ export function CourseView() {
       // Collecter tous les items pour les tuiles
       const allItemsList = sortedModules.flatMap(module => module.items || [])
       setAllItems(allItemsList)
+
+      // Détecter l'item actuel depuis l'URL (si on vient d'un lien direct)
+      const itemIdFromUrl = searchParams.get('itemId')
+      if (itemIdFromUrl) {
+        setCurrentItemId(itemIdFromUrl)
+        // Trouver le module de cet item
+        const item = allItemsList.find(i => i.id === itemIdFromUrl)
+        if (item) {
+          setCurrentModuleId(item.module_id)
+          console.log('📍 [CourseView] Module détecté depuis item:', item.module_id)
+        }
+      } else if (sortedModules.length > 0) {
+        // Si pas d'item spécifique, on est probablement sur le premier module
+        setCurrentModuleId(sortedModules[0].id)
+        console.log('📍 [CourseView] Module par défaut (premier):', sortedModules[0].id, sortedModules[0].title)
+      }
 
       // Créer les entrées module_progress pour marquer que la formation a été commencée
       // Cela permet de distinguer "non commencé" de "en cours"
@@ -1538,6 +1647,431 @@ export function CourseView() {
                       </p>
                     </div>
                   ) : null}
+
+                  {/* Navigation vers le module suivant - affiché en bas de page */}
+                  {!showHomePage && modules.length > 0 && (
+                    <div className="mt-8 mb-4" id="course-navigation-bottom">
+                      {(() => {
+                        // Utiliser le module détecté par scroll, ou celui défini manuellement
+                        const activeModuleId = detectedModuleId || currentModuleId
+                        
+                        // Trouver l'index du module actuel
+                        let currentModuleIndex = -1
+                        if (activeModuleId) {
+                          currentModuleIndex = modules.findIndex(m => m.id === activeModuleId)
+                        }
+                        
+                        // Si pas de module détecté, essayer de détecter depuis le scroll actuel
+                        if (currentModuleIndex === -1 && modules.length > 0) {
+                          // Chercher le module le plus proche du haut de la fenêtre
+                          let closestIndex = -1
+                          let closestDistance = Infinity
+                          
+                          modules.forEach((module, index) => {
+                            const moduleElement = document.getElementById(`module-${index}`) || 
+                                                 document.querySelector(`[data-module-id="${module.id}"]`)
+                            if (moduleElement) {
+                              const rect = moduleElement.getBoundingClientRect()
+                              // Si le module est visible (même partiellement)
+                              if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+                                const distance = Math.abs(rect.top)
+                                if (distance < closestDistance) {
+                                  closestDistance = distance
+                                  closestIndex = index
+                                }
+                              }
+                            }
+                          })
+                          
+                          if (closestIndex >= 0) {
+                            currentModuleIndex = closestIndex
+                          } else {
+                            // Si aucun module n'est visible, chercher le dernier module qui a été scrollé
+                            // (celui qui est le plus proche du bas de la fenêtre mais encore visible)
+                            let lastVisibleIndex = -1
+                            modules.forEach((module, index) => {
+                              const moduleElement = document.getElementById(`module-${index}`) || 
+                                                   document.querySelector(`[data-module-id="${module.id}"]`)
+                              if (moduleElement) {
+                                const rect = moduleElement.getBoundingClientRect()
+                                // Si le module est au-dessus du bas de la fenêtre (a été scrollé)
+                                if (rect.top < window.innerHeight) {
+                                  lastVisibleIndex = index
+                                }
+                              }
+                            })
+                            
+                            // Si on a trouvé un module scrollé, l'utiliser, sinon prendre le premier
+                            // (par défaut, on commence par le premier module)
+                            currentModuleIndex = lastVisibleIndex >= 0 ? lastVisibleIndex : 0
+                          }
+                        }
+                        
+                        // S'assurer qu'on a toujours un index valide
+                        // PAR DÉFAUT: Si on ne peut pas détecter, on est sur le premier module (index 0)
+                        // Cela permet d'afficher le module suivant (module 2) quand on est sur le module 1
+                        if (currentModuleIndex === -1 && modules.length > 0) {
+                          console.log('⚠️ [Navigation] Aucun module détecté, utilisation du premier module par défaut (index 0)')
+                          currentModuleIndex = 0
+                        }
+
+                        // Debug: logs pour comprendre le problème
+                        console.log('🔍 [Navigation] État actuel:', {
+                          detectedModuleId,
+                          currentModuleId,
+                          activeModuleId: detectedModuleId || currentModuleId,
+                          currentModuleIndex,
+                          totalModules: modules.length,
+                          modulesList: modules.map((m, idx) => ({ index: idx, id: m.id, title: m.title, position: m.position }))
+                        })
+                        
+                        // IMPORTANT: Si on n'a pas pu détecter le module actuel, on considère qu'on est sur le premier module
+                        // Cela permet d'afficher le module suivant (module 2) quand on est sur le module 1
+                        if (currentModuleIndex === -1) {
+                          console.log('⚠️ [Navigation] Aucun module détecté, utilisation du premier module par défaut (index 0)')
+                          currentModuleIndex = 0
+                        }
+                        
+                        // Trouver le module suivant
+                        // IMPORTANT: Vérifier que currentModuleIndex est valide et qu'il y a un module suivant
+                        let nextModule: ModuleWithItems | null = null
+                        if (currentModuleIndex >= 0 && currentModuleIndex < modules.length - 1) {
+                          nextModule = modules[currentModuleIndex + 1]
+                          console.log('✅ [Navigation] Module suivant trouvé:', {
+                            currentIndex: currentModuleIndex,
+                            nextIndex: currentModuleIndex + 1,
+                            nextModuleTitle: nextModule?.title,
+                            nextModuleId: nextModule?.id
+                          })
+                        } else {
+                          console.log('❌ [Navigation] Pas de module suivant:', {
+                            currentIndex: currentModuleIndex,
+                            totalModules: modules.length,
+                            condition: currentModuleIndex >= 0 && currentModuleIndex < modules.length - 1
+                          })
+                        }
+                        
+                        console.log('🔍 [Navigation] Résultat:', {
+                          currentModuleIndex,
+                          currentModuleTitle: currentModuleIndex >= 0 ? modules[currentModuleIndex]?.title : 'N/A',
+                          hasNextModule: !!nextModule,
+                          nextModuleTitle: nextModule?.title || 'N/A (dernier module)',
+                          nextModuleIndex: nextModule ? currentModuleIndex + 1 : -1,
+                          isLastModule: currentModuleIndex === modules.length - 1,
+                          totalModules: modules.length,
+                          willShowNextButton: !!nextModule,
+                          willShowProgramButton: !nextModule && !!programData
+                        })
+                        
+                        // FORCER l'affichage du module suivant si on est sur le premier module et qu'il y a un module suivant
+                        // (pour résoudre le problème où la détection ne fonctionne pas)
+                        if (currentModuleIndex === 0 && modules.length > 1 && !nextModule) {
+                          console.warn('⚠️ [Navigation] BUG DÉTECTÉ: On est sur le module 0 mais nextModule est null!')
+                          console.warn('   Modules disponibles:', modules.map((m, i) => `${i}: ${m.title}`))
+                          // Forcer le module suivant
+                          const forcedNextModule = modules[1]
+                          if (forcedNextModule) {
+                            console.log('✅ [Navigation] Correction appliquée: nextModule forcé à', forcedNextModule.title)
+                            // Utiliser forcedNextModule au lieu de nextModule
+                            const actualNextModule = forcedNextModule
+                            const actualCurrentModule = modules[0]
+                            
+                            // Afficher le bouton avec le module forcé
+                            return (
+                              <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-3xl p-6 shadow-sm">
+                                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                  <div className="flex-1">
+                                    <p className="text-sm text-gray-600 mb-1">Module suivant</p>
+                                    <h3 className="text-lg font-semibold text-gray-900">
+                                      {actualNextModule.title}
+                                    </h3>
+                                    {actualNextModule.items && actualNextModule.items.length > 0 && (
+                                      <p className="text-xs text-gray-500 mt-1">
+                                        {actualNextModule.items.length} élément{actualNextModule.items.length > 1 ? 's' : ''}
+                                      </p>
+                                    )}
+                                    {actualCurrentModule && (
+                                      <p className="text-xs text-blue-600 mt-2 italic">
+                                        ✓ Votre participation au module "{actualCurrentModule.title}" sera enregistrée
+                                      </p>
+                                    )}
+                                  </div>
+                                  {actualNextModule.items && actualNextModule.items.length > 0 ? (
+                                    <button
+                                      onClick={async (e) => {
+                                        e.preventDefault()
+                                        if (actualCurrentModule && user?.id) {
+                                          try {
+                                            let sessionId: string | null = null
+                                            if (courseId) {
+                                              const { data: enrollmentData } = await supabase
+                                                .from('enrollments')
+                                                .select('session_id')
+                                                .eq('user_id', user.id)
+                                                .eq('course_id', courseId)
+                                                .eq('status', 'active')
+                                                .maybeSingle()
+                                              
+                                              if (enrollmentData?.session_id) {
+                                                sessionId = enrollmentData.session_id
+                                              }
+                                            }
+
+                                            const currentProgress = moduleProgress[actualCurrentModule.id]
+                                            const hasProgress = currentProgress && currentProgress.percent > 0
+                                            
+                                            if (!hasProgress) {
+                                              try {
+                                                const { error: rpcError } = await supabase.rpc('upsert_module_progress', {
+                                                  p_module_id: actualCurrentModule.id,
+                                                  p_session_id: sessionId,
+                                                  p_percent: 50,
+                                                  p_completed_at: null
+                                                })
+
+                                                if (rpcError && (rpcError.code === '42883' || rpcError.message?.includes('function'))) {
+                                                  const { data: existing } = await supabase
+                                                    .from('module_progress')
+                                                    .select('id')
+                                                    .eq('user_id', user.id)
+                                                    .eq('module_id', actualCurrentModule.id)
+                                                    .eq('session_id', sessionId)
+                                                    .maybeSingle()
+
+                                                  if (existing) {
+                                                    await supabase
+                                                      .from('module_progress')
+                                                      .update({
+                                                        percent: 50,
+                                                        updated_at: new Date().toISOString()
+                                                      })
+                                                      .eq('id', existing.id)
+                                                  } else {
+                                                    await supabase
+                                                      .from('module_progress')
+                                                      .insert({
+                                                        user_id: user.id,
+                                                        module_id: actualCurrentModule.id,
+                                                        session_id: sessionId,
+                                                        percent: 50,
+                                                        started_at: new Date().toISOString(),
+                                                        updated_at: new Date().toISOString()
+                                                      })
+                                                  }
+                                                }
+                                                
+                                                await fetchModuleProgress()
+                                              } catch (error) {
+                                                console.error('Error saving module participation:', error)
+                                              }
+                                            }
+
+                                            const firstItem = actualNextModule.items[0]
+                                            window.location.href = `/items/${firstItem.id}${programData ? `?programId=${programData.id}` : ''}`
+                                          } catch (error) {
+                                            console.error('Error navigating to next module:', error)
+                                            const firstItem = actualNextModule.items[0]
+                                            window.location.href = `/items/${firstItem.id}${programData ? `?programId=${programData.id}` : ''}`
+                                          }
+                                        }
+                                      }}
+                                      className="flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 font-medium shadow-lg transition-colors whitespace-nowrap"
+                                    >
+                                      Accéder au module
+                                      <ArrowRight className="w-5 h-5" />
+                                    </button>
+                                  ) : (
+                                    <span className="text-sm text-gray-500 italic">
+                                      Module vide
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            )
+                          }
+                        }
+
+                        // Trouver le module actuel pour valider la participation
+                        const currentModule = currentModuleIndex >= 0 
+                          ? modules[currentModuleIndex] 
+                          : null
+
+                        // Fonction pour valider la participation au module actuel
+                        const handleNavigateToNextModule = async (e: React.MouseEvent) => {
+                          if (currentModule && user?.id) {
+                            e.preventDefault()
+                            
+                            try {
+                              // Récupérer la session_id depuis l'enrollment si elle existe
+                              let sessionId: string | null = null
+                              if (courseId) {
+                                const { data: enrollmentData } = await supabase
+                                  .from('enrollments')
+                                  .select('session_id')
+                                  .eq('user_id', user.id)
+                                  .eq('course_id', courseId)
+                                  .eq('status', 'active')
+                                  .maybeSingle()
+                                
+                                if (enrollmentData?.session_id) {
+                                  sessionId = enrollmentData.session_id
+                                }
+                              }
+
+                              // Marquer le module actuel comme "vu/participé" (percent > 0 mais pas forcément 100%)
+                              // On met un pourcentage minimal pour indiquer la participation
+                              const currentProgress = moduleProgress[currentModule.id]
+                              const hasProgress = currentProgress && currentProgress.percent > 0
+                              
+                              if (!hasProgress) {
+                                // Créer ou mettre à jour la progression pour marquer la participation
+                                // Utiliser la fonction RPC si disponible, sinon fallback sur upsert direct
+                                try {
+                                  const { error: rpcError } = await supabase.rpc('upsert_module_progress', {
+                                    p_module_id: currentModule.id,
+                                    p_session_id: sessionId,
+                                    p_percent: 50, // 50% = participation validée (pas complété mais participé)
+                                    p_completed_at: null
+                                  })
+
+                                  if (rpcError && (rpcError.code === '42883' || rpcError.message?.includes('function'))) {
+                                    // Fallback sur upsert direct si la fonction RPC n'existe pas
+                                    // Vérifier d'abord si une progression existe
+                                    const { data: existing } = await supabase
+                                      .from('module_progress')
+                                      .select('id')
+                                      .eq('user_id', user.id)
+                                      .eq('module_id', currentModule.id)
+                                      .eq('session_id', sessionId)
+                                      .maybeSingle()
+
+                                    if (existing) {
+                                      // Mettre à jour
+                                      const { error: updateError } = await supabase
+                                        .from('module_progress')
+                                        .update({
+                                          percent: 50,
+                                          updated_at: new Date().toISOString()
+                                        })
+                                        .eq('id', existing.id)
+
+                                      if (updateError) {
+                                        console.error('Error updating module participation:', updateError)
+                                      }
+                                    } else {
+                                      // Créer
+                                      const { error: insertError } = await supabase
+                                        .from('module_progress')
+                                        .insert({
+                                          user_id: user.id,
+                                          module_id: currentModule.id,
+                                          session_id: sessionId,
+                                          percent: 50,
+                                          started_at: new Date().toISOString(),
+                                          updated_at: new Date().toISOString()
+                                        })
+
+                                      if (insertError) {
+                                        console.error('Error inserting module participation:', insertError)
+                                      }
+                                    }
+                                  } else if (rpcError) {
+                                    console.error('Error calling upsert_module_progress:', rpcError)
+                                  }
+                                  
+                                  // Rafraîchir la progression
+                                  await fetchModuleProgress()
+                                } catch (error) {
+                                  console.error('Error saving module participation:', error)
+                                }
+                              }
+
+                              // Naviguer vers le module suivant
+                              if (nextModule && nextModule.items && nextModule.items.length > 0) {
+                                // Aller au premier item du module suivant
+                                const firstItem = nextModule.items[0]
+                                window.location.href = `/items/${firstItem.id}${programData ? `?programId=${programData.id}` : ''}`
+                              }
+                            } catch (error) {
+                              console.error('Error navigating to next module:', error)
+                              // En cas d'erreur, naviguer quand même
+                              if (nextModule && nextModule.items && nextModule.items.length > 0) {
+                                const firstItem = nextModule.items[0]
+                                window.location.href = `/items/${firstItem.id}${programData ? `?programId=${programData.id}` : ''}`
+                              }
+                            }
+                          }
+                        }
+
+                        // Si pas de module suivant ET qu'on fait partie d'un programme
+                        if (!nextModule && programData) {
+                          return (
+                            <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 rounded-3xl p-6 shadow-sm">
+                              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                <div className="flex-1">
+                                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                                    🎉 Vous avez terminé ce cours !
+                                  </h3>
+                                  <p className="text-sm text-gray-600">
+                                    Retournez au programme pour continuer votre parcours.
+                                  </p>
+                                </div>
+                                <Link
+                                  to={`/programs/${programData.id}`}
+                                  className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium shadow-lg transition-colors whitespace-nowrap"
+                                >
+                                  <ArrowLeft className="w-5 h-5" />
+                                  Retour au programme
+                                </Link>
+                              </div>
+                            </div>
+                          )
+                        }
+
+                        // Si pas de module suivant et pas de programme, ne rien afficher
+                        if (!nextModule) {
+                          return null
+                        }
+
+                        // Afficher le bouton pour aller au module suivant
+                        return (
+                          <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-3xl p-6 shadow-sm">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                              <div className="flex-1">
+                                <p className="text-sm text-gray-600 mb-1">Module suivant</p>
+                                <h3 className="text-lg font-semibold text-gray-900">
+                                  {nextModule.title}
+                                </h3>
+                                {nextModule.items && nextModule.items.length > 0 && (
+                                  <p className="text-xs text-gray-500 mt-1">
+                                    {nextModule.items.length} élément{nextModule.items.length > 1 ? 's' : ''}
+                                  </p>
+                                )}
+                                {currentModule && (
+                                  <p className="text-xs text-blue-600 mt-2 italic">
+                                    ✓ Votre participation au module "{currentModule.title}" sera enregistrée
+                                  </p>
+                                )}
+                              </div>
+                              {nextModule.items && nextModule.items.length > 0 ? (
+                                <button
+                                  onClick={handleNavigateToNextModule}
+                                  className="flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 font-medium shadow-lg transition-colors whitespace-nowrap"
+                                >
+                                  Accéder au module
+                                  <ArrowRight className="w-5 h-5" />
+                                </button>
+                              ) : (
+                                <span className="text-sm text-gray-500 italic">
+                                  Module vide
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      })()}
+                    </div>
+                  )}
                 </>
               )}
             </section>

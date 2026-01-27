@@ -3,11 +3,12 @@ import { useParams, useNavigate, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 import { Course } from '../../types/database'
-import { Save, Upload, Download, Code, Eye, Sparkles } from 'lucide-react'
+import { Save, Upload, Download, Code, Eye, Sparkles, BookPlus } from 'lucide-react'
 import { ReactRenderer } from '../../components/ReactRenderer'
 import { CourseJson } from '../../types/courseJson'
 import { generateAndUploadSlide } from '../../lib/slideGenerator'
 import { generateSlideWithExternalAPI } from '../../lib/slideGeneratorAdvanced'
+import { tipTapToSlideLines } from '../../lib/tipTapToSlideText'
 import { LinkedInPostModal } from '../../components/LinkedInPostModal'
 
 export function AdminCourseEditJson() {
@@ -31,6 +32,7 @@ export function AdminCourseEditJson() {
   const [isPublic, setIsPublic] = useState(false)
   const [showLinkedInModal, setShowLinkedInModal] = useState(false)
   const [wasPublicBeforeSave, setWasPublicBeforeSave] = useState(false)
+  const [importingQuiz, setImportingQuiz] = useState(false)
 
   useEffect(() => {
     if (!isNew && courseId) {
@@ -158,70 +160,60 @@ export function AdminCourseEditJson() {
       const validTypes = ['resource', 'slide', 'exercise', 'activity', 'tp', 'game']
       const cleanedModules = input.modules.map((module: any) => {
         if (module.items && Array.isArray(module.items)) {
+          const typeMap: Record<string, string> = {
+            'resources': 'resource',
+            'slides': 'slide',
+            'exercises': 'exercise',
+            'exercice': 'exercise',
+            'travaux-pratiques': 'tp',
+            'travaux pratiques': 'tp',
+            'tp-new': 'tp',
+            'games': 'game',
+            'jeu': 'game',
+            'jeux': 'game'
+          }
           const cleanedItems = module.items
             .filter((item: any) => {
               // Filtrer les items null/undefined
               if (!item) return false
-              // Filtrer les items sans type ou avec type invalide (y compris la chaîne "undefined")
-              if (!item.type || 
-                  item.type === undefined || 
-                  item.type === null || 
-                  item.type === 'undefined' || 
-                  item.type === 'null' ||
-                  (typeof item.type === 'string' && item.type.trim() === '') ||
-                  !validTypes.includes(item.type)) {
-                console.warn(`Item filtré (type invalide): "${item.title || 'Sans titre'}" - type: "${item.type}"`)
-                return false
+              // Garder si type valide, ou mappable (tp-new, etc.), ou si content indique un TP New
+              const raw = item.type != null ? String(item.type).toLowerCase().trim() : ''
+              if (validTypes.includes(raw)) return true
+              if (typeMap[raw] || item.content?.type === 'tp-new') return true
+              if (!raw || raw === 'undefined' || raw === 'null') {
+                if (item.content?.type === 'tp-new' || (item.title && /tp|travaux/i.test(item.title))) return true
               }
-              return true
+              console.warn(`Item filtré (type invalide): "${item.title || 'Sans titre'}" - type: "${item.type}"`)
+              return false
             })
             .map((item: any) => {
-              // S'assurer que l'item a toujours un type valide
-              let finalType: string = item.type
-              
-              // Normaliser le type (minuscules, sans espaces)
-              if (typeof item.type === 'string') {
-                finalType = item.type.toLowerCase().trim()
-              } else if (item.type === undefined || item.type === null || item.type === 'undefined' || item.type === 'null') {
-                // Si le type est invalide, essayer de deviner le type par défaut basé sur le contenu
-                if (item.title && (item.title.toLowerCase().includes('tp') || item.title.toLowerCase().includes('travaux'))) {
-                  finalType = 'tp'
-                } else if (item.content?.instructions) {
-                  finalType = 'tp'
-                } else if (item.content?.question) {
-                  finalType = 'exercise'
-                } else {
-                  finalType = 'resource'
-                }
-                console.warn(`Item "${item.title || 'Sans titre'}" sans type valide, utilisation de "${finalType}" par défaut`)
-              }
-              
-              // Vérifier que le type final est valide
+              // Déduire un type valide (item.type peut être manquant ou content.type = "tp-new")
+              let finalType: string =
+                typeof item.type === 'string' ? item.type.toLowerCase().trim() : ''
               if (!validTypes.includes(finalType)) {
-                // Essayer de mapper vers un type valide
-                const typeMap: Record<string, string> = {
-                  'resources': 'resource',
-                  'slides': 'slide',
-                  'exercises': 'exercise',
-                  'exercice': 'exercise',
-                  'travaux-pratiques': 'tp',
-                  'travaux pratiques': 'tp',
-                  'games': 'game',
-                  'jeu': 'game',
-                  'jeux': 'game'
-                }
                 if (typeMap[finalType]) {
                   finalType = typeMap[finalType]
+                } else if (item.content?.type === 'tp-new') {
+                  finalType = 'tp'
+                } else if (!finalType || finalType === 'undefined' || finalType === 'null') {
+                  if (item.title && (item.title.toLowerCase().includes('tp') || item.title.toLowerCase().includes('travaux'))) {
+                    finalType = 'tp'
+                  } else if (item.content?.instructions) {
+                    finalType = 'tp'
+                  } else if (item.content?.question) {
+                    finalType = 'exercise'
+                  } else {
+                    finalType = 'resource'
+                  }
                 } else {
-                  // Type par défaut si aucun mapping trouvé
-                  finalType = 'resource'
+                  finalType = typeMap[finalType] || 'resource'
                 }
-                console.warn(`Item "${item.title || 'Sans titre'}" type "${item.type}" mappé vers "${finalType}"`)
               }
-              
-              // Retourner l'item avec le type garanti valide
-              return { 
-                ...item, 
+              if (!validTypes.includes(finalType)) {
+                finalType = 'resource'
+              }
+              return {
+                ...item,
                 type: finalType as 'resource' | 'slide' | 'exercise' | 'activity' | 'tp' | 'game'
               }
             })
@@ -661,6 +653,7 @@ export function AdminCourseEditJson() {
               'questions-réponses': 'activity',
               'questions-reponses': 'activity',
               'tp': 'tp',
+              'tp-new': 'tp', // format TPNew → type item = tp
               'travaux-pratiques': 'tp',
               'travaux pratiques': 'tp',
               'game': 'game',
@@ -815,6 +808,61 @@ export function AdminCourseEditJson() {
     URL.revokeObjectURL(url)
   }
 
+  /** Retourne 8–13 si le titre contient "Partie 8" à "Partie 13", sinon null. */
+  const getPartieNumberFromTitle = (title: string): number | null => {
+    const m = (title || '').match(/partie\s*(\d+)/i)
+    if (!m) return null
+    const n = parseInt(m[1], 10)
+    return n >= 8 && n <= 13 ? n : null
+  }
+
+  const handleImportQuiz = async () => {
+    if (!parsedJson) return
+    setImportingQuiz(true)
+    setError('')
+    try {
+      const res = await fetch('/quiz-exchange-modules-8-a-13.json')
+      if (!res.ok) throw new Error('Fichier quiz introuvable')
+      const data = await res.json()
+      const partieNum = getPartieNumberFromTitle(parsedJson.title ?? '')
+      if (partieNum == null) {
+        setError('Cours non éligible : le titre doit contenir "Partie 8" à "Partie 13" (ex. Formation Exchange Partie 8).')
+        return
+      }
+      const quizEntry = data.quizzes?.find((q: { moduleNumber: number }) => q.moduleNumber === partieNum)
+      if (!quizEntry?.quizItem) {
+        setError(`Quiz du module ${partieNum} introuvable dans le fichier.`)
+        return
+      }
+      const firstModule = parsedJson.modules?.[0]
+      if (!firstModule) {
+        setError('Aucun module dans ce cours. Ajoutez au moins un module avant d\'importer le quiz.')
+        return
+      }
+      const items = firstModule.items ?? []
+      const alreadyHasQuiz = items.some(
+        (i: { title?: string }) => i.title && new RegExp(`quiz\\s*module\\s*${partieNum}\\b`, 'i').test(i.title)
+      )
+      if (alreadyHasQuiz) {
+        setError(`Le quiz du module ${partieNum} est déjà présent dans le premier module.`)
+        return
+      }
+      const maxPos = items.length ? Math.max(...items.map((i: { position?: number }) => i.position ?? 0)) : 0
+      const quizItem = { ...quizEntry.quizItem, position: maxPos + 1 }
+      const updatedModules = parsedJson.modules.map((mod, idx) =>
+        idx === 0 ? { ...mod, items: [...items, quizItem] } : mod
+      )
+      const updated: CourseJson = { ...parsedJson, modules: updatedModules }
+      setParsedJson(updated)
+      setJsonContent(JSON.stringify(updated, null, 2))
+      setError('')
+    } catch (e: unknown) {
+      setError('Erreur import quiz : ' + (e instanceof Error ? e.message : 'réseau'))
+    } finally {
+      setImportingQuiz(false)
+    }
+  }
+
   const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (!file) return
@@ -887,14 +935,28 @@ export function AdminCourseEditJson() {
                 return item
               }
 
-              // Préparer le contenu de la slide
+              // Points à l'écran : préférer TipTap (body/doc) pour préserver retours à la ligne et listes à puces
+              let onScreenPoints: string[] = []
+              const content = item.content as any
+              const tipTapSource = content?.body?.type === 'doc' || content?.body?.content
+                ? content.body
+                : content?.type === 'doc' || content?.content
+                  ? content
+                  : null
+              if (tipTapSource) {
+                const doc = tipTapSource.type === 'doc' ? tipTapSource : { type: 'doc' as const, content: tipTapSource.content ?? tipTapSource }
+                const lines = tipTapToSlideLines(doc)
+                onScreenPoints = lines.slice(0, 12).map((l) => (l.length > 100 ? l.substring(0, 97) + '...' : l))
+              } else if (content?.summary) {
+                onScreenPoints = String(content.summary).split(/\n/).map((p: string) => p.trim()).filter(Boolean)
+              }
               const slideContent = {
                 title: item.title,
-                objective: item.content?.description || item.content?.summary || '',
-                on_screen: item.content?.summary?.split('\n') || [],
-                speaker_notes: item.content?.speaker_notes || '',
-                activity: item.content?.activity,
-                mini_game: item.content?.mini_game
+                objective: content?.description || content?.summary || '',
+                on_screen: onScreenPoints.length > 0 ? onScreenPoints : ['Contenu détaillé disponible dans les chapitres'],
+                speaker_notes: content?.speaker_notes || '',
+                activity: content?.activity,
+                mini_game: content?.mini_game
               }
 
               try {
@@ -1040,6 +1102,17 @@ export function AdminCourseEditJson() {
                 <Download className="w-4 h-4" />
                 <span>Exporter</span>
               </button>
+              {parsedJson && getPartieNumberFromTitle(parsedJson.title ?? '') != null && (
+                <button
+                  onClick={handleImportQuiz}
+                  disabled={importingQuiz || !parsedJson}
+                  title="Ajoute le quiz du module Exchange (Partie 8 à 13) à la fin du premier module"
+                  className="btn-secondary inline-flex items-center justify-center space-x-2 disabled:opacity-50 !h-10 py-0 min-w-[160px]"
+                >
+                  <BookPlus className="w-4 h-4" />
+                  <span>{importingQuiz ? 'Import...' : 'Importer quiz du module'}</span>
+                </button>
+              )}
               <div className="flex items-center space-x-2">
                 {parsedJson?.modules?.some(m => m.items.some(i => i.type === 'slide')) && (
                   <label className="flex items-center space-x-1 text-xs text-gray-600 cursor-pointer">
@@ -1100,6 +1173,28 @@ export function AdminCourseEditJson() {
               {error}
             </div>
           )}
+
+          {/* Bande « Importer quiz » pour cours Exchange Partie 8–13 (visible dès l’ouverture) */}
+          {parsedJson && (() => {
+            const partie = getPartieNumberFromTitle(parsedJson.title ?? '')
+            if (partie == null) return null
+            return (
+              <div className="mb-4 bg-sky-50 border border-sky-200 text-sky-800 px-4 py-3 rounded-lg flex flex-wrap items-center justify-between gap-3">
+                <span className="font-medium">
+                  Cours Exchange Partie {partie} détecté — vous pouvez importer le quiz du module dans le premier module.
+                </span>
+                <button
+                  type="button"
+                  onClick={handleImportQuiz}
+                  disabled={importingQuiz}
+                  className="inline-flex items-center justify-center space-x-2 px-4 py-2 rounded-md font-medium bg-sky-600 hover:bg-sky-700 text-white disabled:opacity-50"
+                >
+                  <BookPlus className="w-4 h-4" />
+                  <span>{importingQuiz ? 'Import...' : 'Importer le quiz du module'}</span>
+                </button>
+              </div>
+            )
+          })()}
 
           {/* Toggle Rendre publique */}
           {!isNew && (

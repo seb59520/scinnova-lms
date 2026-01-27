@@ -66,9 +66,9 @@ export function AppHeader({
     .slice(0, 2);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-sm shadow-sm">
       <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-4 py-3">
+        <div className="flex items-center justify-between gap-4 py-2.5">
           <div className="flex items-center gap-4 min-w-0">
             {showBackButton && (
               <Link
@@ -82,17 +82,19 @@ export function AppHeader({
               <img 
                 src={logoScinnova} 
                 alt="SCINNOVA" 
-                className="h-10 w-auto rounded-lg border border-slate-100 bg-white object-contain p-1 shadow-sm"
+                className="h-9 w-auto rounded-lg border border-slate-100 bg-white object-contain p-1 shadow-sm"
               />
-              <div className="min-w-0">
-                <p className="text-[11px] uppercase tracking-[0.3em] text-slate-400">Portal Formations</p>
-                <h1 className="text-lg font-semibold text-slate-900 truncate">{title}</h1>
+              <div className="min-w-0 hidden sm:block">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400">Portal Formations</p>
+                {title !== 'Portal Formations' && (
+                  <h1 className="text-base font-semibold text-slate-900 truncate max-w-[300px]" title={title}>{title}</h1>
+                )}
               </div>
             </div>
             {children && <div className="hidden lg:block">{children}</div>}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <GlobalSearch />
             <NavigationHistory />
             <NavigationSuggestions />

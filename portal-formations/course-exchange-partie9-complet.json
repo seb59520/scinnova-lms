@@ -1,0 +1,1510 @@
+{
+  "title": "Microsoft Exchange — Partie 9 : Mise en place de stratégies anti-spam et anti-malware",
+  "description": "Module complet (2 h) : protection native Exchange, anti-spam (Content Filter, IP/Sender/Recipient, Connection Filtering), anti-malware, activation et paramétrage sur EX01. Cours clair (Modules 1–2) + TP pas-à-pas avec critères de validation. Niveau Exchange 2019 on-prem.",
+  "status": "published",
+  "access_type": "free",
+  "currency": "EUR",
+  "is_public": false,
+  "theme": {
+    "primaryColor": "#EF4444",
+    "secondaryColor": "#F59E0B",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 — Comprendre la protection native Exchange",
+      "position": 1,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Objectifs pédagogiques et vue d'ensemble",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Objectifs pédagogiques (Partie 9)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "À l'issue de cette partie (2 h), l'apprenant est capable de :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comprendre comment Exchange protège nativement la messagerie"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifier les mécanismes anti-spam intégrés"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comprendre le rôle de l'anti-malware Exchange"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Configurer des politiques de protection adaptées"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Tester l'efficacité des protections"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Expliquer pourquoi un message est bloqué ou autorisé"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.1 Philosophie de sécurité Exchange (on-prem)",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Principe clé"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exchange Server intègre un socle de sécurité de base, mais : il ne remplace pas une solution de sécurité dédiée ; il fournit une première ligne de défense."
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Objectif : réduire le spam et les malwares les plus courants, pas garantir une protection absolue."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Où se situe la protection anti-spam dans Exchange",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Deux emplacements possibles"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Serveur Edge Transport (recommandé en production)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Serveur Mailbox (EX01) — cas du lab pédagogique"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dans le TP : tout est configuré sur EX01."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.3 Composants anti-spam intégrés",
+          "position": 4,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Principaux filtres Exchange"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Content Filter — Analyse du contenu (spam). IP Block List — Bloquer des IP. IP Allow List — Autoriser des IP. Sender Filter — Bloquer des expéditeurs. Recipient Filter — Bloquer des destinataires inexistants. Connection Filtering — Contrôler l'entrée SMTP."
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Tous ces filtres agissent AVANT la remise en boîte."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.4 Anti-malware Exchange",
+          "position": 5,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Principe"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exchange intègre un antivirus natif qui : analyse les pièces jointes ; bloque les fichiers dangereux ; supprime ou rejette les messages infectés. Il fonctionne au niveau transport."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ce n'est pas un antivirus poste de travail."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.5 Très bonne question — Pourquoi l'anti-spam n'est pas actif par défaut",
+          "position": 6,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Très bonne question 👍 Et tu fais bien de t'arrêter là-dessus, parce que c'est un point clé d'Exchange on-prem que beaucoup d'admins découvrent « après coup ». Je t'explique clairement, sans jargon inutile."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Pourquoi les filtres anti-spam ne sont PAS actifs par défaut sur Exchange Mailbox"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Contexte Exchange 2016 / 2019. Sur Exchange on-premise, Microsoft considère que le anti-spam principal doit être soit sur un serveur Edge Transport, soit sur une solution tierce. Donc sur un Mailbox Server (EX01) : les filtres anti-spam existent, mais ne sont pas installés ni activés automatiquement."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ils sont livrés sous forme d'agents, désactivés par défaut."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les « scripts » dont on parle : c'est quoi exactement ?"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ce ne sont PAS : des scripts à télécharger, à écrire, ou trouvés sur Internet."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ce sont : des scripts PowerShell fournis par Microsoft, déjà présents sur le serveur Exchange. Ils sont installés en même temps qu'Exchange, mais non exécutés."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Où se trouvent ces scripts (important)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Sur EX01, le dossier suivant existe automatiquement :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "C:\\Program Files\\Microsoft\\Exchange Server\\V15\\Scripts"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dans ce dossier, tu as notamment Install-AntiSpamAgents.ps1 et Uninstall-AntiSpamAgents.ps1. C'est CE script-là dont on parle pour activer l'anti-spam."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "À quoi sert Install-AntiSpamAgents.ps1 ?"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "installe les agents anti-spam Exchange"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "les enregistre dans le pipeline SMTP"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "rend disponibles : Content Filter, Sender Filter, Recipient Filter, IP Block/Allow, Malware filtering"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Sans lui : aucun filtre ne fonctionne, Message Trace ne montrera jamais « Spam », Exchange accepte tout."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "game",
+          "title": "Quiz Module 9 — Anti-spam et anti-malware Exchange",
+          "position": 7,
+          "published": true,
+          "content": {
+            "gameType": "quiz",
+            "description": "Quiz de 10 questions sur l'activation des filtres anti-spam, Install-AntiSpamAgents, Get-TransportAgent, Content Filter, et anti-malware Exchange.",
+            "instructions": "Répondez aux 10 questions. Une seule réponse correcte par question.",
+            "scoring": {
+              "totalQuestions": 10,
+              "pointsPerQuestion": 1,
+              "passingScore": 7
+            },
+            "levels": [
+              {
+                "level": 1,
+                "name": "Quiz Module 9 — Anti-spam et anti-malware",
+                "questions": [
+                  {
+                    "id": "m9-q1",
+                    "type": "mcq",
+                    "prompt": "Sur un serveur Mailbox Exchange (EX01), les filtres anti-spam sont par défaut :",
+                    "options": [
+                      "Actifs et configurés",
+                      "Présents mais désactivés (agents non installés)",
+                      "Absents",
+                      "Gérés uniquement par un serveur Edge"
+                    ],
+                    "answer": "Présents mais désactivés (agents non installés)",
+                    "explanation": "Microsoft livre les agents anti-spam désactivés sur un Mailbox Server ; il faut exécuter Install-AntiSpamAgents.ps1 pour les activer.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m9-q2",
+                    "type": "mcq",
+                    "prompt": "Où se trouve le script Install-AntiSpamAgents.ps1 ?",
+                    "options": [
+                      "À télécharger sur Internet",
+                      "Dans C:\\Program Files\\Microsoft\\Exchange Server\\V15\\Scripts",
+                      "Dans le dossier System32",
+                      "Il n'existe pas en standard"
+                    ],
+                    "answer": "Dans C:\\Program Files\\Microsoft\\Exchange Server\\V15\\Scripts",
+                    "explanation": "Le script est fourni par Microsoft et se trouve dans le dossier V15\\Scripts, installé avec Exchange.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m9-q3",
+                    "type": "mcq",
+                    "prompt": "Pour exécuter le script Install-AntiSpamAgents.ps1, on utilise :",
+                    "options": [
+                      "PowerShell classique uniquement",
+                      "& \"C:\\Program Files\\Microsoft\\Exchange Server\\V15\\Scripts\\Install-AntiSpamAgents.ps1\" dans Exchange Management Shell",
+                      "Une commande CMD",
+                      "Le Gestionnaire des tâches"
+                    ],
+                    "answer": "& \"C:\\Program Files\\Microsoft\\Exchange Server\\V15\\Scripts\\Install-AntiSpamAgents.ps1\" dans Exchange Management Shell",
+                    "explanation": "Le & sert à exécuter un script ; il faut utiliser Exchange Management Shell (pas PowerShell classique) et lancer le script avec son chemin complet.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m9-q4",
+                    "type": "mcq",
+                    "prompt": "Après avoir exécuté Install-AntiSpamAgents.ps1, quelle action est indispensable ?",
+                    "options": [
+                      "Rien",
+                      "Redémarrer le service MSExchangeTransport",
+                      "Désactiver le pare-feu",
+                      "Réinstaller Exchange"
+                    ],
+                    "answer": "Redémarrer le service MSExchangeTransport",
+                    "explanation": "Sans redémarrage du service Transport, les agents ne sont pas actifs. Restart-Service MSExchangeTransport.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m9-q5",
+                    "type": "mcq",
+                    "prompt": "Quelle commande permet de vérifier que les agents anti-spam sont actifs ?",
+                    "options": [
+                      "Get-Mailbox",
+                      "Get-TransportAgent",
+                      "Get-Service",
+                      "Get-ContentFilterConfig"
+                    ],
+                    "answer": "Get-TransportAgent",
+                    "explanation": "Get-TransportAgent liste les agents de transport, dont Content Filter Agent, Sender Filter Agent, Recipient Filter Agent, etc.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m9-q6",
+                    "type": "mcq",
+                    "prompt": "Le Content Filter Agent sert à :",
+                    "options": [
+                      "Bloquer des IP uniquement",
+                      "Analyser le contenu du message pour détecter le spam",
+                      "Gérer les certificats",
+                      "Configurer OWA"
+                    ],
+                    "answer": "Analyser le contenu du message pour détecter le spam",
+                    "explanation": "Le Content Filter analyse le contenu (mots, score de spam) pour décider si le message est du spam.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m9-q7",
+                    "type": "mcq",
+                    "prompt": "Sans exécuter Install-AntiSpamAgents.ps1 sur EX01 :",
+                    "options": [
+                      "Message Trace affichera quand même « Spam »",
+                      "Aucun filtre anti-spam ne fonctionne, Exchange accepte tout",
+                      "Seul le Content Filter est actif",
+                      "Les agents sont actifs après un redémarrage"
+                    ],
+                    "answer": "Aucun filtre anti-spam ne fonctionne, Exchange accepte tout",
+                    "explanation": "Sans le script, les agents ne sont pas enregistrés dans le pipeline SMTP ; Message Trace ne montrera pas « Spam » car aucun filtre n'agit.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m9-q8",
+                    "type": "mcq",
+                    "prompt": "L'anti-malware Exchange agit :",
+                    "options": [
+                      "Uniquement sur les pièces jointes",
+                      "Au niveau transport (analyse des messages et pièces jointes)",
+                      "Uniquement sur OWA",
+                      "Uniquement après ouverture du message par l'utilisateur"
+                    ],
+                    "answer": "Au niveau transport (analyse des messages et pièces jointes)",
+                    "explanation": "L'anti-malware Exchange scanne les messages au niveau du transport (avant remise en boîte), notamment les pièces jointes.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m9-q9",
+                    "type": "mcq",
+                    "prompt": "Pourquoi Microsoft laisse-t-il les filtres anti-spam désactivés sur un Mailbox Server ?",
+                    "options": [
+                      "Par oubli",
+                      "Microsoft recommande que le anti-spam principal soit sur un serveur Edge ou une solution tierce",
+                      "Pour vendre des licences",
+                      "Ils ne sont jamais désactivés"
+                    ],
+                    "answer": "Microsoft recommande que le anti-spam principal soit sur un serveur Edge ou une solution tierce",
+                    "explanation": "C'est un choix d'architecture : le anti-spam « principal » est censé être sur Edge ou tierce ; sur Mailbox, l'activation est optionnelle (lab, petites infra).",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m9-q10",
+                    "type": "mcq",
+                    "prompt": "Get-ContentFilterConfig permet de :",
+                    "options": [
+                      "Lister les agents",
+                      "Voir et configurer les seuils de spam et les actions (quarantaine, rejet, etc.) du Content Filter",
+                      "Redémarrer le Transport",
+                      "Gérer les connecteurs SMTP"
+                    ],
+                    "answer": "Voir et configurer les seuils de spam et les actions (quarantaine, rejet, etc.) du Content Filter",
+                    "explanation": "Get-ContentFilterConfig / Set-ContentFilterConfig permettent de gérer les seuils (SCL) et les actions du Content Filter.",
+                    "difficulty": 2
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 — Paramétrage des filtres anti-spam",
+      "position": 2,
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Pas-à-pas — Activer l'anti-spam sur Exchange 2019 (EX01)",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Machine : EX01. Compte : Administrateur Exchange, membre de Organization Management. Lancer la console en administrateur."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 1 — Ouvrir Exchange Management Shell"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Menu Démarrer"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Rechercher : Exchange Management Shell"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Clic droit → Exécuter en tant qu'administrateur"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Important : PAS PowerShell classique, PAS CMD."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 2 — Lancer le script Microsoft"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dans la console :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "& \"C:\\Program Files\\Microsoft\\Exchange Server\\V15\\Scripts\\Install-AntiSpamAgents.ps1\""
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Le & sert à exécuter un script (obligatoire)."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 3 — Comprendre ce que fait le script"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Pendant l'exécution, Exchange enregistre les agents anti-spam, les ajoute dans la chaîne SMTP, affiche des messages du type « Installing Anti-Spam Transport Agent ». Ne pas interrompre."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étape 4 — Redémarrer le service Transport"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Toujours sur EX01 : Restart-Service MSExchangeTransport. Sans ce redémarrage, les agents ne sont pas actifs."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Vérification obligatoire et erreurs courantes",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Vérification obligatoire (sinon TP invalide)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Commande de contrôle : Get-TransportAgent"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Résultat attendu (exemples) : Content Filter Agent, Sender Filter Agent, Recipient Filter Agent, Connection Filtering Agent, Malware Agent. S'ils apparaissent → anti-spam actif."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "À expliquer aux étudiants (phrase clé)"
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Les filtres anti-spam Exchange sont fournis par Microsoft mais volontairement désactivés sur les serveurs Mailbox. Leur activation est un choix d'architecture, pas un oubli."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Erreurs courantes à éviter (très important)"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "« Exchange n'a pas d'anti-spam » → Faux"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "« Il faut télécharger un plugin » → Faux"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "« C'est automatique » → Faux"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "« C'est comme Microsoft 365 » → Faux"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Résumé ultra clair"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Les scripts viennent d'où ? → Installés avec Exchange"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Où sont-ils ? → Dossier V15\\Scripts"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Lequel pour l'anti-spam ? → Install-AntiSpamAgents.ps1"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Faut-il Internet ? → Non"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Faut-il un Edge ? → Non (lab)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Redémarrage requis ? → Oui (MSExchangeTransport)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "2.3 Logique de fonctionnement (vision claire)",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Le mail arrive par SMTP"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Exchange applique les filtres"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Le message est : accepté ; rejeté ; marqué comme spam ; supprimé"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Chaque action est traçable."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 — TP : Politiques anti-spam et anti-malware",
+      "position": 3,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Contexte du TP",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Machines utilisées"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "EX01 : Exchange Server 2019"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CLIENT01 : Outlook 2019"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "DC01 : AD / DNS"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Pré-requis"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Exchange fonctionnel"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Envoi interne OK"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Envoi externe simulé (lab)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "tp",
+          "title": "TP 9 — Configuration et test des protections Exchange",
+          "position": 2,
+          "published": true,
+          "content": {
+            "type": "tp-new",
+            "introduction": "Objectif global du TP : activer et paramétrer les protections anti-spam et anti-malware sur EX01, puis tester l'efficacité et retrouver la trace des blocages. Chaque thème correspond à une étape. Machines : EX01 (EMS, configuration), CLIENT01 (tests utilisateur).",
+            "themes": [
+              {
+                "id": "theme-1",
+                "title": "Étape 1 — Activer les fonctionnalités anti-spam",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Machine : EX01. Compte : Administrateur Exchange, membre de Organization Management. Lancer la console en administrateur."
+                  },
+                  {
+                    "type": "text",
+                    "text": "Étape 1 — Ouvrir Exchange Management Shell : Menu Démarrer → rechercher « Exchange Management Shell » → Clic droit → Exécuter en tant qu'administrateur. Important : PAS PowerShell classique, PAS CMD."
+                  },
+                  {
+                    "type": "text",
+                    "text": "Étape 2 — Lancer le script Microsoft. Dans la console : & \"C:\\Program Files\\Microsoft\\Exchange Server\\V15\\Scripts\\Install-AntiSpamAgents.ps1\" — Le & sert à exécuter un script (obligatoire). Ne pas interrompre pendant « Installing Anti-Spam Transport Agent »."
+                  },
+                  {
+                    "type": "text",
+                    "text": "Étape 3 — Redémarrer le service Transport : Restart-Service MSExchangeTransport. Sans ce redémarrage, les agents ne sont pas actifs."
+                  },
+                  {
+                    "type": "text-image",
+                    "text": "Vérification obligatoire (sinon TP invalide) : Get-TransportAgent. Résultat attendu : Content Filter Agent, Sender Filter Agent, Recipient Filter Agent, Connection Filtering Agent, Malware Agent. S'ils apparaissent → anti-spam actif. Capture à droite : sortie typique.",
+                    "src": "https://placehold.co/600x350/e5e7eb/6b7280?text=Capture+%C3%A0+ajouter%3A+Get-TransportAgent",
+                    "alt": "À illustrer : Get-TransportAgent après activation",
+                    "layout": "right"
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** les agents anti-spam sont listés avec Get-TransportAgent."
+                  }
+                ]
+              },
+              {
+                "id": "theme-2",
+                "title": "Étape 2 — Vérifier la configuration anti-spam",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Objectif : visualiser les filtres disponibles. Actions : Get-ContentFilterConfig. Observer : seuils de spam, actions configurées."
+                  },
+                  {
+                    "type": "text-image",
+                    "text": "Exemple de sortie Get-ContentFilterConfig (seuils, actions). À illustrer : fenêtre EMS ou tableau récap.",
+                    "src": "https://placehold.co/600x350/e5e7eb/6b7280?text=Capture+%C3%A0+ajouter%3A+ContentFilterConfig",
+                    "alt": "À illustrer : Content Filter — seuils et actions",
+                    "layout": "right"
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant sait dire quel filtre agit sur quoi."
+                  }
+                ]
+              },
+              {
+                "id": "theme-3",
+                "title": "Étape 3 — Configurer un filtre d'expéditeur (Sender Filter)",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Objectif : bloquer un expéditeur précis. Actions : Set-SenderFilterConfig -BlockedSenders spam@test.local. Test : envoyer un mail depuis cette adresse ; observer le rejet."
+                  },
+                  {
+                    "type": "text-image",
+                    "text": "Résultat attendu : le message est bloqué avant remise en boîte. À illustrer : erreur côté client ou trace du rejet.",
+                    "src": "https://placehold.co/600x350/e5e7eb/6b7280?text=Capture+%C3%A0+ajouter%3A+rejet+Sender+Filter",
+                    "alt": "À illustrer : rejet Sender Filter",
+                    "layout": "right"
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** le message est bloqué avant remise en boîte."
+                  }
+                ]
+              },
+              {
+                "id": "theme-4",
+                "title": "Étape 4 — Configurer une IP autorisée (Allow List)",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Objectif : simuler une IP de confiance. Actions : Set-IPAllowListConfig -IPAllowList 192.168.50.50 (adapter à votre lab)."
+                  },
+                  {
+                    "type": "text",
+                    "text": "Compréhension attendue : cette IP contourne certains filtres ; utilisé pour relais internes."
+                  }
+                ]
+              },
+              {
+                "id": "theme-5",
+                "title": "Étape 5 — Vérifier l'anti-malware Exchange",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Objectif : comprendre la protection malware. Actions : Get-MalwareFilteringServer puis Get-MalwareFilterPolicy."
+                  },
+                  {
+                    "type": "text-image",
+                    "text": "Compréhension attendue : Exchange scanne les pièces jointes ; les fichiers dangereux sont bloqués. À illustrer : sortie typique ou politique malware.",
+                    "src": "https://placehold.co/600x350/e5e7eb/6b7280?text=Capture+%C3%A0+ajouter%3A+MalwareFilterPolicy",
+                    "alt": "À illustrer : anti-malware Exchange",
+                    "layout": "right"
+                  }
+                ]
+              },
+              {
+                "id": "theme-6",
+                "title": "Étape 6 — Tester l'efficacité (simulation)",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Machine : CLIENT01. Objectif : voir le résultat côté utilisateur."
+                  },
+                  {
+                    "type": "text",
+                    "text": "Scénarios de test : mail avec mot clé « spam » ; mail avec pièce jointe suspecte (simulée) ; mail depuis expéditeur bloqué. Observation : mail rejeté ; mail supprimé ; mail jamais livré."
+                  },
+                  {
+                    "type": "text-image",
+                    "text": "Exemple de message bloqué ou délivré en dossier courrier indésirable. À illustrer : Outlook ou Message Trace.",
+                    "src": "https://placehold.co/600x350/e5e7eb/6b7280?text=Capture+%C3%A0+ajouter%3A+test+blocage",
+                    "alt": "À illustrer : test blocage côté client",
+                    "layout": "right"
+                  }
+                ]
+              },
+              {
+                "id": "theme-7",
+                "title": "Étape 7 — Analyser le résultat avec Message Trace",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Machine : EX01. Actions : ouvrir Message Trace ; rechercher le message bloqué."
+                  },
+                  {
+                    "type": "text",
+                    "text": "Compréhension attendue : identifier le filtre responsable ; lire l'action appliquée."
+                  },
+                  {
+                    "type": "text-image",
+                    "text": "Exemple Message Trace : message bloqué par Content Filter ou Sender Filter. À illustrer : détail Message Trace.",
+                    "src": "https://placehold.co/600x350/e5e7eb/6b7280?text=Capture+%C3%A0+ajouter%3A+Message+Trace+blocage",
+                    "alt": "À illustrer : Message Trace — filtre responsable",
+                    "layout": "right"
+                  }
+                ]
+              },
+              {
+                "id": "theme-validation",
+                "title": "Validation finale du TP",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Le TP est validé si l'étudiant sait : Activer les filtres anti-spam ; Expliquer leur fonctionnement ; Tester un blocage ; Retrouver la trace du blocage ; Justifier la décision d'Exchange."
+                  }
+                ]
+              },
+              {
+                "id": "theme-cloture",
+                "title": "Message pédagogique de clôture",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Le rôle d'un administrateur Exchange n'est pas d'éliminer 100 % du spam, mais de trouver l'équilibre entre sécurité et délivrabilité."
+                  }
+                ]
+              }
+            ],
+            "conclusion": "TP validé : l'apprenant sait activer et paramétrer les protections anti-spam/anti-malware, tester un blocage, retrouver la trace et justifier la décision d'Exchange. Sécurité = équilibre entre protection et délivrabilité."
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -9,8 +9,10 @@ import { RichTextEditor } from '../components/RichTextEditor'
 import { ResizableContainer } from '../components/ResizableContainer'
 import { Lexique } from './Lexique'
 import { StepByStepTpProgressViewer } from '../components/trainer/StepByStepTpProgressViewer'
+import { TpNewCommentsViewer } from '../components/trainer/TpNewCommentsViewer'
 import { useNavigationContext, EnhancedBreadcrumb, CourseContextBar } from '../components/NavigationContext'
-import { FileText, ChevronDown, ChevronUp, Target, Lightbulb, BookOpen, MessageSquare, ChevronLeft, ChevronRight, Users } from 'lucide-react'
+import { AppHeader } from '../components/AppHeader'
+import { FileText, ChevronDown, ChevronUp, Target, Lightbulb, BookOpen, MessageSquare, ChevronLeft, ChevronRight, Users, ArrowUp } from 'lucide-react'
 
 // Vérifie si le body TipTap contient du contenu substantiel
 // (plus qu'un simple paragraphe de description courte)
@@ -72,6 +74,7 @@ export function ItemView() {
   const [currentModule, setCurrentModule] = useState<{ id: string; title: string } | null>(null)
   const [courseId, setCourseId] = useState<string | null>(null)
   const [sessionId, setSessionId] = useState<string | null>(null)
+  const [showScrollToTop, setShowScrollToTop] = useState(false)
 
   // Log pour déboguer le profil
   useEffect(() => {
@@ -82,6 +85,17 @@ export function ItemView() {
       userId: user?.id
     })
   }, [profile, user])
+
+  // Gérer l'affichage du bouton "remonter en haut"
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+      setShowScrollToTop(scrollTop > 300) // Afficher le bouton après 300px de scroll
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     if (itemId) {
@@ -592,7 +606,15 @@ export function ItemView() {
 
   return (
     <div className="min-h-screen bg-gray-50 relative">
-      {/* Barre de contexte de navigation */}
+      {/* Header principal - simplifié sans titre (le titre sera dans le fil d'Ariane) */}
+      <AppHeader
+        title="Portal Formations"
+        showBackButton
+        backTo="/app"
+        backLabel="Retour"
+      />
+      
+      {/* Barre de contexte de navigation - discrète en haut */}
       <CourseContextBar />
 
       {/* Flèches de navigation latérales pour les slides */}
@@ -661,18 +683,18 @@ export function ItemView() {
         </>
       )}
 
-      {/* Header */}
-      <header className="bg-white shadow">
+      {/* Section de contenu principale - avec fil d'Ariane et titre */}
+      <section className="bg-white shadow-sm relative z-10 pt-8">
         <div className="w-full mx-auto">
           <ResizableContainer storageKey="item-view-width" defaultWidth={95} minWidth={60} maxWidth={100}>
             <div className="px-4 sm:px-6 lg:px-8">
-              {/* Fil d'Ariane amélioré */}
-              <div className="pt-4 pb-2">
+              {/* Fil d'Ariane amélioré avec espacement réduit et défilement automatique */}
+              <div className="pt-2 pb-4 overflow-x-auto">
                 <EnhancedBreadcrumb />
               </div>
-              <div className="flex justify-between items-center pb-4">
-                <div className="flex-1">
-                  <h1 className="text-2xl font-bold text-gray-900">{item.title}</h1>
+              <div className="flex justify-between items-start gap-4 pb-6 border-b border-gray-100">
+                <div className="flex-1 min-w-0">
+                  <h1 className="text-3xl font-bold text-gray-900 leading-tight break-words">{item.title}</h1>
                 </div>
                 
                 {/* Navigation entre slides - Flèches modernes et visibles */}
@@ -747,7 +769,7 @@ export function ItemView() {
             </div>
           </ResizableContainer>
         </div>
-      </header>
+      </section>
 
       {/* Main content */}
       <main className="w-full py-6">
@@ -761,8 +783,8 @@ export function ItemView() {
             </div>
           ) : (
             <>
-              {/* Contenu principal de l'item - seulement si le body est substantiel (pas juste une description courte) */}
-              {item.content?.body && item.type !== 'game' && item.type !== 'slide' && hasSubstantialBody(item.content.body) && (
+              {/* Contenu principal de l'item — masqué pour resource/slide car ItemRenderer l'affiche déjà (évite vignette en double) */}
+              {item.content?.body && item.type !== 'game' && item.type !== 'slide' && item.type !== 'resource' && hasSubstantialBody(item.content.body) && (
                 <div className="bg-white rounded-lg shadow p-6 lg:p-8">
                   <h2 className="text-2xl font-bold text-gray-900 mb-4">Contenu</h2>
                   <RichTextEditor
@@ -800,6 +822,25 @@ export function ItemView() {
                     </h2>
                   </div>
                   <StepByStepTpProgressViewer
+                    itemId={item.id}
+                    courseId={courseId || undefined}
+                    sessionId={sessionId || undefined}
+                  />
+                </div>
+              )}
+
+              {/* Commentaires par partie pour les TP New (visible uniquement pour les formateurs/admins) */}
+              {item.type === 'tp' && 
+               item.content?.type === 'tp-new' &&
+               (profile?.role === 'admin' || profile?.role === 'trainer' || profile?.role === 'instructor') && (
+                <div className="bg-indigo-50 border-2 border-indigo-200 rounded-lg shadow p-6 lg:p-8 mt-6">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <MessageSquare className="w-6 h-6 text-indigo-600" />
+                    <h2 className="text-xl font-bold text-indigo-900">
+                      Commentaires des étudiants par partie
+                    </h2>
+                  </div>
+                  <TpNewCommentsViewer
                     itemId={item.id}
                     courseId={courseId || undefined}
                     sessionId={sessionId || undefined}
@@ -949,6 +990,20 @@ export function ItemView() {
           </ResizableContainer>
         </div>
       </main>
+
+      {/* Bouton "Remonter en haut" */}
+      {showScrollToTop && (
+        <button
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
+          className="fixed bottom-8 right-8 z-50 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 hover:shadow-xl"
+          title="Remonter en haut"
+          aria-label="Remonter en haut de la page"
+        >
+          <ArrowUp className="w-6 h-6" />
+        </button>
+      )}
     </div>
   )
 }

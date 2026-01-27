@@ -1,0 +1,285 @@
+{
+  "title": "Microsoft Exchange — Partie 14 : Simulation de gestion quotidienne",
+  "description": "Module 2 h : mise en situation complète — gérer un serveur de messagerie pour une entreprise fictive. Gestion des utilisateurs, flux de messagerie et incidents. Travaux pratiques : réaliser les tâches administratives quotidiennes dans un environnement simulé (création de boîtes, groupes, connecteurs, dépannage léger, suivi des quotas et du flux). Niveau admin Exchange 2019 on-prem.",
+  "status": "published",
+  "access_type": "free",
+  "currency": "EUR",
+  "is_public": false,
+  "theme": {
+    "primaryColor": "#0D9488",
+    "secondaryColor": "#4F46E5",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 — Objectifs et vue d'ensemble Partie 14",
+      "position": 1,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Objectifs pédagogiques Partie 14",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 2 },
+                  "content": [{ "type": "text", "text": "Simulation de gestion quotidienne (2 h)" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "À l'issue de ce module, l'apprenant sera capable de :" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Se mettre en situation complète : gérer un serveur de messagerie pour une entreprise fictive" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Gérer les utilisateurs (boîtes aux lettres, groupes, listes de distribution)" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Gérer le flux de messagerie et réagir aux incidents courants" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Réaliser les tâches administratives quotidiennes dans un environnement simulé" }] }] }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 — Mise en situation : entreprise fictive",
+      "position": 2,
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Contexte de l'entreprise fictive",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Vous êtes l'administrateur messagerie d'une entreprise fictive (ex. : « Contoso Lab »). Le parc comprend : DC01 (AD), EX01 (Exchange), un ou plusieurs postes clients. Vous devez gérer les arrivées/départs, les groupes, le flux entrant/sortant, et réagir aux incidents signalés par les utilisateurs ou détectés par la supervision." }]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [{ "type": "text", "text": "L'objectif est de réaliser un enchaînement de tâches réalistes, comme en production, sans tout détailler clic par clic : prioriser, décider, agir." }]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Périmètre des tâches quotidiennes",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Gestion des utilisateurs : création/suppression de boîtes, listes de distribution, groupes, délégations" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Flux : suivi Message Trace, vérification des connecteurs, gestion des rejets ou files d'attente" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Incidents : « un utilisateur ne reçoit plus », « un mail bloqué », « quota dépassé » — diagnostic et correctif" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Surveillance légère : espace disque, services, rappel des bonnes pratiques (sauvegarde, patch)" }] }] }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 — Gestion des utilisateurs, flux et incidents",
+      "position": 3,
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Gestion des utilisateurs et des groupes",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Création de boîtes (Enable-Mailbox), listes de distribution (New-DistributionGroup), gestion des quotas (Set-Mailbox), délégation (Add-MailboxPermission, Send on behalf). Conventions de nommage, stratégies de rétention si besoin." }]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Flux de messagerie et incidents courants",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Message Trace pour suivre un message (reçu, livré, rejeté). Connecteurs : Send/Receive, périmètre, restriction. Incidents typiques : message en file d'attente, rejet NDR, blocage anti-spam ; actions : vérifier connecteur, logs, quarantaine ou liste blanche si faux positif." }]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 4 — TP : Tâches administratives quotidiennes en environnement simulé",
+      "position": 4,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Contexte du TP Partie 14",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Machines et rôle" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "DC01 : Active Directory" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "EX01 : Exchange Server" }] }] },
+                    { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "CLIENT01 : poste utilisateur (optionnel pour tests)" }] }] }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Vous jouez le rôle d'admin messagerie de l'entreprise fictive. Les thèmes du TP correspondent à des tâches ou incidents à traiter dans l'ordre du jour simulé." }]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "tp",
+          "title": "TP 14 — Tâches administratives quotidiennes (simulation)",
+          "position": 2,
+          "published": true,
+          "content": {
+            "type": "tp-new",
+            "introduction": "Objectif : réaliser un enchaînement de tâches administratives quotidiennes dans un environnement simulé. Chaque thème correspond à une situation réaliste (nouvel utilisateur, groupe, message bloqué, quota, etc.) ; l'étudiant doit décrire les étapes et, si possible, les réaliser sur le lab.",
+            "themes": [
+              {
+                "id": "theme-1",
+                "title": "Tâche 1 — Créer une boîte aux lettres pour un nouvel employé",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Contexte simulé : un nouvel employé doit avoir une boîte aux lettres. Le compte AD existe déjà (ou à créer). À faire : activer la boîte Exchange, définir un quota si demandé, vérifier que le courrier est accessible (OWA ou Outlook)."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant utilise Enable-Mailbox (ou équivalent EAC) et sait expliquer les options (base de données, quota, stratégie)."
+                  }
+                ]
+              },
+              {
+                "id": "theme-2",
+                "title": "Tâche 2 — Créer ou modifier une liste de distribution",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Contexte simulé : le service « Ventes » demande une liste « ventes@contoso.lab » regroupant cinq utilisateurs. À faire : créer la liste, ajouter les membres, tester l'envoi d'un message à la liste."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant crée ou modifie une liste de distribution (New-DistributionGroup / Add-DistributionGroupMember ou EAC) et vérifie la réception."
+                  }
+                ]
+              },
+              {
+                "id": "theme-3",
+                "title": "Tâche 3 — Un utilisateur signale ne plus recevoir de mails",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Contexte simulé : un utilisateur indique qu'il ne reçoit plus de courrier depuis la matinée. À faire : vérifier la boîte (Get-MailboxStatistics), les règles, le quota ; vérifier le flux (Message Trace) pour les messages à destination de cette boîte."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant cite au moins deux vérifications (quota, Message Trace ou état de la boîte) et une action corrective possible (augmenter quota, débloquer, corriger règle)."
+                  }
+                ]
+              },
+              {
+                "id": "theme-4",
+                "title": "Tâche 4 — Un message externe est bloqué (NDR ou file d'attente)",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Contexte simulé : un partenaire signale que ses mails vers votre domaine renvoient une erreur ou restent en attente. À faire : utiliser Message Trace pour retrouver le message ; identifier la cause (connecteur, anti-spam, quota destinataire) ; proposer un correctif ou une exception si pertinent."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant utilise Message Trace, identifie une cause plausible (connecteur, filtre, rejet) et propose une action (autoriser l'expéditeur, corriger le connecteur, etc.)."
+                  }
+                ]
+              },
+              {
+                "id": "theme-5",
+                "title": "Tâche 5 — Vérification de l'état du serveur et des quotas",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Contexte simulé : en fin de journée, vous faites un tour de contrôle. À faire : vérifier l'espace disque, l'état des services Exchange, les boîtes proches du quota ; noter toute anomalie et la conduite à tenir."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant cite les éléments à contrôler (disque, services, Get-MailboxStatistics pour les quotas) et que faire en cas d'alerte."
+                  }
+                ]
+              },
+              {
+                "id": "theme-validation",
+                "title": "Validation finale du TP",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "L'étudiant a réalisé ou décrit de façon cohérente : la création/gestion d'au moins une boîte et une liste de distribution ; le diagnostic d'un incident « utilisateur ne reçoit plus » ou « message bloqué » ; une vérification d'état (services, disque ou quotas)."
+                  }
+                ]
+              },
+              {
+                "id": "theme-cloture",
+                "title": "Message de clôture",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "La gestion quotidienne Exchange combine routine (utilisateurs, groupes) et réactivité (incidents, flux). Une méthode simple : prioriser, vérifier (logs, Message Trace, quotas), corriger, puis documenter si besoin."
+                  }
+                ]
+              }
+            ],
+            "conclusion": "TP validé : l'apprenant a enchaîné des tâches administratives quotidiennes réalistes (gestion utilisateurs, flux, incidents) dans un environnement simulé et a montré sa capacité à prioriser, diagnostiquer et proposer des correctifs."
+          }
+        }
+      ]
+    }
+  ]
+}

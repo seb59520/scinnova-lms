@@ -1,0 +1,1657 @@
+{
+  "title": "Microsoft Exchange — Partie 11 : Mises à jour, sauvegardes, PRA/PCA, migration Exchange et Veeam Backup",
+  "description": "Partie 11 complétée (2 h) : mises à jour Exchange, sauvegardes, PRA/PCA, migration, et un module dédié Veeam Backup & Replication orienté terrain. Objectifs : comprendre pourquoi Veeam est souvent central en prod, comment il sauvegarde Exchange (VSS), prérequis et paramétrage, types de restauration (VM, applicative, granulaire), Veeam Explorer for Exchange. TP : vérifier qu'Exchange est backup-ready, configuration Veeam, sauvegarde (simulation), perte de données, restauration granulaire, vérification côté utilisateur. Niveau Exchange 2019 on-prem.",
+  "status": "published",
+  "access_type": "free",
+  "currency": "EUR",
+  "is_public": false,
+  "theme": {
+    "primaryColor": "#7C3AED",
+    "secondaryColor": "#F59E0B",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 — Objectifs et vue d'ensemble Partie 11",
+      "position": 1,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Objectifs pédagogiques Partie 11",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Partie 11 — Mises à jour, sauvegardes, PRA/PCA, migration et Veeam"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cette partie couvre : les mises à jour Exchange, les sauvegardes, le PRA/PCA, la migration, et un module dédié Veeam Backup & Replication — orienté terrain, pas marketing. Ce qu'un admin Exchange doit vraiment savoir."
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comprendre les enjeux sauvegardes et PRA/PCA Exchange"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Savoir pourquoi et comment Veeam sauvegarde Exchange (VSS)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Différencier restauration VM, applicative et granulaire"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utiliser Veeam Explorer for Exchange pour une restauration ciblée"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Intégrer Veeam dans un PRA Exchange"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "game",
+          "title": "Quiz Module 11 — Sauvegardes, PRA/PCA, Veeam Backup",
+          "position": 2,
+          "published": true,
+          "content": {
+            "gameType": "quiz",
+            "description": "Quiz de 10 questions sur VSS, Veeam Backup & Replication, restauration Exchange (VM, applicative, granulaire), Veeam Explorer for Exchange.",
+            "instructions": "Répondez aux 10 questions. Une seule réponse correcte par question.",
+            "scoring": {
+              "totalQuestions": 10,
+              "pointsPerQuestion": 1,
+              "passingScore": 7
+            },
+            "levels": [
+              {
+                "level": 1,
+                "name": "Quiz Module 11 — Sauvegardes et Veeam",
+                "questions": [
+                  {
+                    "id": "m11-q1",
+                    "type": "mcq",
+                    "prompt": "VSS (Volume Shadow Copy Service) permet :",
+                    "options": [
+                      "De copier des fichiers sans les ouvrir",
+                      "De faire une copie cohérente de données pendant qu'elles sont utilisées",
+                      "De désactiver Exchange",
+                      "De supprimer les journaux manuellement"
+                    ],
+                    "answer": "De faire une copie cohérente de données pendant qu'elles sont utilisées",
+                    "explanation": "VSS permet un snapshot cohérent pendant que les applications (dont Exchange) continuent d'écrire ; Exchange participe via le VSS Writer.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m11-q2",
+                    "type": "mcq",
+                    "prompt": "Sans VSS lors d'une sauvegarde Exchange :",
+                    "options": [
+                      "Les journaux sont automatiquement purgés",
+                      "Les journaux ne sont pas purgés, risque de corruption et disque qui se remplit",
+                      "Rien ne change",
+                      "La base est toujours cohérente"
+                    ],
+                    "answer": "Les journaux ne sont pas purgés, risque de corruption et disque qui se remplit",
+                    "explanation": "Sans VSS, Exchange ne participe pas à la sauvegarde ; les journaux ne sont pas purgés, le disque peut se remplir et la base peut être incohérente.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m11-q3",
+                    "type": "mcq",
+                    "prompt": "Dans VSS, le rôle de « Requester » est tenu par :",
+                    "options": [
+                      "Exchange",
+                      "Veeam (ou tout logiciel de sauvegarde)",
+                      "Windows uniquement",
+                      "Le disque"
+                    ],
+                    "answer": "Veeam (ou tout logiciel de sauvegarde)",
+                    "explanation": "Le Requester demande la sauvegarde (ex. Veeam). L'application à protéger est le Writer (Microsoft Exchange Writer). Le Provider crée le snapshot.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m11-q4",
+                    "type": "mcq",
+                    "prompt": "Pour vérifier que le VSS Writer Exchange fonctionne, on peut lancer :",
+                    "options": [
+                      "Get-Mailbox",
+                      "vssadmin list writers",
+                      "Get-TransportAgent",
+                      "ipconfig"
+                    ],
+                    "answer": "vssadmin list writers",
+                    "explanation": "vssadmin list writers affiche les writers VSS ; on doit voir « Microsoft Exchange Writer » avec State: Stable, Last error: No error.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m11-q5",
+                    "type": "mcq",
+                    "prompt": "Veeam sauvegarde Exchange en :",
+                    "options": [
+                      "Sauvegardant uniquement la base .edb à la main",
+                      "Sauvegardant la VM en respectant VSS Exchange (snapshot, cohérence, purge des journaux)",
+                      "Ignorant Exchange",
+                      "Copiant uniquement les journaux"
+                    ],
+                    "answer": "Sauvegardant la VM en respectant VSS Exchange (snapshot, cohérence, purge des journaux)",
+                    "explanation": "Veeam utilise VSS : snapshot, Exchange fige et purge les journaux, copie cohérente. C'est la base d'une sauvegarde fiable.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m11-q6",
+                    "type": "mcq",
+                    "prompt": "Pour restaurer un seul mail sans restaurer toute la VM, on utilise :",
+                    "options": [
+                      "Restore-VirtualMachine uniquement",
+                      "Veeam Explorer for Exchange",
+                      "Get-MailboxStatistics",
+                      "Formatage du disque"
+                    ],
+                    "answer": "Veeam Explorer for Exchange",
+                    "explanation": "Veeam Explorer for Exchange permet d'ouvrir une sauvegarde et de restaurer un mail, un dossier ou une boîte sans restaurer toute la VM.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m11-q7",
+                    "type": "mcq",
+                    "prompt": "« La vraie valeur d'une sauvegarde Exchange, c'est la restauration ciblée » signifie :",
+                    "options": [
+                      "La sauvegarde seule suffit",
+                      "Pouvoir restaurer un mail ou une boîte sans tout restaurer est le gain opérationnel majeur",
+                      "Il ne faut jamais restaurer",
+                      "Seule la restauration VM compte"
+                    ],
+                    "answer": "Pouvoir restaurer un mail ou une boîte sans tout restaurer est le gain opérationnel majeur",
+                    "explanation": "La restauration granulaire (mail, dossier, boîte) via Veeam Explorer évite un restore VM complet et limite l'impact service.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m11-q8",
+                    "type": "mcq",
+                    "prompt": "Dans Veeam, pour que la sauvegarde soit « application-aware » pour Exchange, il faut :",
+                    "options": [
+                      "Désactiver Exchange",
+                      "Activer Application-Aware Processing et cocher Exchange",
+                      "Ne pas utiliser de compte AD",
+                      "Sauvegarder uniquement le disque C:"
+                    ],
+                    "answer": "Activer Application-Aware Processing et cocher Exchange",
+                    "explanation": "Application-Aware Processing (et cocher Exchange) permet à Veeam d'utiliser VSS Exchange et d'avoir une sauvegarde cohérente avec purge des journaux.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m11-q9",
+                    "type": "mcq",
+                    "prompt": "Si après une sauvegarde Veeam les logs Exchange ne sont pas purgés :",
+                    "options": [
+                      "C'est normal",
+                      "La sauvegarde n'est probablement pas VSS-aware (vérifier Application-Aware, compte, VSS Writer)",
+                      "Il faut supprimer les logs à la main",
+                      "Exchange est en panne"
+                    ],
+                    "answer": "La sauvegarde n'est probablement pas VSS-aware (vérifier Application-Aware, compte, VSS Writer)",
+                    "explanation": "Si les journaux ne sont pas purgés, Exchange n'a pas participé (VSS) : vérifier Application-Aware, compte utilisé, état du VSS Writer.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m11-q10",
+                    "type": "mcq",
+                    "prompt": "Une restauration « granulaire » Exchange avec Veeam permet :",
+                    "options": [
+                      "Uniquement de restaurer toute la VM",
+                      "De restaurer un élément ciblé (mail, dossier, boîte) sans downtime total",
+                      "De supprimer la base",
+                      "De ne jamais utiliser VSS"
+                    ],
+                    "answer": "De restaurer un élément ciblé (mail, dossier, boîte) sans downtime total",
+                    "explanation": "Restauration granulaire = restaurer uniquement ce qui manque (mail, dossier, boîte) via Veeam Explorer, sans restaurer toute la VM.",
+                    "difficulty": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 — Mises à jour et sauvegardes : rappels",
+      "position": 2,
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Mises à jour Exchange et cohérence",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les mises à jour Exchange (CUs) doivent être planifiées, testées en lab si possible, et précédées d'une sauvegarde valide. Une sauvegarde cohérente est le filet de sécurité avant toute mise à jour."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Sauvegardes Exchange : principes et VSS",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Une sauvegarde Exchange doit être « application-aware » : Exchange doit participer (VSS). Sans VSS, la base peut être incohérente et les journaux ne sont pas purgés — risque de corruption. La suite du cours détaille Veeam, qui gère cela nativement."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 — PRA / PCA Exchange",
+      "position": 3,
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 PRA et PCA : notions clés",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "PRA (Plan de Reprise d'Activité) : reprendre le service après sinistre. PCA (Plan de Continuité d'Activité) : maintenir le service malgré un incident. Pour Exchange, une sauvegarde maîtrisée (cohérente, testée, restaurable) est la base. Veeam est souvent l'outil central en PRA Exchange."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 4 — Migration Exchange",
+      "position": 4,
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Migration : rappels",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les migrations Exchange (version, site, hybride) nécessitent une stratégie de sauvegarde avant et pendant la migration. Les bonnes pratiques de sauvegarde et restauration (dont Veeam) s'appliquent aussi en contexte de migration."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 5 — Transition vers Veeam",
+      "position": 5,
+      "items": [
+        {
+          "type": "resource",
+          "title": "5.1 Pourquoi un module Veeam dans cette partie",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Veeam s'imbrique naturellement avec sauvegardes, PRA/PCA, restauration et migration. Le module suivant détaille : pourquoi Veeam est souvent utilisé avec Exchange, comment il sauvegarde (VSS), prérequis, paramétrage, types de restauration et Veeam Explorer for Exchange."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 6 — Synthèse avant le module Veeam",
+      "position": 6,
+      "items": [
+        {
+          "type": "resource",
+          "title": "6.1 Ce qu'il faut retenir avant le module Veeam",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Sauvegardes cohérentes (VSS), PRA/PCA et migration reposent sur une stratégie de sauvegarde maîtrisée. Le module suivant (Veeam) détaille comment un outil très répandu en terrain Exchange répond à ces besoins : sauvegarde VM + VSS, restauration complète, applicative et granulaire."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 7 — Sauvegarde Exchange avec Veeam Backup & Replication",
+      "position": 7,
+      "items": [
+        {
+          "type": "resource",
+          "title": "7.0 Très bonne question — VSS est central pour la sauvegarde Exchange",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Très bonne question 👍 VSS est absolument central dès qu'on parle de sauvegarde Exchange. Je t'explique simplement, clairement, avec le point de vue admin Exchange."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Qu'est-ce que VSS ?"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "VSS = Volume Shadow Copy Service. C'est un service Windows qui permet de faire une copie cohérente de données pendant qu'elles sont utilisées."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Sans VSS : les fichiers sont « en cours d'écriture », risque de corruption, sauvegarde inutilisable. Avec VSS : cohérence garantie, applications informées, restauration fiable."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Le problème que VSS résout"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Prenons Exchange : les bases (.edb) sont toujours ouvertes, les journaux écrivent en continu, impossible de « copier-coller » la base. VSS sert à dire à Exchange : « Stoppe-toi une fraction de seconde, je prends une photo propre, puis tu continues. »"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les 3 acteurs VSS (très important)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "VSS fonctionne toujours avec 3 rôles :"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "1) VSS Requester (qui demande la sauvegarde) — Exemple : Veeam, Windows Server Backup. Il dit « Je veux une copie maintenant »."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "2) VSS Writer (l'application à protéger) — Pour Exchange : Microsoft Exchange Writer. Son rôle : figer proprement la base, valider la cohérence, dire quand c'est OK. Sans Writer Exchange → sauvegarde invalide."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "3) VSS Provider (qui crée le snapshot) — Généralement Microsoft Software Shadow Copy Provider. Il crée la photo du disque."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Schéma logique : Veeam (Requester) → Exchange VSS Writer → VSS Provider → Snapshot disque."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ce que fait VSS pendant une sauvegarde Exchange"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Le backup démarre"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Exchange fige les écritures"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Snapshot disque créé"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Sauvegarde copiée"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Exchange reprend"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Journaux purgés — c'est ce point 6 qui est critique"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Pourquoi VSS est vital pour Exchange"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Sans VSS : les journaux ne sont pas purgés, le disque se remplit, Exchange tombe, la sauvegarde ne sert à rien. Avec VSS : sauvegarde propre, journaux nettoyés, restauration possible."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Comment vérifier que VSS Exchange fonctionne"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Sur EX01 (invite admin) : vssadmin list writers. Tu dois voir : Writer name: 'Microsoft Exchange Writer', State: Stable, Last error: No error. Sinon : gros problème de sauvegarde."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Erreurs VSS courantes (à connaître)"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Writer en erreur → Sauvegarde invalide"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Pas de purge des logs → Disque plein"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Plusieurs backups concurrents → VSS cassé"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Snapshot bloqué → Base figée"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Une sauvegarde Exchange sans VSS n'est pas une sauvegarde."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Lien direct avec Veeam (logique)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Veeam = Requester ; Exchange = Writer ; Windows = Provider. Si Veeam n'utilise pas VSS, Exchange ne sait pas qu'il est sauvegardé."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "7.1 Pourquoi Veeam est souvent utilisé avec Exchange",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Réalité terrain"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Veeam est très répandu car il : s'intègre nativement à Windows & Exchange ; supporte VSS Exchange ; permet des restaurations fines ; est fiable et éprouvé en PRA."
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Ce n'est pas « un outil de plus », c'est souvent l'outil central de sauvegarde."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "7.2 Comment Veeam sauvegarde Exchange (concept clé)",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Principe fondamental"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Veeam ne sauvegarde pas Exchange directement. Il sauvegarde la machine (VM), tout en respectant VSS Exchange. Exchange est « aware » de la sauvegarde."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ce que Veeam fait pendant la sauvegarde"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Demande un snapshot VSS"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Exchange fige les écritures"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "La base est copiée"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Exchange purge les journaux"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Le snapshot est supprimé"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cohérence, journaux nettoyés, pas de corruption."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "7.3 Prérequis pour une sauvegarde Exchange avec Veeam",
+          "position": 4,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Côté Exchange (EX01)"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Services Exchange fonctionnels"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Pas de base démontée"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Pas de sauvegarde concurrente"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Côté Veeam"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Application Aware Processing activé"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifiants AD valides"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Accès VSS autorisé"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "7.4 Paramétrage Veeam (logique, pas clic-à-clic lourd)",
+          "position": 5,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Points clés à configurer"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Activer Application-Aware Processing"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Cocher Exchange"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utiliser un compte HYGEASY\\Administrator ou un compte dédié avec droits Exchange"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Astuce admin : si Veeam ne purge pas les logs Exchange après sauvegarde, c'est que la sauvegarde n'est pas VSS-aware."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "7.5 Types de restauration Exchange avec Veeam",
+          "position": 6,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Restauration complète (VM)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas : serveur Exchange HS, corruption majeure, ransomware. Rapide, simple, mais impact service."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Restauration applicative Exchange"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas : base corrompue, erreur après mise à jour. Exchange-aware, journaux cohérents."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Restauration granulaire (Veeam Explorer for Exchange)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas : mail supprimé, boîte supprimée, erreur utilisateur. Restauration sans downtime, ciblée (mail / dossier / boîte)."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "7.6 Veeam Explorer for Exchange (outil clé)",
+          "position": 7,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "À quoi il sert vraiment"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Explorer une sauvegarde Exchange"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Restaurer un mail, un dossier, une boîte — sans restaurer toute la VM"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Outil indispensable en prod."
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "La vraie valeur d'une sauvegarde Exchange, ce n'est pas la sauvegarde… c'est la restauration ciblée."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 8 — TP : Sauvegarde et restauration Exchange avec Veeam (simulation)",
+      "position": 8,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Contexte du TP Veeam",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Machines"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "EX01 : Exchange"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Serveur Veeam (ou VM simulée)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CLIENT01 : Tests Outlook"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Pré-requis"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Exchange fonctionnel"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Veeam installé (ou présenté)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Une sauvegarde existante (lab)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "tp",
+          "title": "TP 11 bis — Exchange + Veeam Backup",
+          "position": 2,
+          "published": true,
+          "content": {
+            "type": "tp-new",
+            "introduction": "Objectif : vérifier qu'Exchange est backup-ready, comprendre la configuration Veeam (Application-aware, Exchange), simuler une sauvegarde, simuler une perte de données, restaurer avec Veeam Explorer, vérifier côté utilisateur. Le TP valide le raisonnement et la maîtrise des concepts même en simulation.",
+            "themes": [
+              {
+                "id": "theme-1",
+                "title": "Étape 1 — Vérifier qu'Exchange est « backup-ready »",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Machine : EX01. Actions : vérifier les services Exchange ; vérifier l'espace disque ; vérifier l'absence d'erreurs VSS. Objectif : s'assurer que la sauvegarde peut réussir."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant a vérifié services, disque et VSS avant toute sauvegarde."
+                  }
+                ]
+              },
+              {
+                "id": "theme-2",
+                "title": "Étape 2 — Vérifier la configuration Veeam (logique)",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Objectif : comprendre ce que Veeam sauvegarde réellement. Questions à poser : Application-aware activé ? Exchange détecté ? Compte utilisé ?"
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant sait expliquer si la sauvegarde est VSS-aware et quel compte est utilisé."
+                  }
+                ]
+              },
+              {
+                "id": "theme-3",
+                "title": "Étape 3 — Lancer une sauvegarde (simulation)",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Objectif : observer le comportement Exchange. À comprendre : snapshot VSS ; purge des journaux après succès."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant décrit la séquence VSS et la purge des logs."
+                  }
+                ]
+              },
+              {
+                "id": "theme-4",
+                "title": "Étape 4 — Simuler une perte de données",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Scénario : suppression d'un mail ou d'un dossier. Objectif : avoir un cas concret à restaurer."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** la perte est reproductible (mail ou dossier supprimé)."
+                  }
+                ]
+              },
+              {
+                "id": "theme-5",
+                "title": "Étape 5 — Restaurer avec Veeam Explorer",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Objectif : restaurer sans casser le service. Actions : ouvrir Veeam Explorer ; naviguer dans la base ; restaurer l'élément ciblé (mail ou dossier)."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant a restauré l'élément ciblé via Veeam Explorer (sans restauration VM complète)."
+                  }
+                ]
+              },
+              {
+                "id": "theme-6",
+                "title": "Étape 6 — Vérifier côté utilisateur",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Machine : CLIENT01. Vérifier que le mail ou le dossier est revenu ; vérifier l'intégrité."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'utilisateur retrouve ses données et l'étudiant confirme la cohérence."
+                  }
+                ]
+              },
+              {
+                "id": "theme-validation",
+                "title": "Validation finale (Veeam)",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "L'étudiant sait : expliquer comment Veeam sauvegarde Exchange ; dire pourquoi VSS est essentiel ; différencier sauvegarde VM / restauration granulaire ; justifier l'utilisation de Veeam Explorer ; intégrer Veeam dans un PRA Exchange."
+                  }
+                ]
+              },
+              {
+                "id": "theme-cloture",
+                "title": "Messages clés à retenir",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Une sauvegarde Exchange sans VSS est dangereuse."
+                  },
+                  {
+                    "type": "text",
+                    "text": "La restauration granulaire est le vrai gain opérationnel."
+                  },
+                  {
+                    "type": "text",
+                    "text": "Le PRA commence par une sauvegarde maîtrisée."
+                  }
+                ]
+              }
+            ],
+            "conclusion": "TP validé : l'apprenant sait vérifier qu'Exchange est backup-ready, expliquer la config Veeam (VSS, Application-aware), simuler sauvegarde et perte, restaurer de façon granulaire avec Veeam Explorer, et intégrer Veeam dans un PRA Exchange. Messages clés : sauvegarde sans VSS = dangereuse ; restauration granulaire = gain opérationnel ; PRA = sauvegarde maîtrisée."
+          }
+        }
+      ]
+    }
+  ]
+}

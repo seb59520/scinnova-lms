@@ -1,0 +1,105 @@
+{
+  "type": "tp",
+  "title": "TP 8 — Analyser et résoudre des incidents SMTP Exchange",
+  "position": 1,
+  "published": true,
+  "content": {
+    "type": "step-by-step",
+    "introduction": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [{ "type": "text", "text": "Ce TP vous met en situation réelle de dépannage SMTP. Chaque étape reprend les notions du cours (chemin du mail, Message Trace, identification de l'étape d'échec, cause → correction)." }]
+        },
+        {
+          "type": "paragraph",
+          "content": [{ "type": "text", "text": "Machines : EX01 (Exchange), CLIENT01 (Outlook)." }]
+        }
+      ]
+    },
+    "steps": [
+      {
+        "id": "step-1",
+        "order": 1,
+        "title": "Utiliser Message Trace pour retrouver un message",
+        "estimatedTime": "15 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : EX01. Objectif : vérifier si Exchange a vu le mail." }] },
+            { "type": "orderedList", "content": [
+              { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ouvrir un navigateur et accéder à https://localhost/ecp" }] }] },
+              { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Se connecter avec HYGEASY\\Administrator" }] }] },
+              { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Aller dans Mail flow → Message trace" }] }] },
+              { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Renseigner expéditeur, destinataire, date et lancer la recherche" }] }] }
+            ]},
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère : vous savez dire si le message est absent (Exchange ne l'a pas vu) ou présent (Exchange l'a traité)." }] }
+          ]
+        }
+      },
+      {
+        "id": "step-2",
+        "order": 2,
+        "title": "Interpréter le statut du message",
+        "estimatedTime": "10 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Si le message est présent : noter son statut (Delivered, Failed, Pending, Deferred)." }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Si Failed ou erreur affichée : relever le code SMTP et le message d'erreur." }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère : vous savez dire si Exchange a terminé son travail (Delivered) ou où il a bloqué (Failed / Pending)." }] }
+          ]
+        }
+      },
+      {
+        "id": "step-3",
+        "order": 3,
+        "title": "Identifier l'étape exacte d'échec",
+        "estimatedTime": "20 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "À partir du statut et du code d'erreur, faire correspondre à l'un des 4 cas du cours (Réception SMTP, Transport, Send Connector/DNS, Serveur distant)." }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Exemples : 550 5.7.1 Unable to relay → Cas 1 (Receive Connector). 451 4.4.0 DNS query failed → Cas 3 (Send Connector / DNS). 550 5.1.1 User unknown → Cas 4 (serveur distant)." }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère : vous savez formuler \"Le mail échoue à l'étape [X]\"." }] }
+          ]
+        }
+      },
+      {
+        "id": "step-4",
+        "order": 4,
+        "title": "Comprendre le rôle des journaux de transport",
+        "estimatedTime": "10 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Sur EX01, indiquer l'emplacement des logs : C:\\Program Files\\Microsoft\\Exchange Server\\V15\\TransportRoles\\Logs\\MessageTracking" }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Expliquer à quoi ils servent : preuve technique, détail des actions et codes SMTP. La différence avec Message Trace : vue logique (EAC) vs preuve technique (fichiers)." }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère : vous savez expliquer à quoi servent les logs, même sans les lire en détail." }] }
+          ]
+        }
+      },
+      {
+        "id": "step-5",
+        "order": 5,
+        "title": "Formuler la cause et la correction",
+        "estimatedTime": "15 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "À l'oral ou à l'écrit : \"Le mail échoue parce que [cause]. Il faut corriger [paramètre / équipe].\"" }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Exemple : \"Le mail échoue au niveau du Send Connector car Exchange ne peut pas résoudre le domaine distant via DNS. Il faut vérifier la configuration DNS ou le Smart Host.\"" }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère final : vous êtes capable de dire où ça échoue, pourquoi, et quelle action corrective logique proposer." }] }
+          ]
+        }
+      }
+    ],
+    "conclusion": {
+      "type": "doc",
+      "content": [
+        { "type": "paragraph", "content": [{ "type": "text", "text": "TP validé : vous savez diagnostiquer et résoudre un incident SMTP Exchange de manière méthodique (observer → comprendre → agir)." }] }
+      ]
+    }
+  }
+}

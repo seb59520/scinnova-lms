@@ -8,6 +8,7 @@ import { AppHeader } from '../components/AppHeader'
 import { ArrowLeft, Layers, BookOpen, ChevronRight, Book, Download, FileText, ClipboardCheck, Award, CheckCircle, Upload, Calendar, AlertCircle, Users, Eye, Edit, BarChart3, TrendingUp } from 'lucide-react'
 import { FileUpload } from '../components/FileUpload'
 import { StepByStepTpProgressViewer } from '../components/trainer/StepByStepTpProgressViewer'
+import { TpNewCommentsViewer } from '../components/trainer/TpNewCommentsViewer'
 import { useNavigationContext } from '../components/NavigationContext'
 
 export function ProgramView() {
@@ -559,7 +560,8 @@ export function ProgramView() {
           })
 
           if (totalWeight > 0) {
-            student.average = Math.round((totalWeightedScore / totalWeight) * 100) / 100
+            // Arrondir à 2 décimales en utilisant toFixed puis parseFloat pour éviter les erreurs de précision
+            student.average = parseFloat((totalWeightedScore / totalWeight).toFixed(2))
           }
         })
       }
@@ -1058,30 +1060,43 @@ export function ProgramView() {
                       : 'Aucune note disponible pour le moment. Assurez-vous d\'être inscrit au programme et d\'avoir complété des évaluations.'}
                 </p>
               </div>
-            ) : !program?.evaluations_config || !program.evaluations_config.items || program.evaluations_config.items.length === 0 ? (
-              <div className="text-center py-6 text-gray-500">
-                <AlertCircle className="w-12 h-12 mx-auto mb-2 text-gray-300" />
-                <p className="font-medium mb-1">Configuration manquante</p>
-                <p className="text-sm">Veuillez configurer les évaluations dans les paramètres du programme (Pédagogie → Configuration des évaluations) pour afficher les notes</p>
-                <Link
-                  to={`/admin/programs/${programId}`}
-                  className="mt-3 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
-                >
-                  Configurer les évaluations
-                </Link>
-              </div>
-            ) : (
+            ) : (() => {
+              // Colonnes affichées = items config + tous les quiz du programme non encore dans la config
+              const configItems = program?.evaluations_config?.items ?? []
+              const configItemIds = new Set(configItems.map((it: { itemId: string }) => it.itemId))
+              const extraQuizColumns = evaluations
+                .filter((e) => !configItemIds.has(e.id))
+                .map((e) => ({ itemId: e.id, title: e.title, weight: 1, threshold: 10 }))
+              const displayItems = [...configItems, ...extraQuizColumns]
+              const hasDisplayColumns = displayItems.length > 0
+
+              if (!hasDisplayColumns) {
+                return (
+                  <div className="text-center py-6 text-gray-500">
+                    <AlertCircle className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                    <p className="font-medium mb-1">Configuration manquante</p>
+                    <p className="text-sm">Veuillez configurer les évaluations dans les paramètres du programme (Pédagogie → Configuration des évaluations) pour afficher les notes</p>
+                    <Link
+                      to={`/admin/programs/${programId}`}
+                      className="mt-3 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
+                    >
+                      Configurer les évaluations
+                    </Link>
+                  </div>
+                )
+              }
+
+              return (
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      {/* Colonne "Étudiant" uniquement visible pour les admins/trainers */}
                       {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))) && (
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Étudiant
                         </th>
                       )}
-                      {program.evaluations_config.items.map((item: any) => (
+                      {displayItems.map((item: { itemId: string; title: string; weight?: number }) => (
                         <th key={item.itemId} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           {item.title}
                           {item.weight && item.weight !== 1 && (
@@ -1097,7 +1112,6 @@ export function ProgramView() {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {Object.values(studentGrades).map((student) => (
                       <tr key={student.profile.id} className="hover:bg-gray-50">
-                        {/* Colonne "Étudiant" uniquement visible pour les admins/trainers */}
                         {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))) && (
                           <td className="px-4 py-3 whitespace-nowrap">
                             <div>
@@ -1110,18 +1124,17 @@ export function ProgramView() {
                             </div>
                           </td>
                         )}
-                        {program.evaluations_config.items.map((item: any) => {
+                        {displayItems.map((item: { itemId: string; threshold?: number }) => {
                           const tpGrade = student.tpGrades[item.itemId]
                           const quizGrade = student.quizGrades[item.itemId]
                           const grade = tpGrade !== undefined ? tpGrade : (quizGrade !== undefined ? quizGrade : null)
-                          
                           return (
                             <td key={item.itemId} className="px-4 py-3 whitespace-nowrap">
-                              {grade !== null ? (
+                              {grade != null ? (
                                 <span className={`text-sm font-medium ${
-                                  grade >= (item.threshold || 10) ? 'text-green-600' : 'text-red-600'
+                                  grade >= (item.threshold ?? 10) ? 'text-green-600' : 'text-red-600'
                                 }`}>
-                                  {grade}/20
+                                  {Number(grade).toFixed(1)}/20
                                 </span>
                               ) : (
                                 <span className="text-sm text-gray-400">-</span>
@@ -1131,9 +1144,9 @@ export function ProgramView() {
                         })}
                         <td className="px-4 py-3 whitespace-nowrap bg-green-50">
                           <span className={`text-sm font-bold ${
-                            student.average >= (program.evaluations_config?.passingScore || 10) ? 'text-green-600' : 'text-red-600'
+                            student.average >= (program?.evaluations_config?.passingScore ?? 10) ? 'text-green-600' : 'text-red-600'
                           }`}>
-                            {student.average > 0 ? `${student.average.toFixed(2)}/20` : '-'}
+                            {student.average > 0 ? `${Number(student.average).toFixed(1)}/20` : '-'}
                           </span>
                         </td>
                       </tr>
@@ -1141,7 +1154,8 @@ export function ProgramView() {
                   </tbody>
                 </table>
               </div>
-            )}
+              )
+            })()}
             </div>
           )}
 
@@ -1184,10 +1198,10 @@ export function ProgramView() {
                         <div>
                           <h4 className="font-medium text-gray-900">{evaluation.title}</h4>
                           <p className="text-sm text-gray-500">
-                            {evaluation.questions?.length || 0} questions • Score min: {evaluation.passing_score}%
+                            {evaluation.questions?.length || 0} questions • Score min: {Number(evaluation.passing_score ?? 0).toFixed(0)}%
                             {attempt && (
                               <span className={`ml-2 ${attempt.passed ? 'text-green-600' : 'text-orange-600'}`}>
-                                • Votre score: {attempt.percentage}%
+                                • Votre score: {Number(attempt.percentage).toFixed(0)}%
                               </span>
                             )}
                           </p>
@@ -1403,7 +1417,7 @@ export function ProgramView() {
                                       </span>
                                       {submission.grade !== null && (
                                         <span className="text-xs font-medium text-gray-700">
-                                          Note: {submission.grade}/20
+                                          Note: {Number(submission.grade).toFixed(1)}/20
                                         </span>
                                       )}
                                       <span className="text-xs text-gray-500">
@@ -1431,6 +1445,20 @@ export function ProgramView() {
                        (item.content?.type === 'step-by-step' || (item.content?.steps && Array.isArray(item.content.steps))) && (
                         <div className="mt-4 pt-4 border-t border-gray-200 px-4 pb-4">
                           <StepByStepTpProgressViewer
+                            itemId={item.id}
+                            courseId={item.modules?.courses?.id || undefined}
+                            sessionId={undefined}
+                          />
+                        </div>
+                      )}
+
+                      {/* Commentaires par partie pour les TP New (pour formateurs/admins) */}
+                      {expandedItemId === item.id && 
+                       (profile?.role === 'admin' || profile?.role === 'trainer' || profile?.role === 'instructor') &&
+                       item.type === 'tp' && 
+                       item.content?.type === 'tp-new' && (
+                        <div className="mt-4 pt-4 border-t border-indigo-200 px-4 pb-4 bg-indigo-50/50 rounded-lg">
+                          <TpNewCommentsViewer
                             itemId={item.id}
                             courseId={item.modules?.courses?.id || undefined}
                             sessionId={undefined}
@@ -1623,7 +1651,7 @@ export function ProgramView() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-4">
                             <div className="flex-1">
-                              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                              <h3 className="text-base font-semibold text-gray-900 mb-2">
                                 {course.title || 'Formation sans titre'}
                               </h3>
                               {course.description && (
@@ -1639,11 +1667,6 @@ export function ProgramView() {
                                 }`}>
                                   {course.status === 'published' ? 'Publié' : 'Brouillon'}
                                 </span>
-                                {course.access_type === 'free' && (
-                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    Gratuit
-                                  </span>
-                                )}
                                 {course.access_type === 'paid' && (
                                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                     💰 {course.price_cents ? `${course.price_cents / 100}€` : 'Payant'}

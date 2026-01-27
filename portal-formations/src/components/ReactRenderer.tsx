@@ -197,6 +197,7 @@ export function ReactRenderer({
             <div 
               key={moduleIndex}
               id={`module-${moduleIndex}`}
+              data-module-id={module.id}
               className="module-container mb-8"
               style={{
                 '--module-primary': moduleTheme.primaryColor,

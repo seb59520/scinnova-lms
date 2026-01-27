@@ -1,0 +1,186 @@
+{
+  "title": "TP Pas à Pas - Modèle",
+  "description": "Modèle de TP pas à pas avec cases à cocher pour suivre l'avancement des étudiants",
+  "type": "tp",
+  "content": {
+    "type": "step-by-step",
+    "introduction": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Bienvenue dans ce TP pas à pas ! Suivez les étapes ci-dessous et cochez chaque étape au fur et à mesure de votre progression."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Votre formateur pourra suivre votre avancement en temps réel."
+            }
+          ]
+        }
+      ]
+    },
+    "steps": [
+      {
+        "id": "step-1",
+        "title": "Préparation de l'environnement",
+        "order": 1,
+        "estimatedTime": "15 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Installez les dépendances nécessaires et configurez votre environnement de développement."
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Installer Node.js et npm"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Créer un nouveau projet"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "step-2",
+        "title": "Création de la structure",
+        "order": 2,
+        "estimatedTime": "20 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Créez la structure de base de votre projet avec les dossiers et fichiers nécessaires."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Voici un exemple de structure de projet :"
+                }
+              ]
+            },
+            {
+              "type": "image",
+              "attrs": {
+                "src": "https://exemple.com/capture-ecran-structure.png",
+                "alt": "Exemple de structure de projet",
+                "title": "Structure du projet"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Remplacez l'URL de l'image ci-dessus par l'URL de votre propre capture d'écran. Vous pouvez uploader des images via l'éditeur TipTap dans l'interface d'administration."
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "step-3",
+        "title": "Implémentation des fonctionnalités",
+        "order": 3,
+        "estimatedTime": "45 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Implémentez les fonctionnalités principales selon les spécifications."
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "step-4",
+        "title": "Tests et validation",
+        "order": 4,
+        "estimatedTime": "30 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Testez votre implémentation et validez que tout fonctionne correctement."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "conclusion": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Félicitations ! Vous avez terminé ce TP. N'hésitez pas à explorer les fonctionnalités avancées et à poser des questions à votre formateur."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

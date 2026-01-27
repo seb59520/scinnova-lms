@@ -1,0 +1,345 @@
+{
+  "title": "Microsoft Exchange — Partie 8 : Analyse et dépannage des flux SMTP",
+  "description": "Cours avancé sur le diagnostic et la résolution des problèmes de flux SMTP dans Exchange : outils de suivi, journaux, erreurs courantes et méthodologie de dépannage. Inclut un TP au format TPNew (par thèmes, avec captures d'écran).",
+  "status": "published",
+  "access_type": "free",
+  "currency": "EUR",
+  "is_public": false,
+  "theme": {
+    "primaryColor": "#EF4444",
+    "secondaryColor": "#F59E0B",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 — Comprendre où un mail peut échouer",
+      "position": 1,
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Le parcours complet d'un email dans Exchange",
+          "position": 1,
+          "published": true,
+          "content": {
+            "type": "doc",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Avant de dépanner, il est essentiel de comprendre le chemin exact parcouru par un message dans Exchange."
+                  }
+                ]
+              },
+              {
+                "type": "orderedList",
+                "content": [
+                  {
+                    "type": "listItem",
+                    "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Outlook / Client SMTP" }] }]
+                  },
+                  {
+                    "type": "listItem",
+                    "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Transport Frontend (Receive Connector)" }] }]
+                  },
+                  {
+                    "type": "listItem",
+                    "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Transport Service (catégorisation, règles, files d'attente)" }] }]
+                  },
+                  {
+                    "type": "listItem",
+                    "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Send Connector (résolution DNS / Smart Host)" }] }]
+                  },
+                  {
+                    "type": "listItem",
+                    "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Serveur SMTP distant" }] }]
+                  }
+                ]
+              },
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Un problème SMTP correspond toujours à un point précis de cette chaîne."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Typologie des pannes SMTP",
+          "position": 2,
+          "published": true,
+          "content": {
+            "type": "doc",
+            "content": [
+              {
+                "type": "bulletList",
+                "content": [
+                  {
+                    "type": "listItem",
+                    "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Le mail ne part pas (bloqué dans la file)" }] }]
+                  },
+                  {
+                    "type": "listItem",
+                    "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Le mail est rejeté immédiatement (erreur SMTP)" }] }]
+                  },
+                  {
+                    "type": "listItem",
+                    "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Le mail part mais n'arrive jamais" }] }]
+                  },
+                  {
+                    "type": "listItem",
+                    "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Le mail revient avec un NDR (Non-Delivery Report)" }] }]
+                  }
+                ]
+              },
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Chaque type de panne correspond à des outils et des vérifications spécifiques."
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 — Outils de diagnostic Exchange",
+      "position": 2,
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Message Trace (suivi des messages)",
+          "position": 1,
+          "published": true,
+          "content": {
+            "type": "doc",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Le suivi des messages permet de retracer le parcours d'un email dans Exchange."
+                  }
+                ]
+              },
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Via l'EAC : Mail flow > Message trace."
+                  }
+                ]
+              },
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Via PowerShell : Get-MessageTrackingLog."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Files d'attente SMTP (Queues)",
+          "position": 2,
+          "published": true,
+          "content": {
+            "type": "doc",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Les files d'attente SMTP indiquent si Exchange est bloqué lors de l'envoi."
+                  }
+                ]
+              },
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Commande clé : Get-Queue et Get-Queue | Get-Message."
+                  }
+                ]
+              },
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Une file en Retry indique souvent un problème DNS, TLS ou distant."
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 — Erreurs SMTP courantes et interprétation",
+      "position": 3,
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Codes d'erreur SMTP fréquents",
+          "position": 1,
+          "published": true,
+          "content": {
+            "type": "doc",
+            "content": [
+              {
+                "type": "bulletList",
+                "content": [
+                  {
+                    "type": "listItem",
+                    "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "421 : Service indisponible (temporaire)" }] }]
+                  },
+                  {
+                    "type": "listItem",
+                    "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "450 / 451 : problème temporaire (retry)" }] }]
+                  },
+                  {
+                    "type": "listItem",
+                    "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "550 : rejet définitif (relay denied, user inconnu)" }] }]
+                  },
+                  {
+                    "type": "listItem",
+                    "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "554 : message refusé (sécurité, politique)" }] }]
+                  }
+                ]
+              },
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Les codes 4xx sont temporaires, les 5xx sont définitifs."
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 4 — TP 8 : Diagnostic et dépannage SMTP (TPNew)",
+      "position": 4,
+      "items": [
+        {
+          "type": "tp",
+          "title": "TP 8 — Analyser et résoudre des incidents SMTP Exchange",
+          "position": 1,
+          "published": true,
+          "content": {
+            "type": "tp-new",
+            "introduction": "Ce TP met l'apprenant en situation réelle de dépannage SMTP. Machines : EX01 (Exchange), CLIENT01 (Outlook). Chaque thème correspond à une étape du diagnostic.",
+            "themes": [
+              {
+                "id": "theme-1",
+                "title": "Constater un échec d'envoi",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Machine : CLIENT01. Envoyer un mail volontairement non délivrable (domaine inexistant ou destinataire invalide)."
+                  },
+                  {
+                    "type": "text-image",
+                    "text": "Observer le message d'erreur affiché par Outlook ou le NDR (Non-Delivery Report) reçu. La capture à droite montre un exemple de NDR typique.",
+                    "src": "https://placehold.co/600x350/EF4444/ffffff?text=Exemple+NDR+ou+erreur+Outlook",
+                    "alt": "Exemple de NDR ou message d'erreur",
+                    "layout": "right"
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère :** un échec est constaté (erreur client ou NDR reçu). Durée indicative : 10 min."
+                  }
+                ]
+              },
+              {
+                "id": "theme-2",
+                "title": "Tracer le message",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Machine : EX01. Utiliser **Message Trace** pour retrouver le message (EAC : Mail flow → Message trace, ou PowerShell : Get-MessageTrackingLog)."
+                  },
+                  {
+                    "type": "text-image",
+                    "text": "Renseigner expéditeur, destinataire, plage de dates puis lancer la recherche. Identifier l'étape exacte où le message échoue (Delivered, Failed, Pending, Deferred).",
+                    "src": "https://placehold.co/600x350/F59E0B/ffffff?text=Message+Trace+EAC",
+                    "alt": "Message Trace dans l'EAC",
+                    "layout": "right"
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère :** vous savez dire pourquoi il échoue et à quelle étape (réception, transport, Send Connector, serveur distant). Durée indicative : 20 min."
+                  }
+                ]
+              },
+              {
+                "id": "theme-3",
+                "title": "Analyser la file d'attente SMTP",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Lister les files avec **Get-Queue**. Une file en *Retry* indique souvent un problème DNS, TLS ou distant."
+                  },
+                  {
+                    "type": "text-image",
+                    "text": "Identifier une file bloquée en Retry. Get-Queue | Get-Message permet d'inspecter les messages en attente. L'image à gauche rappelle la sortie typique.",
+                    "src": "https://placehold.co/500x280/EF4444/ffffff?text=Get-Queue+Retry",
+                    "alt": "File d'attente en Retry",
+                    "layout": "left"
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère :** la cause probable (DNS, connecteur, certificat) est identifiée. Durée indicative : 20 min."
+                  }
+                ]
+              },
+              {
+                "id": "theme-4",
+                "title": "Corriger la cause",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Corriger la configuration selon le scénario : DNS, Send/Receive Connector, certificat, ou paramètre du Smart Host."
+                  },
+                  {
+                    "type": "text",
+                    "text": "Relancer le flux SMTP (redémarrage du service Transport si besoin, ou attente du retry automatique). Vérifier que la file se vide et que le message est délivré ou rejeté proprement."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère final :** la file se vide et le message est délivré ou rejeté proprement. Durée indicative : 25 min."
+                  }
+                ]
+              }
+            ],
+            "conclusion": "TP validé : l'apprenant sait diagnostiquer et résoudre un incident SMTP Exchange de manière méthodique (constater → tracer → analyser → corriger)."
+          }
+        }
+      ]
+    }
+  ]
+}

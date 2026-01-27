@@ -1,0 +1,1523 @@
+{
+  "title": "Microsoft Exchange — Partie 12 : Sécurité avancée, supervision et audit",
+  "description": "Module fin de parcours (≈ 4 à 5 h), niveau admin Exchange / sécurité : stratégies de sécurité avancées, MFA hybride, incident phishing, supervision SOC, audit sécurité, cas réel CVE ProxyLogon / ProxyShell. Objectifs : comprendre les enjeux de sécurité Exchange, surface d'attaque, restrictions d'accès, MFA hybride, détection et réaction à incident, supervision SOC, audit posture sécurité, attaques réelles (CVE). Cours + TP intégrés, montée en compétence progressive. Niveau Exchange 2019 on-prem.",
+  "status": "published",
+  "access_type": "free",
+  "currency": "EUR",
+  "is_public": false,
+  "theme": {
+    "primaryColor": "#DC2626",
+    "secondaryColor": "#1E40AF",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 — Objectifs et vue d'ensemble Partie 12",
+      "position": 1,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Objectifs pédagogiques globaux (Partie 12)",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Sécurité avancée, supervision et audit (≈ 4 à 5 h)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "À l'issue de ce module, l'apprenant sera capable de :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comprendre les enjeux de sécurité Exchange"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifier la surface d'attaque d'un serveur Exchange"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Mettre en place des restrictions d'accès efficaces"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comprendre et appliquer une approche MFA hybride"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Détecter et analyser un incident de sécurité Exchange"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Réagir méthodiquement à une compromission"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Superviser Exchange dans une logique SOC"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Auditer la posture de sécurité d'un Exchange"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comprendre et expliquer des attaques réelles (CVE)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "game",
+          "title": "Quiz Module 12 — Sécurité avancée, supervision et audit",
+          "position": 2,
+          "published": true,
+          "content": {
+            "gameType": "quiz",
+            "description": "Quiz de 10 questions sur la surface d'attaque Exchange, MFA On-Prem, Zabbix/SIEM/SOC, audit OWA/ECP/SMTP, CVE ProxyLogon/ProxyShell.",
+            "instructions": "Répondez aux 10 questions. Une seule réponse correcte par question.",
+            "scoring": {
+              "totalQuestions": 10,
+              "pointsPerQuestion": 1,
+              "passingScore": 7
+            },
+            "levels": [
+              {
+                "level": 1,
+                "name": "Quiz Module 12 — Sécurité avancée",
+                "questions": [
+                  {
+                    "id": "m12-q1",
+                    "type": "mcq",
+                    "prompt": "Exchange concentre notamment :",
+                    "options": [
+                      "Uniquement des fichiers",
+                      "Identité (AD), communications, données sensibles, services exposés (OWA, ECP, SMTP)",
+                      "Uniquement le SMTP",
+                      "Rien de sensible"
+                    ],
+                    "answer": "Identité (AD), communications, données sensibles, services exposés (OWA, ECP, SMTP)",
+                    "explanation": "Une compromission Exchange peut entraîner une compromission globale du SI (accès AD, emails, données).",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m12-q2",
+                    "type": "mcq",
+                    "prompt": "Sur Exchange On-Prem, le MFA est :",
+                    "options": [
+                      "Natif dans Exchange",
+                      "Appliqué en amont (Azure AD hybride, ADFS, reverse proxy) — Exchange ne gère pas le MFA nativement",
+                      "Inutile",
+                      "Géré uniquement par OWA"
+                    ],
+                    "answer": "Appliqué en amont (Azure AD hybride, ADFS, reverse proxy) — Exchange ne gère pas le MFA nativement",
+                    "explanation": "Exchange On-Prem ne gère pas le MFA nativement ; il faut Azure AD hybride, ADFS + MFA ou un reverse proxy/WAF avec MFA.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m12-q3",
+                    "type": "mcq",
+                    "prompt": "« Zabbix surveille si Exchange fonctionne. Le SIEM surveille si Exchange est attaqué. » Cette phrase illustre :",
+                    "options": [
+                      "La même chose pour Zabbix et SIEM",
+                      "La différence entre supervision (Zabbix) et détection sécurité (SIEM)",
+                      "Que le SOC remplace tout",
+                      "Que Zabbix fait du SIEM"
+                    ],
+                    "answer": "La différence entre supervision (Zabbix) et détection sécurité (SIEM)",
+                    "explanation": "Zabbix = « Ça marche ? ». SIEM = « Est-ce normal ? » (attaque, abus). SOC = équipe + procédures + outils (Zabbix + SIEM).",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m12-q4",
+                    "type": "mcq",
+                    "prompt": "L'ECP (Exchange Admin Center / Centre d'administration) ne doit jamais être :",
+                    "options": [
+                      "Utilisé",
+                      "Exposé librement sur Internet sans protection (VPN, restriction IP, etc.)",
+                      "Consulté par les admins",
+                      "Configuré"
+                    ],
+                    "answer": "Exposé librement sur Internet sans protection (VPN, restriction IP, etc.)",
+                    "explanation": "ECP donne un accès admin complet ; il ne doit pas être exposé sans contrôle (VPN, restriction IP, MFA en amont).",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m12-q5",
+                    "type": "mcq",
+                    "prompt": "ProxyLogon (CVE-2021-26855) permet :",
+                    "options": [
+                      "Une mise à jour automatique",
+                      "Un accès non authentifié, dépôt de webshell, prise de contrôle",
+                      "Une sauvegarde native",
+                      "Rien de particulier"
+                    ],
+                    "answer": "Un accès non authentifié, dépôt de webshell, prise de contrôle",
+                    "explanation": "ProxyLogon était une vulnérabilité critique : accès non authentifié au serveur Exchange, dépôt de webshell, prise de contrôle. Patch urgent.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m12-q6",
+                    "type": "mcq",
+                    "prompt": "En cas de compromission suspectée (CVE, incident), une des premières actions est :",
+                    "options": [
+                      "Attendre une semaine",
+                      "Isoler le serveur, analyser, patcher, changer les mots de passe, vérifier AD, documenter",
+                      "Supprimer toutes les boîtes",
+                      "Ne rien faire"
+                    ],
+                    "answer": "Isoler le serveur, analyser, patcher, changer les mots de passe, vérifier AD, documenter",
+                    "explanation": "Réaction professionnelle : isoler pour limiter la propagation, analyser (IOC, logs), patcher, sécuriser les comptes (MDP, AD), documenter.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m12-q7",
+                    "type": "mcq",
+                    "prompt": "« Un serveur Exchange sans supervision et SIEM, c'est une caméra de sécurité éteinte » signifie :",
+                    "options": [
+                      "Les caméras suffisent",
+                      "Sans surveillance et détection (supervision + SIEM), on est aveugle face aux incidents et attaques",
+                      "Exchange n'a pas besoin de supervision",
+                      "Le SIEM remplace tout"
+                    ],
+                    "answer": "Sans surveillance et détection (supervision + SIEM), on est aveugle face aux incidents et attaques",
+                    "explanation": "Supervision (Zabbix, etc.) + SIEM permettent de voir ce qui se passe et de détecter les anomalies ; sans eux, les incidents passent souvent inaperçus.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m12-q8",
+                    "type": "mcq",
+                    "prompt": "Lors d'un audit sécurité Exchange, on vérifie notamment :",
+                    "options": [
+                      "Uniquement la version d'Exchange",
+                      "OWA/ECP (restrictions IP, auth, TLS), connecteurs SMTP (relais, anonyme), certificats",
+                      "Rien",
+                      "Uniquement les sauvegardes"
+                    ],
+                    "answer": "OWA/ECP (restrictions IP, auth, TLS), connecteurs SMTP (relais, anonyme), certificats",
+                    "explanation": "Audit typique : accès exposés (OWA/ECP), restrictions et TLS ; SMTP (relais ouvert, anonyme) ; certificats (validité, services).",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m12-q9",
+                    "type": "mcq",
+                    "prompt": "Le principe « Ce qui n'a pas besoin d'être accessible ne doit pas l'être » appliqué à Exchange implique :",
+                    "options": [
+                      "Tout fermer sans réflexion",
+                      "ECP pas exposé librement, OWA protégé (VPN/proxy/MFA), connecteurs SMTP limités, certificats surveillés",
+                      "Exposer tout sur Internet",
+                      "Ne jamais utiliser OWA"
+                    ],
+                    "answer": "ECP pas exposé librement, OWA protégé (VPN/proxy/MFA), connecteurs SMTP limités, certificats surveillés",
+                    "explanation": "Réduire la surface d'attaque : n'exposer que ce qui est nécessaire, avec les bonnes protections (VPN, MFA, restrictions, TLS).",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m12-q10",
+                    "type": "mcq",
+                    "prompt": "Parmi les indicateurs de compromission après une CVE Exchange, on cherche :",
+                    "options": [
+                      "Uniquement la couleur du logo",
+                      "Fichiers suspects dans IIS, logs anormaux, comptes admin ajoutés",
+                      "Rien de particulier",
+                      "La météo"
+                    ],
+                    "answer": "Fichiers suspects dans IIS, logs anormaux, comptes admin ajoutés",
+                    "explanation": "Indicateurs typiques : webshells ou fichiers inconnus dans IIS, logs avec requêtes suspectes, nouveaux comptes admin ou droits élevés.",
+                    "difficulty": 2
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 — Exchange : une cible critique",
+      "position": 2,
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Exchange concentre identité, flux et données",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exchange concentre : identité (Active Directory), communications internes et externes, données sensibles, services exposés (OWA, ECP, SMTP)."
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Une compromission Exchange entraîne souvent une compromission globale du SI."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 — Menaces courantes et surface d'attaque",
+      "position": 3,
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Menaces courantes sur Exchange",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Phishing (vol d'identifiants)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Brute force sur OWA"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Relais SMTP ouvert"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Vulnérabilités non patchées"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Délégation de permissions abusives"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Symptômes typiques : envois massifs d'emails, rejets SMTP, alertes antivirus, connexions inhabituelles."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Surface d'attaque Exchange",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OWA — Vol de comptes"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "ECP — Prise de contrôle admin"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "SMTP — Spam / blacklist"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Autodiscover — Fuite d'infos"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "IIS — Exploitation CVE"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Tout service exposé doit être volontairement maîtrisé."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 4 — Principe fondamental et MFA On-Prem",
+      "position": 4,
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Principe fondamental de sécurité",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ce qui n'a pas besoin d'être accessible ne doit pas l'être."
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "ECP jamais exposé librement"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OWA protégé (VPN / proxy / MFA)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Connecteurs SMTP strictement limités"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Certificats valides et surveillés"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "4.2 MFA et Exchange On-Prem",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Point clé"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exchange On-Prem ne gère pas le MFA nativement."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Approches réalistes : Azure AD hybride (recommandé), ADFS + MFA, Reverse Proxy / WAF avec MFA."
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Le MFA s'applique avant Exchange, pas dans Exchange."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 5 — Détection et réaction à incident",
+      "position": 5,
+      "items": [
+        {
+          "type": "resource",
+          "title": "5.1 Outils natifs et méthode de réaction",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Outils natifs"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Message Trace"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Journaux IIS"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Event Viewer"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Logs SMTP"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Méthode de réaction"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifier"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Isoler"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Corriger"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Nettoyer"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Documenter"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Prévenir"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "5.2 Très bonne question — Logique Zabbix / SIEM / SOC",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Très bonne question 👍 Et tu fais bien de la poser. « Logique Zabbix / SIEM » n'est pas un outil en soi, c'est une façon de penser la supervision et la sécurité. Je t'explique simplement, puis concrètement avec Exchange."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Qu'est-ce que la « logique Zabbix / SIEM » ?"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "C'est la différence entre : superviser (Zabbix, Centreon…) — « Est-ce que mon système fonctionne ? » ; détecter et analyser des incidents de sécurité (SIEM, SOC) — « Est-ce que quelqu'un attaque ou abuse du système ? »"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Zabbix : la logique de SUPERVISION"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Zabbix sert à répondre à : « Est-ce que mon système fonctionne normalement ? » Sur un serveur Exchange : CPU (surcharge), Mémoire (saturation), Disque (base pleine), Services Exchange (disponibilité), Files SMTP (blocage de flux). Zabbix détecte des anomalies techniques."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exemple concret : service Microsoft Exchange Transport arrêté, file SMTP qui grossit anormalement, disque des journaux presque plein → alerte Zabbix → admin intervient."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "SIEM : la logique de SÉCURITÉ"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Un SIEM répond à : « Est-ce que quelqu'un est en train d'attaquer ou d'abuser du système ? » Sources : logs Exchange (envois massifs), logs IIS (connexions OWA suspectes), logs AD (échecs d'authentification), logs SMTP (tentatives anormales). Le SIEM corrèle plusieurs événements."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exemple concret : connexion OWA réussie à 03h12 depuis une IP inhabituelle, puis 500 emails envoyés en 10 minutes, puis blocage SMTP externe → incident de sécurité détecté."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "SOC : la logique OPÉRATIONNELLE"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Le SOC (Security Operations Center) est : une équipe, des procédures, des outils (SIEM, supervision). Le SOC utilise Zabbix + SIEM."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Différence essentielle (à retenir)"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Zabbix — « Ça marche ? »"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "SIEM — « Est-ce normal ? »"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "SOC — « Que fait-on maintenant ? »"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Logique Zabbix / SIEM appliquée à Exchange"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas 1 — Zabbix seul : file SMTP saturée → alerte. Problème technique détecté."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas 2 — SIEM seul : connexion OWA inhabituelle + envoi massif → alerte. Incident de sécurité détecté."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas 3 — Zabbix + SIEM (logique complète) : SIEM détecte comportement suspect ; Zabbix détecte surcharge Exchange ; SOC confirme attaque, isole le compte, corrige. Vision complète et professionnelle."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Formulation simple pour l'apprenant"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "« Zabbix surveille si Exchange fonctionne. Le SIEM surveille si Exchange est attaqué. Le SOC décide quoi faire quand ce n'est plus normal. »"
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Un serveur Exchange sans supervision et SIEM, c'est une caméra de sécurité éteinte."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 6 — TP global : Sécurité avancée Exchange",
+      "position": 6,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Contexte du laboratoire Partie 12",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Machines"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "DC01 : Active Directory"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "EX01 : Exchange Server"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CLIENT01 : poste utilisateur"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Le TP global regroupe cinq volets : MFA hybride, incident phishing, supervision SOC, audit sécurité, cas réel CVE. Montée en compétence progressive."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "tp",
+          "title": "TP 12 — Sécurité avancée Exchange (volets 1 à 5)",
+          "position": 2,
+          "published": true,
+          "content": {
+            "type": "tp-new",
+            "introduction": "Objectif : appliquer les notions de sécurité avancée Exchange à travers cinq volets — MFA hybride (simulation restriction d'accès), incident phishing (Message Trace, réaction), supervision SOC (éléments à superviser, logique Zabbix/SIEM), audit sécurité (OWA/ECP, SMTP, certificats), cas réel CVE (ProxyLogon, ProxyShell, indicateurs de compromission, réaction professionnelle). Machines : DC01, EX01, CLIENT01.",
+            "themes": [
+              {
+                "id": "theme-mfa-1",
+                "title": "Volet 1 MFA — Étape 1 : Comprendre la limite Exchange",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Exchange ne gère pas le MFA seul. L'authentification passe par AD + IIS. Objectif : comprendre pourquoi le MFA doit être appliqué en amont (Azure AD hybride, ADFS, reverse proxy)."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant explique en une phrase pourquoi Exchange On-Prem ne gère pas le MFA nativement."
+                  }
+                ]
+              },
+              {
+                "id": "theme-mfa-2",
+                "title": "Volet 1 MFA — Étape 2 : Simulation MFA via restriction d'accès",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Sur EX01 : IIS Manager → Default Web Site > OWA → IP Address and Domain Restrictions → autoriser uniquement le réseau interne. Simulation pédagogique d'un contrôle d'accès type MFA externe."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Validation :** OWA accessible depuis EX01 (ou plage autorisée), OWA bloqué depuis CLIENT01 hors plage."
+                  }
+                ]
+              },
+              {
+                "id": "theme-phishing-1",
+                "title": "Volet 2 Phishing — Étape 3 : Détection via Message Trace",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Sur EX01 : Mail flow > Message trace. Rechercher par expéditeur, identifier volume et statut. Objectif : retrouver le message et comprendre son parcours."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant sait utiliser Message Trace pour tracer un message suspect."
+                  }
+                ]
+              },
+              {
+                "id": "theme-phishing-2",
+                "title": "Volet 2 Phishing — Étape 4 : Identifier l'étape d'échec ou de succès",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "L'apprenant doit expliquer : si le message passe ou échoue ; à quelle étape (Receive Connector, Transport, serveur distant)."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant décrit le parcours du message et l'étape critique."
+                  }
+                ]
+              },
+              {
+                "id": "theme-phishing-3",
+                "title": "Volet 2 Phishing — Étape 5 : Réaction à incident",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Sur DC01 : désactiver le compte, réinitialiser le mot de passe. Sur EX01 : vérifier règles de boîte, vérifier permissions déléguées."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant applique la méthode Identifier / Isoler / Corriger / Nettoyer / Documenter / Prévenir."
+                  }
+                ]
+              },
+              {
+                "id": "theme-soc-1",
+                "title": "Volet 3 SOC — Étape 6 : Identifier les éléments à superviser",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Identifier : services Exchange, files SMTP, logs IIS, événements sécurité. Exchange s'intègre dans une chaîne SOC, jamais seul."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant liste au moins trois éléments à superviser pour Exchange."
+                  }
+                ]
+              },
+              {
+                "id": "theme-soc-2",
+                "title": "Volet 3 SOC — Étape 7 : Logique Zabbix / SIEM",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Surveillance des anomalies, alertes automatiques, corrélation AD + Exchange. Comprendre comment Exchange s'insère dans une chaîne SOC (Zabbix, SIEM, etc.)."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant explique en quoi la corrélation AD + Exchange est utile en SOC."
+                  }
+                ]
+              },
+              {
+                "id": "theme-audit-1",
+                "title": "Volet 4 Audit — Étape 8 : Définir le périmètre d'audit",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Définir : accès exposés, dépendances, services critiques. Objectif : cadrer l'audit sécurité Exchange."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant décrit un périmètre d'audit cohérent (OWA, ECP, SMTP, certificats)."
+                  }
+                ]
+              },
+              {
+                "id": "theme-audit-2",
+                "title": "Volet 4 Audit — Étape 9 : Vérifier OWA / ECP",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Vérifier : restrictions IP, authentification, TLS obligatoire. ECP jamais exposé librement ; OWA protégé."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant sait quels points contrôler sur OWA et ECP."
+                  }
+                ]
+              },
+              {
+                "id": "theme-audit-3",
+                "title": "Volet 4 Audit — Étape 10 : Vérifier SMTP",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Vérifier : Receive connectors, permissions anonymes, risque de relais ouvert. Connecteurs SMTP strictement limités."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant identifie les risques SMTP (relais, anonyme) et les contrôles à faire."
+                  }
+                ]
+              },
+              {
+                "id": "theme-audit-4",
+                "title": "Volet 4 Audit — Étape 11 : Vérifier certificats et TLS",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Vérifier : certificat actif, services assignés, absence d'expiration. Certificats valides et surveillés."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant sait quels éléments vérifier sur les certificats Exchange."
+                  }
+                ]
+              },
+              {
+                "id": "theme-cve-1",
+                "title": "Volet 5 CVE — Étape 12 : ProxyLogon (CVE-2021-26855)",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "ProxyLogon : accès non authentifié, dépôt de webshell, prise de contrôle complète. Comprendre le vecteur d'attaque et l'impact."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant décrit brièvement le scénario ProxyLogon (accès, webshell, prise de contrôle)."
+                  }
+                ]
+              },
+              {
+                "id": "theme-cve-2",
+                "title": "Volet 5 CVE — Étape 13 : ProxyShell (CVE-2021-34473)",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "ProxyShell : chaîne de vulnérabilités, exécution de code, exploitation massive. Différence et lien avec ProxyLogon."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant explique en quoi ProxyShell est une chaîne de vulnérabilités et son impact."
+                  }
+                ]
+              },
+              {
+                "id": "theme-cve-3",
+                "title": "Volet 5 CVE — Étape 14 : Indicateurs de compromission",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Indicateurs typiques : fichiers suspects IIS, logs anormaux, comptes admin ajoutés. Savoir où chercher après une CVE."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant cite au moins trois indicateurs de compromission (IIS, logs, comptes)."
+                  }
+                ]
+              },
+              {
+                "id": "theme-cve-4",
+                "title": "Volet 5 CVE — Étape 15 : Réaction professionnelle à une CVE",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Réaction professionnelle : 1) Isoler le serveur ; 2) Analyser ; 3) Patcher ; 4) Changer les mots de passe ; 5) Vérifier AD ; 6) Documenter."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant enchaîne les étapes dans l'ordre et justifie l'isolation puis l'analyse avant le patch."
+                  }
+                ]
+              },
+              {
+                "id": "theme-validation",
+                "title": "Validation finale du module",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "L'étudiant sait : sécuriser Exchange ; détecter un incident ; analyser un flux SMTP ; expliquer une attaque réelle (CVE) ; auditer un serveur Exchange ; proposer des actions correctives."
+                  }
+                ]
+              },
+              {
+                "id": "theme-cloture",
+                "title": "Message final à retenir",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Sécuriser Exchange n'est pas une action ponctuelle, c'est une discipline continue entre identité, flux et supervision."
+                  }
+                ]
+              }
+            ],
+            "conclusion": "TP validé : l'apprenant sait sécuriser Exchange, détecter et réagir à un incident, superviser dans une logique SOC, auditer la posture sécurité et expliquer des attaques réelles (CVE). Message final : la sécurité Exchange est une discipline continue — identité, flux et supervision."
+          }
+        }
+      ]
+    }
+  ]
+}

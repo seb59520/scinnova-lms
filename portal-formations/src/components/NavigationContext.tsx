@@ -165,22 +165,32 @@ export function EnhancedBreadcrumb() {
   if (breadcrumbs.length <= 1) return null
 
   return (
-    <nav className="flex items-center gap-1.5 text-sm text-gray-600 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent pb-1 min-w-0">
+    <nav 
+      className="flex items-center gap-2 text-sm text-gray-600 overflow-x-auto min-w-0 scroll-smooth breadcrumb-scroll"
+      style={{
+        scrollbarWidth: 'thin',
+        scrollbarColor: '#cbd5e1 #f1f5f9'
+      }}
+    >
       {breadcrumbs.map((crumb, index) => (
-        <div key={index} className="flex items-center gap-1.5 whitespace-nowrap flex-shrink-0">
+        <div key={index} className="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
           {index > 0 && <ChevronRight className="w-4 h-4 text-gray-400 flex-shrink-0" />}
           {crumb.path ? (
             <Link
               to={crumb.path}
-              className="flex items-center gap-1.5 hover:text-blue-600 transition-colors"
+              className="flex items-center gap-1.5 hover:text-blue-600 transition-colors py-1 px-1.5 rounded hover:bg-blue-50/50"
+              title={crumb.label}
             >
               {crumb.icon}
-              <span>{crumb.label}</span>
+              <span className="max-w-[200px] truncate">{crumb.label}</span>
             </Link>
           ) : (
-            <span className={`flex items-center gap-1.5 ${crumb.isCurrent ? 'text-gray-900 font-medium' : ''}`}>
+            <span 
+              className={`flex items-center gap-1.5 py-1 px-1.5 rounded ${crumb.isCurrent ? 'text-gray-900 font-semibold bg-gray-50' : ''}`}
+              title={crumb.label}
+            >
               {crumb.icon}
-              <span>{crumb.label}</span>
+              <span className="max-w-[300px] truncate">{crumb.label}</span>
             </span>
           )}
         </div>
@@ -189,7 +199,7 @@ export function EnhancedBreadcrumb() {
   )
 }
 
-// Barre de contexte persistante pour les cours
+// Barre de contexte persistante pour les cours (simplifiée - pas de fil d'Ariane)
 export function CourseContextBar() {
   const { context } = useNavigationContext()
   const [isExpanded, setIsExpanded] = useState(false)
@@ -201,73 +211,39 @@ export function CourseContextBar() {
     : 0
 
   return (
-    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100 sticky top-16 z-30">
+    <div className="bg-gradient-to-r from-blue-50/80 to-indigo-50/80 backdrop-blur-sm border-b border-blue-100/50 sticky top-16 z-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Barre principale */}
-        <div className="flex items-center justify-between py-2">
-          <div className="flex items-center gap-4 min-w-0 flex-1">
-            {/* Programme (si présent) */}
-            {context.program && (
-              <Link
-                to={`/programs/${context.program.id}`}
-                className="hidden sm:flex items-center gap-1.5 text-sm text-purple-600 hover:text-purple-800 transition-colors"
-              >
-                <Layers className="w-4 h-4 flex-shrink-0" />
-                <span className="truncate max-w-[120px]">{context.program.title}</span>
-              </Link>
-            )}
+        {/* Barre principale - discrète avec progression uniquement */}
+        <div className="flex items-center justify-end py-2 gap-3">
 
-            {context.program && <ChevronRight className="hidden sm:block w-4 h-4 text-gray-400" />}
-
-            {/* Cours */}
-            <Link
-              to={`/courses/${context.course.id}`}
-              className="flex items-center gap-1.5 text-sm font-medium text-blue-700 hover:text-blue-900 transition-colors"
-            >
-              <BookOpen className="w-4 h-4 flex-shrink-0" />
-              <span className="truncate max-w-[200px]">{context.course.title}</span>
-            </Link>
-
-            {/* Module actuel */}
-            {context.module && (
-              <>
-                <ChevronRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                <span className="flex items-center gap-1.5 text-sm text-gray-600">
-                  <FolderOpen className="w-4 h-4 flex-shrink-0" />
-                  <span className="truncate max-w-[150px]">{context.module.title}</span>
-                </span>
-              </>
-            )}
-          </div>
-
-          {/* Progression et toggle */}
-          <div className="flex items-center gap-3">
-            {/* Indicateur de position */}
+          {/* Progression et toggle - design compact et élégant */}
+          <div className="flex items-center gap-2.5">
+            {/* Indicateur de position compact */}
             {context.totalItems && context.currentItemIndex !== undefined && (
-              <div className="flex items-center gap-2">
-                <div className="hidden sm:flex items-center gap-1.5 text-sm text-gray-600">
-                  <MapPin className="w-4 h-4" />
-                  <span>{context.currentItemIndex + 1} / {context.totalItems}</span>
-                </div>
-                {/* Barre de progression */}
-                <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+              <div className="flex items-center gap-2 bg-white/60 rounded-lg px-2.5 py-1.5 border border-blue-100/50">
+                <MapPin className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
+                <span className="text-xs font-semibold text-gray-700 whitespace-nowrap">
+                  {context.currentItemIndex + 1} / {context.totalItems}
+                </span>
+                {/* Barre de progression compacte */}
+                <div className="w-20 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-blue-500 transition-all duration-300"
+                    className="h-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-300"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
-                <span className="text-xs font-medium text-gray-600">{progress}%</span>
+                <span className="text-xs font-bold text-blue-700 min-w-[2.5rem]">{progress}%</span>
               </div>
             )}
 
-            {/* Toggle mini-map */}
+            {/* Toggle mini-map - design amélioré */}
             {context.modules && context.modules.length > 0 && (
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="flex items-center gap-1 px-2 py-1 text-sm text-gray-600 hover:text-gray-900 hover:bg-white/50 rounded transition-colors"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-blue-700 hover:text-blue-900 hover:bg-white/80 rounded-lg transition-all border border-blue-200/50 shadow-sm hover:shadow"
               >
                 <span className="hidden sm:inline">Structure</span>
-                {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
               </button>
             )}
           </div>

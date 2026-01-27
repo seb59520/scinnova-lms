@@ -1,0 +1,244 @@
+{
+  "id": "step-11",
+  "order": 11,
+  "title": "Créer les utilisateurs Active Directory puis activer leurs boîtes Exchange (user1 / user2)",
+  "estimatedTime": "35 min",
+  "description": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Machines : DC01 puis EX01. Objectif : comprendre et appliquer la séparation des rôles entre Active Directory (identité) et Exchange (messagerie). Les utilisateurs seront d'abord créés dans AD, puis leurs boîtes Exchange seront activées explicitement."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": { "level": 3 },
+        "content": [
+          { "type": "text", "text": "A — Créer les comptes utilisateurs dans Active Directory (DC01)" }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Machine : DC01. Objectif : créer les identités utilisateurs sans messagerie. À ce stade, aucun attribut Exchange n'est encore présent."
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              { "type": "paragraph", "content": [{ "type": "text", "text": "Ouvrir 'Active Directory Users and Computers' (Utilisateurs et ordinateurs Active Directory)." }] }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              { "type": "paragraph", "content": [{ "type": "text", "text": "Aller dans l'OU de travail (ex : Users ou une OU dédiée aux employés)." }] }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              { "type": "paragraph", "content": [{ "type": "text", "text": "Clic droit > New > User." }] }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": { "level": 4 },
+        "content": [
+          { "type": "text", "text": "Créer l'utilisateur user1" }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              { "type": "paragraph", "content": [{ "type": "text", "text": "First name : User ; Last name : One." }] }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              { "type": "paragraph", "content": [{ "type": "text", "text": "User logon name : user1 (suffixe : @hygeasy.local)." }] }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              { "type": "paragraph", "content": [{ "type": "text", "text": "Définir un mot de passe de lab (ex : Lab2026!)." }] }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              { "type": "paragraph", "content": [{ "type": "text", "text": "Décochez 'User must change password at next logon' (lab uniquement)." }] }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              { "type": "paragraph", "content": [{ "type": "text", "text": "Valider la création." }] }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": { "level": 4 },
+        "content": [
+          { "type": "text", "text": "Créer l'utilisateur user2" }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              { "type": "paragraph", "content": [{ "type": "text", "text": "Répéter la procédure : New > User." }] }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              { "type": "paragraph", "content": [{ "type": "text", "text": "First name : User ; Last name : Two ; User logon name : user2." }] }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              { "type": "paragraph", "content": [{ "type": "text", "text": "Définir le mot de passe de lab." }] }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Point pédagogique : à ce stade, user1 et user2 existent dans AD mais ne possèdent PAS de boîte Exchange."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": { "level": 3 },
+        "content": [
+          { "type": "text", "text": "B — Activer les boîtes aux lettres Exchange pour les utilisateurs existants (EX01)" }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Machine : EX01. Objectif : transformer les utilisateurs AD existants en utilisateurs Exchange en ajoutant explicitement une boîte aux lettres."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": { "level": 4 },
+        "content": [
+          { "type": "text", "text": "Méthode recommandée — Exchange Management Shell (claire et professionnelle)" }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              { "type": "paragraph", "content": [{ "type": "text", "text": "Sur EX01, ouvrir 'Exchange Management Shell'." }] }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              { "type": "paragraph", "content": [{ "type": "text", "text": "Exécuter les commandes suivantes :" }] }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": { "language": "powershell" },
+        "content": [
+          { "type": "text", "text": "Enable-Mailbox user1\nEnable-Mailbox user2" }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Ces commandes ajoutent les attributs Exchange aux comptes AD sans recréer les utilisateurs."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": { "level": 4 },
+        "content": [
+          { "type": "text", "text": "Vérification (obligatoire)" }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Dans Exchange Management Shell, exécuter :"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": { "language": "powershell" },
+        "content": [
+          { "type": "text", "text": "Get-Mailbox | Select Name,PrimarySmtpAddress" }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Critère de validation : user1 et user2 apparaissent avec une adresse SMTP."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": { "level": 3 },
+        "content": [
+          { "type": "text", "text": "C — Message pédagogique clé (à retenir)" }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Active Directory gère l'identité. Exchange gère la messagerie. Un utilisateur AD n'a une boîte Exchange que si elle est activée explicitement."
+          }
+        ]
+      }
+    ]
+  }
+}

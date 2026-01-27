@@ -9,6 +9,7 @@ import { ReactItemRenderer } from '../../components/ReactItemRenderer'
 import { generateAndUploadSlide } from '../../lib/slideGenerator'
 import { generateSlideWithExternalAPI } from '../../lib/slideGeneratorAdvanced'
 import { generateGamma, formatSlideContentForGamma } from '../../lib/gammaApi'
+import { tipTapToSlideLines } from '../../lib/tipTapToSlideText'
 
 export interface ChapterJson {
   title: string
@@ -212,11 +213,18 @@ export function AdminItemEditJson() {
       return
     }
 
-    // Valider le type
+    // Valider le type (ou inférer "tp" si content.type === "tp-new" ou type manquant)
     const validTypes = ['resource', 'slide', 'exercise', 'activity', 'tp', 'game']
-    if (!validTypes.includes(parsedJson.type)) {
-      setError(`Type invalide: "${parsedJson.type}". Types valides: ${validTypes.join(', ')}`)
-      return
+    let itemType = parsedJson.type
+    if (itemType == null || itemType === undefined || String(itemType).trim() === '' || !validTypes.includes(itemType)) {
+      if (parsedJson.content?.type === 'tp-new') {
+        itemType = 'tp'
+      } else if (String(itemType).toLowerCase() === 'tp-new') {
+        itemType = 'tp'
+      } else {
+        setError(`Type invalide: "${parsedJson.type}". Types valides: ${validTypes.join(', ')}`)
+        return
+      }
     }
 
     setSaving(true)
@@ -259,7 +267,7 @@ export function AdminItemEditJson() {
 
       const itemData = {
         module_id: moduleId,
-        type: parsedJson.type,
+        type: itemType,
         title: parsedJson.title.trim(),
         position: parsedJson.position,
         published: parsedJson.published !== false,
@@ -522,102 +530,21 @@ export function AdminItemEditJson() {
     setError('')
 
     try {
-      // Fonction pour extraire le texte depuis le contenu TipTap
-      const extractTextFromTipTap = (content: any): string[] => {
-        if (!content || !content.content) return []
-        
-        const texts: string[] = []
-        
-        const traverse = (node: any) => {
-          if (node.type === 'text' && node.text) {
-            texts.push(node.text)
-          } else if (node.type === 'heading') {
-            // Extraire le texte du heading
-            if (node.content) {
-              const headingText = node.content
-                .filter((c: any) => c.type === 'text')
-                .map((c: any) => c.text)
-                .join('')
-              if (headingText) {
-                texts.push(headingText)
-              }
-            }
-          } else if (node.content && Array.isArray(node.content)) {
-            node.content.forEach(traverse)
-          }
-        }
-        
-        if (Array.isArray(content.content)) {
-          content.content.forEach(traverse)
-        } else {
-          traverse(content)
-        }
-        
-        return texts
-      }
-      
-      // Extraire les points clés depuis le contenu
+      // Extraire les points à l'écran : retours à la ligne et listes à puces préservés
       let onScreenPoints: string[] = []
-      
-      if (parsedJson.content) {
-        // Si c'est un objet TipTap (doc)
-        if (parsedJson.content.type === 'doc' || parsedJson.content.content) {
-          const allTexts = extractTextFromTipTap(parsedJson.content)
-          
-          // Extraire les headings comme points principaux
-          const extractHeadings = (content: any): string[] => {
-            if (!content || !content.content) return []
-            
-            const headings: string[] = []
-            
-            const traverse = (node: any) => {
-              if (node.type === 'heading' && node.content) {
-                const headingText = node.content
-                  .filter((c: any) => c.type === 'text')
-                  .map((c: any) => c.text)
-                  .join('')
-                if (headingText) {
-                  headings.push(headingText)
-                }
-              } else if (node.content && Array.isArray(node.content)) {
-                node.content.forEach(traverse)
-              }
-            }
-            
-            if (Array.isArray(content.content)) {
-              content.content.forEach(traverse)
-            } else {
-              traverse(content)
-            }
-            
-            return headings
-          }
-          
-          const headings = extractHeadings(parsedJson.content)
-          
-          // Utiliser les headings comme points principaux, ou les premiers paragraphes
-          if (headings.length > 0) {
-            // Limiter à 6-8 points maximum pour l'affichage sur la slide
-            onScreenPoints = headings.slice(0, 8).map(h => {
-              // Nettoyer et raccourcir si nécessaire
-              return h.length > 80 ? h.substring(0, 77) + '...' : h
-            })
-          } else {
-            // Sinon, utiliser les premiers paragraphes
-            const paragraphs = allTexts.filter((t) => {
-              // Prendre les paragraphes significatifs (plus de 20 caractères)
-              return t.length > 20
-            })
-            onScreenPoints = paragraphs.slice(0, 6).map(p => {
-              return p.length > 100 ? p.substring(0, 97) + '...' : p
-            })
-          }
-        } else if (parsedJson.content.summary) {
-          // Format simple avec summary
-          onScreenPoints = parsedJson.content.summary.split('\n').filter((p: string) => p.trim())
-        }
+      const tipTapSource = parsedJson.content?.body?.type === 'doc' || parsedJson.content?.body?.content
+        ? parsedJson.content.body
+        : parsedJson.content?.type === 'doc' || parsedJson.content?.content
+          ? parsedJson.content
+          : null
+      if (tipTapSource) {
+        const doc = tipTapSource.type === 'doc' ? tipTapSource : { type: 'doc' as const, content: tipTapSource.content ?? tipTapSource }
+        const lines = tipTapToSlideLines(doc)
+        onScreenPoints = lines.slice(0, 12).map((l) => (l.length > 100 ? l.substring(0, 97) + '...' : l))
+      } else if (parsedJson.content?.summary) {
+        onScreenPoints = parsedJson.content.summary.split(/\n/).map((p: string) => p.trim()).filter(Boolean)
       }
-      
+
       // Préparer le contenu de la slide
       const slideContent = {
         title: parsedJson.title,

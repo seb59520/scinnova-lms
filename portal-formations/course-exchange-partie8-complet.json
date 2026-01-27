@@ -1,0 +1,1022 @@
+{
+  "title": "Microsoft Exchange — Partie 8 : Analyse et dépannage des flux de messagerie",
+  "description": "Module complet (2 h) : outils de diagnostic Exchange, Message Trace, journaux de suivi, interprétation des erreurs SMTP, méthodologie cause → correction. Cours clair (Module 1) + TP pas-à-pas très détaillé avec critères de validation explicites (Module 2). Niveau Exchange 2019 on-prem.",
+  "status": "published",
+  "access_type": "free",
+  "currency": "EUR",
+  "is_public": false,
+  "theme": {
+    "primaryColor": "#EF4444",
+    "secondaryColor": "#F59E0B",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 — Outils de diagnostic des flux de messagerie",
+      "position": 1,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Objectifs pédagogiques et vue d'ensemble",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Objectifs pédagogiques (Partie 8)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "À l'issue de cette partie (2 h), l'apprenant est capable de :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Décrire le chemin complet d'un email dans Exchange"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utiliser les outils de diagnostic Exchange adaptés"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Lire et interpréter les journaux de suivi"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifier l'étape exacte où un message échoue"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Expliquer la cause réelle d'une erreur SMTP"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Proposer une action corrective cohérente"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.1 Pourquoi un email échoue (logique générale)",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Principe fondamental"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Un email ne disparaît jamais par magie. Il échoue toujours à une étape précise du flux."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Étapes du flux Exchange"
+                    }
+                  ]
+                },
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Client (Outlook / SMTP)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Receive Connector (entrée SMTP)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Transport Exchange (catégorisation)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Routage interne ou externe"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Send Connector (sortie SMTP)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Serveur SMTP distant"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Diagnostiquer = identifier l'étape fautive."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Message Trace — Outil central de diagnostic",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Rôle de Message Trace"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Message Trace permet de : voir si Exchange a traité le message ; connaître le statut final ; identifier où il a échoué."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Accès"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exchange Admin Center (EAC) — Menu Mail flow → Message trace."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ce que Message Trace répond"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exchange a-t-il vu le mail ? Oui / Non. Le mail a-t-il été bloqué ? Oui / Non. À quelle étape ? Receive / Transport / Send."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.3 Journaux de suivi Exchange (Message Tracking Logs)",
+          "position": 4,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Rôle des journaux"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les journaux permettent : une analyse technique fine ; de confirmer ce que Message Trace indique ; d'auditer les échanges."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Emplacement par défaut (EX01)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "C:\\Program Files\\Microsoft\\Exchange Server\\V15\\TransportRoles\\Logs\\MessageTracking"
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Contenu typique"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Heure"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Expéditeur / destinataire"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Action (RECEIVE / SEND / FAIL)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Connecteur utilisé"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Code SMTP"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.4 Types d'erreurs courantes (lecture humaine)",
+          "position": 5,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "L'objectif n'est pas de mémoriser les codes, mais de savoir les interpréter."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "550 5.7.1 — Relais refusé. 550 5.1.1 — Destinataire inconnu. 451 4.4.0 — Problème DNS. 454 4.7.0 — Problème TLS. Deferred — File d'attente."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "game",
+          "title": "Quiz Module 8 — Analyse et dépannage des flux de messagerie",
+          "position": 6,
+          "published": true,
+          "content": {
+            "gameType": "quiz",
+            "description": "Quiz de 10 questions sur les outils de diagnostic Exchange, Message Trace, étapes du flux, erreurs SMTP et méthodologie de dépannage.",
+            "instructions": "Répondez aux 10 questions. Une seule réponse correcte par question.",
+            "scoring": {
+              "totalQuestions": 10,
+              "pointsPerQuestion": 1,
+              "passingScore": 7
+            },
+            "levels": [
+              {
+                "level": 1,
+                "name": "Quiz Module 8 — Flux et diagnostic",
+                "questions": [
+                  {
+                    "id": "m8-q1",
+                    "type": "mcq",
+                    "prompt": "À quelle étape du flux Exchange un message entre-t-il en premier ?",
+                    "options": [
+                      "Transport / catégorisation",
+                      "Receive Connector",
+                      "Client Outlook",
+                      "Routage"
+                    ],
+                    "answer": "Receive Connector",
+                    "explanation": "Le message entre par le Receive Connector (entrée SMTP), puis passe au Transport pour catégorisation et routage.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m8-q2",
+                    "type": "mcq",
+                    "prompt": "Quel outil Exchange permet de tracer le parcours d'un message ?",
+                    "options": [
+                      "Event Viewer",
+                      "Message Trace",
+                      "Get-MailboxStatistics",
+                      "Test-OutlookConnectivity"
+                    ],
+                    "answer": "Message Trace",
+                    "explanation": "Message Trace (Mail flow > Message trace) permet de rechercher un message et de voir à quelle étape il a été reçu, livré ou rejeté.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m8-q3",
+                    "type": "mcq",
+                    "prompt": "Un message en état « Deferred » indique généralement :",
+                    "options": [
+                      "Le message a été livré",
+                      "Le message est en attente (retry)",
+                      "Le destinataire n'existe pas",
+                      "Le message est en quarantaine"
+                    ],
+                    "answer": "Le message est en attente (retry)",
+                    "explanation": "Deferred signifie que le serveur réessaiera plus tard (file d'attente, serveur distant temporairement indisponible, etc.).",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m8-q4",
+                    "type": "mcq",
+                    "prompt": "Une erreur SMTP 5.7.1 indique typiquement :",
+                    "options": [
+                      "Problème de certificat",
+                      "Refus pour motif de sécurité (spam, politique)",
+                      "Serveur distant injoignable",
+                      "Quota dépassé"
+                    ],
+                    "answer": "Refus pour motif de sécurité (spam, politique)",
+                    "explanation": "5.7.1 est souvent lié au refus pour politique (anti-spam, blocage expéditeur, etc.).",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m8-q5",
+                    "type": "mcq",
+                    "prompt": "Où un message peut-il échouer côté Receive Connector ?",
+                    "options": [
+                      "Uniquement après livraison",
+                      "À l'acceptation SMTP (restrictions, authentification, périmètre)",
+                      "Uniquement en cas de virus",
+                      "Jamais sur le Receive Connector"
+                    ],
+                    "answer": "À l'acceptation SMTP (restrictions, authentification, périmètre)",
+                    "explanation": "Le Receive Connector peut refuser un message dès l'acceptation SMTP (IP non autorisée, authentification requise, périmètre destinataire, etc.).",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m8-q6",
+                    "type": "mcq",
+                    "prompt": "Que signifie un code SMTP 4.x.x ?",
+                    "options": [
+                      "Erreur définitive (ne pas réessayer)",
+                      "Erreur temporaire (réessayer plus tard)",
+                      "Message livré",
+                      "Message en file d'attente"
+                    ],
+                    "answer": "Erreur temporaire (réessayer plus tard)",
+                    "explanation": "4xx = erreur temporaire (le serveur peut réessayer). 5xx = erreur permanente (échec définitif).",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m8-q7",
+                    "type": "mcq",
+                    "prompt": "Pour diagnostiquer un message non livré, quelle démarche est la plus logique ?",
+                    "options": [
+                      "Patcher Exchange puis relancer",
+                      "Message Trace pour localiser l'étape d'échec, puis analyser la cause (connecteur, filtre, quota)",
+                      "Réinitialiser la boîte du destinataire",
+                      "Redémarrer tous les services Exchange"
+                    ],
+                    "answer": "Message Trace pour localiser l'étape d'échec, puis analyser la cause (connecteur, filtre, quota)",
+                    "explanation": "La méthodologie recommandée : localiser l'étape exacte (Message Trace, journaux), identifier la cause, puis appliquer le correctif ciblé.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m8-q8",
+                    "type": "mcq",
+                    "prompt": "Les journaux de suivi (protocol logs) des connecteurs servent à :",
+                    "options": [
+                      "Voir le contenu des emails",
+                      "Voir les commandes SMTP et réponses (conversation serveur)",
+                      "Gérer les quotas",
+                      "Configurer les certificats"
+                    ],
+                    "answer": "Voir les commandes SMTP et réponses (conversation serveur)",
+                    "explanation": "Les protocol logs enregistrent la conversation SMTP (EHLO, MAIL FROM, RCPT TO, etc.) et les réponses, utiles pour comprendre un refus.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m8-q9",
+                    "type": "mcq",
+                    "prompt": "Un NDR (Non-Delivery Report) est généré quand :",
+                    "options": [
+                      "Le message est livré avec succès",
+                      "Le message ne peut pas être livré (échec définitif ou après retries)",
+                      "Le message est en cours d'envoi",
+                      "Le destinataire ouvre le message"
+                    ],
+                    "answer": "Le message ne peut pas être livré (échec définitif ou après retries)",
+                    "explanation": "Le NDR est le rapport d'échec de livraison renvoyé à l'expéditeur lorsque le message n'a pas pu être livré après les tentatives.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m8-q10",
+                    "type": "mcq",
+                    "prompt": "Après avoir identifié qu'un message est bloqué par le Content Filter, l'action corrective peut être :",
+                    "options": [
+                      "Désactiver tous les filtres anti-spam",
+                      "Autoriser l'expéditeur (Allow list), ajuster les seuils, ou vérifier un faux positif",
+                      "Supprimer la boîte du destinataire",
+                      "Redémarrer le service Transport uniquement"
+                    ],
+                    "answer": "Autoriser l'expéditeur (Allow list), ajuster les seuils, ou vérifier un faux positif",
+                    "explanation": "On peut ajouter l'expéditeur en liste blanche, ajuster les seuils du Content Filter, ou examiner si c'est un faux positif avant de corriger.",
+                    "difficulty": 2
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 — TP : Analyse et résolution d'erreurs simulées",
+      "position": 2,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Contexte du TP",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Machines utilisées"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "EX01 : Exchange Server 2019"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CLIENT01 : Outlook 2019"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "DC01 : Active Directory / DNS"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Pré-requis"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Exchange fonctionnel"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "2 boîtes aux lettres (user1, user2)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Envoi interne possible"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Envoi externe simulé (lab)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "tp",
+          "title": "TP 8 — Analyse et dépannage des flux de messagerie",
+          "position": 2,
+          "published": true,
+          "content": {
+            "type": "tp-new",
+            "introduction": "Objectif global du TP : comprendre pourquoi un mail échoue, pas juste constater qu'il échoue. Chaque thème correspond à une étape du diagnostic. Machines : EX01 (EAC, journaux), CLIENT01 (Outlook).",
+            "themes": [
+              {
+                "id": "theme-1",
+                "title": "Étape 1 — Vérifier si Exchange a traité le message",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Machine : EX01. Objectif : savoir si le problème est avant ou dans Exchange."
+                  },
+                  {
+                    "type": "text",
+                    "text": "Actions : 1) Ouvrir un navigateur. 2) Accéder à https://localhost/ecp. 3) Se connecter avec HYGEASY\\Administrator. 4) Aller dans Mail flow → Message trace. 5) Rechercher le message (expéditeur, destinataire, date)."
+                  },
+                  {
+                    "type": "text-image",
+                    "text": "Résultat attendu : le message apparaît dans la liste. Capture à droite : vue Message Trace après recherche.",
+                    "src": "https://placehold.co/600x350/e5e7eb/6b7280?text=Capture+%C3%A0+ajouter%3A+Message+Trace+EAC",
+                    "alt": "À illustrer : Message Trace — liste des messages (EAC)",
+                    "layout": "right"
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant sait dire « Exchange a bien vu ce message » ou « Exchange ne l'a jamais reçu »."
+                  }
+                ]
+              },
+              {
+                "id": "theme-2",
+                "title": "Étape 2 — Identifier le statut du message",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Objectif : comprendre le résultat final. Actions : 1) Observer la colonne Status. 2) Noter la valeur."
+                  },
+                  {
+                    "type": "text",
+                    "text": "Interprétation attendue : Delivered → Exchange a terminé son travail. Failed → Exchange a bloqué. Pending / Deferred → problème de transport."
+                  },
+                  {
+                    "type": "text-image",
+                    "text": "Exemple de détail d'un message avec statut Failed ou Delivered. À illustrer : fenêtre de détail Message Trace.",
+                    "src": "https://placehold.co/600x350/e5e7eb/6b7280?text=Capture+%C3%A0+ajouter%3A+d%C3%A9tail+Message+Trace",
+                    "alt": "À illustrer : détail Message Trace (colonnes Status, erreur SMTP)",
+                    "layout": "right"
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant sait expliquer ce que signifie le statut."
+                  }
+                ]
+              },
+              {
+                "id": "theme-3",
+                "title": "Étape 3 — Identifier l'étape exacte de l'échec",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Objectif : localiser précisément le point de rupture. Actions : 1) Cliquer sur le message. 2) Ouvrir les détails. 3) Lire l'erreur SMTP."
+                  },
+                  {
+                    "type": "text",
+                    "text": "Cas simulés (exemples) : 550 5.7.1 Unable to relay ; 451 4.4.0 DNS query failed."
+                  },
+                  {
+                    "type": "text",
+                    "text": "Analyse attendue : Unable to relay → Receive Connector. DNS query failed → Send Connector / DNS. User unknown → serveur distant."
+                  },
+                  {
+                    "type": "text-image",
+                    "text": "Exemple d'erreur SMTP affichée dans Message Trace. À illustrer : détail d'un message avec code 550 ou 451.",
+                    "src": "https://placehold.co/600x350/e5e7eb/6b7280?text=Capture+%C3%A0+ajouter%3A+erreur+SMTP+Message+Trace",
+                    "alt": "À illustrer : erreur SMTP dans Message Trace (550, 451, etc.)",
+                    "layout": "right"
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant sait dire « Le message échoue au niveau de… »."
+                  }
+                ]
+              },
+              {
+                "id": "theme-4",
+                "title": "Étape 4 — Confirmer avec les journaux Exchange",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Objectif : prouver techniquement l'analyse. Actions : 1) Sur EX01, ouvrir l'explorateur. 2) Aller dans C:\\Program Files\\Microsoft\\Exchange Server\\V15\\TransportRoles\\Logs\\MessageTracking. 3) Identifier une ligne correspondant au message."
+                  },
+                  {
+                    "type": "text",
+                    "text": "Ce que l'étudiant doit comprendre : Message Trace = vue logique ; Logs = trace technique."
+                  },
+                  {
+                    "type": "text-image",
+                    "text": "Contenu typique d'un fichier de suivi (MessageTracking). À illustrer : extrait de journal avec RECEIVE/SEND/FAIL.",
+                    "src": "https://placehold.co/600x350/e5e7eb/6b7280?text=Capture+%C3%A0+ajouter%3A+journal+MessageTracking",
+                    "alt": "À illustrer : extrait MessageTracking (Exchange)",
+                    "layout": "right"
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant sait expliquer à quoi servent les journaux, même sans les lire en détail."
+                  }
+                ]
+              },
+              {
+                "id": "theme-5",
+                "title": "Étape 5 — Expliquer la cause réelle",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Objectif : passer du symptôme à la cause. Exemple de réponse attendue : « Le mail échoue au niveau du Send Connector car Exchange ne peut pas résoudre le domaine externe via DNS. » Ou : « Le mail est refusé à l'entrée SMTP car le Receive Connector n'autorise pas le relais anonyme. »"
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'explication est claire, logique, et liée à une étape précise."
+                  }
+                ]
+              },
+              {
+                "id": "theme-6",
+                "title": "Étape 6 — Proposer une action corrective (théorique)",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Objectif : raisonner comme un administrateur. Exemples : Modifier le Receive Connector ; Corriger le DNS ; Ajuster le Send Connector ; Corriger l'adresse destinataire."
+                  },
+                  {
+                    "type": "text",
+                    "text": "Pas forcément appliquer la correction en lab — comprendre suffit."
+                  }
+                ]
+              },
+              {
+                "id": "theme-validation",
+                "title": "Validation finale du TP",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Le TP est validé si l'étudiant sait : Utiliser Message Trace ; Identifier l'étape d'échec ; Lire une erreur SMTP ; Expliquer la cause ; Proposer une correction logique."
+                  }
+                ]
+              },
+              {
+                "id": "theme-cloture",
+                "title": "Message pédagogique de clôture",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Dépanner Exchange, ce n'est pas deviner. C'est observer → comprendre → expliquer → corriger."
+                  }
+                ]
+              }
+            ],
+            "conclusion": "TP validé : l'apprenant sait utiliser Message Trace, identifier l'étape d'échec, lire une erreur SMTP, expliquer la cause et proposer une correction logique. Dépanner = observer → comprendre → expliquer → corriger."
+          }
+        }
+      ]
+    }
+  ]
+}

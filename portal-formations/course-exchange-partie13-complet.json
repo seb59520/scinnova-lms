@@ -1,0 +1,716 @@
+{
+  "title": "Microsoft Exchange — Partie 13 : Scénarios de dépannage avancés",
+  "description": "Module 2 h : résolution des erreurs courantes liées aux clients Exchange (Outlook, OWA, clients mobiles), dépannage des problèmes de synchronisation et d'authentification, travaux pratiques — diagnostiquer et résoudre des problèmes simulés de clients Exchange. Niveau admin Exchange 2019 on-prem.",
+  "status": "published",
+  "access_type": "free",
+  "currency": "EUR",
+  "is_public": false,
+  "theme": {
+    "primaryColor": "#EA580C",
+    "secondaryColor": "#CA8A04",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 — Objectifs et vue d'ensemble Partie 13",
+      "position": 1,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Objectifs pédagogiques Partie 13",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Scénarios de dépannage avancés (2 h)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "À l'issue de ce module, l'apprenant sera capable de :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Résoudre les erreurs courantes liées aux clients Exchange (Outlook, OWA, clients mobiles)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Dépanner les problèmes de synchronisation (boîte partagée, calendrier, dossier public)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Dépanner les problèmes d'authentification (NTLM, Kerberos, certificats, OWA/ECP)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Diagnostiquer et résoudre des problèmes simulés de clients Exchange dans un environnement de lab"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "game",
+          "title": "Quiz Module 13 — Dépannage avancé clients Exchange",
+          "position": 2,
+          "published": true,
+          "content": {
+            "gameType": "quiz",
+            "description": "Quiz de 10 questions sur les erreurs courantes clients (Outlook, OWA), synchronisation, authentification, et outils de diagnostic.",
+            "instructions": "Répondez aux 10 questions. Une seule réponse correcte par question.",
+            "scoring": {
+              "totalQuestions": 10,
+              "pointsPerQuestion": 1,
+              "passingScore": 7
+            },
+            "levels": [
+              {
+                "level": 1,
+                "name": "Quiz Module 13 — Dépannage clients",
+                "questions": [
+                  {
+                    "id": "m13-q1",
+                    "type": "mcq",
+                    "prompt": "« Connexion à Microsoft Exchange perdue » côté Outlook peut avoir pour cause côté serveur :",
+                    "options": [
+                      "Uniquement le profil Outlook",
+                      "Services Exchange (MSExchangeIS, RPC), base démontée, problème réseau",
+                      "La couleur du bureau",
+                      "Rien côté serveur"
+                    ],
+                    "answer": "Services Exchange (MSExchangeIS, RPC), base démontée, problème réseau",
+                    "explanation": "Côté serveur : vérifier les services Exchange, l'état de la base, le réseau. Côté client : profil, AutoDiscover, pare-feu.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m13-q2",
+                    "type": "mcq",
+                    "prompt": "Pour tester la connectivité Outlook vers Exchange, on peut utiliser :",
+                    "options": [
+                      "Get-Mailbox uniquement",
+                      "Test-OutlookConnectivity (ou Test E-mail AutoConfiguration côté client)",
+                      "Formatage du disque",
+                      "ipconfig uniquement"
+                    ],
+                    "answer": "Test-OutlookConnectivity (ou Test E-mail AutoConfiguration côté client)",
+                    "explanation": "Test-OutlookConnectivity (EMS) et Test E-mail AutoConfiguration (Outlook) permettent de diagnostiquer la connexion Outlook ↔ Exchange.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m13-q3",
+                    "type": "mcq",
+                    "prompt": "OWA affiche une erreur 500 ou une page blanche. Où chercher en priorité ?",
+                    "options": [
+                      "Uniquement dans le navigateur",
+                      "IIS (virtual directories OWA/ECP), Event Viewer, certificat, redémarrage du pool d'applications",
+                      "Dans les sauvegardes",
+                      "Dans AD uniquement"
+                    ],
+                    "answer": "IIS (virtual directories OWA/ECP), Event Viewer, certificat, redémarrage du pool d'applications",
+                    "explanation": "OWA repose sur IIS ; vérifier les virtual directories, les logs IIS, Event Viewer, le certificat et l'état du pool d'applications.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m13-q4",
+                    "type": "mcq",
+                    "prompt": "Un utilisateur ne reçoit plus de mails. Parmi les vérifications utiles :",
+                    "options": [
+                      "Rien",
+                      "Get-MailboxStatistics (quota, état), Message Trace (messages à destination de la boîte), règles de boîte",
+                      "Supprimer la boîte",
+                      "Désactiver Exchange"
+                    ],
+                    "answer": "Get-MailboxStatistics (quota, état), Message Trace (messages à destination de la boîte), règles de boîte",
+                    "explanation": "Vérifier le quota et l'état de la boîte, tracer les messages à destination de l'utilisateur (Message Trace), et les règles pouvant rediriger/supprimer.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m13-q5",
+                    "type": "mcq",
+                    "prompt": "Un problème de synchronisation calendrier ou boîte partagée peut venir de :",
+                    "options": [
+                      "Uniquement du client",
+                      "Droits/délégation, mode caché Outlook, stratégie, état de la boîte partagée",
+                      "Du disque uniquement",
+                      "Du certificat uniquement"
+                    ],
+                    "answer": "Droits/délégation, mode caché Outlook, stratégie, état de la boîte partagée",
+                    "explanation": "Sync calendrier/boîte partagée : vérifier les droits (Add-MailboxPermission, Send on behalf), l'affichage des dossiers dans Outlook, la stratégie.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m13-q6",
+                    "type": "mcq",
+                    "prompt": "Une boucle de redirection ou « accès refusé » sur OWA après saisie des identifiants peut être liée à :",
+                    "options": [
+                      "Rien",
+                      "Authentification IIS (Windows/formulaires), URL internes/externes, compte verrouillé ou désactivé dans AD",
+                      "Uniquement au navigateur",
+                      "Au disque"
+                    ],
+                    "answer": "Authentification IIS (Windows/formulaires), URL internes/externes, compte verrouillé ou désactivé dans AD",
+                    "explanation": "Vérifier le type d'authentification OWA (Windows, formulaires), les URLs (internes/externes), et l'état du compte AD (verrouillé, désactivé).",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m13-q7",
+                    "type": "mcq",
+                    "prompt": "Get-ActiveSyncDeviceStatistics sert à :",
+                    "options": [
+                      "Gérer les certificats",
+                      "Voir l'état des appareils ActiveSync (sync, erreurs)",
+                      "Configurer OWA",
+                      "Gérer les connecteurs SMTP"
+                    ],
+                    "answer": "Voir l'état des appareils ActiveSync (sync, erreurs)",
+                    "explanation": "Get-ActiveSyncDeviceStatistics (et Get-ActiveSyncDevice) permettent de diagnostiquer les appareils mobiles et leurs erreurs de synchronisation.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m13-q8",
+                    "type": "mcq",
+                    "prompt": "Pour distinguer une panne côté client d'une panne côté serveur Exchange :",
+                    "options": [
+                      "On ne peut pas",
+                      "Tester depuis un autre client (autre poste, OWA), vérifier les services et logs côté serveur",
+                      "Redémarrer tout",
+                      "Supprimer le profil"
+                    ],
+                    "answer": "Tester depuis un autre client (autre poste, OWA), vérifier les services et logs côté serveur",
+                    "explanation": "Isoler la cause : si OWA fonctionne et pas Outlook sur un poste, le problème est souvent côté client (profil, réseau local). Si OWA ne marche pas non plus, côté serveur.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m13-q9",
+                    "type": "mcq",
+                    "prompt": "Un profil Outlook corrompu se résout souvent par :",
+                    "options": [
+                      "Rien",
+                      "Recréation du profil Outlook (sans supprimer la boîte côté serveur)",
+                      "Suppression de la boîte aux lettres",
+                      "Formatage du poste uniquement"
+                    ],
+                    "answer": "Recréation du profil Outlook (sans supprimer la boîte côté serveur)",
+                    "explanation": "Recréer le profil Outlook (Panneau de config > Courrier > Profils) permet souvent de corriger un profil corrompu sans toucher à la boîte côté Exchange.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m13-q10",
+                    "type": "mcq",
+                    "prompt": "Côté serveur, les virtual directories à vérifier pour OWA et ECP sont :",
+                    "options": [
+                      "Uniquement SMTP",
+                      "OWA, ECP, EWS (et éventuellement Autodiscover) — dans IIS, sous le site Exchange",
+                      "Uniquement le disque",
+                      "Les connecteurs Receive uniquement"
+                    ],
+                    "answer": "OWA, ECP, EWS (et éventuellement Autodiscover) — dans IIS, sous le site Exchange",
+                    "explanation": "Les virtual directories OWA, ECP, EWS (et Autodiscover) dans IIS déterminent l'accès aux services web Exchange ; authentification et URL y sont configurées.",
+                    "difficulty": 2
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 — Erreurs courantes liées aux clients Exchange",
+      "position": 2,
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Typologie des incidents côté client",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Outlook : profil corrompu, impossible d'ouvrir la boîte, lenteur, « Connexion à Microsoft Exchange perdue »"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OWA : page blanche, erreur d'authentification, certificat non approuvé"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Clients mobiles (ActiveSync) : synchronisation en échec, stratégie de mot de passe, effacement à distance"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "IMAP/POP : connexion refusée, paramètres serveur incorrects"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Chaque type de client a ses outils de diagnostic (Outlook : Test E-mail AutoConfiguration ; OWA : logs IIS, Event Viewer ; ActiveSync : Get-ActiveSyncDeviceStatistics)."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Pistes de résolution côté serveur",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Vérifier les services Exchange (MSExchangeIS, MSExchangeRPC, etc.)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Vérifier les virtual directories (OWA, ECP, EWS) et l'authentification IIS"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Vérifier les connecteurs et le flux de messagerie (Message Trace)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Vérifier les boîtes aux lettres (Get-MailboxStatistics, base montée, quotas)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 — Dépannage synchronisation et authentification",
+      "position": 3,
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Problèmes de synchronisation",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Synchronisation Outlook : mode caché, conflits, dossiers non visibles. Commandes utiles : Test-OutlookConnectivity, Get-MailboxStatistics. Boîtes partagées : droits, délégation, ouverture dans Outlook."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "ActiveSync : Get-ActiveSyncDeviceStatistics, Get-ActiveSyncDevice ; réinitialisation de la synchronisation, stratégie de boîte aux lettres mobile."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Problèmes d'authentification",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OWA/ECP : authentification IIS (Windows, formulaires), boucle de redirection, certificat"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Outlook : NTLM/Kerberos, AutoDiscover, URL externes/internes"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Vérifier Event Viewer (Application, Security) et journaux IIS en cas d'échec de connexion"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 4 — TP : Diagnostiquer et résoudre des problèmes simulés",
+      "position": 4,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Contexte du TP Partie 13",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Machines"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "DC01 : Active Directory"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "EX01 : Exchange Server"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CLIENT01 : poste utilisateur (Outlook, navigateur)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Objectif : appliquer une démarche de diagnostic structurée sur des incidents simulés (client ne se connecte pas, OWA en erreur, synchronisation en échec, etc.) et proposer une résolution."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "tp",
+          "title": "TP 13 — Diagnostiquer et résoudre des problèmes de clients Exchange",
+          "position": 2,
+          "published": true,
+          "content": {
+            "type": "tp-new",
+            "introduction": "Objectif : en environnement simulé, diagnostiquer et résoudre des problèmes liés aux clients Exchange. Chaque scénario décrit un symptôme (ex. : « Un utilisateur ne peut plus ouvrir Outlook » ou « OWA affiche une erreur 500 ») ; l'étudiant doit identifier les pistes de cause (serveur, réseau, authentification, boîte aux lettres) et les actions correctives.",
+            "themes": [
+              {
+                "id": "theme-1",
+                "title": "Scénario 1 — Outlook ne se connecte pas",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Symptôme simulé : un utilisateur ne peut plus ouvrir sa boîte Outlook (« Connexion à Microsoft Exchange perdue » ou délai puis erreur). À faire : lister les vérifications côté serveur (services, RPC, base) et côté client (profil, AutoDiscover, pare-feu) ; proposer un ordre de résolution."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant cite au moins trois pistes de diagnostic (ex. : services Exchange, Test-OutlookConnectivity, profil Outlook) et une action corrective cohérente."
+                  }
+                ]
+              },
+              {
+                "id": "theme-2",
+                "title": "Scénario 2 — OWA en erreur ou page blanche",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Symptôme simulé : OWA affiche une erreur (500, 503) ou une page blanche. À faire : quelles vérifications sur EX01 (IIS, virtual directory OWA, Event Viewer, certificat) ? Quelle commande ou quelle console utiliser en priorité ?"
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant mentionne IIS, les virtual directories OWA/ECP et au moins un outil de diagnostic (Event Viewer ou Test-OWAConnectivity)."
+                  }
+                ]
+              },
+              {
+                "id": "theme-3",
+                "title": "Scénario 3 — Problème de synchronisation (calendrier ou boîte partagée)",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Symptôme simulé : le calendrier ou une boîte partagée ne se met pas à jour dans Outlook. À faire : quelles causes possibles (droits, délégation, mode caché, stratégie) ? Quelles commandes ou paramètres vérifier côté Exchange ?"
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant cite les droits/délégation et au moins une commande Exchange (Get-MailboxPermission, Get-MailboxStatistics ou équivalent) ou une procédure Outlook (recréer le profil, vérifier les dossiers affichés)."
+                  }
+                ]
+              },
+              {
+                "id": "theme-4",
+                "title": "Scénario 4 — Échec d'authentification OWA ou ECP",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Symptôme simulé : l'utilisateur saisit ses identifiants sur OWA mais obtient « accès refusé » ou une boucle de redirection. À faire : quels paramètres vérifier (authentification IIS, formulaires, URL internes/externes, compte verrouillé, AD) ?"
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant mentionne l'authentification IIS (Windows/formulaires) et au moins une autre piste (compte AD, URL OWA, Event Viewer)."
+                  }
+                ]
+              },
+              {
+                "id": "theme-validation",
+                "title": "Validation finale du TP",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "L'étudiant sait : distinguer une panne côté client d'une panne côté serveur ; utiliser les outils de diagnostic Exchange (Test-OutlookConnectivity, Test-OWAConnectivity, Get-MailboxStatistics, Event Viewer) ; proposer un enchaînement logique de vérifications et de correctifs pour des incidents simulés de clients Exchange."
+                  }
+                ]
+              },
+              {
+                "id": "theme-cloture",
+                "title": "Message de clôture",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Le dépannage client Exchange repose sur une méthode : isoler (client vs serveur), reproduire, vérifier (services, IIS, logs), puis corriger. Les scénarios réels combinent souvent plusieurs causes."
+                  }
+                ]
+              }
+            ],
+            "conclusion": "TP validé : l'apprenant a appliqué une démarche de diagnostic structurée sur au moins un scénario de type Outlook, OWA, synchronisation ou authentification, et a proposé des vérifications et actions correctives cohérentes."
+          }
+        }
+      ]
+    }
+  ]
+}

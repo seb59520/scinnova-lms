@@ -7,6 +7,7 @@
  */
 
 import { supabase } from './supabaseClient'
+import { tipTapToSlideMarkdown } from './tipTapToSlideText'
 
 export interface GammaGenerationRequest {
   inputText: string
@@ -124,7 +125,8 @@ export async function generateGamma(
 
 
 /**
- * Convertit le contenu d'une slide en texte formaté pour Gamma
+ * Convertit le contenu d'une slide en texte formaté pour Gamma.
+ * Préserve les retours à la ligne, les listes à puces et numérotées.
  */
 export function formatSlideContentForGamma(
   title: string,
@@ -134,46 +136,26 @@ export function formatSlideContentForGamma(
 ): string {
   let text = `# ${title}\n\n`
 
-  // Ajouter les points à l'écran
-  if (onScreenPoints && onScreenPoints.length > 0) {
-    text += onScreenPoints.map((point) => `- ${point}`).join('\n') + '\n\n'
+  const tipTapDoc = content?.body && (content.body.type === 'doc' || content.body.content)
+    ? content.body
+    : content && (content.type === 'doc' || content.content)
+      ? content
+      : null
+  if (tipTapDoc) {
+    const doc = tipTapDoc.type === 'doc' ? tipTapDoc : { type: 'doc' as const, content: tipTapDoc.content ?? tipTapDoc }
+    const markdown = tipTapToSlideMarkdown(doc)
+    if (markdown.trim()) {
+      text += markdown + '\n\n'
+    }
   }
 
-  // Ajouter les notes du présentateur si disponibles
-  if (speakerNotes) {
-    text += `Notes du présentateur: ${speakerNotes}\n\n`
+  if (onScreenPoints && onScreenPoints.length > 0 && !tipTapDoc) {
+    const form = (p: string) => (p.startsWith('•') || /^\d+\.\s/.test(p) ? p : `- ${p}`)
+    text += onScreenPoints.map(form).join('\n') + '\n\n'
   }
 
-  // Extraire le texte du contenu TipTap si disponible
-  if (content && content.content) {
-    const extractText = (node: any): string => {
-      if (node.type === 'text' && node.text) {
-        return node.text
-      }
-      if (node.type === 'heading' && node.content) {
-        const headingText = node.content
-          .filter((c: any) => c.type === 'text')
-          .map((c: any) => c.text)
-          .join('')
-        return headingText ? `## ${headingText}\n\n` : ''
-      }
-      if (node.type === 'paragraph' && node.content) {
-        const paraText = node.content
-          .filter((c: any) => c.type === 'text')
-          .map((c: any) => c.text)
-          .join('')
-        return paraText ? `${paraText}\n\n` : ''
-      }
-      if (node.content && Array.isArray(node.content)) {
-        return node.content.map(extractText).join('')
-      }
-      return ''
-    }
-
-    const extractedText = content.content.map(extractText).join('')
-    if (extractedText.trim()) {
-      text += extractedText
-    }
+  if (speakerNotes?.trim()) {
+    text += `Notes du présentateur: ${speakerNotes.trim()}\n\n`
   }
 
   return text.trim()

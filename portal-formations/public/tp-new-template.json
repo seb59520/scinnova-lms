@@ -1,0 +1,58 @@
+{
+  "type": "tp-new",
+  "title": "TP New — Modèle par thèmes avec captures d'écran",
+  "introduction": "Ce TP utilise le format **TPNew** : présentation fluide segmentée par thème, avec texte et captures d'écran côte à côte. Modifiable bloc par bloc sans refaire tout le JSON.",
+  "themes": [
+    {
+      "id": "theme-1",
+      "title": "Préparation de l'environnement",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Installez les prérequis et vérifiez que l'environnement est prêt. Vous pouvez décrire ici les étapes en prose."
+        },
+        {
+          "type": "text-image",
+          "text": "Ouvrez le terminal et lancez la commande ci-dessous. La capture à droite montre le résultat attendu.",
+          "src": "https://placehold.co/600x400/2563eb/ffffff?text=Capture+terminal",
+          "alt": "Résultat de la commande",
+          "layout": "right"
+        },
+        {
+          "type": "image",
+          "src": "https://placehold.co/800x300/7c3aed/ffffff?text=Schema+ou+diagramme",
+          "alt": "Schéma de l'architecture",
+          "title": "Architecture"
+        }
+      ]
+    },
+    {
+      "id": "theme-2",
+      "title": "Configuration et première exécution",
+      "blocks": [
+        {
+          "type": "text-image",
+          "text": "Dans l'interface, allez dans **Paramètres** puis renseignez l'URL du serveur. L'image à gauche rappelle où cliquer.",
+          "src": "https://placehold.co/400x300/059669/ffffff?text=Ecran+parametres",
+          "alt": "Écran des paramètres",
+          "layout": "left"
+        },
+        {
+          "type": "text",
+          "text": "Une fois la configuration enregistrée, lancez la première exécution. Vérifiez les logs pour confirmer la connexion."
+        }
+      ]
+    },
+    {
+      "id": "theme-3",
+      "title": "Validation et critères de réussite",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Critères : vous savez configurer l'environnement, lancer une exécution et interpréter les logs. Ce thème peut contenir uniquement du texte, ou ajouter une capture si besoin."
+        }
+      ]
+    }
+  ],
+  "conclusion": "TP validé : vous maîtrisez la préparation, la configuration et la validation. Vous pouvez réutiliser ce modèle en dupliquant le JSON et en modifiant thème par thème, bloc par bloc."
+}

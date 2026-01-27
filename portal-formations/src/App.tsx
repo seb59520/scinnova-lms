@@ -97,16 +97,18 @@ function AppContent() {
 
   // Pages qui ne doivent pas avoir la sidebar
   const noSidebarPaths = ['/login', '/register', '/reset-password', '/ghost-login', '/landing']
-  const showSidebar = !noSidebarPaths.includes(location.pathname)
+  const isLandingPage = location.pathname === '/' || location.pathname === '/landing'
+  const showSidebar = !noSidebarPaths.includes(location.pathname) && !isLandingPage
 
   return (
     <>
       <NetworkStatus />
       <KeyboardShortcuts />
-      <div className="min-h-screen bg-gray-50 pt-8">
+      <div className={`min-h-screen bg-gray-50 ${!isLandingPage ? 'pt-8' : ''}`}>
         {showSidebar && <NavigationSidebar />}
         <div className={`transition-all duration-300 ${showSidebar && !isCollapsed ? 'lg:ml-64' : ''}`}>
-          {showSidebar && <Breadcrumb />}
+          {/* Fil d'Ariane uniquement pour les pages qui n'ont pas leur propre fil d'Ariane */}
+          {showSidebar && !location.pathname.includes('/courses/') && !location.pathname.includes('/items/') && <Breadcrumb />}
         <Routes>
           {/* Routes publiques */}
           <Route

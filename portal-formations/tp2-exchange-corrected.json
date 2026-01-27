@@ -1,0 +1,1124 @@
+{
+  "type": "tp",
+  "title": "TP2 Pas à Pas — Installation Exchange + Connecteurs SMTP, TLS, Outlook et Autodiscover",
+  "position": 3,
+  "published": true,
+  "content": {
+    "type": "step-by-step",
+    "steps": [
+      {
+        "id": "step-1",
+        "order": 1,
+        "title": "Pré-checks avant prérequis Exchange (EX01)",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Machine : EX01. Objectif : s'assurer que la base AD/DNS et la jonction au domaine sont OK avant d'installer quoi que ce soit.",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Vérifier IP : 192.168.50.20/24 ; DNS = 192.168.50.10 (DC01).",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Vérifier que EX01 est membre du domaine hygeasy.local (sysdm.cpl > Nom ordinateur).",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Tests obligatoires (PowerShell ou CMD) :",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "ping dc01",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "nslookup hygeasy.local",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "nltest /dsgetdc:hygeasy.local",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Critère de validation : ping/nslookup/nltest OK. Si KO : STOP et corriger DNS/AD avant de continuer.",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        "estimatedTime": "15 min"
+      },
+      {
+        "id": "step-2",
+        "order": 2,
+        "title": "Installer les prérequis Windows d'Exchange (EX01)",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Machine : EX01. Objectif : installer les rôles/fonctionnalités Windows requis (IIS et composants) pour Exchange Mailbox.",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Méthode recommandée : utiliser la commande officielle Microsoft correspondant à l'OS (Server 2019/2022/2025) depuis la documentation 'Prerequisites' Exchange.",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Étapes :",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "orderedList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Ouvrir PowerShell en administrateur sur EX01.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Exécuter la commande d'installation des Windows Features (copiée depuis la doc Microsoft) pour le rôle Mailbox.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Redémarrer EX01 si demandé (obligatoire si un restart est requis).",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Critère de validation : aucune erreur d'installation de features. EX01 redémarré si nécessaire.",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        "estimatedTime": "45 min"
+      },
+      {
+        "id": "step-3",
+        "order": 3,
+        "title": "Installer .NET Framework supporté (EX01)",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Machine : EX01. Objectif : installer la version .NET supportée pour la CU/SE Exchange que vous allez installer.",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Étapes :",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "orderedList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Sur EX01, identifier la version Exchange prévue (ISO/CU/SE) et vérifier la version .NET supportée dans la matrice Microsoft.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Installer .NET requis (souvent .NET 4.8.1 recommandé, sinon .NET 4.8 selon matrice/OS).",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Redémarrer EX01 après installation .NET (recommandé, souvent obligatoire).",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Critère de validation : .NET installé et EX01 stable après redémarrage.",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        "estimatedTime": "25 min"
+      },
+      {
+        "id": "step-4",
+        "order": 4,
+        "title": "Installer Visual C++ Redistributable requis (EX01)",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Machine : EX01. Objectif : installer les runtimes Visual C++ requis (prérequis Exchange).",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Étapes :",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "orderedList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Sur EX01, installer Visual C++ Redistributable 2012 (x64) si requis par votre version.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Installer Visual C++ Redistributable 2013 (x64) si requis par votre version.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Vérifier dans 'Programmes et fonctionnalités' que les entrées VC++ sont présentes.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Critère de validation : VC++ requis installés et visibles.",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        "estimatedTime": "20 min"
+      },
+      {
+        "id": "step-5",
+        "order": 5,
+        "title": "Monter l'ISO Exchange et vérifier le switch de licence (EX01)",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Machine : EX01. Objectif : monter l'ISO Exchange et confirmer le bon switch d'acceptation de licence pour éviter l'erreur 'licence non acceptée'.",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "orderedList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Monter l'ISO Exchange (clic droit sur ISO > Monter). Noter la lettre (ex : E:).",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Ouvrir CMD en administrateur et exécuter : E:\\Setup.exe /? pour vérifier les paramètres supportés.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Noter le switch exact : /IAcceptExchangeServerLicenseTerms_DiagnosticDataON ou /..._DiagnosticDataOFF.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Critère de validation : vous avez identifié le switch exact de licence pour votre version (DiagnosticDataON/OFF).",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        "estimatedTime": "15 min"
+      },
+      {
+        "id": "step-6",
+        "order": 6,
+        "title": "Préparer Active Directory : /PrepareSchema (EX01)",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Machine : EX01. Objectif : étendre le schéma Active Directory pour Exchange (première installation dans la forêt).",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Pré-requis droits : compte membre de Schema Admins + Enterprise Admins (souvent HYGEASY\\Administrator en lab).",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Commande (adapter ON/OFF selon votre choix) :",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": {
+                "language": "cmd"
+              },
+              "content": [
+                {
+                  "text": "E:\\Setup.exe /PrepareSchema /IAcceptExchangeServerLicenseTerms_DiagnosticDataOFF",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Attendre la fin complète. Ne pas interrompre.",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Critère de validation : message de succès indiquant que le schéma a été mis à jour.",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        "estimatedTime": "20 min"
+      },
+      {
+        "id": "step-7",
+        "order": 7,
+        "title": "Préparer Active Directory : /PrepareAD (EX01)",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Machine : EX01. Objectif : préparer l'organisation Exchange dans Active Directory.",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Commande (adapter ON/OFF) :",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": {
+                "language": "cmd"
+              },
+              "content": [
+                {
+                  "text": "E:\\Setup.exe /PrepareAD /OrganizationName:\"HYGEASY\" /IAcceptExchangeServerLicenseTerms_DiagnosticDataOFF",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Attendre la fin complète. Ne pas interrompre.",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Critère de validation : message de succès confirmant la préparation de l'organisation.",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        "estimatedTime": "20 min"
+      },
+      {
+        "id": "step-8",
+        "order": 8,
+        "title": "Préparer le domaine : /PrepareDomain (EX01, si nécessaire)",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Machine : EX01. Objectif : préparer le domaine hygeasy.local pour Exchange (souvent automatique via /PrepareAD en mono-domaine, mais inclus ici pour un TP complet).",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Commande (adapter ON/OFF) :",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": {
+                "language": "cmd"
+              },
+              "content": [
+                {
+                  "text": "E:\\Setup.exe /PrepareDomain:hygeasy.local /IAcceptExchangeServerLicenseTerms_DiagnosticDataOFF",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Critère de validation : message de succès confirmant la préparation du domaine.",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        "estimatedTime": "10 min"
+      },
+      {
+        "id": "step-9",
+        "order": 9,
+        "title": "Installer Exchange (Mailbox role) via l'assistant Setup (EX01)",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Machine : EX01. Objectif : installer Exchange Server (rôle Mailbox) sur EX01.",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "orderedList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Dans l'ISO Exchange (E:), lancer Setup.exe en tant qu'administrateur.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Accepter la licence et choisir l'option de diagnostic (ON/OFF selon politique).",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Laisser le rôle 'Mailbox' (architecture Exchange 2016+). Ne pas sélectionner Edge (incompatible sur Mailbox).",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Laisser les chemins par défaut en lab (sauf consigne). Lancer l'installation.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Attendre la fin complète. Redémarrer EX01 si demandé.",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Critère de validation : l'assistant indique 'Completed' sans erreurs bloquantes.",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        "estimatedTime": "60 min"
+      },
+      {
+        "id": "step-10",
+        "order": 10,
+        "title": "Validation post-install : services Exchange + EAC (EX01)",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Machine : EX01. Objectif : vérifier que la plateforme Exchange est opérationnelle avant de configurer SMTP/TLS.",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "type": "orderedList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Ouvrir services.msc et vérifier que les services Exchange critiques sont 'Running' : Transport, Frontend Transport, Information Store.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Ouvrir https://localhost/ecp (EAC) et vérifier l'accès sans erreur.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "Critère de validation : services OK + EAC accessible.",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        "estimatedTime": "20 min"
+      },
+      {
+        "id": "step-11",
+        "title": "Créer 2 boîtes aux lettres de test (EAC) + vérifier qu'elles sont actives",
+        "order": 11,
+        "estimatedTime": "30 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : EX01. Objectif : disposer de 2 boîtes aux lettres (user1 et user2) pour les tests Outlook + envoi interne. Cette étape est obligatoire avant tout test client." }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Pré-requis : EAC accessible sur EX01 (https://localhost/ecp) et vous êtes connecté avec HYGEASY\\Administrator." }] },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "A — Ouvrir la section création de mailbox" }] },
+            {
+              "type": "orderedList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Sur EX01, ouvrir un navigateur (Edge)." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Aller sur : https://localhost/ecp" }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Dans l'EAC : aller dans Recipients (Destinataires) > Mailboxes (Boîtes aux lettres). Si votre EAC est en français, menu gauche : Destinataires > Boîtes aux lettres." }] }] }
+              ]
+            },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "B — Créer user1 (boîte utilisateur)" }] },
+            {
+              "type": "orderedList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Cliquer sur + (New) / + (Nouveau) au-dessus de la liste." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Choisir : User mailbox (Boîte aux lettres utilisateur)." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Renseigner exactement : First name = User ; Last name = One ; Display name = User One." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "User logon name : user1 (ou user1@hygeasy.local si demandé par l'assistant)." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Nouveau mot de passe : définir un mot de passe simple de lab (ex : Lab123!Lab123!) et noter ce mot de passe (il servira sur CLIENT01 Outlook)." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Valider la création (Save / Enregistrer)." }] }] }
+              ]
+            },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "C — Créer user2 (boîte utilisateur)" }] },
+            {
+              "type": "orderedList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Répéter la création : + > User mailbox." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "First name = User ; Last name = Two ; Display name = User Two." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "User logon name : user2 (ou user2@hygeasy.local)." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Définir un mot de passe (ex : Lab123!Lab123!) et le noter." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Save / Enregistrer." }] }] }
+              ]
+            },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "D — Vérifications immédiates" }] },
+            {
+              "type": "bulletList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Dans Recipients > Mailboxes : vérifier que User One et User Two apparaissent." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Sur DC01 (optionnel) : AD Users and Computers > Users : vérifier que les comptes user1 et user2 existent." }] }] }
+              ]
+            },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : 2 mailboxes visibles dans l'EAC + mots de passe notés pour le test Outlook." }] }
+          ]
+        }
+      },
+      {
+        "id": "step-12",
+        "title": "Vérifications préalables côté Exchange (services + EAC) avant SMTP",
+        "order": 12,
+        "estimatedTime": "15 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : EX01. Objectif : confirmer que la plateforme Exchange est stable avant de toucher aux connecteurs." }] },
+            {
+              "type": "orderedList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Se connecter sur EX01 avec HYGEASY\\Administrator." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Win+R > services.msc > Entrée." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Vérifier que ces services sont 'Running' : Microsoft Exchange Transport ; Microsoft Exchange Frontend Transport ; Microsoft Exchange Information Store." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ouvrir https://localhost/ecp et vérifier que l'EAC affiche le menu sans erreur." }] }] }
+              ]
+            },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : les 3 services sont Running et l'EAC est accessible." }] }
+          ]
+        }
+      },
+      {
+        "id": "step-13",
+        "title": "Créer le Send Connector 'Internet Send' (EAC) — configuration exacte",
+        "order": 13,
+        "estimatedTime": "25 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : EX01 (EAC). Objectif : permettre à Exchange d'envoyer vers l'extérieur (ou de préparer le scénario sortant)." }] },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "A — Accéder à la création" }] },
+            {
+              "type": "orderedList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Sur EX01 : ouvrir https://localhost/ecp." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Aller dans Mail flow (Flux de messagerie) > Send connectors (Connecteurs d'envoi)." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Cliquer sur + (New)." }] }] }
+              ]
+            },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "B — Paramètres à saisir" }] },
+            {
+              "type": "bulletList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Name : Internet Send" }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Type : Internet" }] }] }
+              ]
+            },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "C — Routage" }] },
+            {
+              "type": "orderedList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Choisir : Route mail through DNS (Use Domain Name System)." }] }] }
+              ]
+            },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "D — Address space" }] },
+            {
+              "type": "orderedList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ajouter un Address space : * (tous domaines)." }] }] }
+              ]
+            },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "E — Source servers" }] },
+            {
+              "type": "orderedList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ajouter EX01 comme Source server (obligatoire)." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Terminer (Finish)." }] }] }
+              ]
+            },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "F — Vérifications" }] },
+            {
+              "type": "bulletList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Le connecteur Internet Send apparaît dans la liste." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "État : Enabled (activé)." }] }] }
+              ]
+            },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : Send connector visible + activé." }] }
+          ]
+        }
+      },
+      {
+        "id": "step-14",
+        "title": "Receive Connectors — identifier, comprendre, éviter le relais ouvert (EX01 + PowerShell)",
+        "order": 14,
+        "estimatedTime": "30 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : EX01. Objectif : inventorier les Receive Connectors et vérifier les points de sécurité (Remote IP ranges, authentification). Cette étape se fait de façon fiable via PowerShell." }] },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "A — Lister les connecteurs et leurs ports" }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Ouvrir Exchange Management Shell (ou PowerShell avec module Exchange) sur EX01, puis exécuter :" }] },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "powershell" },
+              "content": [
+                { "type": "text", "text": "Get-ReceiveConnector | Select Name,Server,Bindings,RemoteIPRanges,AuthMechanism,PermissionGroups | Format-List" }
+              ]
+            },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "B — Identifier les connecteurs typiques" }] },
+            {
+              "type": "bulletList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Frontend Transport : reçoit SMTP depuis l'extérieur/clients (souvent port 25/587 selon config)." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Default : flux internes / applications selon environnement." }] }] }
+              ]
+            },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "C — Contrôle anti 'open relay' (concept clé)" }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Un relais ouvert arrive quand un serveur accepte de relayer vers Internet des mails provenant de n'importe quelle IP sans authentification. Dans un lab, on vérifie au minimum que RemoteIPRanges et les PermissionGroups ne rendent pas le serveur trop permissif." }] },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "D — Si scénario 'smart host' / 'DMZ' : restreindre les IP (optionnel selon consigne)" }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Si le formateur impose une source unique (ex : un relais), alors RemoteIPRanges doit être restreint à cette IP. Exemple (remplacer NOM_CONNECTEUR et IP) :" }] },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "powershell" },
+              "content": [
+                { "type": "text", "text": "Set-ReceiveConnector \"NOM_CONNECTEUR\" -RemoteIPRanges 192.168.50.1" }
+              ]
+            },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : vous pouvez montrer la sortie Get-ReceiveConnector et expliquer quels paramètres protègent l'entrée SMTP." }] }
+          ]
+        }
+      },
+      {
+        "id": "step-15",
+        "title": "Certificat SSL/TLS — importer et assigner IIS + SMTP (EX01) + vérifications",
+        "order": 15,
+        "estimatedTime": "35 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : EX01. Objectif : sécuriser HTTPS (EAC/OWA/Autodiscover) et SMTP (STARTTLS) avec un certificat correct." }] },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "A — Importer le certificat dans EAC" }] },
+            {
+              "type": "orderedList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Sur EX01, ouvrir https://localhost/ecp." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Aller dans Servers (Serveurs) > Certificates (Certificats)." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Cliquer sur … (More) ou + selon interface > Import Exchange certificate." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Sélectionner le fichier certificat fourni (souvent .pfx) depuis EX01 (idéalement via \\\\DC01\\TP)." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Renseigner le mot de passe du .pfx (si demandé) > Next > Finish." }] }] }
+              ]
+            },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "B — Vérifier le CN/SAN du certificat (éviter mismatch)" }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Toujours dans EAC > Certificates : sélectionner le certificat importé et vérifier que les noms correspondent au scénario (ex : mail.hygeasy.com, autodiscover.hygeasy.com). Si le certificat ne contient pas le bon nom, Outlook affichera des alertes." }] },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "C — Assigner le certificat aux services IIS et SMTP" }] },
+            {
+              "type": "orderedList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Sélectionner le certificat > cliquer sur l'icône crayon (Edit) ou … > Assign services." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Cocher IIS et SMTP. Valider." }] }] }
+              ]
+            },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "D — Vérification côté Exchange (PowerShell)" }] },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "powershell" },
+              "content": [
+                { "type": "text", "text": "Get-ExchangeCertificate | Select Thumbprint,Subject,Services,NotAfter | Format-Table -Auto" }
+              ]
+            },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Vérifier que le certificat utilisé a bien Services incluant IIS,SMTP." }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : certificat importé + assigné IIS/SMTP + visible dans Get-ExchangeCertificate." }] }
+          ]
+        }
+      },
+      {
+        "id": "step-16",
+        "title": "Outlook : configurer le compte sans saisie manuelle (CLIENT01) + tests internes",
+        "order": 16,
+        "estimatedTime": "35 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : CLIENT01. Objectif : tester la configuration client et l'envoi/réception interne via Outlook avec user1 et user2." }] },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "A — Vérifier que CLIENT01 utilise bien le DNS DC01" }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Sur CLIENT01 : vérifier IPv4 DNS = 192.168.50.10. Puis exécuter : nslookup ex01.hygeasy.local (doit retourner 192.168.50.20)." }] },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "B — Créer un profil Outlook propre (première configuration)" }] },
+            {
+              "type": "orderedList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Fermer Outlook s'il est ouvert." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ouvrir Panneau de configuration > Mail (Courrier) (Microsoft Outlook)." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Cliquer sur Show Profiles (Afficher les profils) > Add (Ajouter)." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Nom du profil : PROFIL-USER1." }] }] }
+              ]
+            },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "C — Ajouter le compte user1 (sans serveur manuel)" }] },
+            {
+              "type": "orderedList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Dans l'assistant Outlook : saisir l'adresse user1 (ex : user1@hygeasy.local) et le mot de passe noté." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ne pas remplir de serveur manuellement. Laisser Autodiscover faire." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Valider et attendre la fin de la configuration." }] }] }
+              ]
+            },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "D — Test d'envoi interne user1 -> user2" }] },
+            {
+              "type": "orderedList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ouvrir Outlook avec user1." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Créer un nouveau mail vers user2@hygeasy.local ; Sujet : TEST-INTERNE ; Corps : 'Test interne OK' ; Envoyer." }] }] }
+              ]
+            },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Pour vérifier la réception, vous pouvez soit configurer user2 sur un second profil Outlook, soit utiliser OWA sur EX01 (https://ex01/owa) avec user2 (selon configuration TLS/lab)." }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : Outlook user1 configuré sans saisie serveur + mail interne envoyé et visible côté user2 (Outlook ou OWA)." }] }
+          ]
+        }
+      },
+      {
+        "id": "step-17",
+        "title": "Autodiscover : test \"profil neuf\" + validation (CLIENT01)",
+        "order": 17,
+        "estimatedTime": "25 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : CLIENT01. Objectif : prouver qu'Autodiscover configure Outlook automatiquement (test de conformité)." }] },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "A — Supprimer le profil Outlook existant" }] },
+            {
+              "type": "orderedList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Fermer Outlook." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Panneau de configuration > Mail (Courrier) > Show Profiles." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Sélectionner PROFIL-USER1 > Remove (Supprimer) > confirmer." }] }] }
+              ]
+            },
+            { "type": "heading", "attrs": { "level": 3 }, "content": [{ "type": "text", "text": "B — Créer un profil neuf et ajouter le compte" }] },
+            {
+              "type": "orderedList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Toujours dans Show Profiles : Add (Ajouter) > nommer PROFIL-USER1-NEW." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Saisir l'adresse user1 et le mot de passe. Ne pas configurer manuellement de serveur." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Attendre que l'assistant termine : compte ajouté." }] }] }
+              ]
+            },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : Outlook se configure automatiquement avec seulement email+mdp (Autodiscover OK)." }] }
+          ]
+        }
+      },
+      {
+        "id": "step-18",
+        "title": "Validation finale : check-list d'exploitation (EX01 + CLIENT01)",
+        "order": 18,
+        "estimatedTime": "10 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Objectif : valider que la plateforme est prête pour l'exploitation (messagerie fonctionnelle et sécurisée dans le cadre du lab)." }] },
+            {
+              "type": "bulletList",
+              "content": [
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "EX01 : Services Exchange (Transport / Frontend Transport / Information Store) = Running." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "EX01 : EAC accessible sur https://localhost/ecp." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "EX01 : Send Connector 'Internet Send' présent et Enabled." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "EX01 : Certificat assigné IIS + SMTP (Get-ExchangeCertificate le montre)." }] }] },
+                { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "CLIENT01 : Outlook se configure automatiquement (Autodiscover), et email interne user1->user2 OK." }] }] }
+              ]
+            },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de réussite : tous les points sont OK. Si un point est KO, l'étudiant doit documenter la cause (DNS, certificat, services, droits) et la correction appliquée." }] }
+          ]
+        }
+      }
+    ]
+  }
+}

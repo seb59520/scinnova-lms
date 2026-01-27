@@ -9,6 +9,7 @@ import { GameRenderer } from './GameRenderer'
 import { ItemDocuments } from './ItemDocuments'
 import { TpControlRenderer } from './TpControlRenderer'
 import { StepByStepTpRenderer } from './StepByStepTpRenderer'
+import { TpNewRenderer } from './TpNewRenderer'
 import { Presentation, Eye, Columns, Sparkles, FileJson } from 'lucide-react'
 import { correctAnswer, CorrectionResult } from '../lib/answerCorrector'
 import { TitanicJsonUploader } from './TitanicJsonUploader'
@@ -1341,6 +1342,12 @@ export function ItemRenderer({ item, submission, onSubmissionUpdate, viewingUser
     if (isControlTp) {
       // Utiliser le composant spécialisé pour les TP de contrôle
       return <TpControlRenderer item={item} submission={submission} onSubmissionUpdate={onSubmissionUpdate} viewingUserId={viewingUserId || undefined} />;
+    }
+
+    // Vérifier si c'est un TPNew (présentation par thèmes, texte + captures)
+    const isTpNew = item.content?.type === 'tp-new';
+    if (isTpNew) {
+      return <TpNewRenderer item={item} submission={submission} onSubmissionUpdate={onSubmissionUpdate} viewingUserId={viewingUserId ?? undefined} />;
     }
 
     // Vérifier si c'est un TP pas à pas

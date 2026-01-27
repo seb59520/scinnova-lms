@@ -9,6 +9,7 @@ import { RichTextEditor } from '../../components/RichTextEditor'
 import { ChapterManager } from '../../components/ChapterManager'
 import { ItemDocumentsManager } from '../../components/ItemDocumentsManager'
 import { TpControlSourcesManager } from '../../components/TpControlSourcesManager'
+import { TpNewEditor } from '../../components/TpNewEditor'
 
 export function AdminItemEdit() {
   const { itemId } = useParams<{ itemId: string }>()
@@ -493,44 +494,71 @@ export function AdminItemEdit() {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Type *
-                </label>
-                <select
-                  value={item.type || 'resource'}
-                  onChange={(e) => setItem({ ...item, type: e.target.value as Item['type'] })}
-                  className="input-field"
-                >
-                  <option value="resource">Ressource</option>
-                  <option value="slide">Support projeté</option>
-                  <option value="exercise">Exercice</option>
-                  <option value="activity">Activité Q/R</option>
-                  <option value="tp">TP</option>
-                  <option value="game">Mini-jeu</option>
-                </select>
-              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Type d'élément *
+                  </label>
+                  <select
+                    value={
+                      item.type === 'tp' && (item.content as any)?.type === 'tp-new'
+                        ? 'tp-new'
+                        : (item.type || 'resource')
+                    }
+                    onChange={(e) => {
+                      const v = e.target.value
+                      if (v === 'tp-new') {
+                        const c = item.content as any
+                        setItem({
+                          ...item,
+                          type: 'tp',
+                          content: {
+                            type: 'tp-new',
+                            introduction: c?.introduction ?? '',
+                            themes: Array.isArray(c?.themes) ? c.themes : [{ id: 'theme-1', title: 'Thème 1', blocks: [{ type: 'text', text: '' }] }],
+                            conclusion: c?.conclusion ?? ''
+                          }
+                        })
+                      } else {
+                        setItem({ ...item, type: v as Item['type'] })
+                      }
+                    }}
+                    className="input-field"
+                  >
+                    <option value="resource">Ressource</option>
+                    <option value="slide">Support projeté</option>
+                    <option value="exercise">Exercice</option>
+                    <option value="activity">Activité Q/R</option>
+                    <option value="tp">TP (pas-à-pas)</option>
+                    <option value="tp-new">TP New (thèmes + illustrations)</option>
+                    <option value="game">Mini-jeu</option>
+                  </select>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Nature de l'élément. TP New = présentation par thèmes avec texte et captures d'écran.
+                  </p>
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Categorie pedagogique
-                </label>
-                <select
-                  value={item.category || ''}
-                  onChange={(e) => setItem({ ...item, category: (e.target.value || null) as ItemCategory | null })}
-                  className="input-field"
-                >
-                  <option value="">Non categorise</option>
-                  <option value="cours">Cours</option>
-                  <option value="exemple">Exemple</option>
-                  <option value="exercice">Exercice</option>
-                  <option value="tp">TP</option>
-                  <option value="ressource">Ressource</option>
-                  <option value="evaluation">Evaluation</option>
-                </select>
-                <p className="text-xs text-gray-500 mt-1">
-                  La categorie permet de regrouper les elements sur la page d'accueil de la formation.
-                </p>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Catégorie pédagogique
+                  </label>
+                  <select
+                    value={item.category || ''}
+                    onChange={(e) => setItem({ ...item, category: (e.target.value || null) as ItemCategory | null })}
+                    className="input-field"
+                  >
+                    <option value="">Non catégorisé</option>
+                    <option value="cours">Cours</option>
+                    <option value="exemple">Exemple</option>
+                    <option value="exercice">Exercice</option>
+                    <option value="tp">TP</option>
+                    <option value="ressource">Ressource</option>
+                    <option value="evaluation">Évaluation</option>
+                  </select>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Regroupement sur la page d'accueil de la formation.
+                  </p>
+                </div>
               </div>
 
               <div>
@@ -845,7 +873,19 @@ export function AdminItemEdit() {
                     </div>
                   )}
                 </div>
-                {!isNew && itemId ? (
+                {(item.content as any)?.type === 'tp-new' ? (
+                  <div className="rounded-xl border-2 border-indigo-200 bg-indigo-50/30 p-4">
+                    <h4 className="text-base font-semibold text-indigo-900 mb-1">TP New — Contenu par thèmes et illustrations</h4>
+                    <p className="text-sm text-indigo-800 mb-4">
+                      Modifiez le texte et les URL d'illustrations bloc par bloc. Chaque bloc « Texte + Illustration » permet d'éditer le texte à côté de la capture d'écran.
+                    </p>
+                    <TpNewEditor
+                      content={item.content as any}
+                      onContentChange={(c) => setItem(prev => ({ ...prev, content: c }))}
+                      itemId={isNew ? undefined : itemId ?? undefined}
+                    />
+                  </div>
+                ) : !isNew && itemId ? (
                   <>
                     {/* Guide pour TP de contrôle */}
                     {!(item as any).is_control_tp && (

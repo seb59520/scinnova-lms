@@ -1,0 +1,270 @@
+{
+  "title": "Microsoft Exchange — Partie 6 : Gestion avancée des groupes et des permissions Exchange",
+  "description": "Cours approfondi sur l'utilisation des groupes Active Directory et Exchange pour la gestion des permissions, la diffusion de messages et l'application des bonnes pratiques de sécurité. Inclut un TP pas-à-pas détaillé.",
+  "status": "published",
+  "access_type": "free",
+  "currency": "EUR",
+  "is_public": false,
+  "theme": {
+    "primaryColor": "#3B82F6",
+    "secondaryColor": "#8B5CF6",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 — Comprendre les groupes dans Active Directory et Exchange",
+      "position": 1,
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Groupes de distribution vs groupes de sécurité : rôles et usages",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dans un environnement Exchange professionnel, les groupes sont indispensables pour gérer efficacement les accès et la diffusion de messages. Ils permettent d'éviter les configurations individuelles et réduisent fortement les erreurs d'administration."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Groupe de distribution" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Un groupe de distribution sert uniquement à la diffusion de messages. Il ne peut pas être utilisé pour attribuer des permissions sur des ressources (boîtes aux lettres, dossiers, etc.). Exemple : equipe-projet@hygeasy.com."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Groupe de sécurité" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Un groupe de sécurité est utilisé pour accorder des droits (permissions) sur des ressources. Il peut également être activé pour la messagerie. C'est le type de groupe recommandé pour gérer les accès Exchange."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Erreur fréquente : utiliser un groupe de distribution pour gérer des droits. Bonne pratique : toujours utiliser un groupe de sécurité pour les permissions."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Bonnes pratiques de nommage et de structuration",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Une nomenclature claire permet de comprendre immédiatement le rôle d'un groupe, d'un utilisateur ou d'une ressource. Elle facilite la maintenance et limite les erreurs."
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Préfixer les groupes de sécurité : G- (ex : G-SUPPORT)" }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Préfixer les boîtes partagées : MBX- (ex : MBX-SUPPORT)" }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Éviter les droits directs sur les utilisateurs" }] }]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 — Permissions Exchange : logique et pièges",
+      "position": 2,
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Full Access, Send As, Send on Behalf : comprendre les différences",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exchange propose plusieurs niveaux de permissions. Il est essentiel de comprendre leurs différences pour éviter les erreurs de sécurité ou de fonctionnement."
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Full Access : accès complet à la boîte (lecture, suppression), mais pas d'envoi par défaut." }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Send As : envoyer comme si vous étiez la boîte (le destinataire ne voit pas l'utilisateur réel)." }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Send on Behalf : envoyer au nom de (le destinataire voit les deux noms)." }] }]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Bonne pratique : attribuer ces droits à des groupes, jamais directement à des utilisateurs."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 — TP : Gestion avancée des groupes et permissions",
+      "position": 3,
+      "items": [
+        {
+          "type": "tp",
+          "title": "TP 6 — Groupes et permissions Exchange (pas-à-pas)",
+          "position": 1,
+          "published": true,
+          "content": {
+            "type": "step-by-step",
+            "introduction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Objectif : appliquer les bonnes pratiques de gestion des permissions Exchange en utilisant des groupes Active Directory." }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Machines utilisées : DC01 (Active Directory), EX01 (Exchange), CLIENT01 (tests Outlook)." }]
+                }
+              ]
+            },
+            "steps": [
+              {
+                "id": "step-1",
+                "order": 1,
+                "title": "Créer un groupe de sécurité G-SUPPORT",
+                "estimatedTime": "20 min",
+                "description": {
+                  "type": "doc",
+                  "content": [
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : DC01. Objectif : créer un groupe de sécurité qui servira à gérer les permissions Exchange." }] },
+                    { "type": "orderedList", "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ouvrir Active Directory Users and Computers." }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Créer un nouveau groupe nommé G-SUPPORT (Sécurité / Global)." }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ajouter user1 et user2 comme membres." }] }] }
+                    ]},
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : le groupe existe et contient les membres." }] }
+                  ]
+                }
+              },
+              {
+                "id": "step-2",
+                "order": 2,
+                "title": "Créer une boîte partagée MBX-SUPPORT",
+                "estimatedTime": "15 min",
+                "description": {
+                  "type": "doc",
+                  "content": [
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : EX01. Objectif : créer une boîte aux lettres partagée destinée au support." }] },
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Créer une Shared Mailbox nommée support@hygeasy.com." }] },
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : la boîte est de type Shared Mailbox." }] }
+                  ]
+                }
+              },
+              {
+                "id": "step-3",
+                "order": 3,
+                "title": "Attribuer les permissions via le groupe G-SUPPORT",
+                "estimatedTime": "25 min",
+                "description": {
+                  "type": "doc",
+                  "content": [
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : EX01. Objectif : appliquer le principe de délégation par groupe." }] },
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Attribuer Full Access et Send As sur MBX-SUPPORT au groupe G-SUPPORT." }] },
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : aucun droit n'est attribué directement aux utilisateurs." }] }
+                  ]
+                }
+              },
+              {
+                "id": "step-4",
+                "order": 4,
+                "title": "Tester l'accès utilisateur",
+                "estimatedTime": "20 min",
+                "description": {
+                  "type": "doc",
+                  "content": [
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : CLIENT01. Objectif : valider l'héritage des permissions." }] },
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Ouvrir Outlook avec user1 et vérifier l'accès à la boîte partagée." }] },
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Envoyer un message en tant que support@hygeasy.com." }] },
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : l'accès et l'envoi fonctionnent sans configuration individuelle." }] }
+                  ]
+                }
+              }
+            ],
+            "conclusion": {
+              "type": "doc",
+              "content": [
+                { "type": "paragraph", "content": [{ "type": "text", "text": "TP validé : les permissions Exchange sont gérées proprement via des groupes, conformément aux bonnes pratiques professionnelles." }] }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

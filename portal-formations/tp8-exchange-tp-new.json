@@ -1,0 +1,94 @@
+{
+  "type": "tp",
+  "title": "TP 8 — Analyser et résoudre des incidents SMTP Exchange",
+  "position": 1,
+  "published": true,
+  "content": {
+    "type": "tp-new",
+    "introduction": "Ce TP met l'apprenant en situation réelle de dépannage SMTP. Machines : EX01 (Exchange), CLIENT01 (Outlook). Chaque thème correspond à une étape du diagnostic.",
+    "themes": [
+      {
+        "id": "theme-1",
+        "title": "Constater un échec d'envoi",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "Machine : CLIENT01. Envoyer un mail volontairement non délivrable (domaine inexistant ou destinataire invalide)."
+          },
+          {
+            "type": "text-image",
+            "text": "Observer le message d'erreur affiché par Outlook ou le NDR (Non-Delivery Report) reçu. La capture à droite montre un exemple de NDR typique.",
+            "src": "https://placehold.co/600x350/EF4444/ffffff?text=Exemple+NDR+ou+erreur+Outlook",
+            "alt": "Exemple de NDR ou message d'erreur",
+            "layout": "right"
+          },
+          {
+            "type": "text",
+            "text": "**Critère :** un échec est constaté (erreur client ou NDR reçu). Durée indicative : 10 min."
+          }
+        ]
+      },
+      {
+        "id": "theme-2",
+        "title": "Tracer le message",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "Machine : EX01. Utiliser **Message Trace** pour retrouver le message (EAC : Mail flow → Message trace, ou PowerShell : Get-MessageTrackingLog)."
+          },
+          {
+            "type": "text-image",
+            "text": "Renseigner expéditeur, destinataire, plage de dates puis lancer la recherche. Identifier l'étape exacte où le message échoue (Delivered, Failed, Pending, Deferred).",
+            "src": "https://placehold.co/600x350/F59E0B/ffffff?text=Message+Trace+EAC",
+            "alt": "Message Trace dans l'EAC",
+            "layout": "right"
+          },
+          {
+            "type": "text",
+            "text": "**Critère :** vous savez dire pourquoi il échoue et à quelle étape (réception, transport, Send Connector, serveur distant). Durée indicative : 20 min."
+          }
+        ]
+      },
+      {
+        "id": "theme-3",
+        "title": "Analyser la file d'attente SMTP",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "Lister les files avec **Get-Queue**. Une file en *Retry* indique souvent un problème DNS, TLS ou distant."
+          },
+          {
+            "type": "text-image",
+            "text": "Identifier une file bloquée en Retry. Get-Queue | Get-Message permet d'inspecter les messages en attente. L'image à gauche rappelle la sortie typique.",
+            "src": "https://placehold.co/500x280/EF4444/ffffff?text=Get-Queue+Retry",
+            "alt": "File d'attente en Retry",
+            "layout": "left"
+          },
+          {
+            "type": "text",
+            "text": "**Critère :** la cause probable (DNS, connecteur, certificat) est identifiée. Durée indicative : 20 min."
+          }
+        ]
+      },
+      {
+        "id": "theme-4",
+        "title": "Corriger la cause",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "Corriger la configuration selon le scénario : DNS, Send/Receive Connector, certificat, ou paramètre du Smart Host."
+          },
+          {
+            "type": "text",
+            "text": "Relancer le flux SMTP (redémarrage du service Transport si besoin, ou attente du retry automatique). Vérifier que la file se vide et que le message est délivré ou rejeté proprement."
+          },
+          {
+            "type": "text",
+            "text": "**Critère final :** la file se vide et le message est délivré ou rejeté proprement. Durée indicative : 25 min."
+          }
+        ]
+      }
+    ],
+    "conclusion": "TP validé : l'apprenant sait diagnostiquer et résoudre un incident SMTP Exchange de manière méthodique (constater → tracer → analyser → corriger)."
+  }
+}

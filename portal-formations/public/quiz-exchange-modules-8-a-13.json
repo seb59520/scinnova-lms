@@ -1,0 +1,209 @@
+{
+  "description": "Quiz des modules Exchange 8 à 13 — 10 questions par module. Chaque élément de « quizzes » est un item de type game (gameType: quiz) prêt à être inséré dans un cours ou utilisé tel quel.",
+  "quizzes": [
+    {
+      "moduleNumber": 8,
+      "moduleTitle": "Analyse et dépannage des flux de messagerie",
+      "quizItem": {
+        "type": "game",
+        "title": "Quiz Module 8 — Analyse et dépannage des flux de messagerie",
+        "position": 1,
+        "published": true,
+        "content": {
+          "gameType": "quiz",
+          "description": "Quiz de 10 questions sur les outils de diagnostic Exchange, Message Trace, étapes du flux, erreurs SMTP et méthodologie de dépannage.",
+          "instructions": "Répondez aux 10 questions. Une seule réponse correcte par question.",
+          "scoring": { "totalQuestions": 10, "pointsPerQuestion": 1, "passingScore": 7 },
+          "levels": [
+            {
+              "level": 1,
+              "name": "Quiz Module 8 — Flux et diagnostic",
+              "questions": [
+                { "id": "m8-q1", "type": "mcq", "prompt": "À quelle étape du flux Exchange un message entre-t-il en premier ?", "options": ["Transport / catégorisation", "Receive Connector", "Client Outlook", "Routage"], "answer": "Receive Connector", "explanation": "Le message entre par le Receive Connector (entrée SMTP), puis passe au Transport pour catégorisation et routage.", "difficulty": 1 },
+                { "id": "m8-q2", "type": "mcq", "prompt": "Quel outil Exchange permet de tracer le parcours d'un message ?", "options": ["Event Viewer", "Message Trace", "Get-MailboxStatistics", "Test-OutlookConnectivity"], "answer": "Message Trace", "explanation": "Message Trace (Mail flow > Message trace) permet de rechercher un message et de voir à quelle étape il a été reçu, livré ou rejeté.", "difficulty": 1 },
+                { "id": "m8-q3", "type": "mcq", "prompt": "Un message en état « Deferred » indique généralement :", "options": ["Le message a été livré", "Le message est en attente (retry)", "Le destinataire n'existe pas", "Le message est en quarantaine"], "answer": "Le message est en attente (retry)", "explanation": "Deferred signifie que le serveur réessaiera plus tard (file d'attente, serveur distant temporairement indisponible, etc.).", "difficulty": 1 },
+                { "id": "m8-q4", "type": "mcq", "prompt": "Une erreur SMTP 5.7.1 indique typiquement :", "options": ["Problème de certificat", "Refus pour motif de sécurité (spam, politique)", "Serveur distant injoignable", "Quota dépassé"], "answer": "Refus pour motif de sécurité (spam, politique)", "explanation": "5.7.1 est souvent lié au refus pour politique (anti-spam, blocage expéditeur, etc.).", "difficulty": 2 },
+                { "id": "m8-q5", "type": "mcq", "prompt": "Où un message peut-il échouer côté Receive Connector ?", "options": ["Uniquement après livraison", "À l'acceptation SMTP (restrictions, authentification, périmètre)", "Uniquement en cas de virus", "Jamais sur le Receive Connector"], "answer": "À l'acceptation SMTP (restrictions, authentification, périmètre)", "explanation": "Le Receive Connector peut refuser un message dès l'acceptation SMTP (IP non autorisée, authentification requise, périmètre destinataire, etc.).", "difficulty": 2 },
+                { "id": "m8-q6", "type": "mcq", "prompt": "Que signifie un code SMTP 4.x.x ?", "options": ["Erreur définitive (ne pas réessayer)", "Erreur temporaire (réessayer plus tard)", "Message livré", "Message en file d'attente"], "answer": "Erreur temporaire (réessayer plus tard)", "explanation": "4xx = erreur temporaire (le serveur peut réessayer). 5xx = erreur permanente (échec définitif).", "difficulty": 1 },
+                { "id": "m8-q7", "type": "mcq", "prompt": "Pour diagnostiquer un message non livré, quelle démarche est la plus logique ?", "options": ["Patcher Exchange puis relancer", "Message Trace pour localiser l'étape d'échec, puis analyser la cause (connecteur, filtre, quota)", "Réinitialiser la boîte du destinataire", "Redémarrer tous les services Exchange"], "answer": "Message Trace pour localiser l'étape d'échec, puis analyser la cause (connecteur, filtre, quota)", "explanation": "La méthodologie recommandée : localiser l'étape exacte (Message Trace, journaux), identifier la cause, puis appliquer le correctif ciblé.", "difficulty": 2 },
+                { "id": "m8-q8", "type": "mcq", "prompt": "Les journaux de suivi (protocol logs) des connecteurs servent à :", "options": ["Voir le contenu des emails", "Voir les commandes SMTP et réponses (conversation serveur)", "Gérer les quotas", "Configurer les certificats"], "answer": "Voir les commandes SMTP et réponses (conversation serveur)", "explanation": "Les protocol logs enregistrent la conversation SMTP (EHLO, MAIL FROM, RCPT TO, etc.) et les réponses, utiles pour comprendre un refus.", "difficulty": 2 },
+                { "id": "m8-q9", "type": "mcq", "prompt": "Un NDR (Non-Delivery Report) est généré quand :", "options": ["Le message est livré avec succès", "Le message ne peut pas être livré (échec définitif ou après retries)", "Le message est en cours d'envoi", "Le destinataire ouvre le message"], "answer": "Le message ne peut pas être livré (échec définitif ou après retries)", "explanation": "Le NDR est le rapport d'échec de livraison renvoyé à l'expéditeur lorsque le message n'a pas pu être livré après les tentatives.", "difficulty": 1 },
+                { "id": "m8-q10", "type": "mcq", "prompt": "Après avoir identifié qu'un message est bloqué par le Content Filter, l'action corrective peut être :", "options": ["Désactiver tous les filtres anti-spam", "Autoriser l'expéditeur (Allow list), ajuster les seuils, ou vérifier un faux positif", "Supprimer la boîte du destinataire", "Redémarrer le service Transport uniquement"], "answer": "Autoriser l'expéditeur (Allow list), ajuster les seuils, ou vérifier un faux positif", "explanation": "On peut ajouter l'expéditeur en liste blanche, ajuster les seuils du Content Filter, ou examiner si c'est un faux positif avant de corriger.", "difficulty": 2 }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "moduleNumber": 9,
+      "moduleTitle": "Anti-spam et anti-malware Exchange",
+      "quizItem": {
+        "type": "game",
+        "title": "Quiz Module 9 — Anti-spam et anti-malware Exchange",
+        "position": 1,
+        "published": true,
+        "content": {
+          "gameType": "quiz",
+          "description": "Quiz de 10 questions sur l'activation des filtres anti-spam, Install-AntiSpamAgents, Get-TransportAgent, Content Filter, et anti-malware Exchange.",
+          "instructions": "Répondez aux 10 questions. Une seule réponse correcte par question.",
+          "scoring": { "totalQuestions": 10, "pointsPerQuestion": 1, "passingScore": 7 },
+          "levels": [
+            {
+              "level": 1,
+              "name": "Quiz Module 9 — Anti-spam et anti-malware",
+              "questions": [
+                { "id": "m9-q1", "type": "mcq", "prompt": "Sur un serveur Mailbox Exchange (EX01), les filtres anti-spam sont par défaut :", "options": ["Actifs et configurés", "Présents mais désactivés (agents non installés)", "Absents", "Gérés uniquement par un serveur Edge"], "answer": "Présents mais désactivés (agents non installés)", "explanation": "Microsoft livre les agents anti-spam désactivés sur un Mailbox Server ; il faut exécuter Install-AntiSpamAgents.ps1 pour les activer.", "difficulty": 1 },
+                { "id": "m9-q2", "type": "mcq", "prompt": "Où se trouve le script Install-AntiSpamAgents.ps1 ?", "options": ["À télécharger sur Internet", "Dans C:\\Program Files\\Microsoft\\Exchange Server\\V15\\Scripts", "Dans le dossier System32", "Il n'existe pas en standard"], "answer": "Dans C:\\Program Files\\Microsoft\\Exchange Server\\V15\\Scripts", "explanation": "Le script est fourni par Microsoft et se trouve dans le dossier V15\\Scripts, installé avec Exchange.", "difficulty": 1 },
+                { "id": "m9-q3", "type": "mcq", "prompt": "Pour exécuter le script Install-AntiSpamAgents.ps1, on utilise :", "options": ["PowerShell classique uniquement", "& \"C:\\Program Files\\Microsoft\\Exchange Server\\V15\\Scripts\\Install-AntiSpamAgents.ps1\" dans Exchange Management Shell", "Une commande CMD", "Le Gestionnaire des tâches"], "answer": "& \"C:\\Program Files\\Microsoft\\Exchange Server\\V15\\Scripts\\Install-AntiSpamAgents.ps1\" dans Exchange Management Shell", "explanation": "Le & sert à exécuter un script ; il faut utiliser Exchange Management Shell (pas PowerShell classique) et lancer le script avec son chemin complet.", "difficulty": 2 },
+                { "id": "m9-q4", "type": "mcq", "prompt": "Après avoir exécuté Install-AntiSpamAgents.ps1, quelle action est indispensable ?", "options": ["Rien", "Redémarrer le service MSExchangeTransport", "Désactiver le pare-feu", "Réinstaller Exchange"], "answer": "Redémarrer le service MSExchangeTransport", "explanation": "Sans redémarrage du service Transport, les agents ne sont pas actifs. Restart-Service MSExchangeTransport.", "difficulty": 1 },
+                { "id": "m9-q5", "type": "mcq", "prompt": "Quelle commande permet de vérifier que les agents anti-spam sont actifs ?", "options": ["Get-Mailbox", "Get-TransportAgent", "Get-Service", "Get-ContentFilterConfig"], "answer": "Get-TransportAgent", "explanation": "Get-TransportAgent liste les agents de transport, dont Content Filter Agent, Sender Filter Agent, Recipient Filter Agent, etc.", "difficulty": 1 },
+                { "id": "m9-q6", "type": "mcq", "prompt": "Le Content Filter Agent sert à :", "options": ["Bloquer des IP uniquement", "Analyser le contenu du message pour détecter le spam", "Gérer les certificats", "Configurer OWA"], "answer": "Analyser le contenu du message pour détecter le spam", "explanation": "Le Content Filter analyse le contenu (mots, score de spam) pour décider si le message est du spam.", "difficulty": 1 },
+                { "id": "m9-q7", "type": "mcq", "prompt": "Sans exécuter Install-AntiSpamAgents.ps1 sur EX01 :", "options": ["Message Trace affichera quand même « Spam »", "Aucun filtre anti-spam ne fonctionne, Exchange accepte tout", "Seul le Content Filter est actif", "Les agents sont actifs après un redémarrage"], "answer": "Aucun filtre anti-spam ne fonctionne, Exchange accepte tout", "explanation": "Sans le script, les agents ne sont pas enregistrés dans le pipeline SMTP ; Message Trace ne montrera pas « Spam » car aucun filtre n'agit.", "difficulty": 2 },
+                { "id": "m9-q8", "type": "mcq", "prompt": "L'anti-malware Exchange agit :", "options": ["Uniquement sur les pièces jointes", "Au niveau transport (analyse des messages et pièces jointes)", "Uniquement sur OWA", "Uniquement après ouverture du message par l'utilisateur"], "answer": "Au niveau transport (analyse des messages et pièces jointes)", "explanation": "L'anti-malware Exchange scanne les messages au niveau du transport (avant remise en boîte), notamment les pièces jointes.", "difficulty": 2 },
+                { "id": "m9-q9", "type": "mcq", "prompt": "Pourquoi Microsoft laisse-t-il les filtres anti-spam désactivés sur un Mailbox Server ?", "options": ["Par oubli", "Microsoft recommande que le anti-spam principal soit sur un serveur Edge ou une solution tierce", "Pour vendre des licences", "Ils ne sont jamais désactivés"], "answer": "Microsoft recommande que le anti-spam principal soit sur un serveur Edge ou une solution tierce", "explanation": "C'est un choix d'architecture : le anti-spam « principal » est censé être sur Edge ou tierce ; sur Mailbox, l'activation est optionnelle (lab, petites infra).", "difficulty": 2 },
+                { "id": "m9-q10", "type": "mcq", "prompt": "Get-ContentFilterConfig permet de :", "options": ["Lister les agents", "Voir et configurer les seuils de spam et les actions (quarantaine, rejet, etc.) du Content Filter", "Redémarrer le Transport", "Gérer les connecteurs SMTP"], "answer": "Voir et configurer les seuils de spam et les actions (quarantaine, rejet, etc.) du Content Filter", "explanation": "Get-ContentFilterConfig / Set-ContentFilterConfig permettent de gérer les seuils (SCL) et les actions du Content Filter.", "difficulty": 2 }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "moduleNumber": 10,
+      "moduleTitle": "Surveillance et optimisation des performances",
+      "quizItem": {
+        "type": "game",
+        "title": "Quiz Module 10 — Surveillance et optimisation des performances",
+        "position": 1,
+        "published": true,
+        "content": {
+          "gameType": "quiz",
+          "description": "Quiz de 10 questions sur la surveillance proactive, les signaux faibles (disque, SMTP, mémoire), l'alerting et la logique Zabbix / SIEM / SOC.",
+          "instructions": "Répondez aux 10 questions. Une seule réponse correcte par question.",
+          "scoring": { "totalQuestions": 10, "pointsPerQuestion": 1, "passingScore": 7 },
+          "levels": [
+            {
+              "level": 1,
+              "name": "Quiz Module 10 — Surveillance et optimisation",
+              "questions": [
+                { "id": "m10-q1", "type": "mcq", "prompt": "Exchange est surtout sensible à :", "options": ["Uniquement au CPU", "Au disque et à la mémoire, beaucoup moins au CPU", "Uniquement à la mémoire", "Uniquement au disque"], "answer": "Au disque et à la mémoire, beaucoup moins au CPU", "explanation": "Les bases et journaux Exchange sollicitent fortement le disque et la mémoire ; le CPU est souvent moins le goulet d'étranglement.", "difficulty": 1 },
+                { "id": "m10-q2", "type": "mcq", "prompt": "La surveillance proactive vise à :", "options": ["Réagir uniquement quand un utilisateur se plaint", "Détecter un problème avant impact utilisateur", "Désactiver les alertes", "Surveiller uniquement le CPU"], "answer": "Détecter un problème avant impact utilisateur", "explanation": "Surveillance proactive = anticiper (tendances, signaux faibles) pour agir avant que les utilisateurs soient impactés.", "difficulty": 1 },
+                { "id": "m10-q3", "type": "mcq", "prompt": "Parmi les signaux faibles sur Exchange, lequel est prioritaire ?", "options": ["Couleur de l’interface OWA", "Disque (latence, espace libre, journaux qui grossissent)", "Nombre de boîtes aux lettres", "Version d’Exchange"], "answer": "Disque (latence, espace libre, journaux qui grossissent)", "explanation": "Le disque est la priorité absolue : latence qui monte, espace libre qui baisse, journaux qui grossissent anormalement sont des signaux critiques.", "difficulty": 1 },
+                { "id": "m10-q4", "type": "mcq", "prompt": "Des messages en état « Deferred » et une file SMTP qui monte indiquent :", "options": ["Tout va bien", "Un problème de transport (blocage, surcharge, serveur distant)", "Un problème de certificat uniquement", "Rien de spécifique"], "answer": "Un problème de transport (blocage, surcharge, serveur distant)", "explanation": "Files d'attente qui montent et messages Deferred suggèrent un blocage ou une surcharge du chemin SMTP (transport, connecteur, serveur distant).", "difficulty": 2 },
+                { "id": "m10-q5", "type": "mcq", "prompt": "Dans une logique d'alerting, si le disque libre passe sous 15 %, l'action typique est :", "options": ["Ne rien faire", "Déclencher une alerte (email, script) pour que l'admin intervienne avant panne", "Supprimer toutes les boîtes", "Redémarrer le serveur"], "answer": "Déclencher une alerte (email, script) pour que l'admin intervienne avant panne", "explanation": "L'alerting permet d'être prévenu automatiquement (email, script) lorsque un seuil est dépassé, pour agir avant la panne.", "difficulty": 1 },
+                { "id": "m10-q6", "type": "mcq", "prompt": "Zabbix répond à la question :", "options": ["« Est-ce normal ? » (sécurité)", "« Ça marche ? » (le système fonctionne-t-il)", "« Que fait-on maintenant ? »", "« Qui a attaqué ? »"], "answer": "« Ça marche ? » (le système fonctionne-t-il)", "explanation": "Zabbix (supervision) = « Est-ce que le système fonctionne ? ». SIEM = « Est-ce normal ? » (sécurité). SOC = « Que fait-on maintenant ? ».", "difficulty": 2 },
+                { "id": "m10-q7", "type": "mcq", "prompt": "Un SIEM sert à :", "options": ["Uniquement à faire des graphiques", "Détecter et analyser des incidents de sécurité (corrélation d’événements)", "Remplacer le disque", "Gérer les boîtes aux lettres"], "answer": "Détecter et analyser des incidents de sécurité (corrélation d’événements)", "explanation": "Le SIEM agrège et corrèle les logs (Exchange, IIS, AD, etc.) pour détecter des comportements anormaux ou des attaques.", "difficulty": 2 },
+                { "id": "m10-q8", "type": "mcq", "prompt": "Le but de la surveillance proactive native (sans outil tiers) est :", "options": ["Avoir des chiffres parfaits à chaque seconde", "Avoir des tendances (évolution dans le temps) pour anticiper", "Supprimer tous les logs", "Ne jamais utiliser PerfMon"], "answer": "Avoir des tendances (évolution dans le temps) pour anticiper", "explanation": "L'objectif n'est pas la précision instantanée mais les tendances (jour après jour) pour repérer une dégradation avant incident.", "difficulty": 2 },
+                { "id": "m10-q9", "type": "mcq", "prompt": "Un bon admin Exchange, en matière d'alerting :", "options": ["Ouvre Exchange tous les jours manuellement pour tout vérifier", "S'appuie sur les alertes qui viennent à lui (automatisation)", "Désactive toutes les alertes", "Ne surveille jamais"], "answer": "S'appuie sur les alertes qui viennent à lui (automatisation)", "explanation": "Les alertes (email, script, supervision) préviennent l'admin ; il n'a pas besoin d'ouvrir la console chaque jour pour tout vérifier.", "difficulty": 1 },
+                { "id": "m10-q10", "type": "mcq", "prompt": "« Un incident Exchange est rarement brutal » signifie :", "options": ["Il n’y a jamais d’incident", "Il donne presque toujours des signes avant-coureurs (tendances, signaux faibles)", "Exchange ne tombe jamais", "La surveillance est inutile"], "answer": "Il donne presque toujours des signes avant-coureurs (tendances, signaux faibles)", "explanation": "En surveillant les tendances (disque, mémoire, files SMTP), on repère souvent une dégradation avant la panne réelle.", "difficulty": 2 }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "moduleNumber": 11,
+      "moduleTitle": "Sauvegardes, PRA/PCA, Veeam Backup",
+      "quizItem": {
+        "type": "game",
+        "title": "Quiz Module 11 — Sauvegardes, PRA/PCA, Veeam Backup",
+        "position": 1,
+        "published": true,
+        "content": {
+          "gameType": "quiz",
+          "description": "Quiz de 10 questions sur VSS, Veeam Backup & Replication, restauration Exchange (VM, applicative, granulaire), Veeam Explorer for Exchange.",
+          "instructions": "Répondez aux 10 questions. Une seule réponse correcte par question.",
+          "scoring": { "totalQuestions": 10, "pointsPerQuestion": 1, "passingScore": 7 },
+          "levels": [
+            {
+              "level": 1,
+              "name": "Quiz Module 11 — Sauvegardes et Veeam",
+              "questions": [
+                { "id": "m11-q1", "type": "mcq", "prompt": "VSS (Volume Shadow Copy Service) permet :", "options": ["De copier des fichiers sans les ouvrir", "De faire une copie cohérente de données pendant qu'elles sont utilisées", "De désactiver Exchange", "De supprimer les journaux manuellement"], "answer": "De faire une copie cohérente de données pendant qu'elles sont utilisées", "explanation": "VSS permet un snapshot cohérent pendant que les applications (dont Exchange) continuent d'écrire ; Exchange participe via le VSS Writer.", "difficulty": 1 },
+                { "id": "m11-q2", "type": "mcq", "prompt": "Sans VSS lors d'une sauvegarde Exchange :", "options": ["Les journaux sont automatiquement purgés", "Les journaux ne sont pas purgés, risque de corruption et disque qui se remplit", "Rien ne change", "La base est toujours cohérente"], "answer": "Les journaux ne sont pas purgés, risque de corruption et disque qui se remplit", "explanation": "Sans VSS, Exchange ne participe pas à la sauvegarde ; les journaux ne sont pas purgés, le disque peut se remplir et la base peut être incohérente.", "difficulty": 2 },
+                { "id": "m11-q3", "type": "mcq", "prompt": "Dans VSS, le rôle de « Requester » est tenu par :", "options": ["Exchange", "Veeam (ou tout logiciel de sauvegarde)", "Windows uniquement", "Le disque"], "answer": "Veeam (ou tout logiciel de sauvegarde)", "explanation": "Le Requester demande la sauvegarde (ex. Veeam). L'application à protéger est le Writer (Microsoft Exchange Writer). Le Provider crée le snapshot.", "difficulty": 2 },
+                { "id": "m11-q4", "type": "mcq", "prompt": "Pour vérifier que le VSS Writer Exchange fonctionne, on peut lancer :", "options": ["Get-Mailbox", "vssadmin list writers", "Get-TransportAgent", "ipconfig"], "answer": "vssadmin list writers", "explanation": "vssadmin list writers affiche les writers VSS ; on doit voir « Microsoft Exchange Writer » avec State: Stable, Last error: No error.", "difficulty": 1 },
+                { "id": "m11-q5", "type": "mcq", "prompt": "Veeam sauvegarde Exchange en :", "options": ["Sauvegardant uniquement la base .edb à la main", "Sauvegardant la VM en respectant VSS Exchange (snapshot, cohérence, purge des journaux)", "Ignorant Exchange", "Copiant uniquement les journaux"], "answer": "Sauvegardant la VM en respectant VSS Exchange (snapshot, cohérence, purge des journaux)", "explanation": "Veeam utilise VSS : snapshot, Exchange fige et purge les journaux, copie cohérente. C'est la base d'une sauvegarde fiable.", "difficulty": 2 },
+                { "id": "m11-q6", "type": "mcq", "prompt": "Pour restaurer un seul mail sans restaurer toute la VM, on utilise :", "options": ["Restore-VirtualMachine uniquement", "Veeam Explorer for Exchange", "Get-MailboxStatistics", "Formatage du disque"], "answer": "Veeam Explorer for Exchange", "explanation": "Veeam Explorer for Exchange permet d'ouvrir une sauvegarde et de restaurer un mail, un dossier ou une boîte sans restaurer toute la VM.", "difficulty": 1 },
+                { "id": "m11-q7", "type": "mcq", "prompt": "« La vraie valeur d'une sauvegarde Exchange, c'est la restauration ciblée » signifie :", "options": ["La sauvegarde seule suffit", "Pouvoir restaurer un mail ou une boîte sans tout restaurer est le gain opérationnel majeur", "Il ne faut jamais restaurer", "Seule la restauration VM compte"], "answer": "Pouvoir restaurer un mail ou une boîte sans tout restaurer est le gain opérationnel majeur", "explanation": "La restauration granulaire (mail, dossier, boîte) via Veeam Explorer évite un restore VM complet et limite l'impact service.", "difficulty": 2 },
+                { "id": "m11-q8", "type": "mcq", "prompt": "Dans Veeam, pour que la sauvegarde soit « application-aware » pour Exchange, il faut :", "options": ["Désactiver Exchange", "Activer Application-Aware Processing et cocher Exchange", "Ne pas utiliser de compte AD", "Sauvegarder uniquement le disque C:"], "answer": "Activer Application-Aware Processing et cocher Exchange", "explanation": "Application-Aware Processing (et cocher Exchange) permet à Veeam d'utiliser VSS Exchange et d'avoir une sauvegarde cohérente avec purge des journaux.", "difficulty": 1 },
+                { "id": "m11-q9", "type": "mcq", "prompt": "Si après une sauvegarde Veeam les logs Exchange ne sont pas purgés :", "options": ["C'est normal", "La sauvegarde n'est probablement pas VSS-aware (vérifier Application-Aware, compte, VSS Writer)", "Il faut supprimer les logs à la main", "Exchange est en panne"], "answer": "La sauvegarde n'est probablement pas VSS-aware (vérifier Application-Aware, compte, VSS Writer)", "explanation": "Si les journaux ne sont pas purgés, Exchange n'a pas participé (VSS) : vérifier Application-Aware, compte utilisé, état du VSS Writer.", "difficulty": 2 },
+                { "id": "m11-q10", "type": "mcq", "prompt": "Une restauration « granulaire » Exchange avec Veeam permet :", "options": ["Uniquement de restaurer toute la VM", "De restaurer un élément ciblé (mail, dossier, boîte) sans downtime total", "De supprimer la base", "De ne jamais utiliser VSS"], "answer": "De restaurer un élément ciblé (mail, dossier, boîte) sans downtime total", "explanation": "Restauration granulaire = restaurer uniquement ce qui manque (mail, dossier, boîte) via Veeam Explorer, sans restaurer toute la VM.", "difficulty": 1 }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "moduleNumber": 12,
+      "moduleTitle": "Sécurité avancée, supervision et audit",
+      "quizItem": {
+        "type": "game",
+        "title": "Quiz Module 12 — Sécurité avancée, supervision et audit",
+        "position": 1,
+        "published": true,
+        "content": {
+          "gameType": "quiz",
+          "description": "Quiz de 10 questions sur la surface d'attaque Exchange, MFA On-Prem, Zabbix/SIEM/SOC, audit OWA/ECP/SMTP, CVE ProxyLogon/ProxyShell.",
+          "instructions": "Répondez aux 10 questions. Une seule réponse correcte par question.",
+          "scoring": { "totalQuestions": 10, "pointsPerQuestion": 1, "passingScore": 7 },
+          "levels": [
+            {
+              "level": 1,
+              "name": "Quiz Module 12 — Sécurité avancée",
+              "questions": [
+                { "id": "m12-q1", "type": "mcq", "prompt": "Exchange concentre notamment :", "options": ["Uniquement des fichiers", "Identité (AD), communications, données sensibles, services exposés (OWA, ECP, SMTP)", "Uniquement le SMTP", "Rien de sensible"], "answer": "Identité (AD), communications, données sensibles, services exposés (OWA, ECP, SMTP)", "explanation": "Une compromission Exchange peut entraîner une compromission globale du SI (accès AD, emails, données).", "difficulty": 1 },
+                { "id": "m12-q2", "type": "mcq", "prompt": "Sur Exchange On-Prem, le MFA est :", "options": ["Natif dans Exchange", "Appliqué en amont (Azure AD hybride, ADFS, reverse proxy) — Exchange ne gère pas le MFA nativement", "Inutile", "Géré uniquement par OWA"], "answer": "Appliqué en amont (Azure AD hybride, ADFS, reverse proxy) — Exchange ne gère pas le MFA nativement", "explanation": "Exchange On-Prem ne gère pas le MFA nativement ; il faut Azure AD hybride, ADFS + MFA ou un reverse proxy/WAF avec MFA.", "difficulty": 1 },
+                { "id": "m12-q3", "type": "mcq", "prompt": "« Zabbix surveille si Exchange fonctionne. Le SIEM surveille si Exchange est attaqué. » Cette phrase illustre :", "options": ["La même chose pour Zabbix et SIEM", "La différence entre supervision (Zabbix) et détection sécurité (SIEM)", "Que le SOC remplace tout", "Que Zabbix fait du SIEM"], "answer": "La différence entre supervision (Zabbix) et détection sécurité (SIEM)", "explanation": "Zabbix = « Ça marche ? ». SIEM = « Est-ce normal ? » (attaque, abus). SOC = équipe + procédures + outils (Zabbix + SIEM).", "difficulty": 2 },
+                { "id": "m12-q4", "type": "mcq", "prompt": "L'ECP (Exchange Admin Center / Centre d'administration) ne doit jamais être :", "options": ["Utilisé", "Exposé librement sur Internet sans protection (VPN, restriction IP, etc.)", "Consulté par les admins", "Configuré"], "answer": "Exposé librement sur Internet sans protection (VPN, restriction IP, etc.)", "explanation": "ECP donne un accès admin complet ; il ne doit pas être exposé sans contrôle (VPN, restriction IP, MFA en amont).", "difficulty": 1 },
+                { "id": "m12-q5", "type": "mcq", "prompt": "ProxyLogon (CVE-2021-26855) permet :", "options": ["Une mise à jour automatique", "Un accès non authentifié, dépôt de webshell, prise de contrôle", "Une sauvegarde native", "Rien de particulier"], "answer": "Un accès non authentifié, dépôt de webshell, prise de contrôle", "explanation": "ProxyLogon était une vulnérabilité critique : accès non authentifié au serveur Exchange, dépôt de webshell, prise de contrôle. Patch urgent.", "difficulty": 2 },
+                { "id": "m12-q6", "type": "mcq", "prompt": "En cas de compromission suspectée (CVE, incident), une des premières actions est :", "options": ["Attendre une semaine", "Isoler le serveur, analyser, patcher, changer les mots de passe, vérifier AD, documenter", "Supprimer toutes les boîtes", "Ne rien faire"], "answer": "Isoler le serveur, analyser, patcher, changer les mots de passe, vérifier AD, documenter", "explanation": "Réaction professionnelle : isoler pour limiter la propagation, analyser (IOC, logs), patcher, sécuriser les comptes (MDP, AD), documenter.", "difficulty": 2 },
+                { "id": "m12-q7", "type": "mcq", "prompt": "« Un serveur Exchange sans supervision et SIEM, c'est une caméra de sécurité éteinte » signifie :", "options": ["Les caméras suffisent", "Sans surveillance et détection (supervision + SIEM), on est aveugle face aux incidents et attaques", "Exchange n'a pas besoin de supervision", "Le SIEM remplace tout"], "answer": "Sans surveillance et détection (supervision + SIEM), on est aveugle face aux incidents et attaques", "explanation": "Supervision (Zabbix, etc.) + SIEM permettent de voir ce qui se passe et de détecter les anomalies ; sans eux, les incidents passent souvent inaperçus.", "difficulty": 2 },
+                { "id": "m12-q8", "type": "mcq", "prompt": "Lors d'un audit sécurité Exchange, on vérifie notamment :", "options": ["Uniquement la version d'Exchange", "OWA/ECP (restrictions IP, auth, TLS), connecteurs SMTP (relais, anonyme), certificats", "Rien", "Uniquement les sauvegardes"], "answer": "OWA/ECP (restrictions IP, auth, TLS), connecteurs SMTP (relais, anonyme), certificats", "explanation": "Audit typique : accès exposés (OWA/ECP), restrictions et TLS ; SMTP (relais ouvert, anonyme) ; certificats (validité, services).", "difficulty": 2 },
+                { "id": "m12-q9", "type": "mcq", "prompt": "Le principe « Ce qui n'a pas besoin d'être accessible ne doit pas l'être » appliqué à Exchange implique :", "options": ["Tout fermer sans réflexion", "ECP pas exposé librement, OWA protégé (VPN/proxy/MFA), connecteurs SMTP limités, certificats surveillés", "Exposer tout sur Internet", "Ne jamais utiliser OWA"], "answer": "ECP pas exposé librement, OWA protégé (VPN/proxy/MFA), connecteurs SMTP limités, certificats surveillés", "explanation": "Réduire la surface d'attaque : n'exposer que ce qui est nécessaire, avec les bonnes protections (VPN, MFA, restrictions, TLS).", "difficulty": 2 },
+                { "id": "m12-q10", "type": "mcq", "prompt": "Parmi les indicateurs de compromission après une CVE Exchange, on cherche :", "options": ["Uniquement la couleur du logo", "Fichiers suspects dans IIS, logs anormaux, comptes admin ajoutés", "Rien de particulier", "La météo"], "answer": "Fichiers suspects dans IIS, logs anormaux, comptes admin ajoutés", "explanation": "Indicateurs typiques : webshells ou fichiers inconnus dans IIS, logs avec requêtes suspectes, nouveaux comptes admin ou droits élevés.", "difficulty": 2 }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "moduleNumber": 13,
+      "moduleTitle": "Scénarios de dépannage avancés (clients Exchange)",
+      "quizItem": {
+        "type": "game",
+        "title": "Quiz Module 13 — Dépannage avancé clients Exchange",
+        "position": 1,
+        "published": true,
+        "content": {
+          "gameType": "quiz",
+          "description": "Quiz de 10 questions sur les erreurs courantes clients (Outlook, OWA), synchronisation, authentification, et outils de diagnostic.",
+          "instructions": "Répondez aux 10 questions. Une seule réponse correcte par question.",
+          "scoring": { "totalQuestions": 10, "pointsPerQuestion": 1, "passingScore": 7 },
+          "levels": [
+            {
+              "level": 1,
+              "name": "Quiz Module 13 — Dépannage clients",
+              "questions": [
+                { "id": "m13-q1", "type": "mcq", "prompt": "« Connexion à Microsoft Exchange perdue » côté Outlook peut avoir pour cause côté serveur :", "options": ["Uniquement le profil Outlook", "Services Exchange (MSExchangeIS, RPC), base démontée, problème réseau", "La couleur du bureau", "Rien côté serveur"], "answer": "Services Exchange (MSExchangeIS, RPC), base démontée, problème réseau", "explanation": "Côté serveur : vérifier les services Exchange, l'état de la base, le réseau. Côté client : profil, AutoDiscover, pare-feu.", "difficulty": 2 },
+                { "id": "m13-q2", "type": "mcq", "prompt": "Pour tester la connectivité Outlook vers Exchange, on peut utiliser :", "options": ["Get-Mailbox uniquement", "Test-OutlookConnectivity (ou Test E-mail AutoConfiguration côté client)", "Formatage du disque", "ipconfig uniquement"], "answer": "Test-OutlookConnectivity (ou Test E-mail AutoConfiguration côté client)", "explanation": "Test-OutlookConnectivity (EMS) et Test E-mail AutoConfiguration (Outlook) permettent de diagnostiquer la connexion Outlook ↔ Exchange.", "difficulty": 2 },
+                { "id": "m13-q3", "type": "mcq", "prompt": "OWA affiche une erreur 500 ou une page blanche. Où chercher en priorité ?", "options": ["Uniquement dans le navigateur", "IIS (virtual directories OWA/ECP), Event Viewer, certificat, redémarrage du pool d'applications", "Dans les sauvegardes", "Dans AD uniquement"], "answer": "IIS (virtual directories OWA/ECP), Event Viewer, certificat, redémarrage du pool d'applications", "explanation": "OWA repose sur IIS ; vérifier les virtual directories, les logs IIS, Event Viewer, le certificat et l'état du pool d'applications.", "difficulty": 2 },
+                { "id": "m13-q4", "type": "mcq", "prompt": "Un utilisateur ne reçoit plus de mails. Parmi les vérifications utiles :", "options": ["Rien", "Get-MailboxStatistics (quota, état), Message Trace (messages à destination de la boîte), règles de boîte", "Supprimer la boîte", "Désactiver Exchange"], "answer": "Get-MailboxStatistics (quota, état), Message Trace (messages à destination de la boîte), règles de boîte", "explanation": "Vérifier le quota et l'état de la boîte, tracer les messages à destination de l'utilisateur (Message Trace), et les règles pouvant rediriger/supprimer.", "difficulty": 2 },
+                { "id": "m13-q5", "type": "mcq", "prompt": "Un problème de synchronisation calendrier ou boîte partagée peut venir de :", "options": ["Uniquement du client", "Droits/délégation, mode caché Outlook, stratégie, état de la boîte partagée", "Du disque uniquement", "Du certificat uniquement"], "answer": "Droits/délégation, mode caché Outlook, stratégie, état de la boîte partagée", "explanation": "Sync calendrier/boîte partagée : vérifier les droits (Add-MailboxPermission, Send on behalf), l'affichage des dossiers dans Outlook, la stratégie.", "difficulty": 2 },
+                { "id": "m13-q6", "type": "mcq", "prompt": "Une boucle de redirection ou « accès refusé » sur OWA après saisie des identifiants peut être liée à :", "options": ["Rien", "Authentification IIS (Windows/formulaires), URL internes/externes, compte verrouillé ou désactivé dans AD", "Uniquement au navigateur", "Au disque"], "answer": "Authentification IIS (Windows/formulaires), URL internes/externes, compte verrouillé ou désactivé dans AD", "explanation": "Vérifier le type d'authentification OWA (Windows, formulaires), les URLs (internes/externes), et l'état du compte AD (verrouillé, désactivé).", "difficulty": 2 },
+                { "id": "m13-q7", "type": "mcq", "prompt": "Get-ActiveSyncDeviceStatistics sert à :", "options": ["Gérer les certificats", "Voir l'état des appareils ActiveSync (sync, erreurs)", "Configurer OWA", "Gérer les connecteurs SMTP"], "answer": "Voir l'état des appareils ActiveSync (sync, erreurs)", "explanation": "Get-ActiveSyncDeviceStatistics (et Get-ActiveSyncDevice) permettent de diagnostiquer les appareils mobiles et leurs erreurs de synchronisation.", "difficulty": 1 },
+                { "id": "m13-q8", "type": "mcq", "prompt": "Pour distinguer une panne côté client d'une panne côté serveur Exchange :", "options": ["On ne peut pas", "Tester depuis un autre client (autre poste, OWA), vérifier les services et logs côté serveur", "Redémarrer tout", "Supprimer le profil"], "answer": "Tester depuis un autre client (autre poste, OWA), vérifier les services et logs côté serveur", "explanation": "Isoler la cause : si OWA fonctionne et pas Outlook sur un poste, le problème est souvent côté client (profil, réseau local). Si OWA ne marche pas non plus, côté serveur.", "difficulty": 2 },
+                { "id": "m13-q9", "type": "mcq", "prompt": "Un profil Outlook corrompu se résout souvent par :", "options": ["Rien", "Recréation du profil Outlook (sans supprimer la boîte côté serveur)", "Suppression de la boîte aux lettres", "Formatage du poste uniquement"], "answer": "Recréation du profil Outlook (sans supprimer la boîte côté serveur)", "explanation": "Recréer le profil Outlook (Panneau de config > Courrier > Profils) permet souvent de corriger un profil corrompu sans toucher à la boîte côté Exchange.", "difficulty": 1 },
+                { "id": "m13-q10", "type": "mcq", "prompt": "Côté serveur, les virtual directories à vérifier pour OWA et ECP sont :", "options": ["Uniquement SMTP", "OWA, ECP, EWS (et éventuellement Autodiscover) — dans IIS, sous le site Exchange", "Uniquement le disque", "Les connecteurs Receive uniquement"], "answer": "OWA, ECP, EWS (et éventuellement Autodiscover) — dans IIS, sous le site Exchange", "explanation": "Les virtual directories OWA, ECP, EWS (et Autodiscover) dans IIS déterminent l'accès aux services web Exchange ; authentification et URL y sont configurées.", "difficulty": 2 }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

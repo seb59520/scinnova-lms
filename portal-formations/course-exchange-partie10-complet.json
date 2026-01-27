@@ -1,0 +1,1240 @@
+{
+  "title": "Microsoft Exchange — Partie 10 : Surveillance et optimisation des performances",
+  "description": "Module complet (2 h) — version enrichie : surveillance proactive & supervision. Objectifs : surveiller les métriques critiques Exchange, identifier les signaux faibles avant incident, mettre en place une surveillance proactive, créer des alertes (email/script), comprendre l'intérêt d'une supervision tierce, distinguer quand Exchange est en cause ou non. Modules 1–5 (théorie) + TP enrichi (Module 6) avec raisonnement évalué. Niveau Exchange 2019 on-prem.",
+  "status": "published",
+  "access_type": "free",
+  "currency": "EUR",
+  "is_public": false,
+  "theme": {
+    "primaryColor": "#2563EB",
+    "secondaryColor": "#10B981",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 — Comprendre les performances Exchange",
+      "position": 1,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Objectifs pédagogiques globaux (Partie 10)",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 2
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Objectifs pédagogiques (Partie 10 — mis à jour)"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "À l'issue de cette partie (2 h), l'apprenant est capable de :"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Surveiller les métriques critiques Exchange"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Identifier les signaux faibles avant incident"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Mettre en place une surveillance proactive"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Créer des alertes automatiques (email / script)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Comprendre l'intérêt d'une supervision tierce"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Expliquer quand Exchange est en cause… et quand ce n'est pas le cas"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.1 Sensibilité Exchange (base obligatoire)",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Comprendre les performances Exchange"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exchange est sensible : au disque, à la mémoire, et beaucoup moins au CPU."
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Toute la suite repose sur cette réalité."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "game",
+          "title": "Quiz Module 10 — Surveillance et optimisation des performances",
+          "position": 3,
+          "published": true,
+          "content": {
+            "gameType": "quiz",
+            "description": "Quiz de 10 questions sur la surveillance proactive, les signaux faibles (disque, SMTP, mémoire), l'alerting et la logique Zabbix / SIEM / SOC.",
+            "instructions": "Répondez aux 10 questions. Une seule réponse correcte par question.",
+            "scoring": {
+              "totalQuestions": 10,
+              "pointsPerQuestion": 1,
+              "passingScore": 7
+            },
+            "levels": [
+              {
+                "level": 1,
+                "name": "Quiz Module 10 — Surveillance et optimisation",
+                "questions": [
+                  {
+                    "id": "m10-q1",
+                    "type": "mcq",
+                    "prompt": "Exchange est surtout sensible à :",
+                    "options": [
+                      "Uniquement au CPU",
+                      "Au disque et à la mémoire, beaucoup moins au CPU",
+                      "Uniquement à la mémoire",
+                      "Uniquement au disque"
+                    ],
+                    "answer": "Au disque et à la mémoire, beaucoup moins au CPU",
+                    "explanation": "Les bases et journaux Exchange sollicitent fortement le disque et la mémoire ; le CPU est souvent moins le goulet d'étranglement.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m10-q2",
+                    "type": "mcq",
+                    "prompt": "La surveillance proactive vise à :",
+                    "options": [
+                      "Réagir uniquement quand un utilisateur se plaint",
+                      "Détecter un problème avant impact utilisateur",
+                      "Désactiver les alertes",
+                      "Surveiller uniquement le CPU"
+                    ],
+                    "answer": "Détecter un problème avant impact utilisateur",
+                    "explanation": "Surveillance proactive = anticiper (tendances, signaux faibles) pour agir avant que les utilisateurs soient impactés.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m10-q3",
+                    "type": "mcq",
+                    "prompt": "Parmi les signaux faibles sur Exchange, lequel est prioritaire ?",
+                    "options": [
+                      "Couleur de l’interface OWA",
+                      "Disque (latence, espace libre, journaux qui grossissent)",
+                      "Nombre de boîtes aux lettres",
+                      "Version d’Exchange"
+                    ],
+                    "answer": "Disque (latence, espace libre, journaux qui grossissent)",
+                    "explanation": "Le disque est la priorité absolue : latence qui monte, espace libre qui baisse, journaux qui grossissent anormalement sont des signaux critiques.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m10-q4",
+                    "type": "mcq",
+                    "prompt": "Des messages en état « Deferred » et une file SMTP qui monte indiquent :",
+                    "options": [
+                      "Tout va bien",
+                      "Un problème de transport (blocage, surcharge, serveur distant)",
+                      "Un problème de certificat uniquement",
+                      "Rien de spécifique"
+                    ],
+                    "answer": "Un problème de transport (blocage, surcharge, serveur distant)",
+                    "explanation": "Files d'attente qui montent et messages Deferred suggèrent un blocage ou une surcharge du chemin SMTP (transport, connecteur, serveur distant).",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m10-q5",
+                    "type": "mcq",
+                    "prompt": "Dans une logique d'alerting, si le disque libre passe sous 15 %, l'action typique est :",
+                    "options": [
+                      "Ne rien faire",
+                      "Déclencher une alerte (email, script) pour que l'admin intervienne avant panne",
+                      "Supprimer toutes les boîtes",
+                      "Redémarrer le serveur"
+                    ],
+                    "answer": "Déclencher une alerte (email, script) pour que l'admin intervienne avant panne",
+                    "explanation": "L'alerting permet d'être prévenu automatiquement (email, script) lorsque un seuil est dépassé, pour agir avant la panne.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m10-q6",
+                    "type": "mcq",
+                    "prompt": "Zabbix répond à la question :",
+                    "options": [
+                      "« Est-ce normal ? » (sécurité)",
+                      "« Ça marche ? » (le système fonctionne-t-il)",
+                      "« Que fait-on maintenant ? »",
+                      "« Qui a attaqué ? »"
+                    ],
+                    "answer": "« Ça marche ? » (le système fonctionne-t-il)",
+                    "explanation": "Zabbix (supervision) = « Est-ce que le système fonctionne ? ». SIEM = « Est-ce normal ? » (sécurité). SOC = « Que fait-on maintenant ? ».",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m10-q7",
+                    "type": "mcq",
+                    "prompt": "Un SIEM sert à :",
+                    "options": [
+                      "Uniquement à faire des graphiques",
+                      "Détecter et analyser des incidents de sécurité (corrélation d’événements)",
+                      "Remplacer le disque",
+                      "Gérer les boîtes aux lettres"
+                    ],
+                    "answer": "Détecter et analyser des incidents de sécurité (corrélation d’événements)",
+                    "explanation": "Le SIEM agrège et corrèle les logs (Exchange, IIS, AD, etc.) pour détecter des comportements anormaux ou des attaques.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m10-q8",
+                    "type": "mcq",
+                    "prompt": "Le but de la surveillance proactive native (sans outil tiers) est :",
+                    "options": [
+                      "Avoir des chiffres parfaits à chaque seconde",
+                      "Avoir des tendances (évolution dans le temps) pour anticiper",
+                      "Supprimer tous les logs",
+                      "Ne jamais utiliser PerfMon"
+                    ],
+                    "answer": "Avoir des tendances (évolution dans le temps) pour anticiper",
+                    "explanation": "L'objectif n'est pas la précision instantanée mais les tendances (jour après jour) pour repérer une dégradation avant incident.",
+                    "difficulty": 2
+                  },
+                  {
+                    "id": "m10-q9",
+                    "type": "mcq",
+                    "prompt": "Un bon admin Exchange, en matière d'alerting :",
+                    "options": [
+                      "Ouvre Exchange tous les jours manuellement pour tout vérifier",
+                      "S'appuie sur les alertes qui viennent à lui (automatisation)",
+                      "Désactive toutes les alertes",
+                      "Ne surveille jamais"
+                    ],
+                    "answer": "S'appuie sur les alertes qui viennent à lui (automatisation)",
+                    "explanation": "Les alertes (email, script, supervision) préviennent l'admin ; il n'a pas besoin d'ouvrir la console chaque jour pour tout vérifier.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "m10-q10",
+                    "type": "mcq",
+                    "prompt": "« Un incident Exchange est rarement brutal » signifie :",
+                    "options": [
+                      "Il n’y a jamais d’incident",
+                      "Il donne presque toujours des signes avant-coureurs (tendances, signaux faibles)",
+                      "Exchange ne tombe jamais",
+                      "La surveillance est inutile"
+                    ],
+                    "answer": "Il donne presque toujours des signes avant-coureurs (tendances, signaux faibles)",
+                    "explanation": "En surveillant les tendances (disque, mémoire, files SMTP), on repère souvent une dégradation avant la panne réelle.",
+                    "difficulty": 2
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 — Surveillance « classique » (outils natifs)",
+      "position": 2,
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Outils natifs pour voir ce qui se passe",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Gestionnaire des tâches"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Moniteur de performances (PerfMon)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Journaux Exchange"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Ces outils servent à voir ce qui se passe maintenant ou s'est déjà passé."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 — Surveillance proactive",
+      "position": 3,
+      "items": [
+        {
+          "type": "resource",
+          "title": "3.1 Qu'est-ce que la surveillance proactive ?",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Différence clé à faire comprendre"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Surveillance classique : on regarde quand ça va mal. Réaction. L'utilisateur se plaint."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Surveillance proactive : on regarde avant que ça aille mal. Anticipation. L'admin est déjà au courant."
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Objectif : détecter un problème AVANT impact utilisateur."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "3.2 Signaux faibles à surveiller sur Exchange",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Disque (priorité absolue)"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Augmentation progressive de la latence"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Diminution de l'espace libre"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Journaux qui grossissent anormalement"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Indice typique : « Tout fonctionne… mais c'est plus lent qu'avant »."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Transport (SMTP)"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Files d'attente qui montent lentement"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Messages en état Deferred"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Temps d'acheminement qui augmente"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Mémoire"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Available MB qui descend progressivement"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Paging qui apparaît sans pic de charge"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Un incident Exchange est rarement brutal. Il donne presque toujours des signes avant-coureurs."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "3.3 Outils pour une surveillance proactive native",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Même sans outil tiers, on peut : conserver l'historique PerfMon ; surveiller la latence disque, les files SMTP, la mémoire disponible ; comparer jour après jour."
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Le but n'est pas d'avoir des chiffres parfaits, mais des tendances."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 4 — Alerting : être prévenu automatiquement",
+      "position": 4,
+      "items": [
+        {
+          "type": "resource",
+          "title": "4.1 Pourquoi l'alerting est indispensable",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Sans alerting : l'admin découvre le problème après les utilisateurs ; le diagnostic se fait dans l'urgence."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Avec alerting : l'admin est prévenu avant ; le correctif est souvent simple."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "4.2 Principe de l'alerting (simplifié)",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "orderedList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Une métrique est surveillée"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Un seuil est défini"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Si le seuil est dépassé : une action est déclenchée (email / script / log)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "4.3 Exemple d'alerting simple (conceptuel)",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Cas typique : disque libre < 15 % ; file SMTP > 100 messages ; latence disque > 50 ms."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Réaction attendue : alerte email à l'admin ; pas besoin d'attendre la panne."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "4.4 Alerting via scripts PowerShell (niveau admin)",
+          "position": 4,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Exemple logique (pédagogique) : script qui vérifie l'espace disque et envoie un mail si seuil dépassé."
+                    }
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Exchange peut être surveillé automatiquement, sans interface graphique. Un bon admin Exchange n'ouvre pas Exchange tous les jours. Ce sont les alertes qui viennent à lui."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 5 — Exchange et supervision tierce",
+      "position": 5,
+      "items": [
+        {
+          "type": "resource",
+          "title": "5.1 Pourquoi utiliser un outil tiers ?",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Les outils natifs sont puissants mais pas centralisés, pas toujours ergonomiques. En production, Exchange est rarement seul."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "5.2 Principe d'une supervision tierce",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Un outil comme Zabbix, Centreon ou Nagios permet de : centraliser les métriques ; corréler les alertes ; historiser sur le long terme ; superviser Exchange + AD + DNS + OS."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "5.3 Ce qu'on supervise typiquement pour Exchange",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Disque DB / Logs — Point critique"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Files SMTP — Indicateur de blocage"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Services Exchange — Disponibilité"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Latence — Expérience utilisateur"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Certificats — Pannes silencieuses"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "5.4 Message pédagogique important",
+          "position": 4,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "blockquote",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Un outil de supervision ne remplace pas la compréhension. Il l'amplifie."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 6 — TP enrichi : Surveillance proactive & alerting",
+      "position": 6,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Contexte du TP Partie 10",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Machines utilisées"
+                    }
+                  ]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "EX01 : Exchange Server 2019"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "DC01 : AD / DNS"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": {
+                    "level": 3
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Objectif du TP enrichi"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Identifier une métrique critique, définir un seuil logique, expliquer quelle alerte serait pertinente, dire ce que ferait l'admin à la réception de l'alerte. Même sans implémentation complète : le raisonnement est évalué."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "tp",
+          "title": "TP 10 — Surveillance proactive et raisonnement sur les alertes",
+          "position": 2,
+          "published": true,
+          "content": {
+            "type": "tp-new",
+            "introduction": "Objectif : appliquer les notions de surveillance proactive et d'alerting. Chaque thème porte sur le raisonnement (métrique critique, seuil, alerte pertinente, réaction admin). Le TP est validé si l'étudiant sait expliquer le « pourquoi » et le « quoi faire », même sans script complet.",
+            "themes": [
+              {
+                "id": "theme-1",
+                "title": "Identifier une métrique critique",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "À partir du cours (Modules 1 à 3), choisis une métrique critique pour Exchange. Exemples : latence disque, espace libre, file SMTP, mémoire disponible."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant nomme une métrique pertinente et explique en une phrase pourquoi elle est critique."
+                  }
+                ]
+              },
+              {
+                "id": "theme-2",
+                "title": "Définir un seuil logique",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Pour la métrique choisie, propose un seuil au-delà duquel tu considérerais qu'il faut agir. Exemples : disque libre < 15 %, file SMTP > 100 messages."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant donne un seuil réaliste et le justifie brièvement."
+                  }
+                ]
+              },
+              {
+                "id": "theme-3",
+                "title": "Expliquer une alerte pertinente",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Quelle alerte déclencherias-tu si le seuil est dépassé ? (email, script, log, etc.) Pourquoi ce choix ?"
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant décrit une action déclenchée par l'alerte et explique en quoi elle est pertinente."
+                  }
+                ]
+              },
+              {
+                "id": "theme-4",
+                "title": "Réaction de l'admin à la réception de l'alerte",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Que ferait l'admin à la réception de cette alerte ? Décris les premières étapes (vérification, diagnostic, action correctrice ou escalade)."
+                  },
+                  {
+                    "type": "text",
+                    "text": "**Critère de validation :** l'étudiant décrit une séquence d'actions cohérente et actionnable."
+                  }
+                ]
+              },
+              {
+                "id": "theme-validation",
+                "title": "Validation finale du TP",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "L'étudiant est validé s'il sait : surveiller Exchange ; identifier un signal faible ; expliquer une alerte pertinente ; comprendre l'intérêt d'un outil tiers ; distinguer surveillance, alerting et supervision."
+                  }
+                ]
+              },
+              {
+                "id": "theme-cloture",
+                "title": "Messages de clôture",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Surveiller Exchange, ce n'est pas regarder des chiffres. C'est comprendre une trajectoire."
+                  },
+                  {
+                    "type": "text",
+                    "text": "Une alerte utile est une alerte actionnable."
+                  },
+                  {
+                    "type": "text",
+                    "text": "Exchange en panne est rarement une surprise… sauf quand on ne surveille pas."
+                  }
+                ]
+              }
+            ],
+            "conclusion": "TP validé : l'apprenant sait surveiller Exchange, identifier un signal faible, expliquer une alerte pertinente, comprendre l'intérêt d'un outil tiers et distinguer surveillance, alerting et supervision. Les messages de clôture rappellent que la surveillance vise la trajectoire, que les alertes doivent être actionnables, et que l'absence de surveillance multiplie les « surprises »."
+          }
+        }
+      ]
+    }
+  ]
+}

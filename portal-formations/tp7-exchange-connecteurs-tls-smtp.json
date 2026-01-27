@@ -1,0 +1,110 @@
+{
+  "type": "tp",
+  "title": "TP 7 — Configurer les connecteurs SMTP et sécuriser les flux",
+  "position": 1,
+  "published": true,
+  "content": {
+    "type": "step-by-step",
+    "introduction": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [{ "type": "text", "text": "Objectif : configurer un flux SMTP fonctionnel et sécurisé dans Exchange, sans relais ouvert, avec certificat TLS valide." }]
+        },
+        {
+          "type": "paragraph",
+          "content": [{ "type": "text", "text": "Machines utilisées : EX01 (Exchange), CLIENT01 (tests Outlook)." }]
+        }
+      ]
+    },
+    "steps": [
+      {
+        "id": "step-1",
+        "order": 1,
+        "title": "Vérifier l'état des services SMTP Exchange",
+        "estimatedTime": "15 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : EX01. Objectif : vérifier que les services Exchange liés au transport sont démarrés." }] },
+            { "type": "orderedList", "content": [
+              { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ouvrir services.msc." }] }] },
+              { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Vérifier que Microsoft Exchange Transport et Microsoft Exchange Frontend Transport sont démarrés." }] }] }
+            ]},
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : les deux services sont en état Running." }] }
+          ]
+        }
+      },
+      {
+        "id": "step-2",
+        "order": 2,
+        "title": "Créer un Send Connector (Internet)",
+        "estimatedTime": "25 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : EX01. Objectif : permettre à Exchange d'envoyer des mails vers l'extérieur (simulation)." }] },
+            { "type": "orderedList", "content": [
+              { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ouvrir l'EAC : https://localhost/ecp." }] }] },
+              { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Mail flow > Send connectors > +." }] }] },
+              { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Nom : Internet Send." }] }] },
+              { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Type : Internet." }] }] },
+              { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Address space : * (tous les domaines)." }] }] },
+              { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Source server : EX01." }] }] }
+            ]},
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : le connecteur est visible et activé." }] }
+          ]
+        }
+      },
+      {
+        "id": "step-3",
+        "order": 3,
+        "title": "Vérifier les Receive Connectors",
+        "estimatedTime": "20 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : EX01. Objectif : comprendre et contrôler les points d'entrée SMTP." }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Lister les connecteurs de réception et vérifier leurs ports, IP autorisées et authentification." }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : vous savez expliquer quel connecteur reçoit quoi et pourquoi il n'y a pas de relais ouvert." }] }
+          ]
+        }
+      },
+      {
+        "id": "step-4",
+        "order": 4,
+        "title": "Assigner le certificat TLS au service SMTP",
+        "estimatedTime": "25 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : EX01. Objectif : sécuriser le flux SMTP avec TLS." }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Dans EAC > Servers > Certificates, assigner le certificat Exchange au service SMTP." }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : le certificat est assigné à SMTP." }] }
+          ]
+        }
+      },
+      {
+        "id": "step-5",
+        "order": 5,
+        "title": "Tester le flux SMTP via Outlook",
+        "estimatedTime": "20 min",
+        "description": {
+          "type": "doc",
+          "content": [
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : CLIENT01. Objectif : tester l'envoi d'un mail depuis Outlook." }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Envoyer un mail interne et observer qu'il est délivré sans erreur." }] },
+            { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : l'envoi fonctionne et aucun message d'erreur SMTP n'apparaît." }] }
+          ]
+        }
+      }
+    ],
+    "conclusion": {
+      "type": "doc",
+      "content": [
+        { "type": "paragraph", "content": [{ "type": "text", "text": "TP validé : le flux SMTP Exchange est fonctionnel et sécurisé, avec connecteurs correctement configurés et certificat TLS assigné." }] }
+      ]
+    }
+  }
+}

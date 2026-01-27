@@ -1,0 +1,291 @@
+{
+  "title": "Microsoft Exchange — Partie 7 : Connecteurs, TLS et flux SMTP",
+  "description": "Cours détaillé sur les flux de messagerie SMTP dans Exchange : fonctionnement des connecteurs d'envoi et de réception, sécurisation TLS, certificats, et diagnostic des flux. Inclut un TP pas-à-pas complet.",
+  "status": "published",
+  "access_type": "free",
+  "currency": "EUR",
+  "is_public": false,
+  "theme": {
+    "primaryColor": "#3B82F6",
+    "secondaryColor": "#8B5CF6",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 — Comprendre le flux SMTP dans Exchange",
+      "position": 1,
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 Le rôle du protocole SMTP dans Exchange",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "SMTP (Simple Mail Transfer Protocol) est le protocole utilisé pour transporter les messages électroniques entre serveurs. Dans Exchange, tous les flux entrants et sortants reposent sur SMTP."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Un message suit généralement ce chemin : Client (Outlook) → Exchange → SMTP → Serveur distant → Boîte de réception."
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Ports SMTP courants" }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Port 25 : SMTP standard (serveur à serveur)" }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Port 587 : Submission client (authentifié)" }] }]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Dans Exchange, les ports et comportements SMTP sont contrôlés par les connecteurs."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "1.2 Send Connector vs Receive Connector : rôles et responsabilités",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Exchange utilise deux types de connecteurs SMTP distincts, chacun ayant un rôle précis." }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Send Connector (connecteur d'envoi)" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Il permet à Exchange d'envoyer des messages vers l'extérieur (Internet ou relais SMTP). Sans Send Connector, aucun mail sortant n'est possible." }]
+                },
+                {
+                  "type": "heading",
+                  "attrs": { "level": 3 },
+                  "content": [{ "type": "text", "text": "Receive Connector (connecteur de réception)" }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Il définit comment Exchange accepte les mails entrants : ports, IP autorisées, authentification, sécurité. Une mauvaise configuration peut créer un relais ouvert." }]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 2 — TLS et certificats pour les flux SMTP",
+      "position": 2,
+      "items": [
+        {
+          "type": "resource",
+          "title": "2.1 Sécurisation des flux SMTP avec TLS",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "TLS permet de chiffrer les échanges SMTP entre serveurs. Exchange utilise STARTTLS pour proposer un chiffrement opportuniste ou forcé selon la configuration." }]
+                },
+                {
+                  "type": "bulletList",
+                  "content": [
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "TLS opportuniste : chiffrement si possible (par défaut)." }] }]
+                    },
+                    {
+                      "type": "listItem",
+                      "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "TLS forcé : le mail est refusé si TLS n'est pas disponible." }] }]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Le certificat présenté par Exchange doit correspondre au nom annoncé lors de la session SMTP (EHLO)." }]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "2.2 Certificats Exchange et usages SMTP",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Les certificats Exchange sont utilisés pour HTTPS (OWA, ECP, Autodiscover) et SMTP (TLS). Un même certificat peut couvrir plusieurs services." }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Pour SMTP, Exchange sélectionne le certificat assigné au service SMTP. Il doit contenir le nom utilisé par le serveur (ex : mail.hygeasy.com)." }]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Module 3 — TP 7 : Connecteurs, TLS et flux SMTP (pas-à-pas)",
+      "position": 3,
+      "items": [
+        {
+          "type": "tp",
+          "title": "TP 7 — Configurer les connecteurs SMTP et sécuriser les flux",
+          "position": 1,
+          "published": true,
+          "content": {
+            "type": "step-by-step",
+            "introduction": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Objectif : configurer un flux SMTP fonctionnel et sécurisé dans Exchange, sans relais ouvert, avec certificat TLS valide." }]
+                },
+                {
+                  "type": "paragraph",
+                  "content": [{ "type": "text", "text": "Machines utilisées : EX01 (Exchange), CLIENT01 (tests Outlook)." }]
+                }
+              ]
+            },
+            "steps": [
+              {
+                "id": "step-1",
+                "order": 1,
+                "title": "Vérifier l'état des services SMTP Exchange",
+                "estimatedTime": "15 min",
+                "description": {
+                  "type": "doc",
+                  "content": [
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : EX01. Objectif : vérifier que les services Exchange liés au transport sont démarrés." }] },
+                    { "type": "orderedList", "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ouvrir services.msc." }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Vérifier que Microsoft Exchange Transport et Microsoft Exchange Frontend Transport sont démarrés." }] }] }
+                    ]},
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : les deux services sont en état Running." }] }
+                  ]
+                }
+              },
+              {
+                "id": "step-2",
+                "order": 2,
+                "title": "Créer un Send Connector (Internet)",
+                "estimatedTime": "25 min",
+                "description": {
+                  "type": "doc",
+                  "content": [
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : EX01. Objectif : permettre à Exchange d'envoyer des mails vers l'extérieur (simulation)." }] },
+                    { "type": "orderedList", "content": [
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ouvrir l'EAC : https://localhost/ecp." }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Mail flow > Send connectors > +." }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Nom : Internet Send." }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Type : Internet." }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Address space : * (tous les domaines)." }] }] },
+                      { "type": "listItem", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Source server : EX01." }] }] }
+                    ]},
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : le connecteur est visible et activé." }] }
+                  ]
+                }
+              },
+              {
+                "id": "step-3",
+                "order": 3,
+                "title": "Vérifier les Receive Connectors",
+                "estimatedTime": "20 min",
+                "description": {
+                  "type": "doc",
+                  "content": [
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : EX01. Objectif : comprendre et contrôler les points d'entrée SMTP." }] },
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Lister les connecteurs de réception et vérifier leurs ports, IP autorisées et authentification." }] },
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : vous savez expliquer quel connecteur reçoit quoi et pourquoi il n'y a pas de relais ouvert." }] }
+                  ]
+                }
+              },
+              {
+                "id": "step-4",
+                "order": 4,
+                "title": "Assigner le certificat TLS au service SMTP",
+                "estimatedTime": "25 min",
+                "description": {
+                  "type": "doc",
+                  "content": [
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : EX01. Objectif : sécuriser le flux SMTP avec TLS." }] },
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Dans EAC > Servers > Certificates, assigner le certificat Exchange au service SMTP." }] },
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : le certificat est assigné à SMTP." }] }
+                  ]
+                }
+              },
+              {
+                "id": "step-5",
+                "order": 5,
+                "title": "Tester le flux SMTP via Outlook",
+                "estimatedTime": "20 min",
+                "description": {
+                  "type": "doc",
+                  "content": [
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Machine : CLIENT01. Objectif : tester l'envoi d'un mail depuis Outlook." }] },
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Envoyer un mail interne et observer qu'il est délivré sans erreur." }] },
+                    { "type": "paragraph", "content": [{ "type": "text", "text": "Critère de validation : l'envoi fonctionne et aucun message d'erreur SMTP n'apparaît." }] }
+                  ]
+                }
+              }
+            ],
+            "conclusion": {
+              "type": "doc",
+              "content": [
+                { "type": "paragraph", "content": [{ "type": "text", "text": "TP validé : le flux SMTP Exchange est fonctionnel et sécurisé, avec connecteurs correctement configurés et certificat TLS assigné." }] }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

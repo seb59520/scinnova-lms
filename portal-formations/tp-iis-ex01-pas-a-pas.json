@@ -1,0 +1,655 @@
+{
+  "title": "TP — Installer IIS sur EX01 (pré-requis Exchange) — Pas à pas ultra détaillé",
+  "description": "Procédure pas-à-pas (clic-par-clic + PowerShell) pour installer IIS (Web Server) sur Windows Server (EX01) et vérifier que le rôle est opérationnel, dans le cadre des prérequis Exchange.",
+  "type": "tp",
+  "content": {
+    "type": "step-by-step",
+    "introduction": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Objectif : installer IIS (Web Server) sur EX01. IIS est un prérequis Exchange car les interfaces web Exchange (EAC/OWA/Autodiscover/EWS) reposent sur IIS."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Machine : EX01 uniquement. Compte recommandé : HYGEASY\\Administrator (ou un compte admin du domaine ayant droits admin local sur EX01)."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Important : cette procédure installe IIS 'de base'. Les composants IIS spécifiques à Exchange seront ajoutés ensuite via la commande de prérequis Exchange (étape suivante du TP Exchange)."
+            }
+          ]
+        }
+      ]
+    },
+    "steps": [
+      {
+        "id": "step-1",
+        "order": 1,
+        "title": "Vérifier que vous êtes sur EX01 et connecté avec un compte administrateur",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Machine : EX01. Objectif : éviter une erreur de machine (exécuter sur DC01 par erreur) et garantir les droits admin."
+                }
+              ]
+            },
+            {
+              "type": "orderedList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Sur EX01, cliquer sur le bouton Démarrer, taper 'À propos de votre PC' ou 'System' et vérifier le nom de l'appareil : EX01."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Ouvrir une invite de commandes : Win+R > cmd > Entrée."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Taper : whoami puis Entrée. Résultat attendu : HYGEASY\\Administrator (ou un compte admin équivalent)."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Critère de validation : machine = EX01 et compte = administrateur."
+                }
+              ]
+            }
+          ]
+        },
+        "estimatedTime": "5 min"
+      },
+      {
+        "id": "step-2",
+        "order": 2,
+        "title": "Méthode A (recommandée en TP) — Installer IIS via Server Manager (clic-par-clic)",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Machine : EX01. Objectif : installer le rôle Web Server (IIS) avec les outils de gestion via l'assistant graphique."
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "A — Ouvrir l'assistant d'ajout de rôles"
+                }
+              ]
+            },
+            {
+              "type": "orderedList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Ouvrir 'Server Manager' (Gestionnaire de serveur). Si déjà ouvert, le laisser."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "En haut à droite, cliquer : Manage (Gérer) > Add Roles and Features (Ajouter des rôles et fonctionnalités)."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "B — Assistant : pages à valider une par une"
+                }
+              ]
+            },
+            {
+              "type": "orderedList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Page 'Before you begin' : cliquer Next (Suivant)."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Page 'Installation type' : sélectionner 'Role-based or feature-based installation' (Installation basée sur un rôle ou une fonctionnalité) > Next."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Page 'Server selection' : vérifier que 'EX01' est sélectionné > Next."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "C — Sélectionner IIS (Web Server)"
+                }
+              ]
+            },
+            {
+              "type": "orderedList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Page 'Server Roles' : cocher 'Web Server (IIS)'."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Une fenêtre s'ouvre 'Add features required for Web Server (IIS)' : cliquer 'Add Features' (Ajouter des fonctionnalités)."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Revenir à la page Roles : vérifier que Web Server (IIS) est coché, puis cliquer Next."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "D — (Optionnel mais utile) Ajouter RSAT AD DS (outils AD)"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cette option aide en contexte Exchange (outils AD). Si votre formateur demande 'minimal', vous pouvez sauter cette sous-partie."
+                }
+              ]
+            },
+            {
+              "type": "orderedList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Page 'Features' : cocher 'RSAT: Active Directory Domain Services and Lightweight Directory Services Tools' (RSAT AD DS)."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Cliquer Next."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "attrs": { "level": 3 },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "E — Confirmer et installer"
+                }
+              ]
+            },
+            {
+              "type": "orderedList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Page 'Web Server Role (IIS)' : cliquer Next."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Page 'Role Services' : laisser les choix par défaut (on ajoutera les composants Exchange plus tard) > Next."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Page 'Confirmation' : cliquer Install. Si une option 'Restart automatically if required' apparaît et que vous êtes en lab, vous pouvez la cocher."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Critère de validation : l'installation se termine avec 'Installation succeeded' / 'Succès'."
+                }
+              ]
+            }
+          ]
+        },
+        "estimatedTime": "20 min"
+      },
+      {
+        "id": "step-3",
+        "order": 3,
+        "title": "Vérifier IIS après installation (IIS Manager + page par défaut)",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Machine : EX01. Objectif : confirmer que IIS est bien installé et fonctionnel."
+                }
+              ]
+            },
+            {
+              "type": "orderedList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Sur EX01 : menu Démarrer > taper 'IIS' > ouvrir 'Internet Information Services (IIS) Manager'."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Dans le panneau de gauche : vérifier que le nom du serveur EX01 est visible et qu'il contient 'Sites'."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Déplier 'Sites' > cliquer sur 'Default Web Site'."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Dans le panneau de droite, cliquer sur 'Browse *:80 (http)' (Parcourir). Un navigateur doit s'ouvrir sur la page IIS par défaut."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Critère de validation : IIS Manager s'ouvre et la page IIS par défaut s'affiche en HTTP."
+                }
+              ]
+            }
+          ]
+        },
+        "estimatedTime": "10 min"
+      },
+      {
+        "id": "step-4",
+        "order": 4,
+        "title": "Méthode B (alternative) — Installer IIS via PowerShell (commande unique)",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Machine : EX01. Objectif : installer IIS rapidement via PowerShell. Utiliser cette méthode si l'assistant GUI n'est pas disponible ou si vous souhaitez automatiser."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Important : ne pas exécuter cette étape si IIS a déjà été installé avec l'étape 2. C'est une alternative."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Ouvrir PowerShell en administrateur (clic droit > Run as administrator), puis exécuter :"
+                }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "powershell" },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Install-WindowsFeature Web-Server -IncludeManagementTools"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Vérifier le résultat (Success doit être True) puis contrôler la présence du rôle :"
+                }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": { "language": "powershell" },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Get-WindowsFeature Web-Server"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Critère de validation : 'Installed : True' pour Web-Server."
+                }
+              ]
+            }
+          ]
+        },
+        "estimatedTime": "10 min"
+      },
+      {
+        "id": "step-5",
+        "order": 5,
+        "title": "Contrôle final (preuve) : capturer les éléments attendus",
+        "description": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Machine : EX01. Objectif : produire une preuve simple que IIS est installé."
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Preuve 1 : capture écran IIS Manager avec EX01 > Sites > Default Web Site visible."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Preuve 2 : capture navigateur affichant la page IIS par défaut (Browse :80)."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Critère de validation : les deux preuves sont disponibles (ou l'une des deux si le formateur l'autorise)."
+                }
+              ]
+            }
+          ]
+        },
+        "estimatedTime": "5 min"
+      }
+    ],
+    "conclusion": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "IIS est installé sur EX01. Prochaine étape (dans le TP Exchange) : ajouter les composants IIS spécifiques à Exchange via la commande de prérequis Exchange (ASP.NET, Windows Auth, etc.)."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

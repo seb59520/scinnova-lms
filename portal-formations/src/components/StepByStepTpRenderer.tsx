@@ -367,7 +367,7 @@ export function StepByStepTpRenderer({
                     {step.description && (
                       <div className="mt-2 text-gray-700">
                         {typeof step.description === 'object' ? (
-                          <div className="prose max-w-none">
+                          <div className="prose max-w-none prose-img:rounded-lg prose-img:shadow-md prose-img:border prose-img:border-gray-200 prose-img:my-4">
                             <RichTextEditor
                               content={step.description}
                               onChange={() => {}}
