@@ -3,7 +3,7 @@
 
 export interface Question {
   id: string
-  type: 'identify-format' | 'json-valid' | 'fix-json-mcq' | 'fix-json-editor' | 'choose-format'
+  type: 'identify-format' | 'json-valid' | 'fix-json-mcq' | 'fix-json-editor' | 'choose-format' | 'fill-in-blank'
   prompt: string
   snippet?: string
   options?: string[]

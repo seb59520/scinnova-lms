@@ -3,10 +3,11 @@ import { useParams, Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { useUserRole } from '../hooks/useUserRole'
 import { supabase } from '../lib/supabaseClient'
-import { Program, ProgramCourseWithCourse, Course, ProgramEvaluation } from '../types/database'
+import { Program, ProgramCourseWithCourse, Course, ProgramEvaluation, CourseResource } from '../types/database'
 import { AppHeader } from '../components/AppHeader'
-import { ArrowLeft, Layers, BookOpen, ChevronRight, Book, Download, FileText, ClipboardCheck, Award, CheckCircle, Upload, Calendar, AlertCircle, Users, Eye, Edit, BarChart3, TrendingUp } from 'lucide-react'
+import { ArrowLeft, Layers, BookOpen, ChevronRight, ChevronDown, ChevronUp, Book, Download, FileText, ClipboardCheck, Award, CheckCircle, Upload, Calendar, AlertCircle, Users, Eye, Edit, BarChart3, TrendingUp, FolderOpen, File, Image, FileSpreadsheet, Link2, Video, ExternalLink, X } from 'lucide-react'
 import { FileUpload } from '../components/FileUpload'
+import { PdfViewer } from '../components/PdfViewer'
 import { StepByStepTpProgressViewer } from '../components/trainer/StepByStepTpProgressViewer'
 import { TpNewCommentsViewer } from '../components/trainer/TpNewCommentsViewer'
 import { useNavigationContext } from '../components/NavigationContext'
@@ -42,6 +43,57 @@ export function ProgramView() {
     average: number;
   }>>({})
   const [gradesLoading, setGradesLoading] = useState(false)
+  const [widgetExpanded, setWidgetExpanded] = useState({
+    evaluations: false,
+    items: false,
+    documents: false,
+    resources: false,
+    formations: false,
+    notes: false,
+  })
+  const [resourceDocuments, setResourceDocuments] = useState<Array<{
+    id: string
+    item_id: string
+    title: string
+    description?: string
+    file_path: string
+    file_name: string
+    file_type?: string
+    file_size?: number
+    order_index: number
+    item_title?: string
+    item_type?: string
+  }>>([])
+  const [courseResources, setCourseResources] = useState<Array<CourseResource & { course_title?: string }>>([])
+  const [resourcesLoaded, setResourcesLoaded] = useState(false)
+  const [courseResourcesLoaded, setCourseResourcesLoaded] = useState(false)
+  const [resourceCategoryExpanded, setResourceCategoryExpanded] = useState<Record<string, boolean>>({
+    images: false,
+    video: false,
+    links: false,
+    courseFiles: false,
+    courseDocument: false,
+    programDocs: false,
+    pdf: false,
+    excel: false,
+    other: false,
+  })
+  const toggleWidget = (key: keyof typeof widgetExpanded) =>
+    setWidgetExpanded((prev) => ({ ...prev, [key]: !prev[key] }))
+  const toggleResourceCategory = (key: string) =>
+    setResourceCategoryExpanded((prev) => ({ ...prev, [key]: !prev[key] }))
+  const [resourcePreview, setResourcePreview] = useState<{ url: string; title: string; kind: 'pdf' | 'image' | 'link' | 'video' } | null>(null)
+  const [resourcePreviewLoading, setResourcePreviewLoading] = useState(false)
+  const openResourcePreview = async (title: string, kind: 'pdf' | 'image' | 'link' | 'video', getUrl: () => Promise<string> | string) => {
+    setResourcePreviewLoading(true)
+    try {
+      const url = typeof getUrl === 'function' ? await getUrl() : getUrl
+      if (url) setResourcePreview({ url, title, kind })
+    } finally {
+      setResourcePreviewLoading(false)
+    }
+  }
+  const closeResourcePreview = () => setResourcePreview(null)
 
   useEffect(() => {
     if (programId && user) {
@@ -53,6 +105,57 @@ export function ProgramView() {
     // Nettoyer le contexte de navigation au démontage
     return () => clearContext()
   }, [programId, user, clearContext])
+
+  useEffect(() => {
+    if (expectedItemsLoaded && expectedItems.length > 0) {
+      fetchResourceDocuments(expectedItems)
+    } else if (expectedItemsLoaded) {
+      setResourcesLoaded(true)
+    }
+  }, [expectedItemsLoaded, expectedItems])
+
+  const fetchCourseResources = async (courses: ProgramCourseWithCourse[]) => {
+    const courseIds = courses.map((pc) => pc.course_id).filter(Boolean)
+    if (courseIds.length === 0) {
+      setCourseResourcesLoaded(true)
+      return
+    }
+    try {
+      const { data, error } = await supabase
+        .from('course_resources')
+        .select('*')
+        .in('course_id', courseIds)
+        .eq('is_visible', true)
+        .order('position', { ascending: true })
+
+      if (error) {
+        setCourseResourcesLoaded(true)
+        return
+      }
+      const courseTitles: Record<string, string> = {}
+      courses.forEach((pc: any) => {
+        const course = pc.courses as Course | null
+        if (course?.id) courseTitles[course.id] = course.title || ''
+      })
+      const withTitles = (data || []).map((r: CourseResource) => ({
+        ...r,
+        course_title: courseTitles[r.course_id] || '',
+      }))
+      setCourseResources(withTitles)
+    } catch {
+      setCourseResources([])
+    } finally {
+      setCourseResourcesLoaded(true)
+    }
+  }
+
+  useEffect(() => {
+    if (programCourses.length > 0) {
+      fetchCourseResources(programCourses)
+    } else {
+      setCourseResourcesLoaded(true)
+    }
+  }, [programCourses])
 
   // Mettre à jour le contexte de navigation quand le programme est chargé
   useEffect(() => {
@@ -221,6 +324,48 @@ export function ProgramView() {
     } catch (err) {
       console.error('Error fetching program documents:', err)
       setDocumentsLoaded(true)
+    }
+  }
+
+  const fetchResourceDocuments = async (items: any[] = expectedItems) => {
+    if (!items?.length) {
+      setResourcesLoaded(true)
+      return
+    }
+    const itemIds = items
+      .map((ei: any) => ei.items?.id)
+      .filter(Boolean) as string[]
+    if (itemIds.length === 0) {
+      setResourcesLoaded(true)
+      return
+    }
+    try {
+      const { data, error } = await supabase
+        .from('item_documents')
+        .select('id, item_id, title, description, file_path, file_name, file_type, file_size, order_index')
+        .in('item_id', itemIds)
+        .order('order_index', { ascending: true })
+
+      if (error) {
+        setResourcesLoaded(true)
+        return
+      }
+      const itemTitles: Record<string, { title: string; type?: string }> = {}
+      items.forEach((ei: any) => {
+        if (ei.items?.id) {
+          itemTitles[ei.items.id] = { title: ei.items.title || '', type: ei.items.type }
+        }
+      })
+      const docs = (data || []).map((d: any) => ({
+        ...d,
+        item_title: itemTitles[d.item_id]?.title,
+        item_type: itemTitles[d.item_id]?.type,
+      }))
+      setResourceDocuments(docs)
+    } catch {
+      setResourceDocuments([])
+    } finally {
+      setResourcesLoaded(true)
     }
   }
 
@@ -946,44 +1091,53 @@ export function ProgramView() {
       <AppHeader />
 
       {/* Header du programme */}
-      <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white pt-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white pt-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <Link
             to="/app"
-            className="inline-flex items-center text-purple-100 hover:text-white mb-4"
+            className="inline-flex items-center text-purple-100 hover:text-white mb-2 text-sm"
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
+            <ArrowLeft className="w-3.5 h-3.5 mr-1.5" />
             Retour à la bibliothèque
           </Link>
-          <div className="flex items-center gap-3 mb-4">
-            <Layers className="w-8 h-8" />
-            <span className="text-purple-200 text-sm font-medium">Programme</span>
+          <div className="flex items-center gap-2 mb-2">
+            <Layers className="w-5 h-5" />
+            <span className="text-purple-200 text-xs font-medium">Programme</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
+          <h1 className="text-2xl md:text-3xl font-extrabold mb-2">
             {program?.title}
           </h1>
           {program?.description && (
-            <p className="text-xl text-purple-100 max-w-3xl">
+            <p className="text-base text-purple-100 max-w-3xl">
               {program.description}
             </p>
           )}
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-4 flex flex-wrap gap-2">
             <button
               onClick={handleDownloadPdf}
               disabled={downloadingPdf}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-purple-600 rounded-lg hover:bg-purple-50 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm bg-white text-purple-600 rounded-lg hover:bg-purple-50 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <FileText className={`w-5 h-5 ${downloadingPdf ? 'animate-spin' : ''}`} />
+              <FileText className={`w-4 h-4 ${downloadingPdf ? 'animate-spin' : ''}`} />
               {downloadingPdf ? 'Génération du PDF...' : 'Télécharger en PDF'}
             </button>
             <button
               onClick={handleDownloadMarkdown}
               disabled={downloadingMarkdown}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Download className={`w-5 h-5 ${downloadingMarkdown ? 'animate-spin' : ''}`} />
+              <Download className={`w-4 h-4 ${downloadingMarkdown ? 'animate-spin' : ''}`} />
               {downloadingMarkdown ? 'Génération...' : 'Télécharger en Markdown'}
             </button>
+            {program?.glossary && (
+              <Link
+                to={`/programs/${programId}/glossary`}
+                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors font-medium"
+              >
+                <BookOpen className="w-4 h-4" />
+                Accéder au glossaire
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -996,181 +1150,29 @@ export function ProgramView() {
           </div>
         )}
 
-        {/* Section Notes des étudiants et Évaluations - Côte à côte */}
-        <div className="mb-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Section Notes des étudiants */}
-          {(() => {
-            // Afficher la section uniquement si:
-            // - L'utilisateur est admin/trainer (voit toutes les notes)
-            // - L'utilisateur est étudiant (voit uniquement sa note)
-            const userRole = profile?.role
-            const isAdminOrTrainer = isAdmin || userRole === 'admin' || userRole === 'trainer' || userRole === 'instructor'
-            const isStudentUser = isStudent || userRole === 'student'
-            const shouldShow = !!user && (isAdminOrTrainer || isStudentUser)
-            
-            console.log('📊 Affichage section notes - Debug:', {
-              user: user ? { id: user.id } : null,
-              profile: profile ? { id: profile.id, role: profile.role } : null,
-              isAdmin,
-              isStudent,
-              isAdminOrTrainer,
-              shouldShow,
-              studentGradesCount: Object.keys(studentGrades).length,
-              gradesLoading,
-              evaluationsConfig: program?.evaluations_config ? {
-                hasItems: !!program.evaluations_config.items,
-                itemsCount: program.evaluations_config.items?.length || 0,
-                items: program.evaluations_config.items
-              } : null
-            })
-            return shouldShow
-          })() && (
-            <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
-                <BarChart3 className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor')))
-                    ? 'Notes des étudiants' 
-                    : 'Mes notes'}
-                </h3>
-                <p className="text-sm text-gray-500">
-                  {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor')))
-                    ? 'Vue d\'ensemble des notes avec moyenne calculée automatiquement'
-                    : 'Votre progression et vos résultats'}
-                </p>
-              </div>
-            </div>
-
-            {gradesLoading ? (
-              <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto"></div>
-                <p className="text-sm text-gray-500 mt-2">Chargement des notes...</p>
-              </div>
-            ) : Object.keys(studentGrades).length === 0 ? (
-              <div className="text-center py-6 text-gray-500">
-                <Users className="w-12 h-12 mx-auto mb-2 text-gray-300" />
-                <p>
-                  {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor')))
-                    ? 'Aucun étudiant inscrit au programme'
-                    : gradesLoading 
-                      ? 'Chargement de vos notes...'
-                      : 'Aucune note disponible pour le moment. Assurez-vous d\'être inscrit au programme et d\'avoir complété des évaluations.'}
-                </p>
-              </div>
-            ) : (() => {
-              // Colonnes affichées = items config + tous les quiz du programme non encore dans la config
-              const configItems = program?.evaluations_config?.items ?? []
-              const configItemIds = new Set(configItems.map((it: { itemId: string }) => it.itemId))
-              const extraQuizColumns = evaluations
-                .filter((e) => !configItemIds.has(e.id))
-                .map((e) => ({ itemId: e.id, title: e.title, weight: 1, threshold: 10 }))
-              const displayItems = [...configItems, ...extraQuizColumns]
-              const hasDisplayColumns = displayItems.length > 0
-
-              if (!hasDisplayColumns) {
-                return (
-                  <div className="text-center py-6 text-gray-500">
-                    <AlertCircle className="w-12 h-12 mx-auto mb-2 text-gray-300" />
-                    <p className="font-medium mb-1">Configuration manquante</p>
-                    <p className="text-sm">Veuillez configurer les évaluations dans les paramètres du programme (Pédagogie → Configuration des évaluations) pour afficher les notes</p>
-                    <Link
-                      to={`/admin/programs/${programId}`}
-                      className="mt-3 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
-                    >
-                      Configurer les évaluations
-                    </Link>
-                  </div>
-                )
-              }
-
-              return (
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))) && (
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Étudiant
-                        </th>
-                      )}
-                      {displayItems.map((item: { itemId: string; title: string; weight?: number }) => (
-                        <th key={item.itemId} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          {item.title}
-                          {item.weight && item.weight !== 1 && (
-                            <span className="ml-1 text-gray-400">(×{item.weight})</span>
-                          )}
-                        </th>
-                      ))}
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-green-50">
-                        Moyenne
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {Object.values(studentGrades).map((student) => (
-                      <tr key={student.profile.id} className="hover:bg-gray-50">
-                        {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))) && (
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            <div>
-                              <div className="text-sm font-medium text-gray-900">
-                                {student.profile.full_name || student.profile.student_id || 'Étudiant'}
-                              </div>
-                              {student.profile.student_id && (
-                                <div className="text-xs text-gray-500">{student.profile.student_id}</div>
-                              )}
-                            </div>
-                          </td>
-                        )}
-                        {displayItems.map((item: { itemId: string; threshold?: number }) => {
-                          const tpGrade = student.tpGrades[item.itemId]
-                          const quizGrade = student.quizGrades[item.itemId]
-                          const grade = tpGrade !== undefined ? tpGrade : (quizGrade !== undefined ? quizGrade : null)
-                          return (
-                            <td key={item.itemId} className="px-4 py-3 whitespace-nowrap">
-                              {grade != null ? (
-                                <span className={`text-sm font-medium ${
-                                  grade >= (item.threshold ?? 10) ? 'text-green-600' : 'text-red-600'
-                                }`}>
-                                  {Number(grade).toFixed(1)}/20
-                                </span>
-                              ) : (
-                                <span className="text-sm text-gray-400">-</span>
-                              )}
-                            </td>
-                          )
-                        })}
-                        <td className="px-4 py-3 whitespace-nowrap bg-green-50">
-                          <span className={`text-sm font-bold ${
-                            student.average >= (program?.evaluations_config?.passingScore ?? 10) ? 'text-green-600' : 'text-red-600'
-                          }`}>
-                            {student.average > 0 ? `${Number(student.average).toFixed(1)}/20` : '-'}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              )
-            })()}
-            </div>
-          )}
-
-          {/* Section Évaluations */}
-          {evaluationsLoaded && (
-            <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+        {/* Section Évaluations */}
+        {evaluationsLoaded && (
+            <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+            <button
+              type="button"
+              onClick={() => toggleWidget('evaluations')}
+              className="w-full flex items-center gap-3 p-6 text-left hover:bg-gray-50 transition-colors"
+            >
+              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
                 <ClipboardCheck className="w-5 h-5 text-white" />
               </div>
-              <div>
+              <div className="flex-1 min-w-0">
                 <h3 className="text-lg font-semibold text-gray-900">Évaluations du programme</h3>
                 <p className="text-sm text-gray-500">Testez vos connaissances</p>
               </div>
-            </div>
+              {widgetExpanded.evaluations ? (
+                <ChevronUp className="w-5 h-5 text-gray-500 flex-shrink-0" />
+              ) : (
+                <ChevronDown className="w-5 h-5 text-gray-500 flex-shrink-0" />
+              )}
+            </button>
+            {widgetExpanded.evaluations && (
+            <div className="px-6 pb-6 pt-0">
             {evaluations.length === 0 ? (
               <div className="text-center py-6 text-gray-500">
                 <Award className="w-12 h-12 mx-auto mb-2 text-gray-300" />
@@ -1219,25 +1221,36 @@ export function ProgramView() {
               </div>
             )}
             </div>
+            )}
+          </div>
           )}
-        </div>
 
         {/* Section Items attendus (TP, Quiz, Exercices) */}
         {expectedItemsLoaded && (
-          <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+          <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+            <button
+              type="button"
+              onClick={() => toggleWidget('items')}
+              className="w-full flex items-center gap-3 p-6 text-left hover:bg-gray-50 transition-colors"
+            >
+              <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
                 <FileText className="w-5 h-5 text-white" />
               </div>
-              <div>
+              <div className="flex-1 min-w-0">
                 <h3 className="text-lg font-semibold text-gray-900">TP, Quiz et Exercices</h3>
                 <p className="text-sm text-gray-500">Accédez directement aux activités du programme</p>
-                {/* Debug info */}
                 <p className="text-xs text-gray-400 mt-1">
                   {expectedItems.length} item(s) chargé(s)
                 </p>
               </div>
-            </div>
+              {widgetExpanded.items ? (
+                <ChevronUp className="w-5 h-5 text-gray-500 flex-shrink-0" />
+              ) : (
+                <ChevronDown className="w-5 h-5 text-gray-500 flex-shrink-0" />
+              )}
+            </button>
+            {widgetExpanded.items && (
+            <div className="px-6 pb-6 pt-0">
             {expectedItems.length === 0 ? (
               <div className="text-center py-6 text-gray-500">
                 <FileText className="w-12 h-12 mx-auto mb-2 text-gray-300" />
@@ -1470,21 +1483,34 @@ export function ProgramView() {
                 })}
               </div>
             )}
+            </div>
+            )}
           </div>
         )}
 
         {/* Section Documents / Questionnaires */}
         {documentsLoaded && (
-          <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+          <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+            <button
+              type="button"
+              onClick={() => toggleWidget('documents')}
+              className="w-full flex items-center gap-3 p-6 text-left hover:bg-gray-50 transition-colors"
+            >
+              <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
                 <FileText className="w-5 h-5 text-white" />
               </div>
-              <div>
+              <div className="flex-1 min-w-0">
                 <h3 className="text-lg font-semibold text-gray-900">Documents à compléter</h3>
                 <p className="text-sm text-gray-500">Téléchargez, remplissez et soumettez</p>
               </div>
-            </div>
+              {widgetExpanded.documents ? (
+                <ChevronUp className="w-5 h-5 text-gray-500 flex-shrink-0" />
+              ) : (
+                <ChevronDown className="w-5 h-5 text-gray-500 flex-shrink-0" />
+              )}
+            </button>
+            {widgetExpanded.documents && (
+            <div className="px-6 pb-6 pt-0">
             {programDocuments.length === 0 ? (
               <div className="text-center py-6 text-gray-500">
                 <FileText className="w-12 h-12 mx-auto mb-2 text-gray-300" />
@@ -1582,6 +1608,591 @@ export function ProgramView() {
               })}
             </div>
             )}
+            </div>
+            )}
+          </div>
+        )}
+
+        {/* Section Ressources de la formation - agrégation des ressources des formations du programme */}
+        {(documentsLoaded || resourcesLoaded || courseResourcesLoaded) &&
+          (programDocuments.length > 0 || resourceDocuments.length > 0 || courseResources.length > 0) && (
+          <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+            <button
+              type="button"
+              onClick={() => toggleWidget('resources')}
+              className="w-full flex items-center gap-3 p-6 text-left hover:bg-gray-50 transition-colors"
+            >
+              <div className="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                <FolderOpen className="w-5 h-5 text-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-lg font-semibold text-gray-900">Ressources de la formation</h3>
+                <p className="text-sm text-gray-500">Agrégation des ressources des formations du programme, par type</p>
+              </div>
+              {widgetExpanded.resources ? (
+                <ChevronUp className="w-5 h-5 text-gray-500 flex-shrink-0" />
+              ) : (
+                <ChevronDown className="w-5 h-5 text-gray-500 flex-shrink-0" />
+              )}
+            </button>
+            {widgetExpanded.resources && (
+            <div className="px-6 pb-6 pt-0 space-y-2">
+              {/* 1. Images (course_resources file+image + item_documents image) — en premier */}
+              {((courseResources.filter((r) => r.resource_type === 'file' && r.mime_type?.toLowerCase().includes('image')).length > 0) ||
+                (resourceDocuments.filter((d) => d.file_type?.toLowerCase().includes('image')).length > 0)) && (
+                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => toggleResourceCategory('images')}
+                    className="w-full flex items-center justify-between gap-2 py-3 px-4 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                      <Image className="w-4 h-4 text-blue-600" />
+                      Images
+                      <span className="text-gray-500 font-normal">
+                        ({courseResources.filter((r) => r.resource_type === 'file' && r.mime_type?.toLowerCase().includes('image')).length +
+                          resourceDocuments.filter((d) => d.file_type?.toLowerCase().includes('image')).length})
+                      </span>
+                    </span>
+                    {resourceCategoryExpanded.images ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+                  {resourceCategoryExpanded.images && (
+                    <div className="px-4 pb-4 pt-0 border-t border-gray-100">
+                      <ul className="space-y-2 pt-3">
+                        {courseResources
+                          .filter((r) => r.resource_type === 'file' && r.mime_type?.toLowerCase().includes('image'))
+                          .map((r) => (
+                            <li key={r.id} className="flex items-center justify-between gap-2 py-2 border-b border-gray-100 last:border-0">
+                              <div className="min-w-0 flex-1">
+                                <span className="text-sm text-gray-900 block truncate">{r.title}</span>
+                                {r.course_title && <span className="text-xs text-gray-500">— {r.course_title}</span>}
+                              </div>
+                              <div className="flex items-center gap-1 flex-shrink-0">
+                                <button
+                                  type="button"
+                                  onClick={() => openResourcePreview(r.title, 'image', () => supabase.storage.from('course-resources').createSignedUrl(r.file_path, 3600).then(({ data }) => data?.signedUrl || ''))}
+                                  className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                                  title="Aperçu coup d'œil"
+                                >
+                                  <Eye className="w-3.5 h-3.5" /> Aperçu
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={async () => {
+                                    if (r.file_path) {
+                                      const { data } = await supabase.storage.from('course-resources').createSignedUrl(r.file_path, 3600)
+                                      if (data?.signedUrl) window.open(data.signedUrl, '_blank')
+                                    }
+                                  }}
+                                  className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+                                >
+                                  <Download className="w-3.5 h-3.5" /> Télécharger
+                                </button>
+                              </div>
+                            </li>
+                          ))}
+                        {resourceDocuments
+                          .filter((d) => d.file_type?.toLowerCase().includes('image'))
+                          .map((doc) => {
+                            const url = supabase.storage.from('item-documents').getPublicUrl(doc.file_path).data.publicUrl
+                            return (
+                              <li key={doc.id} className="flex items-center justify-between gap-2 py-2 border-b border-gray-100 last:border-0">
+                                <div className="min-w-0 flex-1">
+                                  <span className="text-sm text-gray-900 block truncate">{doc.title}</span>
+                                  {doc.item_title && <span className="text-xs text-gray-500">— {doc.item_title}</span>}
+                                </div>
+                                <div className="flex items-center gap-1 flex-shrink-0">
+                                  <button
+                                    type="button"
+                                    onClick={() => openResourcePreview(doc.title, 'image', () => Promise.resolve(url))}
+                                    className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                                    title="Aperçu coup d'œil"
+                                  >
+                                    <Eye className="w-3.5 h-3.5" /> Aperçu
+                                  </button>
+                                  <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200" download>
+                                    <Download className="w-3.5 h-3.5" /> Télécharger
+                                  </a>
+                                </div>
+                              </li>
+                            )
+                          })}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+              {/* 2. Vidéos — en second */}
+              {courseResources.filter((r) => r.resource_type === 'video').length > 0 && (
+                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => toggleResourceCategory('video')}
+                    className="w-full flex items-center justify-between gap-2 py-3 px-4 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                      <Video className="w-4 h-4 text-purple-600" />
+                      Vidéos
+                      <span className="text-gray-500 font-normal">({courseResources.filter((r) => r.resource_type === 'video').length})</span>
+                    </span>
+                    {resourceCategoryExpanded.video ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+                  {resourceCategoryExpanded.video && (
+                    <div className="px-4 pb-4 pt-0 border-t border-gray-100">
+                      <ul className="space-y-2 pt-3">
+                        {courseResources.filter((r) => r.resource_type === 'video').map((r) => (
+                          <li key={r.id} className="flex items-center justify-between gap-2 py-2 border-b border-gray-100 last:border-0">
+                            <div className="min-w-0 flex-1">
+                              <span className="text-sm text-gray-900 block truncate">{r.title}</span>
+                              {r.course_title && <span className="text-xs text-gray-500">— {r.course_title}</span>}
+                            </div>
+                            <div className="flex items-center gap-1 flex-shrink-0">
+                              <button
+                                type="button"
+                                onClick={() => openResourcePreview(r.title, 'video', async () => r.external_url || (r.file_path ? (await supabase.storage.from('course-resources').createSignedUrl(r.file_path, 3600)).data?.signedUrl || '' : ''))}
+                                className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                                title="Aperçu coup d'œil"
+                              >
+                                <Eye className="w-3.5 h-3.5" /> Aperçu
+                              </button>
+                              <button
+                                type="button"
+                                onClick={async () => {
+                                  if (r.external_url) window.open(r.external_url, '_blank')
+                                  else if (r.file_path) {
+                                    const { data } = await supabase.storage.from('course-resources').createSignedUrl(r.file_path, 3600)
+                                    if (data?.signedUrl) window.open(data.signedUrl, '_blank')
+                                  }
+                                }}
+                                className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded hover:bg-purple-200"
+                              >
+                                <ExternalLink className="w-3.5 h-3.5" /> Ouvrir
+                              </button>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+              {/* 3. Pages internet / Liens — en troisième */}
+              {courseResources.filter((r) => r.resource_type === 'url').length > 0 && (
+                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => toggleResourceCategory('links')}
+                    className="w-full flex items-center justify-between gap-2 py-3 px-4 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                      <Link2 className="w-4 h-4 text-blue-600" />
+                      Pages internet / Liens
+                      <span className="text-gray-500 font-normal">({courseResources.filter((r) => r.resource_type === 'url').length})</span>
+                    </span>
+                    {resourceCategoryExpanded.links ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+                  {resourceCategoryExpanded.links && (
+                    <div className="px-4 pb-4 pt-0 border-t border-gray-100">
+                      <ul className="space-y-2 pt-3">
+                        {courseResources.filter((r) => r.resource_type === 'url').map((r) => (
+                          <li key={r.id} className="flex items-center justify-between gap-2 py-2 border-b border-gray-100 last:border-0">
+                            <div className="min-w-0 flex-1">
+                              <span className="text-sm text-gray-900 block truncate">{r.title}</span>
+                              {r.course_title && <span className="text-xs text-gray-500">— {r.course_title}</span>}
+                            </div>
+                            <div className="flex items-center gap-1 flex-shrink-0">
+                              <button
+                                type="button"
+                                onClick={() => openResourcePreview(r.title, 'link', () => Promise.resolve(r.external_url || '#'))}
+                                className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                                title="Aperçu coup d'œil"
+                              >
+                                <Eye className="w-3.5 h-3.5" /> Aperçu
+                              </button>
+                              <a href={r.external_url || '#'} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200">
+                                <ExternalLink className="w-3.5 h-3.5" /> Ouvrir
+                              </a>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+              {/* 4. Fichiers des formations (course_resources file, non-image) */}
+              {courseResources.filter((r) => r.resource_type === 'file' && !r.mime_type?.toLowerCase().includes('image')).length > 0 && (
+                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => toggleResourceCategory('courseFiles')}
+                    className="w-full flex items-center justify-between gap-2 py-3 px-4 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                      <FileText className="w-4 h-4 text-red-600" />
+                      Fichiers des formations
+                      <span className="text-gray-500 font-normal">
+                        ({courseResources.filter((r) => r.resource_type === 'file' && !r.mime_type?.toLowerCase().includes('image')).length})
+                      </span>
+                    </span>
+                    {resourceCategoryExpanded.courseFiles ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+                  {resourceCategoryExpanded.courseFiles && (
+                    <div className="px-4 pb-4 pt-0 border-t border-gray-100">
+                      <ul className="space-y-2 pt-3">
+                        {courseResources
+                          .filter((r) => r.resource_type === 'file' && !r.mime_type?.toLowerCase().includes('image'))
+                          .map((r) => (
+                            <li key={r.id} className="flex items-center justify-between gap-2 py-2 border-b border-gray-100 last:border-0">
+                              <div className="min-w-0 flex-1">
+                                <span className="text-sm text-gray-900 block truncate">{r.title}</span>
+                                {r.course_title && <span className="text-xs text-gray-500">— {r.course_title}</span>}
+                              </div>
+                              <div className="flex items-center gap-1 flex-shrink-0">
+                                <button
+                                  type="button"
+                                  onClick={() => openResourcePreview(r.title, 'pdf', () => supabase.storage.from('course-resources').createSignedUrl(r.file_path, 3600).then(({ data }) => data?.signedUrl || ''))}
+                                  className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                                  title="Aperçu coup d'œil"
+                                >
+                                  <Eye className="w-3.5 h-3.5" /> Aperçu
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={async () => {
+                                    if (r.file_path) {
+                                      const { data } = await supabase.storage.from('course-resources').createSignedUrl(r.file_path, 3600)
+                                      if (data?.signedUrl) window.open(data.signedUrl, '_blank')
+                                    }
+                                  }}
+                                  className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200"
+                                >
+                                  <Download className="w-3.5 h-3.5" /> Télécharger
+                                </button>
+                              </div>
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+              {/* 5. Documents (type document course_resources) */}
+              {courseResources.filter((r) => r.resource_type === 'document').length > 0 && (
+                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => toggleResourceCategory('courseDocument')}
+                    className="w-full flex items-center justify-between gap-2 py-3 px-4 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                      <FileText className="w-4 h-4 text-amber-600" />
+                      Documents (formations)
+                      <span className="text-gray-500 font-normal">({courseResources.filter((r) => r.resource_type === 'document').length})</span>
+                    </span>
+                    {resourceCategoryExpanded.courseDocument ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+                  {resourceCategoryExpanded.courseDocument && (
+                    <div className="px-4 pb-4 pt-0 border-t border-gray-100">
+                      <ul className="space-y-2 pt-3">
+                        {courseResources.filter((r) => r.resource_type === 'document').map((r) => (
+                          <li key={r.id} className="flex items-center justify-between gap-2 py-2 border-b border-gray-100 last:border-0">
+                            <div className="min-w-0 flex-1">
+                              <span className="text-sm text-gray-900 block truncate">{r.title}</span>
+                              {r.course_title && <span className="text-xs text-gray-500">— {r.course_title}</span>}
+                            </div>
+                            <div className="flex items-center gap-1 flex-shrink-0">
+                              <button
+                                type="button"
+                                onClick={() => openResourcePreview(r.title, 'pdf', async () => r.external_url || (r.file_path ? (await supabase.storage.from('course-resources').createSignedUrl(r.file_path, 3600)).data?.signedUrl || '' : ''))}
+                                className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                                title="Aperçu coup d'œil"
+                              >
+                                <Eye className="w-3.5 h-3.5" /> Aperçu
+                              </button>
+                              <button
+                                type="button"
+                                onClick={async () => {
+                                  if (r.external_url) window.open(r.external_url, '_blank')
+                                  else if (r.file_path) {
+                                    const { data } = await supabase.storage.from('course-resources').createSignedUrl(r.file_path, 3600)
+                                    if (data?.signedUrl) window.open(data.signedUrl, '_blank')
+                                  }
+                                }}
+                                className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-amber-100 text-amber-700 rounded hover:bg-amber-200"
+                              >
+                                <Download className="w-3.5 h-3.5" /> Télécharger
+                              </button>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+              {/* 6. Documents à compléter (programme) */}
+              {programDocuments.length > 0 && (
+                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => toggleResourceCategory('programDocs')}
+                    className="w-full flex items-center justify-between gap-2 py-3 px-4 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                      <FileText className="w-4 h-4 text-purple-600" />
+                      Documents à compléter
+                      <span className="text-gray-500 font-normal">({programDocuments.length})</span>
+                    </span>
+                    {resourceCategoryExpanded.programDocs ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+                  {resourceCategoryExpanded.programDocs && (
+                    <div className="px-4 pb-4 pt-0 border-t border-gray-100">
+                      <ul className="space-y-2 pt-3">
+                        {programDocuments.map((doc) => (
+                          <li key={doc.id} className="flex items-center justify-between gap-2 py-2 border-b border-gray-100 last:border-0">
+                            <span className="text-sm text-gray-900 truncate">{doc.title}</span>
+                            {(doc.template_url || doc.template_file_path) && (
+                              <div className="flex items-center gap-1 flex-shrink-0">
+                                <button
+                                  type="button"
+                                  onClick={() => openResourcePreview(doc.title, 'pdf', () => Promise.resolve(documentUrls[doc.id] || doc.template_url || ''))}
+                                  className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                                  title="Aperçu coup d'œil"
+                                >
+                                  <Eye className="w-3.5 h-3.5" /> Aperçu
+                                </button>
+                                <a
+                                  href={documentUrls[doc.id] || doc.template_url || '#'}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded hover:bg-purple-200"
+                                  download
+                                >
+                                  <Download className="w-3.5 h-3.5" /> Télécharger
+                                </a>
+                              </div>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+              {/* 7. PDF (activités) */}
+              {resourceDocuments.filter((d) => d.file_type?.toLowerCase().includes('pdf')).length > 0 && (
+                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => toggleResourceCategory('pdf')}
+                    className="w-full flex items-center justify-between gap-2 py-3 px-4 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                      <FileText className="w-4 h-4 text-red-600" />
+                      PDF (activités)
+                      <span className="text-gray-500 font-normal">
+                        ({resourceDocuments.filter((d) => d.file_type?.toLowerCase().includes('pdf')).length})
+                      </span>
+                    </span>
+                    {resourceCategoryExpanded.pdf ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+                  {resourceCategoryExpanded.pdf && (
+                    <div className="px-4 pb-4 pt-0 border-t border-gray-100">
+                      <ul className="space-y-2 pt-3">
+                        {resourceDocuments
+                          .filter((d) => d.file_type?.toLowerCase().includes('pdf'))
+                          .map((doc) => {
+                            const url = supabase.storage.from('item-documents').getPublicUrl(doc.file_path).data.publicUrl
+                            return (
+                              <li key={doc.id} className="flex items-center justify-between gap-2 py-2 border-b border-gray-100 last:border-0">
+                                <div className="min-w-0 flex-1">
+                                  <span className="text-sm text-gray-900 block truncate">{doc.title}</span>
+                                  {doc.item_title && <span className="text-xs text-gray-500">— {doc.item_title}</span>}
+                                </div>
+                                <div className="flex items-center gap-1 flex-shrink-0">
+                                  <button
+                                    type="button"
+                                    onClick={() => openResourcePreview(doc.title, 'pdf', () => Promise.resolve(url))}
+                                    className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                                    title="Aperçu coup d'œil"
+                                  >
+                                    <Eye className="w-3.5 h-3.5" /> Aperçu
+                                  </button>
+                                  <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200" download>
+                                    <Download className="w-3.5 h-3.5" /> Télécharger
+                                  </a>
+                                </div>
+                              </li>
+                            )
+                          })}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+              {/* 8. Tableaux / Excel */}
+              {resourceDocuments.filter(
+                (d) =>
+                  d.file_type?.toLowerCase().includes('spreadsheet') ||
+                  d.file_type?.toLowerCase().includes('excel') ||
+                  d.file_type?.toLowerCase().includes('csv') ||
+                  d.file_name?.toLowerCase().endsWith('.xlsx') ||
+                  d.file_name?.toLowerCase().endsWith('.xls') ||
+                  d.file_name?.toLowerCase().endsWith('.csv')
+              ).length > 0 && (
+                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => toggleResourceCategory('excel')}
+                    className="w-full flex items-center justify-between gap-2 py-3 px-4 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                      <FileSpreadsheet className="w-4 h-4 text-green-600" />
+                      Tableaux / Excel
+                      <span className="text-gray-500 font-normal">
+                        ({
+                          resourceDocuments.filter(
+                            (d) =>
+                              d.file_type?.toLowerCase().includes('spreadsheet') ||
+                              d.file_type?.toLowerCase().includes('excel') ||
+                              d.file_type?.toLowerCase().includes('csv') ||
+                              d.file_name?.toLowerCase().endsWith('.xlsx') ||
+                              d.file_name?.toLowerCase().endsWith('.xls') ||
+                              d.file_name?.toLowerCase().endsWith('.csv')
+                          ).length
+                        })
+                      </span>
+                    </span>
+                    {resourceCategoryExpanded.excel ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+                  {resourceCategoryExpanded.excel && (
+                    <div className="px-4 pb-4 pt-0 border-t border-gray-100">
+                      <ul className="space-y-2 pt-3">
+                        {resourceDocuments
+                          .filter(
+                            (d) =>
+                              d.file_type?.toLowerCase().includes('spreadsheet') ||
+                              d.file_type?.toLowerCase().includes('excel') ||
+                              d.file_type?.toLowerCase().includes('csv') ||
+                              d.file_name?.toLowerCase().endsWith('.xlsx') ||
+                              d.file_name?.toLowerCase().endsWith('.xls') ||
+                              d.file_name?.toLowerCase().endsWith('.csv')
+                          )
+                          .map((doc) => {
+                            const url = supabase.storage.from('item-documents').getPublicUrl(doc.file_path).data.publicUrl
+                            return (
+                              <li key={doc.id} className="flex items-center justify-between gap-2 py-2 border-b border-gray-100 last:border-0">
+                                <div className="min-w-0 flex-1">
+                                  <span className="text-sm text-gray-900 block truncate">{doc.title}</span>
+                                  {doc.item_title && <span className="text-xs text-gray-500">— {doc.item_title}</span>}
+                                </div>
+                                <div className="flex items-center gap-1 flex-shrink-0">
+                                  <button
+                                    type="button"
+                                    onClick={() => openResourcePreview(doc.title, 'link', () => Promise.resolve(url))}
+                                    className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                                    title="Aperçu coup d'œil"
+                                  >
+                                    <Eye className="w-3.5 h-3.5" /> Aperçu
+                                  </button>
+                                  <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200" download>
+                                    <Download className="w-3.5 h-3.5" /> Télécharger
+                                  </a>
+                                </div>
+                              </li>
+                            )
+                          })}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+              {/* 9. Autres fichiers */}
+              {resourceDocuments.filter(
+                (d) =>
+                  !d.file_type?.toLowerCase().includes('pdf') &&
+                  !d.file_type?.toLowerCase().includes('spreadsheet') &&
+                  !d.file_type?.toLowerCase().includes('excel') &&
+                  !d.file_type?.toLowerCase().includes('csv') &&
+                  !d.file_type?.toLowerCase().includes('image') &&
+                  !d.file_name?.toLowerCase().endsWith('.xlsx') &&
+                  !d.file_name?.toLowerCase().endsWith('.xls') &&
+                  !d.file_name?.toLowerCase().endsWith('.csv')
+              ).length > 0 && (
+                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => toggleResourceCategory('other')}
+                    className="w-full flex items-center justify-between gap-2 py-3 px-4 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                      <File className="w-4 h-4 text-gray-600" />
+                      Autres fichiers
+                      <span className="text-gray-500 font-normal">
+                        ({
+                          resourceDocuments.filter(
+                            (d) =>
+                              !d.file_type?.toLowerCase().includes('pdf') &&
+                              !d.file_type?.toLowerCase().includes('spreadsheet') &&
+                              !d.file_type?.toLowerCase().includes('excel') &&
+                              !d.file_type?.toLowerCase().includes('csv') &&
+                              !d.file_type?.toLowerCase().includes('image') &&
+                              !d.file_name?.toLowerCase().endsWith('.xlsx') &&
+                              !d.file_name?.toLowerCase().endsWith('.xls') &&
+                              !d.file_name?.toLowerCase().endsWith('.csv')
+                          ).length
+                        })
+                      </span>
+                    </span>
+                    {resourceCategoryExpanded.other ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+                  {resourceCategoryExpanded.other && (
+                    <div className="px-4 pb-4 pt-0 border-t border-gray-100">
+                      <ul className="space-y-2 pt-3">
+                        {resourceDocuments
+                          .filter(
+                            (d) =>
+                              !d.file_type?.toLowerCase().includes('pdf') &&
+                              !d.file_type?.toLowerCase().includes('spreadsheet') &&
+                              !d.file_type?.toLowerCase().includes('excel') &&
+                              !d.file_type?.toLowerCase().includes('csv') &&
+                              !d.file_type?.toLowerCase().includes('image') &&
+                              !d.file_name?.toLowerCase().endsWith('.xlsx') &&
+                              !d.file_name?.toLowerCase().endsWith('.xls') &&
+                              !d.file_name?.toLowerCase().endsWith('.csv')
+                          )
+                          .map((doc) => {
+                            const url = supabase.storage.from('item-documents').getPublicUrl(doc.file_path).data.publicUrl
+                            return (
+                              <li key={doc.id} className="flex items-center justify-between gap-2 py-2 border-b border-gray-100 last:border-0">
+                                <div className="min-w-0 flex-1">
+                                  <span className="text-sm text-gray-900 block truncate">{doc.title}</span>
+                                  {doc.item_title && <span className="text-xs text-gray-500">— {doc.item_title}</span>}
+                                </div>
+                                <div className="flex items-center gap-1 flex-shrink-0">
+                                  <button
+                                    type="button"
+                                    onClick={() => openResourcePreview(doc.title, 'link', () => Promise.resolve(url))}
+                                    className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                                    title="Aperçu coup d'œil"
+                                  >
+                                    <Eye className="w-3.5 h-3.5" /> Aperçu
+                                  </button>
+                                  <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200" download>
+                                    <Download className="w-3.5 h-3.5" /> Télécharger
+                                  </a>
+                                </div>
+                              </li>
+                            )
+                          })}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            )}
           </div>
         )}
 
@@ -1621,13 +2232,34 @@ export function ProgramView() {
             </p>
           </div>
         ) : (
-          <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                Formations du programme ({programCourses.length})
-              </h2>
+          <div className="space-y-6 mb-6">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <button
+                type="button"
+                onClick={() => toggleWidget('formations')}
+                className="w-full flex items-center gap-3 p-6 text-left hover:bg-gray-50 transition-colors"
+              >
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0">
+                  <BookOpen className="w-5 h-5" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-xl font-bold text-gray-900">
+                    Formations du programme ({programCourses.length})
+                  </h2>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Les formations sont présentées dans l'ordre recommandé.
+                  </p>
+                </div>
+                {widgetExpanded.formations ? (
+                  <ChevronUp className="w-5 h-5 text-gray-500 flex-shrink-0" />
+                ) : (
+                  <ChevronDown className="w-5 h-5 text-gray-500 flex-shrink-0" />
+                )}
+              </button>
+              {widgetExpanded.formations && (
+              <div className="px-6 pb-6 pt-0">
               <p className="text-gray-600 mb-6">
-                Les formations sont présentées dans l'ordre recommandé. Suivez-les dans l'ordre pour une progression optimale.
+                Suivez-les dans l'ordre pour une progression optimale.
               </p>
 
               <div className="space-y-4">
@@ -1700,11 +2332,244 @@ export function ProgramView() {
                   )
                 })}
               </div>
+              </div>
+              )}
             </div>
           </div>
         )}
 
+        {/* Section Notes des étudiants - en bas du programme, pleine largeur */}
+        {(() => {
+          const userRole = profile?.role
+          const isAdminOrTrainer = isAdmin || userRole === 'admin' || userRole === 'trainer' || userRole === 'instructor'
+          const isStudentUser = isStudent || userRole === 'student'
+          const shouldShow = !!user && (isAdminOrTrainer || isStudentUser)
+          return shouldShow
+        })() && (
+          <div className="mb-6 w-full bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+            <button
+              type="button"
+              onClick={() => toggleWidget('notes')}
+              className="w-full flex items-center gap-3 p-6 text-left hover:bg-gray-50 transition-colors"
+            >
+              <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <BarChart3 className="w-5 h-5 text-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor')))
+                    ? 'Notes des étudiants'
+                    : 'Mes notes'}
+                </h3>
+                <p className="text-sm text-gray-500">
+                  {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor')))
+                    ? 'Vue d\'ensemble des notes avec moyenne calculée automatiquement'
+                    : 'Votre progression et vos résultats'}
+                </p>
+              </div>
+              {widgetExpanded.notes ? (
+                <ChevronUp className="w-5 h-5 text-gray-500 flex-shrink-0" />
+              ) : (
+                <ChevronDown className="w-5 h-5 text-gray-500 flex-shrink-0" />
+              )}
+            </button>
+            {widgetExpanded.notes && (
+            <div className="px-6 pb-6 pt-0">
+
+            {gradesLoading ? (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto"></div>
+                <p className="text-sm text-gray-500 mt-2">Chargement des notes...</p>
+              </div>
+            ) : Object.keys(studentGrades).length === 0 ? (
+              <div className="text-center py-6 text-gray-500">
+                <Users className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                <p>
+                  {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor')))
+                    ? 'Aucun étudiant inscrit au programme'
+                    : gradesLoading
+                      ? 'Chargement de vos notes...'
+                      : 'Aucune note disponible pour le moment. Assurez-vous d\'être inscrit au programme et d\'avoir complété des évaluations.'}
+                </p>
+              </div>
+            ) : (() => {
+              const configItems = program?.evaluations_config?.items ?? []
+              const configItemIds = new Set(configItems.map((it: { itemId: string }) => it.itemId))
+              const extraQuizColumns = evaluations
+                .filter((e) => !configItemIds.has(e.id))
+                .map((e) => ({ itemId: e.id, title: e.title, weight: 1, threshold: 10 }))
+              const displayItems = [...configItems, ...extraQuizColumns]
+              const hasDisplayColumns = displayItems.length > 0
+
+              if (!hasDisplayColumns) {
+                return (
+                  <div className="text-center py-6 text-gray-500">
+                    <AlertCircle className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                    <p className="font-medium mb-1">Configuration manquante</p>
+                    <p className="text-sm">Veuillez configurer les évaluations dans les paramètres du programme (Pédagogie → Configuration des évaluations) pour afficher les notes</p>
+                    <Link
+                      to={`/admin/programs/${programId}`}
+                      className="mt-3 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
+                    >
+                      Configurer les évaluations
+                    </Link>
+                  </div>
+                )
+              }
+
+              return (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))) && (
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Étudiant
+                          </th>
+                        )}
+                        {displayItems.map((item: { itemId: string; title: string; weight?: number }) => (
+                          <th key={item.itemId} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            {item.title}
+                            {item.weight && item.weight !== 1 && (
+                              <span className="ml-1 text-gray-400">(×{item.weight})</span>
+                            )}
+                          </th>
+                        ))}
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-green-50">
+                          Moyenne
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {Object.values(studentGrades).map((student) => (
+                        <tr key={student.profile.id} className="hover:bg-gray-50">
+                          {(isAdmin || (profile && (profile.role === 'trainer' || profile.role === 'instructor'))) && (
+                            <td className="px-4 py-3 whitespace-nowrap">
+                              <div>
+                                <div className="text-sm font-medium text-gray-900">
+                                  {student.profile.full_name || student.profile.student_id || 'Étudiant'}
+                                </div>
+                                {student.profile.student_id && (
+                                  <div className="text-xs text-gray-500">{student.profile.student_id}</div>
+                                )}
+                              </div>
+                            </td>
+                          )}
+                          {displayItems.map((item: { itemId: string; threshold?: number }) => {
+                            const tpGrade = student.tpGrades[item.itemId]
+                            const quizGrade = student.quizGrades[item.itemId]
+                            const grade = tpGrade !== undefined ? tpGrade : (quizGrade !== undefined ? quizGrade : null)
+                            return (
+                              <td key={item.itemId} className="px-4 py-3 whitespace-nowrap">
+                                {grade != null ? (
+                                  <span className={`text-sm font-medium ${
+                                    grade >= (item.threshold ?? 10) ? 'text-green-600' : 'text-red-600'
+                                  }`}>
+                                    {Number(grade).toFixed(1)}/20
+                                  </span>
+                                ) : (
+                                  <span className="text-sm text-gray-400">-</span>
+                                )}
+                              </td>
+                            )
+                          })}
+                          <td className="px-4 py-3 whitespace-nowrap bg-green-50">
+                            <span className={`text-sm font-bold ${
+                              student.average >= (program?.evaluations_config?.passingScore ?? 10) ? 'text-green-600' : 'text-red-600'
+                            }`}>
+                              {student.average > 0 ? `${Number(student.average).toFixed(1)}/20` : '-'}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )
+            })()}
+            </div>
+            )}
+          </div>
+        )}
+
       </main>
+
+      {/* Modale Aperçu (coup d'œil) pour les ressources */}
+      {resourcePreview && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60"
+          onClick={closeResourcePreview}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Aperçu de la ressource"
+        >
+          <div
+            className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gray-50">
+              <h3 className="text-sm font-semibold text-gray-900 truncate pr-4">{resourcePreview.title}</h3>
+              <button
+                type="button"
+                onClick={closeResourcePreview}
+                className="flex-shrink-0 p-2 rounded-lg hover:bg-gray-200 text-gray-600"
+                aria-label="Fermer l'aperçu"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="flex-1 min-h-0 p-4 overflow-auto bg-gray-100">
+              {resourcePreview.kind === 'image' ? (
+                <img
+                  src={resourcePreview.url}
+                  alt={resourcePreview.title}
+                  className="max-w-full h-auto max-h-[75vh] object-contain mx-auto rounded-lg bg-white"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none'
+                    const fallback = (e.target as HTMLImageElement).nextElementSibling as HTMLElement
+                    if (fallback) fallback.classList.remove('hidden')
+                  }}
+                />
+              ) : resourcePreview.kind === 'pdf' ? (
+                <div className="min-h-[75vh] bg-white rounded-lg overflow-hidden">
+                  <PdfViewer url={resourcePreview.url} className="min-h-[75vh]" />
+                </div>
+              ) : (
+                <>
+                  <iframe
+                    title={resourcePreview.title}
+                    src={resourcePreview.url}
+                    className="w-full h-[75vh] min-h-[400px] border-0 rounded-lg bg-white"
+                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                    referrerPolicy="no-referrer"
+                  />
+                  <p className="mt-2 text-xs text-gray-500 text-center">
+                    Si l'aperçu reste vide, le site n'autorise pas l'affichage ici. Utilisez le bouton <strong>Ouvrir</strong> dans la liste.
+                  </p>
+                </>
+              )}
+              {/* Fallback si l'image ne charge pas */}
+              {resourcePreview.kind === 'image' && (
+                <p className="hidden mt-2 text-sm text-amber-700 bg-amber-50 p-3 rounded-lg text-center">
+                  Aperçu non disponible (l'image n'a pas pu être chargée). Utilisez <strong>Télécharger</strong> ou <strong>Ouvrir</strong>.
+                </p>
+              )}
+            </div>
+            <div className="px-4 py-2 border-t border-gray-200 bg-gray-50 text-xs text-gray-500 text-center">
+              Aperçu coup d'œil — <button type="button" onClick={closeResourcePreview} className="text-blue-600 hover:underline">Fermer</button> ou clic à l'extérieur
+            </div>
+          </div>
+        </div>
+      )}
+      {resourcePreviewLoading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" aria-hidden="true">
+          <div className="bg-white rounded-xl px-6 py-4 shadow-xl flex items-center gap-3">
+            <div className="animate-spin rounded-full h-6 w-6 border-2 border-amber-500 border-t-transparent" />
+            <span className="text-sm text-gray-700">Chargement de l'aperçu...</span>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

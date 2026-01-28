@@ -1065,21 +1065,78 @@ router.get('/programs/:programId/pdf', async (req: Request, res: Response) => {
         coursesData.push({
           ...course,
           position: (pc as any).position,
-          modules: modulesWithContent
+          modules: modulesWithContent,
+          courseResources: [] as { title: string; description: string | null; signedUrl: string }[]
         });
       }
     }
 
     if (coursesData.length === 0) {
-      return res.status(404).json({ 
+      return res.status(404).json({
         error: 'Aucun contenu trouvé',
         details: 'Le programme ne contient aucun contenu publié'
       });
     }
 
+    // Pour chaque cours, récupérer les ressources (course_resources) et générer les URLs signées pour les PDF
+    for (const course of coursesData) {
+      const { data: resources, error: resourcesError } = await supabase
+        .from('course_resources')
+        .select('id, title, description, resource_type, file_path, mime_type')
+        .eq('course_id', course.id)
+        .eq('is_visible', true)
+        .not('file_path', 'is', null)
+        .order('position', { ascending: true });
+
+      if (resourcesError || !resources || resources.length === 0) continue;
+
+      const pdfResources = resources.filter((r: any) => {
+        if (!r.file_path || (r.resource_type !== 'file' && r.resource_type !== 'document')) return false;
+        const isPdfMime = typeof r.mime_type === 'string' && r.mime_type.toLowerCase().includes('pdf');
+        const isPdfPath = typeof r.file_path === 'string' && r.file_path.toLowerCase().endsWith('.pdf');
+        return isPdfMime || isPdfPath;
+      });
+
+      const imageResources = resources.filter((r: any) => {
+        if (!r.file_path || r.resource_type !== 'file') return false;
+        const isImageMime = typeof r.mime_type === 'string' && r.mime_type.toLowerCase().includes('image');
+        return isImageMime;
+      });
+
+      for (const res of pdfResources) {
+        const { data: signedData } = await supabase.storage
+          .from('course-resources')
+          .createSignedUrl(res.file_path, 3600);
+
+        if (signedData?.signedUrl) {
+          (course as any).courseResources.push({
+            type: 'pdf',
+            title: res.title,
+            description: res.description || null,
+            signedUrl: signedData.signedUrl
+          });
+        }
+      }
+
+      for (const res of imageResources) {
+        const { data: signedData } = await supabase.storage
+          .from('course-resources')
+          .createSignedUrl(res.file_path, 3600);
+
+        if (signedData?.signedUrl) {
+          (course as any).courseResources.push({
+            type: 'image',
+            title: res.title,
+            description: res.description || null,
+            signedUrl: signedData.signedUrl
+          });
+        }
+      }
+    }
+
     console.log('[PDF Program] Données préparées pour', coursesData.length, 'cours');
 
-    // Générer le HTML avec arborescence (incluant le glossaire)
+    // Générer le HTML avec arborescence (incluant le glossaire et les PDF des ressources)
     const html = generateProgramPdfHtml(program, coursesData, program.glossary, supabase);
 
     // Générer le PDF avec Puppeteer
@@ -1200,6 +1257,10 @@ function generateProgramPdfHtml(program: any, coursesData: any[], glossary: any,
         tocHtml += '</li>';
       });
       tocHtml += '</ul>';
+    }
+    const courseResources = (course as any).courseResources;
+    if (courseResources && Array.isArray(courseResources) && courseResources.length > 0) {
+      tocHtml += '<ul><li>Ressources de la formation</li></ul>';
     }
     tocHtml += '</li>';
     courseIndex++;
@@ -1343,6 +1404,27 @@ function generateProgramPdfHtml(program: any, coursesData: any[], glossary: any,
         contentHtml += '</div>';
       });
     }
+
+      // Ressources de la formation (PDF et photos)
+      const courseResources = (course as any).courseResources;
+      if (courseResources && Array.isArray(courseResources) && courseResources.length > 0) {
+        contentHtml += '<div class="course-resources-section"><h2>Ressources de la formation</h2>';
+        courseResources.forEach((res: { type: string; title: string; description: string | null; signedUrl: string }) => {
+          const safeUrl = res.signedUrl.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+          contentHtml += `<div class="resource-block">`;
+          contentHtml += `<h3 class="resource-title">${escapeHtml(res.title)}</h3>`;
+          if (res.description) {
+            contentHtml += `<p class="resource-desc">${escapeHtml(res.description)}</p>`;
+          }
+          if (res.type === 'image') {
+            contentHtml += `<img src="${safeUrl}" alt="${escapeHtml(res.title)}" class="resource-image" />`;
+          } else {
+            contentHtml += `<embed src="${safeUrl}" type="application/pdf" class="resource-pdf-embed" />`;
+          }
+          contentHtml += '</div>';
+        });
+        contentHtml += '</div>';
+      }
 
     contentHtml += '</div>';
     courseIndex++;
@@ -1569,11 +1651,22 @@ function generateProgramPdfHtml(program: any, coursesData: any[], glossary: any,
     }
 
     .item-image {
-      max-width: 100%;
+      max-width: 50%;
+      width: 50%;
       height: auto;
       display: block;
       margin: 15px auto;
       page-break-inside: avoid;
+    }
+
+    /* Images dans le contenu riche (TipTap) : 50% pour qu'elles s'affichent complètement */
+    .item-content img,
+    .chapter-content img {
+      max-width: 50% !important;
+      width: 50% !important;
+      height: auto !important;
+      display: block;
+      margin: 10px auto;
     }
 
     .item-content h1, .item-content h2, .item-content h3, .item-content h4 {
@@ -1617,6 +1710,59 @@ function generateProgramPdfHtml(program: any, coursesData: any[], glossary: any,
       margin: 15px 0;
       color: #555;
       font-style: italic;
+    }
+
+    .course-resources-section {
+      margin-top: 30px;
+      margin-bottom: 25px;
+      page-break-before: auto;
+    }
+
+    .course-resources-section h2 {
+      font-size: 16pt;
+      color: #34495e;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #95a5a6;
+      padding-bottom: 8px;
+      page-break-after: avoid;
+    }
+
+    .resource-block {
+      margin-bottom: 25px;
+      page-break-inside: avoid;
+    }
+
+    .resource-title {
+      font-size: 13pt;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      page-break-after: avoid;
+    }
+
+    .resource-desc {
+      font-size: 10pt;
+      color: #555;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    /* Photos des ressources : 50 % pour qu'elles s'affichent complètement */
+    .resource-image {
+      max-width: 50%;
+      width: 50%;
+      height: auto;
+      display: block;
+      margin: 15px auto;
+      page-break-inside: avoid;
+    }
+
+    .resource-pdf-embed {
+      width: 100%;
+      height: 600px;
+      max-height: 80vh;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      display: block;
     }
 
     .note {

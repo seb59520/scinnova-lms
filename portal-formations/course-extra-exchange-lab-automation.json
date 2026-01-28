@@ -1,0 +1,384 @@
+{
+  "title": "eXtra - Exchange : installation et automation PowerShell",
+  "description": "Kit pédagogique **Exchange-Lab-Automation** : de l'installation des prérequis à l'installation Exchange, la configuration, la maintenance, le dépannage et la supervision. Tout en PowerShell/scripts : scripts détaillés et commentés, structure de dossiers, comment les exécuter, impact de chaque script, sources officielles pour les apprenants.",
+  "status": "draft",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#0078D4",
+    "secondaryColor": "#50E6FF",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Structure du kit et règles d'exécution",
+      "position": 0,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Structure des dossiers C:\\LabExchange\\",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 2}, "content": [{"type": "text", "text": "Où mettre les scripts"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Sur EX01 (et/ou partagé via DC01), crée la structure suivante :"}]},
+                {"type": "codeBlock", "attrs": {"language": "text"}, "content": [{"type": "text", "text": "C:\\LabExchange\\\n  00-Docs\\\n  01-Prechecks\\\n  02-Prereqs\\\n  03-AD-Prep\\\n  04-Exchange-Install\\\n  05-Config\\\n  06-Maintenance\\\n  07-Troubleshooting\\\n  08-Security\\\n  09-Monitoring\\\n  Logs\\\n"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Recommandation formation :"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Stocker une copie sur DC01 : \\\\DC01\\LabExchange\\"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Les étudiants copient ensuite sur EX01 : C:\\LabExchange\\"}]}]}
+                ]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Règles d'exécution PowerShell (éviter les blocages)",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 2}, "content": [{"type": "text", "text": "Sur chaque serveur Windows (EX01 / DC01 / CLIENT01)"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Ouvrir PowerShell en mode Administrateur et exécuter :"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Set-ExecutionPolicy RemoteSigned -Scope LocalMachine"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Autorise l'exécution de scripts locaux (usage classique en lab)."}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "01-Prechecks — Vérifications avant installation",
+      "position": 1,
+      "items": [
+        {
+          "type": "resource",
+          "title": "01-Precheck-System.ps1 — Vérifier OS, IP, DNS, domaine, disque",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Machine :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "EX01 (ou DC01 aussi)."}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Où le placer :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "C:\\LabExchange\\01-Prechecks\\01-Precheck-System.ps1"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Comment l'exécuter :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "PowerShell Admin : .\\01-Precheck-System.ps1"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Lecture uniquement (aucune modification)."}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Script :"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "# 01-Precheck-System.ps1\n# Impact : lecture uniquement (aucune modification)\n\nWrite-Host \"== PRECHECK SYSTEM ==\" -ForegroundColor Cyan\n\n$cs = Get-CimInstance Win32_ComputerSystem\n$os = Get-CimInstance Win32_OperatingSystem\n$ip = Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.IPAddress -like \"192.168.*\" }\n\nWrite-Host \"Machine: $env:COMPUTERNAME\"\nWrite-Host \"Domain:  $($cs.Domain)\"\nWrite-Host \"OS:      $($os.Caption) ($($os.Version))\"\nWrite-Host \"IP(s):   $($ip.IPAddress -join ', ')\"\n\nWrite-Host \"`nDNS configured:\" -ForegroundColor Yellow\nGet-DnsClientServerAddress -AddressFamily IPv4 | Select-Object InterfaceAlias, ServerAddresses | Format-Table -Auto\n\nWrite-Host \"`nDisk free:\" -ForegroundColor Yellow\nGet-PSDrive -PSProvider FileSystem | Select-Object Name, @{n=\"Free(GB)\";e={[math]::Round($_.Free/1GB,2)}}, @{n=\"Used(GB)\";e={[math]::Round(($_.Used)/1GB,2)}} | Format-Table -Auto\n"}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "02-Prereqs — Prérequis Windows et logiciels",
+      "position": 2,
+      "items": [
+        {
+          "type": "resource",
+          "title": "02-Install-Exchange-WindowsFeatures.ps1 — Rôles et fonctionnalités Windows",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Machine :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "EX01."}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Où le placer :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "C:\\LabExchange\\02-Prereqs\\02-Install-Exchange-WindowsFeatures.ps1"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Comment l'exécuter :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "PowerShell Admin : .\\02-Install-Exchange-WindowsFeatures.ps1"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Installe des rôles/fonctionnalités Windows nécessaires à Exchange. Reboot possible (prévoir une fenêtre)."}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Pourquoi : Exchange s'appuie sur IIS (EAC/OWA/WebServices) et d'autres composants Windows."}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Script :"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "# 02-Install-Exchange-WindowsFeatures.ps1\nWrite-Host \"== INSTALL WINDOWS FEATURES FOR EXCHANGE ==\" -ForegroundColor Cyan\n\n$features = @(\n  \"Server-Media-Foundation\", \"RSAT-ADDS\",\n  \"Web-Server\",\"Web-WebServer\",\"Web-Common-Http\",\"Web-Default-Doc\",\"Web-Static-Content\",\n  \"Web-Http-Errors\",\"Web-Asp-Net45\",\"Web-Net-Ext45\",\"Web-ISAPI-Ext\",\"Web-ISAPI-Filter\",\n  \"Web-Http-Logging\",\"Web-Request-Monitor\",\"Web-Filtering\",\n  \"Web-Windows-Auth\",\"Web-Basic-Auth\",\"Web-Digest-Auth\",\n  \"Web-Mgmt-Console\",\"Web-Mgmt-Service\"\n)\nInstall-WindowsFeature -Name $features -IncludeManagementTools\n\nWrite-Host \"`nInstalled feature summary:\" -ForegroundColor Yellow\nGet-WindowsFeature | Where-Object Installed | Select-Object Name, DisplayName | Format-Table -Auto\n"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "03-Install-Redistribs.ps1 — Visual C++ Redistributable",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Machine :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "EX01."}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Où le placer :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "C:\\LabExchange\\02-Prereqs\\03-Install-Redistribs.ps1. Fournir les EXE dans C:\\LabExchange\\02-Prereqs\\Packages\\ (ex. VC_redist.x64.exe)."}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Comment l'exécuter :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "PowerShell Admin : .\\03-Install-Redistribs.ps1"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Installe les redistribuables (VC++) en mode silencieux."}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Script :"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "# 03-Install-Redistribs.ps1\n$pkg = \"C:\\\\LabExchange\\\\02-Prereqs\\\\Packages\"\nWrite-Host \"== INSTALL REDISTRIBUTABLES ==\" -ForegroundColor Cyan\n\n$vc = Join-Path $pkg \"VC_redist.x64.exe\"\nif (Test-Path $vc) {\n  Write-Host \"Installing Visual C++ Redistributable...\"\n  Start-Process -FilePath $vc -ArgumentList \"/install /quiet /norestart\" -Wait\n  Write-Host \"VC++ installed (or already present).\"\n} else {\n  Write-Warning \"VC_redist.x64.exe not found in $pkg\"\n}\n"}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "03-AD-Prep — Préparation Active Directory",
+      "position": 3,
+      "items": [
+        {
+          "type": "resource",
+          "title": "01-Prepare-AD.ps1 — PrepareSchema / PrepareAD / PrepareDomain",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Machine :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "EX01. À exécuter avec un compte ayant Schema Admins / Enterprise Admins."}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Où le placer :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "C:\\LabExchange\\03-AD-Prep\\01-Prepare-AD.ps1"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Comment l'exécuter :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "PowerShell Admin : .\\01-Prepare-AD.ps1 -ExchangeMediaPath E:\\ -OrgName HYGEASY -DomainFqdn hygeasy.local"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Modifie le schéma AD et prépare l'organisation Exchange. Vérifier la réplication AD avant d'installer Exchange."}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Script :"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "# 01-Prepare-AD.ps1\nparam(\n  [Parameter(Mandatory=$true)][string]$ExchangeMediaPath,\n  [Parameter(Mandatory=$true)][string]$OrgName,\n  [Parameter(Mandatory=$true)][string]$DomainFqdn\n)\n$setup = Join-Path $ExchangeMediaPath \"Setup.exe\"\nif (-not (Test-Path $setup)) { throw \"Setup.exe not found at $setup\" }\n\nWrite-Host \"== PREPARE SCHEMA ==\" -ForegroundColor Cyan\n& $setup /IAcceptExchangeServerLicenseTerms_DiagnosticDataON /PrepareSchema\nWrite-Host \"== PREPARE AD ORGANIZATION ==\" -ForegroundColor Cyan\n& $setup /IAcceptExchangeServerLicenseTerms_DiagnosticDataON /PrepareAD /OrganizationName:$OrgName\nWrite-Host \"== PREPARE DOMAIN ==\" -ForegroundColor Cyan\n& $setup /IAcceptExchangeServerLicenseTerms_DiagnosticDataON /PrepareDomain:$DomainFqdn\nWrite-Host \"AD prep completed. Check AD replication before installing Exchange.\"\n"}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "04-Exchange-Install — Installation Exchange",
+      "position": 4,
+      "items": [
+        {
+          "type": "resource",
+          "title": "01-Install-Exchange.ps1 — Installation en mode unattended (rôle Mailbox)",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Machine :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "EX01."}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Où le placer :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "C:\\LabExchange\\04-Exchange-Install\\01-Install-Exchange.ps1"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Comment l'exécuter :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "PowerShell Admin : .\\01-Install-Exchange.ps1 -ExchangeMediaPath E:\\"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Installe Exchange sur EX01. Reboot possible."}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Script :"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "# 01-Install-Exchange.ps1\nparam([Parameter(Mandatory=$true)][string]$ExchangeMediaPath)\n$setup = Join-Path $ExchangeMediaPath \"Setup.exe\"\nif (-not (Test-Path $setup)) { throw \"Setup.exe not found at $setup\" }\n\nWrite-Host \"== INSTALL EXCHANGE (MAILBOX ROLE) ==\" -ForegroundColor Cyan\n& $setup /IAcceptExchangeServerLicenseTerms_DiagnosticDataON /Mode:Install /Roles:Mailbox\nWrite-Host \"Install finished. Reboot if prompted.\"\n"}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "05-Config — Configuration post-install",
+      "position": 5,
+      "items": [
+        {
+          "type": "resource",
+          "title": "01-Enable-AntiSpam.ps1 — Activer les agents anti-spam sur le serveur Mailbox",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Machine :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "EX01 — Exchange Management Shell (pas PowerShell classique)."}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Où le placer :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "C:\\LabExchange\\05-Config\\01-Enable-AntiSpam.ps1. Le script Microsoft officiel est dans %ExchangeInstallPath%\\Scripts\\Install-AntiSpamAgents.ps1."}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Comment l'exécuter :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Exchange Management Shell : .\\01-Enable-AntiSpam.ps1"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Installe/active les agents anti-spam intégrés, puis redémarre le service Transport."}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Script :"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "# 01-Enable-AntiSpam.ps1\nWrite-Host \"== ENABLE ANTISPAM AGENTS ==\" -ForegroundColor Cyan\n& $env:ExchangeInstallPath\\Scripts\\Install-AntiSpamAgents.ps1\nRestart-Service MSExchangeTransport\nWrite-Host \"`nTransport agents:\" -ForegroundColor Yellow\nGet-TransportAgent | Format-Table Name,Enabled,Priority -Auto\n"}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "06-Maintenance — Message tracking et services",
+      "position": 6,
+      "items": [
+        {
+          "type": "resource",
+          "title": "01-MessageTracking-Config.ps1 — Configurer le suivi des messages",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Machine :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "EX01 — Exchange Management Shell."}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Où le placer :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "C:\\LabExchange\\06-Maintenance\\01-MessageTracking-Config.ps1"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Configure le message tracking (utile pour le troubleshooting SOC). À adapter selon rétention/taille."}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Script :"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "# 01-MessageTracking-Config.ps1\nWrite-Host \"== CONFIGURE MESSAGE TRACKING ==\" -ForegroundColor Cyan\nSet-TransportService -Identity $env:COMPUTERNAME -MessageTrackingLogEnabled $true\nGet-TransportService $env:COMPUTERNAME | Select Name,MessageTrackingLogEnabled,MessageTrackingLogMaxAge,MessageTrackingLogMaxDirectorySize,MessageTrackingLogMaxFileSize | Format-List\n"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "02-Check-Services.ps1 — Vérifier les services clés Exchange",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Machine :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "EX01 (ou tout serveur Exchange)."}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Lecture uniquement. Affiche l'état des services Transport, IS, W3SVC."}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Script :"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "# 02-Check-Services.ps1\n$services = @(\"MSExchangeTransport\",\"MSExchangeFrontEndTransport\",\"MSExchangeIS\",\"W3SVC\")\nGet-Service $services | Select Name,Status,StartType | Format-Table -Auto\n"}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "07-Troubleshooting — Dépannage",
+      "position": 7,
+      "items": [
+        {
+          "type": "resource",
+          "title": "01-Trace-Message.ps1 — Retrouver un message dans les logs (Get-MessageTrackingLog)",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Machine :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "EX01 — Exchange Management Shell."}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Comment l'exécuter :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": ".\\01-Trace-Message.ps1 -Sender user@domain.com -Recipient dest@domain.com [-HoursBack 4]"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Lecture uniquement. Permet de retrouver un message dans les logs de suivi."}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Script :"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "# 01-Trace-Message.ps1\nparam(\n  [Parameter(Mandatory=$true)][string]$Sender,\n  [Parameter(Mandatory=$true)][string]$Recipient,\n  [int]$HoursBack = 4\n)\n$end = Get-Date\n$start = $end.AddHours(-$HoursBack)\nGet-MessageTrackingLog -Start $start -End $end -Sender $Sender -Recipients $Recipient |\n  Select Timestamp,EventId,Source,Sender,Recipients,MessageSubject,ServerHostname |\n  Sort Timestamp | Format-Table -Auto\n"}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "08-Security — Sécurité",
+      "position": 8,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Dossier 08-Security — Scripts sécurité (audit, restrictions ECP/OWA)",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "text": "Ce dossier est réservé aux scripts de sécurité : audit OWA/ECP/SMTP, restrictions IP, etc. Voir le module 12 du cours Exchange (Sécurité avancée, supervision et audit) et les sources officielles dans 00-Docs\\Sources.md."}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "09-Monitoring — Surveillance",
+      "position": 9,
+      "items": [
+        {
+          "type": "resource",
+          "title": "01-Disk-Alert.ps1 — Alerte disque (espace libre sous seuil)",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Machine :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "EX01 (ou tout serveur à surveiller)."}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Comment l'exécuter :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "PowerShell : .\\01-Disk-Alert.ps1 [-MinFreeGB 10]"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Lecture + option d'alerte (écriture Event Log si source \"ExchangeLab\" créée)."}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Script :"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "# 01-Disk-Alert.ps1\nparam([int]$MinFreeGB = 10)\n$drives = Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Name -match \"^[A-Z]$\" }\n$bad = $drives | Where-Object { ($_.Free/1GB) -lt $MinFreeGB }\nif ($bad) {\n  $msg = \"Low disk space: \" + ($bad | ForEach-Object { \"$($_.Name): $([math]::Round($_.Free/1GB,2))GB\" } ) -join \"; \"\n  Write-Warning $msg\n  Write-EventLog -LogName Application -Source \"ExchangeLab\" -EventId 5001 -EntryType Warning -Message $msg -ErrorAction SilentlyContinue\n} else {\n  Write-Host \"Disk OK (>= $MinFreeGB GB free).\" -ForegroundColor Green\n}\n"}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "00-Docs — Sources officielles",
+      "position": 10,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Sources.md — Liens Microsoft Learn à fournir aux apprenants",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 2}, "content": [{"type": "text", "text": "Prérequis et installation"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Exchange Server 2019 and SE prerequisites — Microsoft Learn"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Prepare Active Directory and domains for Exchange Server — Microsoft Learn"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Install Exchange Server using the Setup wizard / Unattended installation — Microsoft Learn"}]}]}
+                ]},
+                {"type": "heading", "attrs": {"level": 2}, "content": [{"type": "text", "text": "Anti-spam et agents de transport"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Enable antispam functionality on Mailbox servers — Microsoft Learn"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Install-AntiSpamAgents.ps1 dans %ExchangeInstallPath%\\Scripts\\"}]}]}
+                ]},
+                {"type": "heading", "attrs": {"level": 2}, "content": [{"type": "text", "text": "Message tracking et dépannage"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Search message tracking logs — Microsoft Learn"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Get-MessageTrackingLog — Microsoft Learn"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Configure message tracking — Microsoft Learn"}]}]}
+                ]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Le fichier complet Sources.md se trouve dans le kit : C:\\LabExchange\\00-Docs\\Sources.md (ou exchange-lab-automation\\00-Docs\\Sources.md dans le dépôt)."}]}
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

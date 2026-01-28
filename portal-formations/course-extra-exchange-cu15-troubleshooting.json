@@ -1,0 +1,273 @@
+{
+  "title": "eXtra - Exchange 2019 CU15 — Symptômes, causes et commandes",
+  "description": "Guide de dépannage **Exchange 2019 CU15** : symptômes (OWA/ECP en boucle 302, 500/403, Outlook mot de passe, mail sortant/entrant, base démontée), causes probables, commandes de diagnostic, commandes de réparation (recréation VD, certificat, IIS), et script Health Check 30 secondes. Phrase clé expert Exchange.",
+  "status": "draft",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#0078D4",
+    "secondaryColor": "#50E6FF",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "1 — Symptômes → Causes → Commandes de diagnostic",
+      "position": 0,
+      "items": [
+        {
+          "type": "resource",
+          "title": "OWA / ECP en boucle de redirection (302)",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Causes probables"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Certificat IIS incorrect / expiré"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "URLs internes / externes incohérentes"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Authentification IIS cassée"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "IIS partiellement planté"}]}]}
+                ]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Commandes de diagnostic"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Get-OwaVirtualDirectory | Select Identity,InternalUrl,ExternalUrl,*Authentication*\nGet-EcpVirtualDirectory | Select Identity,InternalUrl,ExternalUrl,*Authentication*\nGet-ExchangeCertificate | Format-Table Thumbprint,Subject,Services,NotAfter\niisreset /status"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "OWA / ECP inaccessible (HTTP 500 / 403)",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Causes"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Services Exchange arrêtés"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Virtual Directory corrompu"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Problème IIS / WAS"}]}]}
+                ]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Diagnostic"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Get-Service MSExchange* | Select Name,Status\nGet-OwaVirtualDirectory\nGet-EcpVirtualDirectory"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Outlook demande sans cesse le mot de passe",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Causes"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Autodiscover KO"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "NTLM / Kerberos cassé"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "URLs Outlook incorrectes"}]}]}
+                ]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Diagnostic"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Test-OutlookWebServices -Identity user@domaine.tld\nGet-AutodiscoverVirtualDirectory | Select InternalUrl,ExternalUrl\nGet-MapiVirtualDirectory | Select Identity,*Authentication*,InternalUrl,ExternalUrl"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Mail ne part pas (sortant)",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Causes"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Queue bloquée"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Send Connector mal configuré"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "DNS / Firewall"}]}]}
+                ]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Diagnostic"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Get-Queue\nGet-SendConnector\nGet-MessageTrackingLog -Start (Get-Date).AddHours(-2) -EventId FAIL"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Mail n'arrive pas (entrant)",
+          "position": 4,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Causes"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Receive Connector incorrect"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Antispam / IP bloquée"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "DNS MX"}]}]}
+                ]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Diagnostic"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Get-ReceiveConnector | Format-Table Name,Bindings,RemoteIPRanges\nResolve-DnsName -Type MX domaine.tld\nGet-MessageTrackingLog -Start (Get-Date).AddHours(-2)"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Base démontée / boîte inaccessible",
+          "position": 5,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Causes"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Base non montée"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Problème disque"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Quota dépassé"}]}]}
+                ]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Diagnostic"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Get-MailboxDatabase | Select Name,Mounted\nGet-MailboxStatistics user@domaine.tld\nGet-Mailbox user@domaine.tld | Select IssueWarningQuota,ProhibitSendQuota"}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "2 — Commandes de réparation (SAFE / ADMIN)",
+      "position": 1,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Recréation OWA",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "italic"}], "text": "À exécuter hors heures de production si possible."}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Remove-OwaVirtualDirectory \"SERVER\\owa (Default Web Site)\"\nNew-OwaVirtualDirectory -Server SERVER -InternalUrl https://mail.domaine.tld/owa -ExternalUrl https://mail.domaine.tld/owa"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Recréation ECP",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Remove-EcpVirtualDirectory \"SERVER\\ecp (Default Web Site)\"\nNew-EcpVirtualDirectory -Server SERVER -InternalUrl https://mail.domaine.tld/ecp -ExternalUrl https://mail.domaine.tld/ecp"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Recréation EWS / MAPI / OAB",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Remove-WebServicesVirtualDirectory \"SERVER\\EWS (Default Web Site)\"\nNew-WebServicesVirtualDirectory -Server SERVER\n\nRemove-MapiVirtualDirectory \"SERVER\\mapi (Default Web Site)\"\nNew-MapiVirtualDirectory -Server SERVER\n\nRemove-OabVirtualDirectory \"SERVER\\OAB (Default Web Site)\"\nNew-OabVirtualDirectory -Server SERVER"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Rebind certificat IIS / SMTP",
+          "position": 3,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Get-ExchangeCertificate\nEnable-ExchangeCertificate -Thumbprint XXXXXXXX -Services IIS,SMTP\niisreset"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Reset IIS propre",
+          "position": 4,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Restart-Service WAS\nRestart-Service W3SVC"}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "3 — Health Check (30 s) et phrase clé",
+      "position": 2,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Script Health Check — Exchange Management Shell",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "text": "À lancer dans l'Exchange Management Shell (environ 30 secondes)."}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Write-Host \"=== EXCHANGE 2019 CU15 - HEALTH CHECK ===\" -ForegroundColor Cyan\n\nWrite-Host \"`n[1] Services Exchange\"\nGet-Service MSExchange* | Where Status -ne Running | Format-Table Name,Status\n\nWrite-Host \"`n[2] Bases montées\"\nGet-MailboxDatabase | Select Name,Mounted\n\nWrite-Host \"`n[3] Certificats IIS\"\nGet-ExchangeCertificate | Where {$_.Services -match \"IIS\"} |\nSelect Subject,NotAfter\n\nWrite-Host \"`n[4] URLs OWA / ECP\"\nGet-OwaVirtualDirectory | Select Identity,InternalUrl\nGet-EcpVirtualDirectory | Select Identity,InternalUrl\n\nWrite-Host \"`n[5] Queues SMTP\"\nGet-Queue | Select Identity,Status,MessageCount\n\nWrite-Host \"`n[6] Test Mailflow\"\nTest-Mailflow\n\nWrite-Host \"`n=== FIN HEALTH CHECK ===\" -ForegroundColor Green"}]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Résultat attendu"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Aucun service Exchange arrêté"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Bases montées = True"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Certificat valide"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Queues vides ou faibles"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Mailflow OK"}]}]}
+                ]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Phrase clé « expert Exchange »",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "OWA"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "IIS + Certificat"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Outlook"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Autodiscover + NTLM"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "SMTP"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Connecteurs + Queues"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Quand tout doute"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Message Tracking"}]}
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

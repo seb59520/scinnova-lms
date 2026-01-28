@@ -1,0 +1,1084 @@
+{
+  "title": "Introduction à Claude Code – Module 1",
+  "slug": "introduction-claude-code",
+  "description": "Ce module présente Claude Code, son positionnement dans l'écosystème des assistants IA pour le développement, les cas d'usage professionnels pertinents, ainsi que les limites et responsabilités liées à l'utilisation de l'IA pour le code.",
+  "duration": "45 min",
+  "level": "Débutant",
+  "published": true,
+  "theme": {
+    "primaryColor": "#2D5A27",
+    "secondaryColor": "#5A9E4A",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Module 1 – Introduction à Claude Code",
+      "position": 0,
+      "theme": {
+        "primaryColor": "#2D5A27",
+        "secondaryColor": "#5A9E4A"
+      },
+      "items": [
+        {
+          "type": "resource",
+          "title": "1.1 – Qu'est-ce que Claude Code ?",
+          "position": 0,
+          "published": true,
+          "content": {
+            "description": "Présentation de Claude (Anthropic), philosophie d'assistance, déclinaison Claude Code et positionnement par rapport au développeur."
+          },
+          "chapters": [
+            {
+              "title": "Présentation de Claude (Anthropic)",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Présentation de Claude (Anthropic)" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Claude est un modèle de langage développé par "
+                      },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Anthropic" },
+                      {
+                        "type": "text",
+                        "text": ", une entreprise spécialisée dans la recherche en intelligence artificielle et la sécurité des systèmes IA. Claude est conçu pour être utile, inoffensif et honnête, avec une attention particulière portée au raisonnement long, à la compréhension du contexte et au respect strict des consignes."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Anthropic propose plusieurs interfaces d'accès à Claude : l'assistant conversationnel en ligne, l'API pour les développeurs, et des déclinaisons orientées métier dont "
+                      },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Claude Code" },
+                      {
+                        "type": "text",
+                        "text": ", dédiée au développement logiciel et à l'utilisation en ligne de commande (CLI)."
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Philosophie : IA d'assistance, raisonnement long, respect des consignes",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Philosophie : IA d'assistance, raisonnement long, respect des consignes" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "La philosophie d'Anthropic repose sur trois piliers essentiels pour un assistant IA fiable en contexte professionnel :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "IA d'assistance" },
+                              {
+                                "type": "text",
+                                "text": " : Claude est conçu pour aider l'utilisateur à accomplir ses tâches, pas pour les exécuter à sa place. Il suggère, propose, rédige et analyse, tout en laissant les décisions finales et la validation au développeur."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Raisonnement long et structuré" },
+                              {
+                                "type": "text",
+                                "text": " : le modèle excelle dans l'analyse de contextes complexes, la lecture de plusieurs fichiers, et la production de réponses argumentées et étape par étape, ce qui est particulièrement utile pour la compréhension de code existant et la refactorisation."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Respect strict des consignes" },
+                              {
+                                "type": "text",
+                                "text": " : Claude est entraîné pour suivre les instructions de l'utilisateur (format de sortie, périmètre de réponse, contraintes techniques ou de style) afin de s'intégrer au mieux dans un workflow de développement existant."
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Claude Code : déclinaison orientée développement et CLI",
+              "position": 2,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Claude Code : déclinaison orientée développement et CLI" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Claude Code est la déclinaison de Claude spécialement pensée pour les développeurs. Elle combine :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Contexte projet" },
+                              { "type": "text", "text": " : capacité à lire et analyser plusieurs fichiers d'un même projet pour comprendre l'architecture et les dépendances." }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Génération et modification de code" },
+                              { "type": "text", "text": " : proposition de code, correctifs, refactorisation et explications en fonction des consignes et du contexte fournis." }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Intégration CLI" },
+                              { "type": "text", "text": " : utilisation en ligne de commande (par exemple via Cursor, Claude Code ou des outils similaires) pour un usage direct dans l'IDE ou le terminal, sans quitter l'environnement de travail." }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Positionnement : assistant, pas remplaçant",
+              "position": 3,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Positionnement : assistant, pas remplaçant" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Il est essentiel de garder à l'esprit que Claude Code est un "
+                      },
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "assistant" },
+                      {
+                        "type": "text",
+                        "text": ", et non un remplaçant du développeur. Le code généré doit toujours être relu, testé et validé par un humain. La responsabilité des choix techniques, de la qualité, de la sécurité et de la conformité reste entièrement du côté de l'équipe de développement."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "En pratique, Claude Code permet d'accélérer la lecture de code, la rédaction de scripts ou de fonctions répétitives, le débogage et la documentation, tout en laissant le développeur aux commandes du projet."
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.2 – Claude Code dans l'écosystème IA",
+          "position": 1,
+          "published": true,
+          "content": {
+            "description": "Comparaison avec ChatGPT, GitHub Copilot et assistants IDE ; forces (raisonnement, contexte long, lecture multi-fichiers) et limites (prompt, hallucinations)."
+          },
+          "chapters": [
+            {
+              "title": "Claude Code vs ChatGPT",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Claude Code vs ChatGPT" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "ChatGPT (OpenAI) est un assistant conversationnel généraliste, également utilisé pour le code. Les différences principales avec Claude Code incluent :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Contexte et intégration" },
+                              { "type": "text", "text": " : Claude Code est pensé pour s'intégrer au projet (lecture de fichiers, contexte long), alors que ChatGPT est souvent utilisé de façon plus conversationnelle et moins ancrée dans un dépôt." }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Raisonnement long" },
+                              { "type": "text", "text": " : Claude est réputé pour des réponses détaillées et structurées sur des sujets complexes, ce qui peut avantager l'analyse de code et la documentation." }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Usage" },
+                              { "type": "text", "text": " : les deux peuvent générer du code ; le choix dépend des habitudes, des contraintes (confidentialité, coût) et de l'écosystème (IDE, CLI) utilisé." }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Claude Code vs GitHub Copilot",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Claude Code vs GitHub Copilot" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "GitHub Copilot est un assistant intégré à l'IDE, axé sur l'autocomplétion et la génération de code à partir du contexte immédiat (fichier ouvert, curseur). Comparaison :"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Copilot" },
+                              { "type": "text", "text": " : suggestions en temps réel, ligne par ligne ou bloc, très fluide pour écrire du code rapidement ; moins adapté pour des explications longues ou une analyse multi-fichiers." }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Claude Code" },
+                              { "type": "text", "text": " : meilleur pour comprendre un projet, expliquer du code, refactoriser avec une vue d'ensemble, et répondre à des questions ouvertes ; moins « en continu » que l'autocomplétion." }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Les deux peuvent être complémentaires : Copilot pour la saisie au quotidien, Claude Code pour la compréhension, le debug et les tâches plus réflexives."
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Claude Code vs assistants IDE",
+              "position": 2,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Claude Code vs assistants IDE" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Les assistants intégrés aux IDE (par exemple Cursor avec Claude, ou d'autres éditeurs avec des plugins IA) combinent souvent un modèle de type Claude avec l'accès au projet. Dans ce cas, « Claude Code » désigne à la fois le modèle et l'usage qu'on en fait (développement, CLI). Les différences tiennent surtout au périmètre : modèle généraliste vs modèle ou interface dédiée au code, et à la quantité de contexte (fichiers, arborescence) envoyée au modèle."
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Forces et limites",
+              "position": 3,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Forces et limites" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Forces" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Raisonnement" },
+                              { "type": "text", "text": " : capacité à enchaîner des étapes de raisonnement pour expliquer un bug, proposer une architecture ou une refactorisation." }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Contexte long" },
+                              { "type": "text", "text": " : possibilité de fournir de nombreux fichiers ou de longues explications pour une réponse plus pertinente." }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Lecture multi-fichiers" },
+                              { "type": "text", "text": " : utile pour comprendre un projet existant, tracer des dépendances ou proposer des modifications cohérentes sur plusieurs fichiers." }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Limites" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Dépendance au prompt" },
+                              { "type": "text", "text": " : la qualité de la réponse dépend fortement de la formulation et du contexte fournis par l'utilisateur." }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Hallucinations possibles" },
+                              { "type": "text", "text": " : le modèle peut inventer des APIs, des noms de fonctions ou des détails techniques incorrects ; une vérification systématique reste nécessaire." }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.3 – Cas d'usage professionnels",
+          "position": 2,
+          "published": true,
+          "content": {
+            "description": "Lecture de projets, génération de scripts, refactorisation, debug, support pédagogique, audit de qualité et bonnes pratiques."
+          },
+          "chapters": [
+            {
+              "title": "Lecture et compréhension de projets existants",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Lecture et compréhension de projets existants" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Claude Code peut analyser une arborescence, lire plusieurs fichiers (config, code source, tests) et produire un résumé du projet, des points d'entrée, des dépendances ou des conventions utilisées. Cela est particulièrement utile pour l'onboarding sur un nouveau dépôt ou pour préparer une revue de code."
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Génération de scripts et fonctions",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Génération de scripts et fonctions" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "À partir d'une description en langage naturel (par exemple « une fonction qui parse un CSV et retourne les lignes dont la colonne X est supérieure à 10 »), Claude Code peut proposer du code dans le langage et le style demandés. Idéal pour des utilitaires, des scripts de déploiement ou des petits modules répétitifs, à condition de valider et tester le résultat."
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Refactorisation de code",
+              "position": 2,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Refactorisation de code" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "En fournissant un extrait ou un fichier et des consignes (par exemple « extraire cette logique dans une fonction réutilisable », « passer en async/await »), Claude Code peut proposer une version refactorisée. Le développeur doit vérifier que le comportement reste inchangé (tests, revue) et que les bonnes pratiques du projet sont respectées."
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Debug et analyse d'erreurs",
+              "position": 3,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Debug et analyse d'erreurs" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "En collant un message d'erreur, un stack trace ou un extrait de code problématique, Claude Code peut suggérer des causes possibles et des pistes de correction. Très utile pour débloquer rapidement, tout en gardant en tête que les suggestions doivent être confrontées au comportement réel de l'application (reproductibilité, environnement)."
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Support pédagogique et transmission de savoir",
+              "position": 4,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Support pédagogique et transmission de savoir" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Claude Code peut expliquer un concept, une API ou un bout de code à un collègue ou à un stagiaire. Il peut aussi générer des exercices, des commentaires pédagogiques ou de la documentation (README, docstrings, tutoriels). La relecture par un expert reste recommandée pour garantir l'exactitude et l'alignement avec les standards de l'équipe."
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Audit de qualité et bonnes pratiques",
+              "position": 5,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Audit de qualité et bonnes pratiques" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Sur demande, Claude Code peut passer en revue un fichier ou un module et signaler des pistes d'amélioration : sécurité, performance, lisibilité, gestion d'erreurs, tests manquants. Ces suggestions constituent une base de discussion pour la revue de code ou la mise en place de règles de qualité, sans se substituer aux outils automatisés (linters, analyse statique) ni au jugement de l'équipe."
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "resource",
+          "title": "1.4 – Responsabilités et limites",
+          "position": 3,
+          "published": true,
+          "content": {
+            "description": "Confidentialité, code généré vs code validé, relecture humaine, responsabilité du développeur et bonnes pratiques d'utilisation professionnelle."
+          },
+          "chapters": [
+            {
+              "title": "Confidentialité et données sensibles",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Confidentialité et données sensibles" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Les données envoyées à un service IA (prompts, extraits de code, logs) peuvent être traitées sur des serveurs tiers. Il est essentiel de ne pas y exposer de secrets (mots de passe, clés API, tokens), de données personnelles ou de code couvert par des contraintes de confidentialité strictes. Vérifier la politique de confidentialité et les conditions d'utilisation du fournisseur et, en entreprise, respecter les règles de la DSI (utilisation autorisée, données hors périmètre, etc.)."
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Code généré ≠ code validé",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Code généré ≠ code validé" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Le code produit par Claude Code (ou tout autre assistant IA) doit être considéré comme une proposition, pas comme du code prêt pour la production. Il peut contenir des erreurs, des vulnérabilités ou des écarts par rapport aux standards du projet. Une revue humaine, des tests et éventuellement des outils d'analyse statique sont indispensables avant intégration."
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Importance de la relecture humaine",
+              "position": 2,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Importance de la relecture humaine" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Chaque modification suggérée ou générée doit être relue par au moins un développeur qui en comprend le contexte et les impacts. La relecture permet de détecter les hallucinations, les mauvaises hypothèses ou les incohérences avec le reste du projet, et de maintenir un niveau de qualité et de cohérence collective."
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Responsabilité du développeur",
+              "position": 3,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Responsabilité du développeur" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "La responsabilité juridique, technique et métier du code livré (correctif, feature, refactor) reste entièrement du côté de l'équipe et de l'organisation. Utiliser un assistant IA ne transfère pas cette responsabilité au fournisseur du modèle. Il appartient au développeur de s'assurer que le code qu'il committe est correct, sécurisé et conforme aux exigences du projet."
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Bonnes pratiques d'utilisation professionnelle",
+              "position": 4,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Bonnes pratiques d'utilisation professionnelle" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Ne pas envoyer de données sensibles" },
+                              { "type": "text", "text": " (secrets, données personnelles, code soumis à NDA) dans les prompts." }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Toujours relire et tester" },
+                              { "type": "text", "text": " le code généré avant de l'intégrer." }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Formuler des prompts clairs et précis" },
+                              { "type": "text", "text": " (langage, style, contraintes) pour améliorer la pertinence des réponses." }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Documenter les usages" },
+                              { "type": "text", "text": " (quand et comment l'équipe utilise l'IA) pour faciliter l'audit et l'amélioration continue." }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "title": "Discussion guidée – IA et développement",
+          "position": 4,
+          "published": true,
+          "content": {
+            "instructions": "Échange collectif autour des usages actuels de l'IA par les participants : quels outils utilisez-vous déjà (Copilot, ChatGPT, Claude, autres) ? Pour quelles tâches (autocomplétion, explication, debug, doc) ? Quelles attentes avez-vous pour ce module ? Animer un tour de table ou un court brainstorming (Mentimeter, Padlet, ou oral) pour recueillir les pratiques et les attentes.",
+            "checklist": [
+              "Recueillir les outils IA déjà utilisés par les participants",
+              "Identifier les tâches pour lesquelles l'IA est utilisée (code, doc, debug)",
+              "Noter les attentes et objectifs personnels pour le module",
+              "Synthétiser en quelques points communs et différences"
+            ]
+          }
+        },
+        {
+          "type": "exercise",
+          "title": "Étude comparative – Avec ou sans IA",
+          "position": 5,
+          "published": true,
+          "content": {
+            "instructions": "Prendre un même besoin concret (par exemple : « écrire une fonction qui valide un email », « expliquer ce que fait ce bout de code », « proposer un correctif pour cette erreur »). Traiter le besoin une première fois sans IA (réflexion manuelle ou recherche doc), puis avec Claude Code (ou un autre assistant). Comparer : temps passé, qualité perçue, confiance dans le résultat. En déduire collectivement où l'IA apporte une valeur ajoutée réelle (gain de temps, clarification) et où la vigilance doit rester maximale (validation, tests).",
+            "checklist": [
+              "Choisir un besoin commun (petite fonction, explication, debug)",
+              "Réaliser la tâche sans IA et noter le temps et le résultat",
+              "Réaliser la même tâche avec Claude Code et noter le temps et le résultat",
+              "Comparer et discuter : gain, risques, bonnes pratiques à retenir"
+            ]
+          }
+        },
+        {
+          "type": "game",
+          "title": "Quiz – Introduction à Claude Code",
+          "position": 6,
+          "published": true,
+          "content": {
+            "gameType": "quiz",
+            "description": "Quiz de validation des compétences du module 1 : rôle de Claude Code, écosystème IA, cas d'usage et responsabilités.",
+            "instructions": "Répondez aux questions pour valider votre compréhension. Vous devez obtenir au moins 70 % pour valider le module.",
+            "objectives": [
+              "Comprendre le rôle d'un assistant IA dans le workflow de développement",
+              "Comparer Claude Code à d'autres solutions IA",
+              "Identifier des situations où Claude Code apporte une valeur ajoutée",
+              "Connaître les limites et responsabilités liées à l'usage de l'IA pour le code"
+            ],
+            "scoring": {
+              "totalQuestions": 3,
+              "pointsPerQuestion": 1,
+              "passingScore": 2,
+              "levels": {
+                "0-1": "Revoir le module – Reprenez les leçons 1.1 à 1.4",
+                "2": "Seuil atteint – Vous maîtrisez les points clés",
+                "3": "Excellent – Très bonne compréhension du module"
+              }
+            },
+            "levels": [
+              {
+                "level": 1,
+                "name": "Module 1 – Introduction à Claude Code",
+                "description": "Questions sur le rôle de Claude Code, l'écosystème IA et les responsabilités.",
+                "questions": [
+                  {
+                    "id": "q1-objectif",
+                    "type": "mcq",
+                    "prompt": "Quel est l'objectif principal de Claude Code ?",
+                    "options": [
+                      "Remplacer le développeur",
+                      "Assister le développeur dans son travail",
+                      "Compiler du code automatiquement",
+                      "Héberger des applications"
+                    ],
+                    "answer": "Assister le développeur dans son travail",
+                    "explanation": "Claude Code est conçu comme un assistant ; le développeur reste responsable du code.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q2-force",
+                    "type": "mcq",
+                    "prompt": "Quelle est une force majeure de Claude Code ?",
+                    "options": [
+                      "L'exécution du code",
+                      "Le raisonnement long et structuré",
+                      "L'hébergement cloud",
+                      "La gestion des serveurs"
+                    ],
+                    "answer": "Le raisonnement long et structuré",
+                    "explanation": "Claude excelle dans l'analyse et le raisonnement sur des contextes complexes.",
+                    "difficulty": 1
+                  },
+                  {
+                    "id": "q3-risque",
+                    "type": "mcq",
+                    "prompt": "Quel est un risque lié à l'usage de l'IA pour le code ?",
+                    "options": [
+                      "La lenteur",
+                      "La confidentialité des données",
+                      "La syntaxe",
+                      "La compatibilité réseau"
+                    ],
+                    "answer": "La confidentialité des données",
+                    "explanation": "Les données sensibles ne doivent pas être exposées sans contrôle.",
+                    "difficulty": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Ressources et évaluation – Module 1",
+          "position": 7,
+          "published": true,
+          "content": {
+            "description": "Ressources recommandées, critères d'évaluation formative et traces Qualiopi."
+          },
+          "chapters": [
+            {
+              "title": "Ressources du module",
+              "position": 0,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Ressources du module" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Présentation – Claude Code et IA pour développeurs" },
+                              { "type": "text", "text": " (PDF, obligatoire) : support théorique du module." }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Vidéo – IA et développement moderne" },
+                              { "type": "text", "text": " (optionnel) : contextualisation." }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "marks": [{ "type": "bold" }], "text": "Documentation officielle Claude" },
+                              { "type": "text", "text": " : https://www.anthropic.com (optionnel)." }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Évaluation formative",
+              "position": 1,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Évaluation formative" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Critères d'évaluation du module : compréhension du rôle de Claude Code ; capacité à identifier des cas d'usage pertinents ; connaissance des limites et responsabilités. L'évaluation est formative (quiz, échanges oraux, exercices) et vise à valider les objectifs pédagogiques OBJ-1.1, OBJ-1.2 et OBJ-1.3."
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Traces Qualiopi",
+              "position": 2,
+              "content": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Traces Qualiopi" }]
+                  },
+                  {
+                    "type": "bulletList",
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Feuille d'émargement" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Résultats du quiz" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Support pédagogique remis" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              { "type": "text", "text": "Échanges oraux tracés" }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

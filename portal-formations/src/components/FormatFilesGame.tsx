@@ -408,6 +408,30 @@ export function FormatFilesGame({ levels: propsLevels, onScore, description }: F
                     Valider ma correction
                   </button>
                 </div>
+              ) : currentQuestion.type === 'fill-in-blank' ? (
+                <div className="space-y-3">
+                  <input
+                    type="text"
+                    placeholder="Saisissez le mot ou l'expression manquante..."
+                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                    id="fill-in-blank-input"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        const el = document.getElementById('fill-in-blank-input') as HTMLInputElement
+                        if (el?.value.trim()) handleAnswer(el.value.trim())
+                      }
+                    }}
+                  />
+                  <button
+                    onClick={() => {
+                      const el = document.getElementById('fill-in-blank-input') as HTMLInputElement
+                      if (el?.value.trim() !== undefined) handleAnswer(el?.value?.trim() ?? '')
+                    }}
+                    className="w-full px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-semibold"
+                  >
+                    Valider ma réponse
+                  </button>
+                </div>
               ) : currentQuestion.options ? (
                 <div className="space-y-2">
                   {currentQuestion.options.map((option, index) => (

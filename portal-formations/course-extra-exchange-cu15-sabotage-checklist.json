@@ -1,0 +1,325 @@
+{
+  "title": "eXtra - Exchange 2019 CU15 — Checklist sabotage (Escape Game / TP Support)",
+  "description": "Checklist de sabotage **Exchange 2019 CU15** pédagogique et réversible : pannes diagnosticables pour escape game ou TP support. Niveau 1 (certificat IIS, Autodiscover, service arrêté), Niveau 2 (queue SMTP, Receive Connector, quota), Niveau 3 (URLs incohérentes, base démontée, auth IIS), piège « redémarrage inutile », checklist formateur. Tout est réparable avec les commandes enseignées.",
+  "status": "draft",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#0078D4",
+    "secondaryColor": "#50E6FF",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Objectif et règles du jeu",
+      "position": 0,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Objectif : pannes diagnosticables, pas casser la VM",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Objectif"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Créer des pannes diagnosticables, pas casser la VM définitivement."}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Règle d'or"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Tout est réversible avec les commandes que tu enseignes (certificat, services, connecteurs, quotas, etc.)."}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Idéal pour un escape game ou un TP support : les élèves diagnostiquent puis réparent."}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Niveau 1 — Pannes « classiques » (débutants)",
+      "position": 1,
+      "items": [
+        {
+          "type": "resource",
+          "title": "1 — Certificat IIS cassé (OWA en boucle)",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Symptôme"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "OWA boucle (302)"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "ECP inaccessible"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Outlook parfois OK"}]}]}
+                ]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Sabotage"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Assigner un mauvais certificat à IIS, ou laisser expirer le certificat."}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Enable-ExchangeCertificate -Thumbprint <MAUVAIS_THUMBPRINT> -Services IIS"}]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Attendu élèves"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Get-ExchangeCertificate\nEnable-ExchangeCertificate -Thumbprint <BON> -Services IIS\niisreset"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "2 — Autodiscover externe faux",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Symptôme"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Outlook demande le mot de passe"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "OWA OK"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Mobile parfois OK"}]}]}
+                ]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Sabotage"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Set-AutodiscoverVirtualDirectory -ExternalUrl https://wrong.domaine.tld/autodiscover/autodiscover.xml"}]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Attendu élèves"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Test-OutlookWebServices\nSet-AutodiscoverVirtualDirectory -ExternalUrl https://autodiscover.domaine.tld/autodiscover/autodiscover.xml"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "3 — Service Exchange arrêté",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Symptôme"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "OWA/ECP KO"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Erreurs 500"}]}]}
+                ]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Sabotage"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Stop-Service MSExchangeIS"}]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Attendu élèves"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Get-Service MSExchange*\nStart-Service MSExchangeIS"}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Niveau 2 — Pannes « support N2 »",
+      "position": 2,
+      "items": [
+        {
+          "type": "resource",
+          "title": "4 — Queue SMTP bloquée (mail sortant KO)",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Symptôme"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Mails internes OK"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Mails externes bloqués"}]}]}
+                ]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Sabotage"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Set-SendConnector \"Internet\" -SmartHosts 192.0.2.1"}]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Attendu élèves"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Get-Queue\nGet-SendConnector\nSet-SendConnector \"Internet\" -DNSRoutingEnabled $true\nRetry-Queue *"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "5 — Receive Connector trop restrictif",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Symptôme"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Plus aucun mail entrant"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "MX OK"}]}]}
+                ]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Sabotage"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Set-ReceiveConnector \"Default Frontend SERVER\" -RemoteIPRanges 127.0.0.1"}]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Attendu élèves"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Get-ReceiveConnector\nSet-ReceiveConnector \"Default Frontend SERVER\" -RemoteIPRanges 0.0.0.0-255.255.255.255"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "6 — Quota utilisateur dépassé",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Symptôme"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Un seul utilisateur impacté"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Message « quota exceeded »"}]}]}
+                ]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Sabotage"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Set-Mailbox user@domaine.tld -ProhibitSendQuota 1MB"}]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Attendu élèves"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Get-MailboxStatistics user@domaine.tld\nSet-Mailbox user@domaine.tld -ProhibitSendQuota 50GB"}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Niveau 3 — Pannes « pièges » (experts / bonus)",
+      "position": 3,
+      "items": [
+        {
+          "type": "resource",
+          "title": "7 — URLs internes / externes incohérentes",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Symptôme"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Fonctionne en interne mais pas en externe."}]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Sabotage"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Set-OwaVirtualDirectory -InternalUrl https://mail.domaine.tld/owa\nSet-OwaVirtualDirectory -ExternalUrl https://mail2.domaine.tld/owa"}]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Attendu élèves"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Get-OwaVirtualDirectory\nSet-OwaVirtualDirectory -ExternalUrl https://mail.domaine.tld/owa"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "8 — Base démontée",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Symptôme"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Boîtes inaccessibles"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Services OK"}]}]}
+                ]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Sabotage"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Dismount-Database DB01"}]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Attendu élèves"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Get-MailboxDatabase\nMount-Database DB01"}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "9 — Auth IIS cassée (OWA KO, Outlook OK)",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Symptôme"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "OWA KO"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Outlook fonctionne"}]}]}
+                ]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Sabotage (IIS Manager)"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Désactiver Windows Authentication sur /owa."}]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Attendu élèves"}]},
+                {"type": "codeBlock", "attrs": {"language": "powershell"}, "content": [{"type": "text", "text": "Get-OwaVirtualDirectory | Select *Authentication*"}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Panne faussement « grave » (piège pédagogique)",
+      "position": 4,
+      "items": [
+        {
+          "type": "resource",
+          "title": "10 — Redémarrage inutile",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Objectif"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Voir si les élèves réfléchissent avant d'agir."}]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Sabotage"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Aucun — pas de panne réelle."}]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Attendu"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Diagnostic AVANT redémarrage"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "–2 points si reboot immédiat"}]}]}
+                ]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Checklist formateur et objectifs pédagogiques",
+      "position": 5,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Checklist formateur (avant la session)",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Snapshot VM"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Vérifier accès EMS (Exchange Management Shell)"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Préparer : 1 panne par équipe, ou 1 panne progressive (salles)"}]}]}
+                ]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Ce que cette checklist enseigne vraiment",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Méthodologie de diagnostic"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Différence symptôme / cause"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Réflexes PowerShell"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Gestion du stress"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Bonnes pratiques production"}]}]}
+                ]}
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

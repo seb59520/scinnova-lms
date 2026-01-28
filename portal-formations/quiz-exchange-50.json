@@ -1,0 +1,543 @@
+{
+  "type": "game",
+  "title": "Quiz final Exchange — 50 questions",
+  "position": 1,
+  "published": true,
+  "content": {
+    "gameType": "quiz",
+    "description": "Évaluation globale Exchange : architecture, DNS, sécurité, administration, dépannage, PowerShell.",
+    "instructions": "Répondez aux 50 questions (QCM, une bonne réponse par question). Vous obtiendrez une note et un badge à la fin.",
+    "objectives": [
+      "Valider les connaissances sur l'architecture et les rôles Exchange",
+      "Maîtriser DNS, flux SMTP et certificats",
+      "Connaître les bonnes pratiques d'administration et de dépannage"
+    ],
+    "scoring": {
+      "totalQuestions": 50,
+      "pointsPerQuestion": 1,
+      "passingScore": 35,
+      "levels": {
+        "0-24": "Bases à renforcer",
+        "25-34": "Bon niveau",
+        "35-44": "Très bonne maîtrise",
+        "45-50": "Expert"
+      }
+    },
+    "levels": [
+      {
+        "level": 1,
+        "name": "Architecture & rôles",
+        "description": "Section 1 — Rôles Exchange 2019, AD, stockage",
+        "questions": [
+          {
+            "id": "q1-1",
+            "type": "mcq",
+            "prompt": "Quel rôle Exchange existe en 2019 ?",
+            "options": ["Hub Transport", "Client Access", "Mailbox", "Edge uniquement"],
+            "answer": "Mailbox",
+            "explanation": "En Exchange 2019, le rôle principal est Mailbox (Client Access et Mailbox sont fusionnés).",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-2",
+            "type": "mcq",
+            "prompt": "Exchange 2019 peut-il fonctionner sans Active Directory ?",
+            "options": ["Oui", "Non", "Seulement en lab", "Avec LDAP"],
+            "answer": "Non",
+            "explanation": "Exchange dépend d'Active Directory pour l'identité, les groupes et la configuration.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-3",
+            "type": "mcq",
+            "prompt": "Où sont stockées les boîtes aux lettres ?",
+            "options": ["Fichiers PST", "SQL Server", "Bases EDB", "AD"],
+            "answer": "Bases EDB",
+            "explanation": "Les boîtes sont stockées dans les bases Exchange (fichiers .edb) gérées par le service Information Store.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-4",
+            "type": "mcq",
+            "prompt": "Le moteur de base Exchange est :",
+            "options": ["SQL", "ESE", "MySQL", "Jet Lite"],
+            "answer": "ESE",
+            "explanation": "Exchange utilise ESE (Extensible Storage Engine) pour les bases de données des boîtes aux lettres.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-5",
+            "type": "mcq",
+            "prompt": "Quel service Exchange est critique pour l'accès aux mails ?",
+            "options": ["Transport", "Information Store", "IIS", "DNS"],
+            "answer": "Information Store",
+            "explanation": "Le service Microsoft Exchange Information Store gère le stockage et l'accès aux boîtes aux lettres.",
+            "difficulty": 1
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "name": "DNS & flux SMTP",
+        "description": "Section 2 — MX, SPF, DKIM, Autodiscover, connecteurs",
+        "questions": [
+          {
+            "id": "q2-1",
+            "type": "mcq",
+            "prompt": "Quel enregistrement DNS est indispensable pour recevoir des mails ?",
+            "options": ["A", "SPF", "MX", "DKIM"],
+            "answer": "MX",
+            "explanation": "L'enregistrement MX (Mail eXchange) indique les serveurs qui reçoivent le courrier pour le domaine.",
+            "difficulty": 1
+          },
+          {
+            "id": "q2-2",
+            "type": "mcq",
+            "prompt": "SPF sert principalement à :",
+            "options": ["Chiffrer les mails", "Signer les mails", "Déclarer les serveurs autorisés", "Filtrer le spam"],
+            "answer": "Déclarer les serveurs autorisés",
+            "explanation": "SPF (Sender Policy Framework) déclare quels serveurs sont autorisés à envoyer du courrier pour le domaine (enregistrement TXT).",
+            "difficulty": 1
+          },
+          {
+            "id": "q2-3",
+            "type": "mcq",
+            "prompt": "DKIM repose sur :",
+            "options": ["TXT", "MX", "CNAME", "SRV"],
+            "answer": "CNAME",
+            "explanation": "DKIM peut s'appuyer sur des enregistrements CNAME pour pointer vers le sélecteur de domaine (en plus des TXT pour la clé publique).",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-4",
+            "type": "mcq",
+            "prompt": "Autodiscover est utilisé par :",
+            "options": ["SMTP", "Outlook", "DNS uniquement", "IIS"],
+            "answer": "Outlook",
+            "explanation": "Autodiscover fournit à Outlook (et clients compatibles) les paramètres de connexion Exchange automatiquement.",
+            "difficulty": 1
+          },
+          {
+            "id": "q2-5",
+            "type": "mcq",
+            "prompt": "Un Send Connector sert à :",
+            "options": ["Recevoir des mails", "Stocker les mails", "Envoyer des mails", "Sauvegarder"],
+            "answer": "Envoyer des mails",
+            "explanation": "Le Send Connector définit comment Exchange envoie le courrier (vers Internet, relais, partenaires).",
+            "difficulty": 1
+          }
+        ]
+      },
+      {
+        "level": 3,
+        "name": "Sécurité & certificats",
+        "description": "Section 3 — TLS, STARTTLS, certificats",
+        "questions": [
+          {
+            "id": "q3-1",
+            "type": "mcq",
+            "prompt": "TLS protège principalement :",
+            "options": ["Le stockage", "Les flux réseau", "L'AD", "Le DNS"],
+            "answer": "Les flux réseau",
+            "explanation": "TLS chiffre les flux (HTTPS, SMTP avec STARTTLS, etc.) pour garantir la confidentialité et l'intégrité.",
+            "difficulty": 1
+          },
+          {
+            "id": "q3-2",
+            "type": "mcq",
+            "prompt": "STARTTLS est utilisé sur :",
+            "options": ["HTTPS", "SMTP", "IMAP", "DNS"],
+            "answer": "SMTP",
+            "explanation": "STARTTLS permet de chiffrer une connexion SMTP existante (passage en TLS).",
+            "difficulty": 2
+          },
+          {
+            "id": "q3-3",
+            "type": "mcq",
+            "prompt": "En production, le certificat Exchange doit être :",
+            "options": ["Auto-signé", "Auto-renouvelé", "D'une autorité publique", "Interne uniquement"],
+            "answer": "D'une autorité publique",
+            "explanation": "Un certificat émis par une autorité reconnue évite les alertes dans les clients et assure la confiance.",
+            "difficulty": 2
+          },
+          {
+            "id": "q3-4",
+            "type": "mcq",
+            "prompt": "Un certificat mal assigné provoque souvent :",
+            "options": ["Un arrêt Exchange", "Des alertes Outlook", "Une perte AD", "Une corruption EDB"],
+            "answer": "Des alertes Outlook",
+            "explanation": "Si le nom du certificat ne correspond pas aux URLs utilisées, les clients (Outlook, navigateurs) affichent des avertissements de sécurité.",
+            "difficulty": 2
+          },
+          {
+            "id": "q3-5",
+            "type": "mcq",
+            "prompt": "Le nom du certificat doit correspondre à :",
+            "options": ["Le NetBIOS", "Le domaine AD", "Les URLs Exchange", "L'IP du serveur"],
+            "answer": "Les URLs Exchange",
+            "explanation": "Le certificat doit couvrir les noms utilisés par les clients (autodiscover, mail, owa, etc.).",
+            "difficulty": 2
+          }
+        ]
+      },
+      {
+        "level": 4,
+        "name": "Boîtes aux lettres & permissions",
+        "description": "Section 4 — Boîtes partagées, Full Access, Send As, archives",
+        "questions": [
+          {
+            "id": "q4-1",
+            "type": "mcq",
+            "prompt": "Une boîte partagée permet :",
+            "options": ["Une connexion directe", "Un accès collectif", "Un archivage", "Une sauvegarde"],
+            "answer": "Un accès collectif",
+            "explanation": "Une boîte partagée (shared mailbox) permet à plusieurs utilisateurs d'accéder à la même boîte (équipe, support).",
+            "difficulty": 1
+          },
+          {
+            "id": "q4-2",
+            "type": "mcq",
+            "prompt": "Full Access permet :",
+            "options": ["D'envoyer en tant que", "D'ouvrir la boîte", "De gérer AD", "De créer des users"],
+            "answer": "D'ouvrir la boîte",
+            "explanation": "Full Access (accès complet) permet d'ouvrir la boîte aux lettres et d'agir sur son contenu.",
+            "difficulty": 1
+          },
+          {
+            "id": "q4-3",
+            "type": "mcq",
+            "prompt": "Send As permet :",
+            "options": ["Envoyer au nom de", "Envoyer en tant que", "Lire les mails", "Supprimer la boîte"],
+            "answer": "Envoyer en tant que",
+            "explanation": "Send As permet d'envoyer un message en tant que la boîte (l'expéditeur affiché est la boîte).",
+            "difficulty": 1
+          },
+          {
+            "id": "q4-4",
+            "type": "mcq",
+            "prompt": "La bonne pratique de permissions est :",
+            "options": ["Utilisateurs directs", "Groupes AD", "Comptes admin", "ACL manuelles"],
+            "answer": "Groupes AD",
+            "explanation": "Attribuer les permissions via des groupes AD facilite la gestion et l'audit (moins d'erreurs, révocations centralisées).",
+            "difficulty": 2
+          },
+          {
+            "id": "q4-5",
+            "type": "mcq",
+            "prompt": "Une archive Exchange sert à :",
+            "options": ["Sauvegarder", "Supprimer", "Stocker à long terme", "Chiffrer"],
+            "answer": "Stocker à long terme",
+            "explanation": "L'archive Exchange (boîte d'archivage) permet de conserver les messages à long terme tout en gardant la boîte principale légère.",
+            "difficulty": 2
+          }
+        ]
+      },
+      {
+        "level": 5,
+        "name": "Dépannage & supervision",
+        "description": "Section 5 — Message Tracking, logs, VSS, sauvegarde",
+        "questions": [
+          {
+            "id": "q5-1",
+            "type": "mcq",
+            "prompt": "Message Tracking permet de :",
+            "options": ["Sauvegarder", "Suivre un mail", "Filtrer le spam", "Créer un user"],
+            "answer": "Suivre un mail",
+            "explanation": "Message Tracking permet de suivre un message à travers les serveurs pour le dépannage (réception, file, envoi).",
+            "difficulty": 1
+          },
+          {
+            "id": "q5-2",
+            "type": "mcq",
+            "prompt": "Un mail bloqué avant SMTP sortant indique souvent :",
+            "options": ["Un problème DNS", "Un quota", "Un certificat", "Un connecteur"],
+            "answer": "Un connecteur",
+            "explanation": "Un message resté en file d'attente ou en échec sortant indique souvent un problème de Send Connector ou de résolution DNS du destinataire.",
+            "difficulty": 2
+          },
+          {
+            "id": "q5-3",
+            "type": "mcq",
+            "prompt": "Les logs Exchange sont essentiels pour :",
+            "options": ["L'UI", "Le dépannage", "L'AD", "Le DNS"],
+            "answer": "Le dépannage",
+            "explanation": "Les journaux (transport, accès, etc.) permettent d'analyser les incidents et les flux de messagerie.",
+            "difficulty": 1
+          },
+          {
+            "id": "q5-4",
+            "type": "mcq",
+            "prompt": "VSS est utilisé pour :",
+            "options": ["Le chiffrement", "La sauvegarde cohérente", "L'authentification", "Le transport"],
+            "answer": "La sauvegarde cohérente",
+            "explanation": "VSS (Volume Shadow Copy Service) permet des sauvegardes cohérentes des bases Exchange sans arrêt du service.",
+            "difficulty": 2
+          },
+          {
+            "id": "q5-5",
+            "type": "mcq",
+            "prompt": "Une sauvegarde Exchange correcte doit être :",
+            "options": ["Copie EDB", "Snapshot disque", "Compatible VSS", "Manuelle"],
+            "answer": "Compatible VSS",
+            "explanation": "Une sauvegarde Exchange doit être compatible VSS (prise en charge par Exchange) pour garantir la cohérence des bases.",
+            "difficulty": 2
+          }
+        ]
+      },
+      {
+        "level": 6,
+        "name": "Sécurité avancée",
+        "description": "Section 6 — MFA, phishing, supervision, SIEM",
+        "questions": [
+          {
+            "id": "q6-1",
+            "type": "mcq",
+            "prompt": "MFA signifie :",
+            "options": ["Mail Flow Authentication", "Multi-Factor Authentication", "Managed File Access", "Message Filter Agent"],
+            "answer": "Multi-Factor Authentication",
+            "explanation": "MFA (authentification multifacteur) ajoute un second facteur (SMS, app, clé) en plus du mot de passe.",
+            "difficulty": 1
+          },
+          {
+            "id": "q6-2",
+            "type": "mcq",
+            "prompt": "En on-prem, le MFA est souvent :",
+            "options": ["Natif Exchange", "Hybride", "Impossible", "Obligatoire"],
+            "answer": "Hybride",
+            "explanation": "En environnement on-prem, le MFA est souvent mis en œuvre via une solution hybride (Azure MFA, ADFS, etc.).",
+            "difficulty": 2
+          },
+          {
+            "id": "q6-3",
+            "type": "mcq",
+            "prompt": "Un phishing vise principalement :",
+            "options": ["Le serveur", "Les utilisateurs", "Le DNS", "Le stockage"],
+            "answer": "Les utilisateurs",
+            "explanation": "Le phishing cible les utilisateurs pour récupérer des identifiants ou déclencher des actions (pièces jointes, liens).",
+            "difficulty": 1
+          },
+          {
+            "id": "q6-4",
+            "type": "mcq",
+            "prompt": "Zabbix est utilisé pour :",
+            "options": ["Sauvegarde", "Supervision", "Antivirus", "DNS"],
+            "answer": "Supervision",
+            "explanation": "Zabbix est une solution de supervision (monitoring) pour surveiller serveurs, services et alertes.",
+            "difficulty": 2
+          },
+          {
+            "id": "q6-5",
+            "type": "mcq",
+            "prompt": "Un SIEM sert à :",
+            "options": ["Sauvegarder", "Centraliser les logs", "Créer des users", "Gérer AD"],
+            "answer": "Centraliser les logs",
+            "explanation": "Un SIEM (Security Information and Event Management) centralise et analyse les logs pour la détection et l'audit.",
+            "difficulty": 2
+          }
+        ]
+      },
+      {
+        "level": 7,
+        "name": "Exploitation quotidienne",
+        "description": "Section 7 — Maintenance, mises à jour, PRA, PCA, migration",
+        "questions": [
+          {
+            "id": "q7-1",
+            "type": "mcq",
+            "prompt": "Une maintenance Exchange doit inclure :",
+            "options": ["Mises à jour", "Sauvegardes", "Supervision", "Toutes les réponses"],
+            "answer": "Toutes les réponses",
+            "explanation": "Une maintenance complète inclut mises à jour, sauvegardes, supervision et procédures documentées.",
+            "difficulty": 2
+          },
+          {
+            "id": "q7-2",
+            "type": "mcq",
+            "prompt": "Une mise à jour Exchange se fait :",
+            "options": ["Sans préparation", "Avec snapshot", "Avec sauvegarde préalable", "En production directe"],
+            "answer": "Avec sauvegarde préalable",
+            "explanation": "Avant toute mise à jour, une sauvegarde cohérente et des tests en lab sont recommandés.",
+            "difficulty": 2
+          },
+          {
+            "id": "q7-3",
+            "type": "mcq",
+            "prompt": "PRA signifie :",
+            "options": ["Plan Réseau Avancé", "Plan de Reprise d'Activité", "Procédure AD", "Proxy Access"],
+            "answer": "Plan de Reprise d'Activité",
+            "explanation": "Le PRA définit comment reprendre l'activité après un sinistre (sauvegardes, ordre de restauration, délais).",
+            "difficulty": 2
+          },
+          {
+            "id": "q7-4",
+            "type": "mcq",
+            "prompt": "PCA vise :",
+            "options": ["La sécurité", "La continuité", "Le stockage", "Le spam"],
+            "answer": "La continuité",
+            "explanation": "Le Plan de Continuité d'Activité (PCA) vise à maintenir ou reprendre l'activité en cas d'incident.",
+            "difficulty": 2
+          },
+          {
+            "id": "q7-5",
+            "type": "mcq",
+            "prompt": "Une migration Exchange doit être :",
+            "options": ["Brutale", "Progressive", "Sans test", "Sans sauvegarde"],
+            "answer": "Progressive",
+            "explanation": "Une migration doit être planifiée, progressive (pilot, puis déploiement), avec tests et sauvegardes.",
+            "difficulty": 2
+          }
+        ]
+      },
+      {
+        "level": 8,
+        "name": "PowerShell & automatisation",
+        "description": "Section 8 — Scripts, cmdlets, bonnes pratiques",
+        "questions": [
+          {
+            "id": "q8-1",
+            "type": "mcq",
+            "prompt": "PowerShell est utilisé pour :",
+            "options": ["GUI uniquement", "Automatiser", "Remplacer AD", "Sauvegarder"],
+            "answer": "Automatiser",
+            "explanation": "PowerShell permet d'automatiser les tâches d'administration Exchange (création de boîtes, rapports, déploiements).",
+            "difficulty": 1
+          },
+          {
+            "id": "q8-2",
+            "type": "mcq",
+            "prompt": "Enable-Mailbox sert à :",
+            "options": ["Créer AD", "Activer une boîte", "Créer DNS", "Installer Exchange"],
+            "answer": "Activer une boîte",
+            "explanation": "Enable-Mailbox active une boîte aux lettres Exchange pour un utilisateur AD existant.",
+            "difficulty": 1
+          },
+          {
+            "id": "q8-3",
+            "type": "mcq",
+            "prompt": "Les scripts doivent être :",
+            "options": ["Cachés", "Documentés", "Supprimés", "Obfusqués"],
+            "answer": "Documentés",
+            "explanation": "Documenter les scripts (commentaires, readme) facilite la maintenance et le partage en équipe.",
+            "difficulty": 2
+          },
+          {
+            "id": "q8-4",
+            "type": "mcq",
+            "prompt": "PowerShell permet de :",
+            "options": ["Répéter", "Auditer", "Automatiser", "Toutes les réponses"],
+            "answer": "Toutes les réponses",
+            "explanation": "PowerShell permet de répéter des tâches, d'auditer (rapports, logs) et d'automatiser l'administration.",
+            "difficulty": 2
+          },
+          {
+            "id": "q8-5",
+            "type": "mcq",
+            "prompt": "En production, un script doit être :",
+            "options": ["Testé en lab", "Exécuté à l'aveugle", "Sans sauvegarde", "Unique"],
+            "answer": "Testé en lab",
+            "explanation": "Tout script destiné à la production doit être testé en environnement de lab avant déploiement.",
+            "difficulty": 2
+          }
+        ]
+      },
+      {
+        "level": 9,
+        "name": "Global & bonus",
+        "description": "Section 9 — Synthèse et questions pratiques / étude de cas",
+        "questions": [
+          {
+            "id": "q9-1",
+            "type": "mcq",
+            "prompt": "Exchange est avant tout :",
+            "options": ["Un serveur mail", "Une plateforme AD-centrée", "Un client Outlook", "Un antivirus"],
+            "answer": "Une plateforme AD-centrée",
+            "explanation": "Exchange s'appuie sur Active Directory pour l'identité, les groupes et les permissions ; c'est une plateforme centrée AD.",
+            "difficulty": 2
+          },
+          {
+            "id": "q9-2",
+            "type": "mcq",
+            "prompt": "La cause n°1 de panne Exchange est souvent :",
+            "options": ["Le CPU", "Le stockage", "Le DNS", "Le réseau"],
+            "answer": "Le DNS",
+            "explanation": "Les problèmes DNS (résolution, MX, Autodiscover, certificats) sont une cause fréquente de dysfonctionnements.",
+            "difficulty": 2
+          },
+          {
+            "id": "q9-3",
+            "type": "mcq",
+            "prompt": "Une bonne admin Exchange repose sur :",
+            "options": ["Le hasard", "L'expérience", "Les procédures", "Toutes les réponses"],
+            "answer": "Toutes les réponses",
+            "explanation": "Une administration solide combine expérience, procédures documentées et bonnes pratiques (sauvegardes, supervision, PRA).",
+            "difficulty": 2
+          },
+          {
+            "id": "q9-4",
+            "type": "mcq",
+            "prompt": "Un lab est utile pour :",
+            "options": ["Tester", "Casser", "Apprendre", "Toutes les réponses"],
+            "answer": "Toutes les réponses",
+            "explanation": "Un environnement de lab permet de tester, d'apprendre et de valider des scénarios sans risque pour la production.",
+            "difficulty": 1
+          },
+          {
+            "id": "q9-5",
+            "type": "mcq",
+            "prompt": "Exchange reste pertinent car :",
+            "options": ["On-prem", "Sécurité", "Contrôle", "Toutes les réponses"],
+            "answer": "Toutes les réponses",
+            "explanation": "Exchange on-prem offre contrôle des données, exigences de sécurité et conformité pour les organisations qui le requièrent.",
+            "difficulty": 2
+          },
+          {
+            "id": "q9-6",
+            "type": "mcq",
+            "prompt": "Un utilisateur ne reçoit aucun mail. Quelle vérification prioritaire ?",
+            "options": ["Redémarrer Exchange", "Vérifier le quota et la boîte", "Recréer le compte AD", "Désactiver l'antispam"],
+            "answer": "Vérifier le quota et la boîte",
+            "explanation": "Vérifier d'abord quota, état de la boîte et file d'attente ; puis DNS/MX et connecteurs.",
+            "difficulty": 3
+          },
+          {
+            "id": "q9-7",
+            "type": "mcq",
+            "prompt": "Après une mise à jour Exchange, les clients ne se connectent plus. Cause probable ?",
+            "options": ["AD corrompu", "Certificat ou IIS", "DNS externe", "PST manquants"],
+            "answer": "Certificat ou IIS",
+            "explanation": "Après une mise à jour, les problèmes de connexion client sont souvent liés au certificat, aux virtual directories IIS ou aux pools d'applications.",
+            "difficulty": 3
+          },
+          {
+            "id": "q9-8",
+            "type": "mcq",
+            "prompt": "Les mails sortants restent en file d'attente. Que contrôler en premier ?",
+            "options": ["Les archives", "Le Send Connector et le DNS", "Les groupes AD", "Les quotas"],
+            "answer": "Le Send Connector et le DNS",
+            "explanation": "Une file d'attente qui ne se vide pas pointe vers le Send Connector (configuration, authentification, limites) ou la résolution DNS des destinataires.",
+            "difficulty": 3
+          },
+          {
+            "id": "q9-9",
+            "type": "mcq",
+            "prompt": "Vous devez ajouter 50 boîtes partagées avec les mêmes permissions. Meilleure approche ?",
+            "options": ["GUI manuelle", "Script PowerShell avec groupes AD", "Copier une base EDB", "Désactiver l'audit"],
+            "answer": "Script PowerShell avec groupes AD",
+            "explanation": "PowerShell + groupes AD permet d'automatiser la création et l'attribution des permissions de façon reproductible et auditable.",
+            "difficulty": 3
+          },
+          {
+            "id": "q9-10",
+            "type": "mcq",
+            "prompt": "Avant de modifier un connecteur de réception en production, que faire ?",
+            "options": ["Rien", "Documenter et tester en lab", "Désactiver la sauvegarde", "Supprimer les logs"],
+            "answer": "Documenter et tester en lab",
+            "explanation": "Toute modification de connecteur doit être documentée, testée en lab et planifiée (fenêtre de maintenance si besoin).",
+            "difficulty": 3
+          }
+        ]
+      }
+    ]
+  },
+  "chapters": []
+}

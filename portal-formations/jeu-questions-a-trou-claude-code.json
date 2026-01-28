@@ -1,0 +1,106 @@
+{
+  "type": "game",
+  "title": "Questions à trou : Introduction à Claude Code",
+  "position": 11,
+  "published": true,
+  "content": {
+    "gameType": "format-files",
+    "description": "Complétez les phrases pour valider votre compréhension des concepts du module.",
+    "instructions": "Saisissez le mot ou l'expression manquante dans chaque phrase. La comparaison est insensible à la casse.",
+    "levels": [
+      {
+        "level": 1,
+        "name": "Concepts de base",
+        "questions": [
+          {
+            "id": "q1-1",
+            "type": "fill-in-blank",
+            "prompt": "Claude est un modèle de langage développé par _____.",
+            "answer": "Anthropic",
+            "explanation": "Anthropic est l'entreprise qui développe Claude et qui se spécialise dans la recherche en IA et la sécurité des systèmes IA.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-2",
+            "type": "fill-in-blank",
+            "prompt": "Claude Code est la déclinaison de Claude dédiée au _____ et à la ligne de commande (CLI).",
+            "answer": "développement",
+            "explanation": "Claude Code cible les développeurs : génération et modification de code, contexte projet, utilisation en CLI dans l'IDE ou le terminal.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-3",
+            "type": "fill-in-blank",
+            "prompt": "Claude est conçu pour être utile, inoffensif et _____.",
+            "answer": "honnête",
+            "explanation": "Ces trois principes guident le comportement de Claude : utilité, absence de nuisance et honnêteté dans les réponses.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-4",
+            "type": "fill-in-blank",
+            "prompt": "L'_____ d'assistance signifie que Claude aide l'utilisateur sans exécuter les tâches à sa place.",
+            "answer": "IA",
+            "explanation": "L'IA d'assistance suggère, propose et rédige, tout en laissant les décisions finales au développeur.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-5",
+            "type": "fill-in-blank",
+            "prompt": "Le _____ long permet à Claude d'analyser des contextes complexes et de produire des réponses structurées.",
+            "answer": "raisonnement",
+            "explanation": "Le raisonnement long permet l'analyse de plusieurs fichiers, la compréhension d'architecture et des réponses étape par étape.",
+            "difficulty": 1
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "name": "Pratiques et responsabilités",
+        "questions": [
+          {
+            "id": "q2-1",
+            "type": "fill-in-blank",
+            "prompt": "La _____ du code généré par l'IA reste à la charge du développeur.",
+            "answer": "validation",
+            "explanation": "Le développeur doit revoir, tester et valider le code produit pour garantir la qualité et la cohérence avec le projet.",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-2",
+            "type": "fill-in-blank",
+            "prompt": "Le respect des _____ permet d'adapter les réponses au format et aux contraintes du projet.",
+            "answer": "consignes",
+            "explanation": "Claude est entraîné pour suivre les instructions (format de sortie, périmètre, contraintes techniques ou de style).",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-3",
+            "type": "fill-in-blank",
+            "prompt": "L'intégration _____ permet d'utiliser Claude Code directement dans l'IDE ou le terminal.",
+            "answer": "CLI",
+            "explanation": "L'intégration en ligne de commande (CLI) permet un usage direct dans l'environnement de travail sans changer d'outil.",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-4",
+            "type": "fill-in-blank",
+            "prompt": "Claude Code peut lire et analyser plusieurs _____ d'un projet pour comprendre l'architecture.",
+            "answer": "fichiers",
+            "explanation": "Le contexte projet permet de prendre en compte plusieurs fichiers pour comprendre les dépendances et proposer des modifications cohérentes.",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-5",
+            "type": "fill-in-blank",
+            "prompt": "Les décisions _____ restent du ressort du développeur, pas de l'IA.",
+            "answer": "finales",
+            "explanation": "L'IA assiste et propose ; le développeur garde la responsabilité des décisions finales et de la validation.",
+            "difficulty": 2
+          }
+        ]
+      }
+    ]
+  },
+  "chapters": []
+}

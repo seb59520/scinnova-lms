@@ -1,0 +1,183 @@
+{
+  "type": "game",
+  "title": "Quiz : Introduction à Claude Code",
+  "position": 10,
+  "published": true,
+  "content": {
+    "gameType": "quiz",
+    "description": "Testez vos connaissances sur Claude Code, Anthropic et l'assistance IA pour le développement",
+    "instructions": "Répondez aux questions pour valider votre compréhension du module. Vous obtiendrez une note à la fin du quiz.",
+    "objectives": [
+      "Connaître le positionnement de Claude et Claude Code",
+      "Comprendre la philosophie d'assistance et les limites de l'IA",
+      "Identifier les cas d'usage et les bonnes pratiques"
+    ],
+    "scoring": {
+      "totalQuestions": 10,
+      "pointsPerQuestion": 1,
+      "passingScore": 7,
+      "levels": {
+        "0-4": "Bases à renforcer",
+        "5-7": "Bon niveau",
+        "8-10": "Très bonne maîtrise"
+      }
+    },
+    "levels": [
+      {
+        "level": 1,
+        "name": "Claude et Anthropic",
+        "description": "Questions sur l'écosystème Claude",
+        "questions": [
+          {
+            "id": "q1-1",
+            "type": "mcq",
+            "prompt": "Qui développe Claude ?",
+            "options": [
+              "OpenAI",
+              "Google",
+              "Anthropic",
+              "Meta"
+            ],
+            "answer": "Anthropic",
+            "explanation": "Claude est un modèle de langage développé par Anthropic, entreprise spécialisée dans la recherche en IA et la sécurité des systèmes IA.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-2",
+            "type": "mcq",
+            "prompt": "Qu'est-ce que Claude Code ?",
+            "options": [
+              "Un langage de programmation",
+              "Une déclinaison de Claude dédiée au développement et à la CLI",
+              "Un framework React",
+              "Un outil de déploiement"
+            ],
+            "answer": "Une déclinaison de Claude dédiée au développement et à la CLI",
+            "explanation": "Claude Code est la déclinaison de Claude pensée pour les développeurs : assistance dans l'IDE, en ligne de commande, avec contexte projet.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-3",
+            "type": "mcq",
+            "prompt": "Sur quels principes Claude est-il conçu ?",
+            "options": [
+              "Utile, inoffensif et honnête",
+              "Rapidité et coût minimal uniquement",
+              "Open source uniquement",
+              "Uniquement pour le divertissement"
+            ],
+            "answer": "Utile, inoffensif et honnête",
+            "explanation": "Claude est conçu pour être utile, inoffensif et honnête, avec une attention au raisonnement long et au respect des consignes.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-4",
+            "type": "mcq",
+            "prompt": "Quel pilier décrit « aider sans exécuter à la place de l'utilisateur » ?",
+            "options": [
+              "Raisonnement long",
+              "IA d'assistance",
+              "Respect des consignes",
+              "CLI"
+            ],
+            "answer": "IA d'assistance",
+            "explanation": "L'IA d'assistance signifie que Claude suggère, propose et rédige, tout en laissant les décisions finales et la validation au développeur.",
+            "difficulty": 1
+          },
+          {
+            "id": "q1-5",
+            "type": "mcq",
+            "prompt": "Que signifie « raisonnement long » pour Claude ?",
+            "options": [
+              "Réponses très courtes",
+              "Analyse de contextes complexes, lecture de plusieurs fichiers, réponses étape par étape",
+              "Uniquement du code sans explication",
+              "Traduction multilingue"
+            ],
+            "answer": "Analyse de contextes complexes, lecture de plusieurs fichiers, réponses étape par étape",
+            "explanation": "Le raisonnement long permet d'analyser des contextes complexes, de lire plusieurs fichiers et de produire des réponses argumentées et structurées.",
+            "difficulty": 1
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "name": "Cas d'usage et limites",
+        "description": "Compréhension des usages et des responsabilités",
+        "questions": [
+          {
+            "id": "q2-1",
+            "type": "mcq",
+            "prompt": "Quel type de tâche est particulièrement adapté à Claude Code ?",
+            "options": [
+              "Remplacer entièrement le développeur",
+              "Comprendre du code existant, refactoriser, proposer des correctifs avec contexte projet",
+              "Gérer les déploiements en production sans supervision",
+              "Décisions d'architecture sans revue humaine"
+            ],
+            "answer": "Comprendre du code existant, refactoriser, proposer des correctifs avec contexte projet",
+            "explanation": "Claude Code excelle pour la compréhension de code existant, la refactorisation et les correctifs, en s'appuyant sur le contexte du projet.",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-2",
+            "type": "mcq",
+            "prompt": "Qui doit garder la responsabilité de la validation du code généré ?",
+            "options": [
+              "Uniquement l'IA",
+              "Le développeur",
+              "Le chef de projet uniquement",
+              "Personne, le code IA est toujours fiable"
+            ],
+            "answer": "Le développeur",
+            "explanation": "La validation et les décisions finales restent au développeur ; l'IA assiste mais ne se substitue pas à la revue et aux tests.",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-3",
+            "type": "mcq",
+            "prompt": "Que permet l'intégration CLI de Claude Code ?",
+            "options": [
+              "Remplacer le terminal",
+              "Utiliser l'assistant directement dans l'IDE ou le terminal sans quitter l'environnement de travail",
+              "Automatiser tous les déploiements",
+              "Éviter d'écrire du code"
+            ],
+            "answer": "Utiliser l'assistant directement dans l'IDE ou le terminal sans quitter l'environnement de travail",
+            "explanation": "L'intégration CLI permet d'utiliser Claude Code depuis l'IDE ou le terminal pour un usage direct dans l'environnement de développement.",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-4",
+            "type": "mcq",
+            "prompt": "Pourquoi le « respect strict des consignes » est-il important ?",
+            "options": [
+              "Pour limiter la créativité",
+              "Pour s'intégrer au workflow (format de sortie, périmètre, contraintes techniques ou de style)",
+              "Pour éviter toute explication",
+              "Pour générer toujours le même code"
+            ],
+            "answer": "Pour s'intégrer au workflow (format de sortie, périmètre, contraintes techniques ou de style)",
+            "explanation": "Le respect des consignes permet d'adapter les réponses au format, au périmètre et aux contraintes du projet et de l'équipe.",
+            "difficulty": 2
+          },
+          {
+            "id": "q2-5",
+            "type": "mcq",
+            "prompt": "Quelle bonne pratique s'applique à l'utilisation de l'IA pour le code ?",
+            "options": [
+              "Faire confiance aveuglément à tout code généré",
+              "Revue, tests et validation humaine du code produit",
+              "Ne jamais documenter les décisions",
+              "Utiliser l'IA uniquement pour du code trivial"
+            ],
+            "answer": "Revue, tests et validation humaine du code produit",
+            "explanation": "Il est essentiel de revoir, tester et valider le code produit par l'IA pour garantir la qualité et la sécurité.",
+            "difficulty": 2
+          }
+        ]
+      }
+    ]
+  },
+  "chapters": []
+}

@@ -1,0 +1,204 @@
+{
+  "type": "game",
+  "title": "Compléter pour comprendre Exchange",
+  "position": 0,
+  "published": true,
+  "content": {
+    "gameType": "format-files",
+    "description": "Compréhension active des concepts Exchange : complétez les phrases pour valider vos acquis (pas du par-cœur).",
+    "instructions": "Saisissez le mot ou l'expression manquante dans chaque phrase. La comparaison est insensible à la casse. Utilisable en début ou milieu de formation.",
+    "levels": [
+      {
+        "level": 1,
+        "name": "Fondamentaux Exchange / AD / DNS",
+        "questions": [
+          {
+            "id": "ex-b1-1",
+            "type": "fill-in-blank",
+            "prompt": "Exchange dépend fortement de __________ pour l'identité, les groupes et les permissions.",
+            "answer": "AD",
+            "explanation": "Active Directory (AD) fournit l'identité, les groupes et les permissions ; Exchange s'appuie dessus pour les boîtes aux lettres et l'authentification.",
+            "difficulty": 1
+          },
+          {
+            "id": "ex-b1-2",
+            "type": "fill-in-blank",
+            "prompt": "Le rôle principal d'Exchange 2019 est le rôle __________.",
+            "answer": "Mailbox",
+            "explanation": "En Exchange 2019, le rôle unique principal est Mailbox (Client Access et Mailbox sont fusionnés). Hub Transport et Edge existent en rôles séparés.",
+            "difficulty": 1
+          },
+          {
+            "id": "ex-b1-3",
+            "type": "fill-in-blank",
+            "prompt": "Une boîte aux lettres Exchange est toujours liée à un objet __________.",
+            "answer": "utilisateur",
+            "explanation": "Chaque boîte aux lettres est liée à un objet utilisateur (compte) dans Active Directory.",
+            "difficulty": 1
+          },
+          {
+            "id": "ex-b1-4",
+            "type": "fill-in-blank",
+            "prompt": "Le service Exchange qui gère le stockage des boîtes est __________.",
+            "answer": "Information Store",
+            "explanation": "Le service Microsoft Exchange Information Store gère le stockage des boîtes aux lettres (bases EDB).",
+            "difficulty": 1
+          },
+          {
+            "id": "ex-b1-5",
+            "type": "fill-in-blank",
+            "prompt": "Le protocole utilisé par Outlook pour accéder aux boîtes est __________.",
+            "answer": "MAPI over HTTP",
+            "explanation": "Outlook utilise MAPI over HTTP (RPC over HTTP déprécié) pour accéder aux boîtes Exchange.",
+            "difficulty": 1
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "name": "DNS & flux mail",
+        "questions": [
+          {
+            "id": "ex-b2-1",
+            "type": "fill-in-blank",
+            "prompt": "L'enregistrement DNS qui indique où recevoir les mails est __________.",
+            "answer": "MX",
+            "explanation": "L'enregistrement MX (Mail eXchange) indique les serveurs de messagerie autorisés à recevoir le courrier pour le domaine.",
+            "difficulty": 1
+          },
+          {
+            "id": "ex-b2-2",
+            "type": "fill-in-blank",
+            "prompt": "SPF sert à indiquer __________.",
+            "answer": "qui a le droit d'envoyer",
+            "explanation": "SPF (Sender Policy Framework) déclare quels serveurs sont autorisés à envoyer du courrier pour le domaine (enregistrement TXT).",
+            "difficulty": 1
+          },
+          {
+            "id": "ex-b2-3",
+            "type": "fill-in-blank",
+            "prompt": "DKIM permet de __________ le message.",
+            "answer": "signer",
+            "explanation": "DKIM (DomainKeys Identified Mail) permet de signer électroniquement les messages pour prouver leur origine et intégrité.",
+            "difficulty": 1
+          },
+          {
+            "id": "ex-b2-4",
+            "type": "fill-in-blank",
+            "prompt": "Autodiscover permet à Outlook de __________ automatiquement.",
+            "answer": "se configurer",
+            "explanation": "Autodiscover fournit à Outlook les paramètres de connexion (URLs, méthodes d'authentification) sans saisie manuelle.",
+            "difficulty": 1
+          },
+          {
+            "id": "ex-b2-5",
+            "type": "fill-in-blank",
+            "prompt": "Sans Send Connector, Exchange ne peut pas __________.",
+            "answer": "envoyer vers l'extérieur",
+            "explanation": "Le Send Connector définit comment Exchange envoie le courrier vers Internet ou d'autres organisations.",
+            "difficulty": 1
+          }
+        ]
+      },
+      {
+        "level": 3,
+        "name": "Sécurité & TLS",
+        "questions": [
+          {
+            "id": "ex-b3-1",
+            "type": "fill-in-blank",
+            "prompt": "TLS est utilisé pour sécuriser les flux __________ et __________. (Répondez par un des deux : HTTPS ou SMTP)",
+            "answer": "HTTPS",
+            "explanation": "TLS sécurise les flux HTTPS (services web, EAC, Outlook Web) et SMTP (STARTTLS pour le courrier).",
+            "difficulty": 2
+          },
+          {
+            "id": "ex-b3-2",
+            "type": "fill-in-blank",
+            "prompt": "Un certificat Exchange doit correspondre au nom annoncé lors du __________ SMTP.",
+            "answer": "EHLO",
+            "explanation": "Lors de la commande EHLO (Extended HELO), le serveur annonce son nom ; le certificat doit correspondre pour éviter les alertes.",
+            "difficulty": 2
+          },
+          {
+            "id": "ex-b3-3",
+            "type": "fill-in-blank",
+            "prompt": "STARTTLS permet de __________ une connexion SMTP existante.",
+            "answer": "chiffrer",
+            "explanation": "STARTTLS permet de faire évoluer une connexion SMTP en clair vers une connexion chiffrée (TLS).",
+            "difficulty": 2
+          },
+          {
+            "id": "ex-b3-4",
+            "type": "fill-in-blank",
+            "prompt": "Un certificat auto-signé est __________ en production.",
+            "answer": "déconseillé",
+            "explanation": "En production, un certificat émis par une autorité reconnue est recommandé pour éviter les alertes et assurer la confiance.",
+            "difficulty": 2
+          }
+        ]
+      },
+      {
+        "level": 4,
+        "name": "Administration quotidienne",
+        "questions": [
+          {
+            "id": "ex-b4-1",
+            "type": "fill-in-blank",
+            "prompt": "Une boîte partagée ne possède pas de __________ propre.",
+            "answer": "mot de passe",
+            "explanation": "Une boîte partagée (shared mailbox) n'a pas de compte avec mot de passe ; l'accès se fait via des permissions sur la boîte.",
+            "difficulty": 2
+          },
+          {
+            "id": "ex-b4-2",
+            "type": "fill-in-blank",
+            "prompt": "La permission permettant d'ouvrir une boîte est __________.",
+            "answer": "Full Access",
+            "explanation": "Full Access (accès complet) permet d'ouvrir la boîte aux lettres et d'agir sur son contenu (lecture, organisation).",
+            "difficulty": 2
+          },
+          {
+            "id": "ex-b4-3",
+            "type": "fill-in-blank",
+            "prompt": "\"Send As\" permet d'envoyer __________.",
+            "answer": "en tant que",
+            "explanation": "Send As permet d'envoyer un message en tant que la boîte (l'expéditeur affiché est la boîte, pas l'utilisateur connecté).",
+            "difficulty": 2
+          },
+          {
+            "id": "ex-b4-4",
+            "type": "fill-in-blank",
+            "prompt": "Les quotas servent à contrôler __________.",
+            "answer": "l'espace disque",
+            "explanation": "Les quotas limitent la taille des boîtes aux lettres pour maîtriser l'utilisation du stockage (bases EDB).",
+            "difficulty": 2
+          }
+        ]
+      },
+      {
+        "level": 5,
+        "name": "Dépannage",
+        "questions": [
+          {
+            "id": "ex-b5-1",
+            "type": "fill-in-blank",
+            "prompt": "Message Tracking permet de suivre un mail __________.",
+            "answer": "de bout en bout",
+            "explanation": "Message Tracking permet de suivre un message à travers les serveurs (réception, file d'attente, envoi) pour le dépannage.",
+            "difficulty": 2
+          },
+          {
+            "id": "ex-b5-2",
+            "type": "fill-in-blank",
+            "prompt": "Un mail bloqué en \"Pending\" indique souvent un problème de __________.",
+            "answer": "connecteur",
+            "explanation": "Un message resté en Pending indique souvent un problème de connecteur sortant (Send Connector) ou de résolution DNS.",
+            "difficulty": 2
+          }
+        ]
+      }
+    ]
+  },
+  "chapters": []
+}

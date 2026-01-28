@@ -118,6 +118,45 @@ export function useLiveQuiz({
         setCurrentQuestion(qs[quizData.current_question_index] || null);
         setLeaderboard(quizData.leaderboard || []);
         
+        // Reconstruire questionResults depuis la base pour toutes les questions déjà traitées
+        // (évite les résultats manquants pour les questions 2, 4, etc. après refresh ou cumul)
+        const { data: allAnswers } = await supabase
+          .from('live_quiz_answers')
+          .select('*')
+          .eq('live_quiz_id', quizData.id);
+        
+        if (allAnswers && allAnswers.length > 0) {
+          const resultsMap = new Map<number, QuestionResult>();
+          const questionIndices = [...new Set(allAnswers.map((a: { question_index: number }) => a.question_index))];
+          for (const qi of questionIndices) {
+            const question = qs[qi];
+            if (!question) continue;
+            const answersForQ = allAnswers.filter((a: { question_index: number }) => a.question_index === qi);
+            const distribution: Record<string, number> = {};
+            let correctCount = 0;
+            let totalTime = 0;
+            answersForQ.forEach((a: { answer: unknown; is_correct?: boolean; answer_time_ms?: number }) => {
+              const key = JSON.stringify(a.answer);
+              distribution[key] = (distribution[key] || 0) + 1;
+              if (a.is_correct) correctCount++;
+              totalTime += a.answer_time_ms || 0;
+            });
+            const q = question as QuizQuestion & { answer?: string | string[] };
+            const correctAnswer = q.correct_answer ?? q.answer ?? '';
+            resultsMap.set(qi, {
+              question_index: qi,
+              correct_answer: correctAnswer,
+              answer_distribution: distribution,
+              correct_count: correctCount,
+              total_answers: answersForQ.length,
+              average_time_ms: answersForQ.length ? totalTime / answersForQ.length : 0
+            });
+          }
+          setQuestionResults(resultsMap);
+        } else {
+          setQuestionResults(new Map());
+        }
+        
         // Calculer le temps restant
         if (quizData.question_started_at && quizData.question_time_limit) {
           const elapsed = (Date.now() - new Date(quizData.question_started_at).getTime()) / 1000;
@@ -206,6 +245,11 @@ export function useLiveQuiz({
         const newState = payload.new as LiveQuizSession;
         setQuizState(newState);
         setLeaderboard(newState.leaderboard || []);
+        
+        // Nouvelle session : vider les résultats pour éviter cumul avec une session précédente
+        if (payload.eventType === 'INSERT') {
+          setQuestionResults(new Map());
+        }
         
         // Mettre à jour la question actuelle
         setCurrentQuestion(questions[newState.current_question_index] || null);

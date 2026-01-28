@@ -1,0 +1,423 @@
+{
+  "title": "eXtra 2 - Exchange — WS2019 + Exchange 2019 CU14",
+  "description": "Kit PowerShell propre, rejouable et aligné sur les prérequis **Exchange 2019 CU14** : .NET 4.8 obligatoire, Visual C++ 2012 requis, Windows Features/IIS selon la doc Microsoft, anti-spam (Install-AntiSpamAgents.ps1). Pack complet : prérequis (WS2019/CU14), install, config (domaines, users, mailboxes, connecteurs SMTP), maintenance et troubleshooting, où placer les binaires/sources. Ordre d'exécution « sans surprise » inclus.",
+  "status": "draft",
+  "access_type": "free",
+  "theme": {
+    "primaryColor": "#0078D4",
+    "secondaryColor": "#50E6FF",
+    "fontFamily": "Inter"
+  },
+  "modules": [
+    {
+      "title": "Arborescence LabExchange et installateurs offline",
+      "position": 0,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Structure C:\\LabExchange\\ et dossier Packages",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "heading", "attrs": {"level": 2}, "content": [{"type": "text", "text": "Arborescence à créer sur EX01"}]},
+                {"type": "codeBlock", "attrs": {"language": "text"}, "content": [{"type": "text", "text": "C:\\LabExchange\\\n  00-Docs\\\n  01-Prechecks\\\n  02-Prereqs\\\n    Packages\\\n  03-AD-Prep\\\n  04-Exchange-Install\\\n  05-Config\\\n  06-Maintenance\\\n  07-Troubleshooting\\\n  08-Security\\\n  09-Monitoring\\\n  Logs\\\n"}]},
+                {"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": "Où mettre les installateurs (offline)"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Dans C:\\LabExchange\\02-Prereqs\\Packages\\ :"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "ndp48-x86-x64-allos-enu.exe — .NET 4.8 (offline)"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "vcredist_x64_2012.exe — VC++ 2012 x64 (requis CU14)"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "(optionnel) UcmaRuntimeSetup.exe — selon bundle / scénarios"}]}]}
+                ]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Pour CU14 : .NET 4.8 + VC++ 2012 sont explicitement requis par Microsoft."}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "01-Prechecks — Variables et vérifications système",
+      "position": 1,
+      "items": [
+        {
+          "type": "resource",
+          "title": "00-Variables.ps1 — Socle variables (réutilisé partout)",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Où le placer :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "C:\\LabExchange\\01-Prechecks\\00-Variables.ps1"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Aucun (variables seulement). Les autres scripts le dot-sourcent : . \"C:\\LabExchange\\01-Prechecks\\00-Variables.ps1\""}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Contient : DomainFqdn, OrgName, ExServer, DcServer, Client, Root, Pkg, Logs, ExchangeMedia. À adapter (ex. E:\\ pour le média)."}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "01-Precheck-System.ps1 — WS2019 / DNS / Domaine / Disques",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Lecture seule. Affiche machine, domaine, OS, IP/DNS, espace disque."}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "02-Prereqs — Prérequis OS et logiciels (CU14)",
+      "position": 2,
+      "items": [
+        {
+          "type": "resource",
+          "title": "01-Install-WindowsFeatures-WS2019.ps1 — Rôles et fonctionnalités Windows",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Installe rôles/fonctionnalités Windows (prérequis Exchange Server, Mailbox role). Peut nécessiter reboot. Basé sur la doc « prérequis Exchange Server » pour WS2019."}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "02-Install-NET48.ps1 — .NET Framework 4.8 (obligatoire CU14)",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Installe .NET 4.8 si absent (vérification Release >= 528040). Reboot conseillé après installation. Prérequis : ndp48-x86-x64-allos-enu.exe dans Packages\\."}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "03-Install-VC2012.ps1 — Visual C++ 2012 x64 (obligatoire CU14)",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Installe VC++ 2012 x64 en mode silencieux. Prérequis : vcredist_x64_2012.exe dans Packages\\."}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "03-AD-Prep — Préparation Active Directory",
+      "position": 3,
+      "items": [
+        {
+          "type": "resource",
+          "title": "01-Prepare-AD.ps1 — PrepareSchema / PrepareAD / PrepareDomain",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Modifie le schéma AD et prépare l'organisation Exchange. À exécuter avec droits Schema Admins / Enterprise Admins. Utilise les variables de 00-Variables.ps1 (OrgName, DomainFqdn, ExchangeMedia)."}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "04-Exchange-Install — Installation Exchange",
+      "position": 4,
+      "items": [
+        {
+          "type": "resource",
+          "title": "01-Install-Exchange.ps1 — Installation unattended (rôle Mailbox)",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Installe Exchange 2019 CU14 (Mailbox role). Reboot possible. Chemin média pris depuis 00-Variables.ps1 (ExchangeMedia)."}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "05-Config — Domaines, utilisateurs, mailboxes, connecteurs",
+      "position": 5,
+      "items": [
+        {
+          "type": "resource",
+          "title": "01-AcceptedDomain-EmailPolicy.ps1 — Domaine accepté + politique d'adressage",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Ajoute un Accepted Domain (ex. hygeasy.com) et crée/met à jour une Email Address Policy. À exécuter dans Exchange Management Shell."}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "02-Users-EnableMailbox.ps1 — Créer users AD + activer mailboxes (user1/user2)",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Comment l'exécuter :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Exchange Management Shell : .\\02-Users-EnableMailbox.ps1 ou .\\02-Users-EnableMailbox.ps1 -CreateADUsers si les comptes AD doivent être créés (ex. sur DC01 avec RSAT)."}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Crée user1/user2 dans AD (si -CreateADUsers) et active les mailboxes sur EX01."}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "03-Create-SendConnector.ps1 — Send Connector « Internet Send » (DNS routing)",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Crée un Send Connector (Usage Internet, DNS routing). En lab sans Internet : utile pour comprendre la config."}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "06-Maintenance — Services et message tracking",
+      "position": 6,
+      "items": [
+        {
+          "type": "resource",
+          "title": "01-Check-Services.ps1 — Health services Exchange",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Lecture seule. Affiche l'état des services MSExchangeTransport, MSExchangeFrontEndTransport, MSExchangeIS, W3SVC."}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "02-MessageTracking-Config.ps1 — Configurer le suivi des messages",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Active et affiche la configuration du message tracking (utile troubleshooting SOC)."}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "07-Troubleshooting — Trace message, audit connecteurs, files SMTP",
+      "position": 7,
+      "items": [
+        {
+          "type": "resource",
+          "title": "01-Trace-Message.ps1 — Où est passé le mail ? (Get-MessageTrackingLog)",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Comment l'exécuter :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Exchange Management Shell : .\\01-Trace-Message.ps1 -Sender user@domain.com -Recipient dest@domain.com [-HoursBack 4]"}]},
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Lecture seule. Utile pour la Partie 8 diagnostic (Message tracking / Get-MessageTrackingLog = doc Microsoft)."}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "02-Audit-ReceiveConnectors.ps1 — Audit Receive Connectors (pas de relais ouvert)",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Lecture seule. Sort un audit des Receive Connectors (Name, Server, Bindings, RemoteIPRanges, AuthMechanism, PermissionGroups)."}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "03-Check-Queues.ps1 — Files SMTP (diagnostic messages bloqués)",
+          "position": 2,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Lecture seule. Affiche les files (Identity, Status, MessageCount, NextHopDomain) triées par MessageCount."}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "08-Security — Anti-spam (script Microsoft)",
+      "position": 8,
+      "items": [
+        {
+          "type": "resource",
+          "title": "01-Enable-AntiSpam.ps1 — Install-AntiSpamAgents.ps1 + restart Transport",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Installe les agents anti-spam intégrés (script Microsoft dans %ExchangeInstallPath%\\Scripts\\) puis redémarre le service Transport. Doc officielle : Enable antispam functionality on Mailbox servers."}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "09-Monitoring — PerfMon et alerte disque",
+      "position": 9,
+      "items": [
+        {
+          "type": "resource",
+          "title": "01-Perfmon-Collector.ps1 — Data Collector Set (CPU, RAM, disque, queues)",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Crée un Data Collector Set (perf logs) pour historiser CPU, mémoire, disque, longueur des files Transport. Logs dans C:\\LabExchange\\Logs\\Perfmon\\. Tableau de bord local pour surveillance lab."}]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "02-Disk-Alert.ps1 — Alerte espace disque (optionnel Event Log)",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "marks": [{"type": "bold"}], "text": "Impact :"}]},
+                {"type": "paragraph", "content": [{"type": "text", "text": "Lecture + alerte si espace libre < seuil (paramètre MinFreeGB). Option : écriture Event Log si source « ExchangeLab » créée."}]}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "00-Docs — Sources officielles et ordre d'exécution",
+      "position": 10,
+      "items": [
+        {
+          "type": "resource",
+          "title": "Sources.md — Liens Microsoft (prérequis, CU14, anti-spam)",
+          "position": 0,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "paragraph", "content": [{"type": "text", "text": "À inclure dans C:\\LabExchange\\00-Docs\\Sources.md (voir fichier du kit) :"}]},
+                {"type": "bulletList", "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Prérequis Exchange Server (features Windows / IIS)"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "CU14 KB — prérequis .NET 4.8 + VC++ 2012"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Anti-spam agents sur Mailbox (Install-AntiSpamAgents.ps1)"}]}]}
+                ]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "resource",
+          "title": "Ordre d'exécution « sans surprise » (WS2019 + CU14)",
+          "position": 1,
+          "published": true,
+          "content": {
+            "body": {
+              "type": "doc",
+              "content": [
+                {"type": "orderedList", "attrs": {"start": 1}, "content": [
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "01-Prechecks\\01-Precheck-System.ps1"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "02-Prereqs\\01-Install-WindowsFeatures-WS2019.ps1 (+ reboot si demandé)"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "02-Prereqs\\02-Install-NET48.ps1 (+ reboot conseillé)"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "02-Prereqs\\03-Install-VC2012.ps1"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "03-AD-Prep\\01-Prepare-AD.ps1"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "04-Exchange-Install\\01-Install-Exchange.ps1"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "05-Config\\02-Users-EnableMailbox.ps1"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "05-Config\\03-Create-SendConnector.ps1"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "08-Security\\01-Enable-AntiSpam.ps1"}]}]},
+                  {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Monitoring / maintenance (Perfmon, queues, services, trace)"}]}]}
+                ]}
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
